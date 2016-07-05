@@ -1,0 +1,472 @@
+{
+  "de-DE": {
+    "71": {
+      "id": 71,
+      "name": "variant",
+      "displayName": "Variante",
+      "columns": [
+        {
+          "id": 1,
+          "ordering": 1,
+          "name": "aricleNumber",
+          "kind": "shorttext",
+          "identifier": true,
+          "displayName": "Artikelnummer"
+        },
+        {
+          "id": 10,
+          "ordering": 2,
+          "name": "ean",
+          "kind": "numeric",
+          "identifier": false,
+          "displayName": "EAN (nicht editieren)"
+        },
+        {
+          "id": 11,
+          "ordering": 3,
+          "name": "identifier",
+          "kind": "shorttext",
+          "identifier": true,
+          "displayName": "Bezeichnung (temporär)"
+        },
+        {
+          "id": 12,
+          "ordering": 4,
+          "name": "description",
+          "kind": "shorttext",
+          "identifier": true,
+          "displayName": "Beschreibung (temporär)"
+        },
+        {
+          "id": 2,
+          "ordering": 5,
+          "name": "rrp",
+          "kind": "numeric",
+          "identifier": false,
+          "displayName": "EVP"
+        },
+        {
+          "id": 3,
+          "ordering": 6,
+          "name": "battery",
+          "kind": "link",
+          "identifier": false,
+          "displayName": "Akku",
+          "toTable": 58
+        },
+        {
+          "id": 4,
+          "ordering": 7,
+          "name": "color",
+          "kind": "link",
+          "identifier": false,
+          "displayName": "Farbe",
+          "toTable": 70
+        },
+        {
+          "id": 5,
+          "ordering": 8,
+          "name": "features",
+          "kind": "link",
+          "identifier": false,
+          "displayName": "Features",
+          "toTable": 61
+        },
+        {
+          "id": 6,
+          "ordering": 9,
+          "name": "frame",
+          "kind": "link",
+          "identifier": false,
+          "displayName": "Rahmen",
+          "toTable": 68
+        },
+        {
+          "id": 7,
+          "ordering": 10,
+          "name": "imagesStraight",
+          "kind": "attachment",
+          "identifier": false,
+          "displayName": "Bilder (gerade)"
+        },
+        {
+          "id": 8,
+          "ordering": 11,
+          "name": "imagesDiagonal",
+          "kind": "attachment",
+          "identifier": false,
+          "displayName": "Bilder (schräg)"
+        },
+        {
+          "id": 9,
+          "ordering": 12,
+          "name": "imagesDetail",
+          "kind": "attachment",
+          "identifier": false,
+          "displayName": "Bilder (detail)"
+        }
+      ],
+      "rows": {
+        "16": [
+          "4001200715",
+          4054624053436,
+          "Winora rage 12 Laufrad",
+          "17 Winora cyan\u002Fweiß\u002Forange matt Rh 15",
+          159,
+          [],
+          [
+            23
+          ],
+          [],
+          [],
+          [],
+          [],
+          []
+        ],
+        "57": [
+          "4053007756",
+          4054624052255,
+          "Winora Lane Herren 28\" 7-G Nexus FL",
+          "17 Winora lichtgrau matt Rh 56",
+          699,
+          [],
+          [
+            37
+          ],
+          [],
+          [],
+          [
+            {
+              "internalName": "c0872305-4f99-4af4-90f1-42c19ccf20ea.png",
+              "createdAt": "2016-05-13T14:11:07.225+02:00",
+              "folder": 18,
+              "folders": [
+                9,
+                10,
+                11,
+                18
+              ],
+              "ordering": 1,
+              "externalName": "WIN_2017_Lane_He_lichtgrau.png",
+              "description": "",
+              "mimeType": "image\u002Fpng",
+              "title": "WIN_2017_Lane_He_lichtgrau.png",
+              "uuid": "4c2c80fc-a5e3-4d8d-85d3-f216e4eb8378",
+              "url": "\u002Ffiles\u002F4c2c80fc-a5e3-4d8d-85d3-f216e4eb8378\u002Fde-DE\u002FWIN_2017_Lane_He_lichtgrau.png",
+              "updatedAt": "2016-05-13T14:11:13.709+02:00"
+            }
+          ],
+          [],
+          []
+        ],
+        "58": [
+          "4053007760",
+          4054624052262,
+          "Winora Lane Herren 28\" 7-G Nexus FL",
+          "17 Winora lichtgrau matt Rh 60",
+          699,
+          [],
+          [
+            37
+          ],
+          [],
+          [],
+          [
+            {
+              "internalName": "c0872305-4f99-4af4-90f1-42c19ccf20ea.png",
+              "createdAt": "2016-05-13T14:11:07.225+02:00",
+              "folder": 18,
+              "folders": [
+                9,
+                10,
+                11,
+                18
+              ],
+              "ordering": 1,
+              "externalName": "WIN_2017_Lane_He_lichtgrau.png",
+              "description": "",
+              "mimeType": "image\u002Fpng",
+              "title": "WIN_2017_Lane_He_lichtgrau.png",
+              "uuid": "4c2c80fc-a5e3-4d8d-85d3-f216e4eb8378",
+              "url": "\u002Ffiles\u002F4c2c80fc-a5e3-4d8d-85d3-f216e4eb8378\u002Fde-DE\u002FWIN_2017_Lane_He_lichtgrau.png",
+              "updatedAt": "2016-05-13T14:11:13.709+02:00"
+            }
+          ],
+          [],
+          []
+        ],
+        "59": [
+          "4053107744",
+          4054624055010,
+          "Winora Lane Damen 28\" 7-G Nexus FL",
+          "17 Winora lichtgrau matt Rh 44",
+          699,
+          [],
+          [
+            37
+          ],
+          [],
+          [],
+          [
+            {
+              "internalName": "99fe9975-38b8-42e4-9736-3abea52eb557.png",
+              "createdAt": "2016-05-13T14:11:07.217+02:00",
+              "folder": 18,
+              "folders": [
+                9,
+                10,
+                11,
+                18
+              ],
+              "ordering": 1,
+              "externalName": "WIN_2017_Lane_Da_lichtgrau.png",
+              "description": "",
+              "mimeType": "image\u002Fpng",
+              "title": "WIN_2017_Lane_Da_lichtgrau.png",
+              "uuid": "4bbb7fd0-9916-41a8-b970-bf98489ccea6",
+              "url": "\u002Ffiles\u002F4bbb7fd0-9916-41a8-b970-bf98489ccea6\u002Fde-DE\u002FWIN_2017_Lane_Da_lichtgrau.png",
+              "updatedAt": "2016-05-13T14:11:21.203+02:00"
+            }
+          ],
+          [],
+          []
+        ]
+      }
+    }
+  },
+  "en-GB": {
+    "71": {
+      "id": 71,
+      "name": "variant",
+      "displayName": "Variant",
+      "columns": [
+        {
+          "id": 1,
+          "ordering": 1,
+          "name": "aricleNumber",
+          "kind": "shorttext",
+          "identifier": true,
+          "displayName": "Aricle number"
+        },
+        {
+          "id": 10,
+          "ordering": 2,
+          "name": "ean",
+          "kind": "numeric",
+          "identifier": false,
+          "displayName": "EAN (not editable)"
+        },
+        {
+          "id": 11,
+          "ordering": 3,
+          "name": "identifier",
+          "kind": "shorttext",
+          "identifier": true,
+          "displayName": "Identifier"
+        },
+        {
+          "id": 12,
+          "ordering": 4,
+          "name": "description",
+          "kind": "shorttext",
+          "identifier": true,
+          "displayName": "Description"
+        },
+        {
+          "id": 2,
+          "ordering": 5,
+          "name": "rrp",
+          "kind": "numeric",
+          "identifier": false,
+          "displayName": "RRP"
+        },
+        {
+          "id": 3,
+          "ordering": 6,
+          "name": "battery",
+          "kind": "link",
+          "identifier": false,
+          "displayName": "Battery",
+          "toTable": 58
+        },
+        {
+          "id": 4,
+          "ordering": 7,
+          "name": "color",
+          "kind": "link",
+          "identifier": false,
+          "displayName": "Color",
+          "toTable": 70
+        },
+        {
+          "id": 5,
+          "ordering": 8,
+          "name": "features",
+          "kind": "link",
+          "identifier": false,
+          "displayName": "Features",
+          "toTable": 61
+        },
+        {
+          "id": 6,
+          "ordering": 9,
+          "name": "frame",
+          "kind": "link",
+          "identifier": false,
+          "displayName": "Frame",
+          "toTable": 68
+        },
+        {
+          "id": 7,
+          "ordering": 10,
+          "name": "imagesStraight",
+          "kind": "attachment",
+          "identifier": false,
+          "displayName": "Images (straight)"
+        },
+        {
+          "id": 8,
+          "ordering": 11,
+          "name": "imagesDiagonal",
+          "kind": "attachment",
+          "identifier": false,
+          "displayName": "Images (diagonal)"
+        },
+        {
+          "id": 9,
+          "ordering": 12,
+          "name": "imagesDetail",
+          "kind": "attachment",
+          "identifier": false,
+          "displayName": "Images (detail)"
+        }
+      ],
+      "rows": {
+        "16": [
+          "4001200715",
+          4054624053436,
+          "Winora rage 12 Laufrad",
+          "17 Winora cyan\u002Fweiß\u002Forange matt Rh 15",
+          null,
+          [],
+          [
+            23
+          ],
+          [],
+          [],
+          [],
+          [],
+          []
+        ],
+        "57": [
+          "4053007756",
+          4054624052255,
+          "Winora Lane Herren 28\" 7-G Nexus FL",
+          "17 Winora lichtgrau matt Rh 56",
+          null,
+          [],
+          [
+            37
+          ],
+          [],
+          [],
+          [
+            {
+              "internalName": "c0872305-4f99-4af4-90f1-42c19ccf20ea.png",
+              "createdAt": "2016-05-13T14:11:07.225+02:00",
+              "folder": 18,
+              "folders": [
+                9,
+                10,
+                11,
+                18
+              ],
+              "ordering": 1,
+              "externalName": "WIN_2017_Lane_He_lichtgrau.png",
+              "description": "",
+              "mimeType": "image\u002Fpng",
+              "title": "WIN_2017_Lane_He_lichtgrau.png",
+              "uuid": "4c2c80fc-a5e3-4d8d-85d3-f216e4eb8378",
+              "url": "\u002Ffiles\u002F4c2c80fc-a5e3-4d8d-85d3-f216e4eb8378\u002Fde-DE\u002FWIN_2017_Lane_He_lichtgrau.png",
+              "updatedAt": "2016-05-13T14:11:13.709+02:00"
+            }
+          ],
+          [],
+          []
+        ],
+        "58": [
+          "4053007760",
+          4054624052262,
+          "Winora Lane Herren 28\" 7-G Nexus FL",
+          "17 Winora lichtgrau matt Rh 60",
+          null,
+          [],
+          [
+            37
+          ],
+          [],
+          [],
+          [
+            {
+              "internalName": "c0872305-4f99-4af4-90f1-42c19ccf20ea.png",
+              "createdAt": "2016-05-13T14:11:07.225+02:00",
+              "folder": 18,
+              "folders": [
+                9,
+                10,
+                11,
+                18
+              ],
+              "ordering": 1,
+              "externalName": "WIN_2017_Lane_He_lichtgrau.png",
+              "description": "",
+              "mimeType": "image\u002Fpng",
+              "title": "WIN_2017_Lane_He_lichtgrau.png",
+              "uuid": "4c2c80fc-a5e3-4d8d-85d3-f216e4eb8378",
+              "url": "\u002Ffiles\u002F4c2c80fc-a5e3-4d8d-85d3-f216e4eb8378\u002Fde-DE\u002FWIN_2017_Lane_He_lichtgrau.png",
+              "updatedAt": "2016-05-13T14:11:13.709+02:00"
+            }
+          ],
+          [],
+          []
+        ],
+        "59": [
+          "4053107744",
+          4054624055010,
+          "Winora Lane Damen 28\" 7-G Nexus FL",
+          "17 Winora lichtgrau matt Rh 44",
+          null,
+          [],
+          [
+            37
+          ],
+          [],
+          [],
+          [
+            {
+              "internalName": "99fe9975-38b8-42e4-9736-3abea52eb557.png",
+              "createdAt": "2016-05-13T14:11:07.217+02:00",
+              "folder": 18,
+              "folders": [
+                9,
+                10,
+                11,
+                18
+              ],
+              "ordering": 1,
+              "externalName": "WIN_2017_Lane_Da_lichtgrau.png",
+              "description": "",
+              "mimeType": "image\u002Fpng",
+              "title": "WIN_2017_Lane_Da_lichtgrau.png",
+              "uuid": "4bbb7fd0-9916-41a8-b970-bf98489ccea6",
+              "url": "\u002Ffiles\u002F4bbb7fd0-9916-41a8-b970-bf98489ccea6\u002Fde-DE\u002FWIN_2017_Lane_Da_lichtgrau.png",
+              "updatedAt": "2016-05-13T14:11:21.203+02:00"
+            }
+          ],
+          [],
+          []
+        ]
+      }
+    }
+  }
+}
