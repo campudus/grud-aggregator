@@ -10,6 +10,7 @@
           "id": 1,
           "name": "slShorttext",
           "kind": "shorttext",
+          "identifier": true,
           "displayName": "Irgendein Text",
           "description": "Eine Beschreibung der einfachen Textspalte"
         },
@@ -20,41 +21,77 @@
           "languageType": "language",
           "displayName": "Irgendein mehrsprachiger Text",
           "description": "Eine Beschreibung der mehrsprachigen Textspalte"
+        },
+        {
+          "id": 3,
+          "name": "slAttachment",
+          "kind": "attachment",
+          "displayName": "Irgendein sprachneutrales Attachment",
+          "description": "Eine Beschreibung der sprachneutralen Attachmentspalte"
+        },
+        {
+          "id": 4,
+          "name": "someLink",
+          "kind": "link",
+          "displayName": "Irgendein Link",
+          "description": "Eine Beschreibung der Linkspalte",
+          "toTable": 2
         }
       ],
       "rows": {
         "1": [
           "something",
-          "Hallo"
+          "Hallo",
+          [
+            {
+              "title": "Titel des ersten Attachments",
+              "description": "Beschreibung des ersten Attachments",
+              "externalName": "externer-name.txt",
+              "internalName": "66845e6e-f186-4fa1-9540-0c6e9b1c4cfb.txt",
+              "mimeType": "text/plain",
+              "url": "/files/b1446686-bcec-4a6e-a2b5-54b209167499/de/externer-name.txt"
+            },
+            {
+              "title": "Titel des zweiten Attachments",
+              "description": "Description of second attachment",
+              "externalName": "irgendeine-datei.txt",
+              "internalName": "588a91d7-f526-4849-88b2-7ab20195038d.txt",
+              "mimeType": "text/plain",
+              "url": "/files/8a2bed0e-fb6e-42bb-a3fd-ec9da2bdd9a6/en/some-file.txt"
+            }
+          ],
+          [
+            null
+          ]
         ]
       }
     },
     "2": {
       "id": 2,
       "name": "anotherTestTable",
-      "displayName": "Test Tabelle 2",
-      "description": "Eine andere Tabelle zum Testen",
       "columns": [
         {
           "id": 1,
-          "name": "slShorttext",
+          "name": "testColumn",
           "kind": "shorttext",
-          "displayName": "Irgendein anderer Text",
-          "description": "Eine Beschreibung der einfachen Textspalte in Tabelle 2"
+          "identifier": true
         },
         {
           "id": 2,
-          "name": "mlShorttext",
+          "name": "otherColumn",
           "kind": "shorttext",
-          "languageType": "language",
-          "displayName": "Irgendein anderer mehrsprachiger Text",
-          "description": "Eine Beschreibung der mehrsprachigen Textspalte in Tabelle 2"
+          "identifier": false,
+          "languageType": "language"
         }
       ],
       "rows": {
         "1": [
           "some other thing",
-          "Willkommen"
+          null
+        ],
+        "2": [
+          "some other thing in second row",
+          null
         ]
       }
     }
@@ -70,6 +107,7 @@
           "id": 1,
           "name": "slShorttext",
           "kind": "shorttext",
+          "identifier": true,
           "displayName": "Some text",
           "description": "A description of the simple text column"
         },
@@ -80,12 +118,48 @@
           "languageType": "language",
           "displayName": "Some multilanguage text",
           "description": "A description of the multilanguage text column"
+        },
+        {
+          "id": 3,
+          "name": "slAttachment",
+          "kind": "attachment",
+          "displayName": "Some language neutral attachment",
+          "description": "A description of the language neutral attachment column"
+        },
+        {
+          "id": 4,
+          "name": "someLink",
+          "kind": "link",
+          "displayName": "Some link",
+          "description": "A description of the link column",
+          "toTable": 2
         }
       ],
       "rows": {
         "1": [
           "something",
-          "Hello"
+          "Hello",
+          [
+            {
+              "title": "Title of first attachment",
+              "description": "Description of first attachment",
+              "externalName": "external-name.png",
+              "internalName": "fd0488b2-4b59-474c-80af-461b379b0ce3.png",
+              "mimeType": "image/png",
+              "url": "/files/66035e76-ee68-48af-8cdd-d46a3cb63de4/en/external-name.png"
+            },
+            {
+              "title": "Title of second attachment",
+              "description": "Description of second attachment",
+              "externalName": "some-file.txt",
+              "internalName": "588a91d7-f526-4849-88b2-7ab20195038d.txt",
+              "mimeType": "text/plain",
+              "url": "/files/8a2bed0e-fb6e-42bb-a3fd-ec9da2bdd9a6/en/some-file.txt"
+            }
+          ],
+          [
+            null
+          ]
         ]
       }
     },
@@ -97,15 +171,17 @@
       "columns": [
         {
           "id": 1,
-          "name": "slShorttext",
+          "name": "testColumn",
           "kind": "shorttext",
+          "identifier": true,
           "displayName": "Some other text",
           "description": "A description of the simple text column in table 2"
         },
         {
           "id": 2,
-          "name": "mlShorttext",
+          "name": "otherColumn",
           "kind": "shorttext",
+          "identifier": false,
           "languageType": "language",
           "displayName": "Some other multilanguage text",
           "description": "A description of the multilanguage text column in table 2"
@@ -115,6 +191,89 @@
         "1": [
           "some other thing",
           "Welcome"
+        ],
+        "2": [
+          "some other thing in second row",
+          "Welcome"
+        ]
+      }
+    }
+  },
+  "fr": {
+    "1": {
+      "id": 1,
+      "name": "testTable",
+      "columns": [
+        {
+          "id": 1,
+          "name": "slShorttext",
+          "kind": "shorttext",
+          "identifier": true
+        },
+        {
+          "id": 2,
+          "name": "mlShorttext",
+          "kind": "shorttext",
+          "languageType": "language"
+        },
+        {
+          "id": 3,
+          "name": "slAttachment",
+          "kind": "attachment"
+        },
+        {
+          "id": 4,
+          "name": "someLink",
+          "kind": "link",
+          "toTable": 2
+        }
+      ],
+      "rows": {
+        "1": [
+          "something",
+          null,
+          [
+            {
+              "title": "Title of second attachment",
+              "description": "Description of second attachment",
+              "externalName": "some-file.txt",
+              "internalName": "588a91d7-f526-4849-88b2-7ab20195038d.txt",
+              "mimeType": "text/plain",
+              "url": "/files/8a2bed0e-fb6e-42bb-a3fd-ec9da2bdd9a6/en/some-file.txt"
+            }
+          ],
+          [
+          null
+        ]
+        ]
+      }
+    },
+    "2": {
+      "id": 2,
+      "name": "anotherTestTable",
+      "columns": [
+        {
+          "id": 1,
+          "name": "testColumn",
+          "kind": "shorttext",
+          "identifier": true
+        },
+        {
+          "id": 2,
+          "name": "otherColumn",
+          "kind": "shorttext",
+          "identifier": false,
+          "languageType": "language"
+        }
+      ],
+      "rows": {
+        "1": [
+          "some other thing",
+          null
+        ],
+        "2": [
+          "some other thing in second row",
+          null
         ]
       }
     }

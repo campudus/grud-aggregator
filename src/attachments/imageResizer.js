@@ -2,13 +2,11 @@ import fs from 'fs-extra';
 import jimp from 'jimp';
 import imagemin from 'imagemin';
 import pngquant from 'imagemin-pngquant';
-import mime from 'mime';
 
 export function generateThumb(options) {
-  const {fromPath, toPath, minify} = options;
-  const mimetype = mime.lookup(fromPath);
+  const {fromPath, toPath, imageWidth, minify} = options;
   return readImage(fromPath)
-    .then(resizeImage(mimetype))
+    .then(resizeImage(imageWidth))
     .then(minifyImage(minify))
     .then(saveImage(toPath));
 }
@@ -16,11 +14,11 @@ export function generateThumb(options) {
 export function reduceImage(options) {
   const {fromPath, toPath} = options;
   return readImage(fromPath)
-    .then(jimpImage => {
+    .then(image => {
       return new Promise((resolve, reject) => {
-        jimpImage.getBuffer(jimpImage._originalMime, (err, buffer) => {
+        image.getBuffer(image._originalMime, (err, buffer) => {
           if (err) {
-            console.log(`could not get buffer to copy with mime type ${jimpImage._originalMime}`);
+            console.log(`could not get buffer to copy with mime type ${image._originalMime}`);
             reject(err);
           } else {
             resolve(buffer);
@@ -45,15 +43,15 @@ function readImage(fromPath) {
   });
 }
 
-function resizeImage(mimetype) {
+function resizeImage(imageWidth) {
   return image => new Promise((resolve, reject) => {
-    // resize the width to 150 and scale the height accordingly
+    // resize the width to <imageSize> and scale the height accordingly
     try {
       image
-        .resize(500, jimp.AUTO)
-        .getBuffer(mimetype, (err, buffer) => {
+        .resize(imageWidth, jimp.AUTO)
+        .getBuffer(image._originalMime, (err, buffer) => {
           if (err) {
-            console.log(`could not get buffer to resize with mime type ${mimetype}`);
+            console.log(`could not get buffer to resize with mime type ${image._originalMime}`);
             reject(err);
           } else {
             resolve(buffer);
@@ -76,15 +74,11 @@ function minifyImage(minify) {
 }
 
 function minifyImageBuffer(buffer) {
-  try {
-    return imagemin.buffer(buffer, {
-      plugins : [
-        pngquant()
-      ]
-    });
-  } catch (e) {
-    return Promise.reject(e);
-  }
+  return imagemin.buffer(buffer, {
+    plugins : [
+      pngquant()
+    ]
+  });
 }
 
 function saveImage(toPath) {

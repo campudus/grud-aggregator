@@ -12,9 +12,41 @@
     },
     "columns": [
       {
+        "id": 0,
+        "ordering": 0,
+        "name": "ID",
+        "kind": "concat",
+        "multilanguage": false,
+        "identifier": true,
+        "concats": [
+          {
+            "id": 1,
+            "ordering": 1,
+            "kind": "shorttext",
+            "multilanguage": false,
+            "identifier": true,
+            "displayName": {
+              "de": "Irgendein Text",
+              "en": "Some text"
+            },
+            "description": {},
+            "toTable": 2
+          }
+        ],
+        "displayName": {
+          "de": "ID",
+          "en": "ID"
+        },
+        "description": {
+          "de": "ID Beschreibung",
+          "en": "ID description"
+        }
+      },
+      {
         "id": 1,
         "name": "slShorttext",
         "kind": "shorttext",
+        "identifier": true,
         "multilanguage": false,
         "displayName": {
           "de": "Irgendein Text",
@@ -39,17 +71,112 @@
           "de": "Eine Beschreibung der mehrsprachigen Textspalte",
           "en": "A description of the multilanguage text column"
         }
+      },
+      {
+        "id": 3,
+        "name": "slAttachment",
+        "kind": "attachment",
+        "multilanguage": false,
+        "displayName": {
+          "de": "Irgendein sprachneutrales Attachment",
+          "en": "Some language neutral attachment"
+        },
+        "description": {
+          "de": "Eine Beschreibung der sprachneutralen Attachmentspalte",
+          "en": "A description of the language neutral attachment column"
+        }
+      },
+      {
+        "id": 4,
+        "name": "someLink",
+        "kind": "link",
+        "multilanguage": false,
+        "displayName": {
+          "de": "Irgendein Link",
+          "en": "Some link"
+        },
+        "description": {
+          "de": "Eine Beschreibung der Linkspalte",
+          "en": "A description of the link column"
+        },
+        "toTable": 2,
+        "toColumn": {
+          "id": 1,
+          "kind": "shorttext",
+          "multilanguage": false,
+          "identifier": true,
+          "displayName": {
+            "en": "Some other text"
+          },
+          "description": {
+            "en": "A description of the simple text column in table 2"
+          }
+        }
       }
     ],
     "rows": {
       "1": {
-        "id": "1",
+        "id": 1,
         "values": [
+          [],
           "something",
           {
             "de": "Hallo",
             "en": "Hello"
-          }
+          },
+          [
+            {
+              "title": {
+                "de": "Titel des ersten Attachments",
+                "en": "Title of first attachment"
+              },
+              "description": {
+                "de": "Beschreibung des ersten Attachments",
+                "en": "Description of first attachment"
+              },
+              "externalName": {
+                "de": "externer-name.txt",
+                "en": "external-name.png"
+              },
+              "internalName": {
+                "de": "66845e6e-f186-4fa1-9540-0c6e9b1c4cfb.txt",
+                "en": "fd0488b2-4b59-474c-80af-461b379b0ce3.png"
+              },
+              "mimeType": {
+                "de": "text/plain",
+                "en": "image/png"
+              },
+              "url": {
+                "de": "/files/b1446686-bcec-4a6e-a2b5-54b209167499/de/externer-name.txt",
+                "en": "/files/66035e76-ee68-48af-8cdd-d46a3cb63de4/en/external-name.png"
+              }
+            },
+            {
+              "title": {
+                "de": "Titel des zweiten Attachments",
+                "en": "Title of second attachment"
+              },
+              "description": {
+                "en": "Description of second attachment"
+              },
+              "externalName": {
+                "de": "irgendeine-datei.txt",
+                "en": "some-file.txt"
+              },
+              "internalName": {
+                "en": "588a91d7-f526-4849-88b2-7ab20195038d.txt"
+              },
+              "mimeType": {
+                "en": "text/plain"
+              },
+              "url": {
+                "en": "/files/8a2bed0e-fb6e-42bb-a3fd-ec9da2bdd9a6/en/some-file.txt"
+              }
+            }
+          ],
+          [
+            1
+          ]
         ]
       }
     }
@@ -58,51 +185,55 @@
     "id": 2,
     "name": "anotherTestTable",
     "displayName": {
-      "de": "Test Tabelle 2",
       "en": "Test table 2"
     },
     "description": {
-      "de": "Eine andere Tabelle zum Testen",
       "en": "Another table to test"
     },
     "columns": [
       {
         "id": 1,
-        "name": "slShorttext",
+        "name": "testColumn",
         "kind": "shorttext",
+        "identifier": true,
         "multilanguage": false,
         "displayName": {
-          "de": "Irgendein anderer Text",
           "en": "Some other text"
         },
         "description": {
-          "de": "Eine Beschreibung der einfachen Textspalte in Tabelle 2",
           "en": "A description of the simple text column in table 2"
         }
       },
       {
         "id": 2,
-        "name": "mlShorttext",
+        "name": "otherColumn",
         "kind": "shorttext",
+        "identifier": false,
         "multilanguage": true,
         "languageType": "language",
         "displayName": {
-          "de": "Irgendein anderer mehrsprachiger Text",
           "en": "Some other multilanguage text"
         },
         "description": {
-          "de": "Eine Beschreibung der mehrsprachigen Textspalte in Tabelle 2",
           "en": "A description of the multilanguage text column in table 2"
         }
       }
     ],
     "rows": {
       "1": {
-        "id": "1",
+        "id": 1,
         "values": [
           "some other thing",
           {
-            "de": "Willkommen",
+            "en": "Welcome"
+          }
+        ]
+      },
+      "2": {
+        "id": 2,
+        "values": [
+          "some other thing in second row",
+          {
             "en": "Welcome"
           }
         ]

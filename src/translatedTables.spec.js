@@ -7,7 +7,8 @@ describe('translate tables', () => {
 
   const langtags = {
     DE : 'de',
-    EN : 'en'
+    EN : 'en',
+    FR : 'fr'
   };
 
   it('translates the table name correctly', () => {
