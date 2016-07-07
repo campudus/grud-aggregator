@@ -46,7 +46,7 @@ export default function tablesForLanguages(tablesObj, langtags) {
                     mimeType : cell.mimeType[fallback],
                     internalName : cell.internalName[fallback],
                     url : cell.url[fallback]
-                  }
+                  };
                 } else { // no attachment found
                   return [];
                 }

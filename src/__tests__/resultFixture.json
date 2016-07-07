@@ -1,0 +1,122 @@
+{
+  "de": {
+    "1": {
+      "id": 1,
+      "name": "testTable",
+      "displayName": "Test Tabelle",
+      "description": "Eine Tabelle zum Testen",
+      "columns": [
+        {
+          "id": 1,
+          "name": "slShorttext",
+          "kind": "shorttext",
+          "displayName": "Irgendein Text",
+          "description": "Eine Beschreibung der einfachen Textspalte"
+        },
+        {
+          "id": 2,
+          "name": "mlShorttext",
+          "kind": "shorttext",
+          "languageType": "language",
+          "displayName": "Irgendein mehrsprachiger Text",
+          "description": "Eine Beschreibung der mehrsprachigen Textspalte"
+        }
+      ],
+      "rows": {
+        "1": [
+          "something",
+          "Hallo"
+        ]
+      }
+    },
+    "2": {
+      "id": 2,
+      "name": "anotherTestTable",
+      "displayName": "Test Tabelle 2",
+      "description": "Eine andere Tabelle zum Testen",
+      "columns": [
+        {
+          "id": 1,
+          "name": "slShorttext",
+          "kind": "shorttext",
+          "displayName": "Irgendein anderer Text",
+          "description": "Eine Beschreibung der einfachen Textspalte in Tabelle 2"
+        },
+        {
+          "id": 2,
+          "name": "mlShorttext",
+          "kind": "shorttext",
+          "languageType": "language",
+          "displayName": "Irgendein anderer mehrsprachiger Text",
+          "description": "Eine Beschreibung der mehrsprachigen Textspalte in Tabelle 2"
+        }
+      ],
+      "rows": {
+        "1": [
+          "some other thing",
+          "Willkommen"
+        ]
+      }
+    }
+  },
+  "en": {
+    "1": {
+      "id": 1,
+      "name": "testTable",
+      "displayName": "Test table",
+      "description": "A table to test",
+      "columns": [
+        {
+          "id": 1,
+          "name": "slShorttext",
+          "kind": "shorttext",
+          "displayName": "Some text",
+          "description": "A description of the simple text column"
+        },
+        {
+          "id": 2,
+          "name": "mlShorttext",
+          "kind": "shorttext",
+          "languageType": "language",
+          "displayName": "Some multilanguage text",
+          "description": "A description of the multilanguage text column"
+        }
+      ],
+      "rows": {
+        "1": [
+          "something",
+          "Hello"
+        ]
+      }
+    },
+    "2": {
+      "id": 2,
+      "name": "anotherTestTable",
+      "displayName": "Test table 2",
+      "description": "Another table to test",
+      "columns": [
+        {
+          "id": 1,
+          "name": "slShorttext",
+          "kind": "shorttext",
+          "displayName": "Some other text",
+          "description": "A description of the simple text column in table 2"
+        },
+        {
+          "id": 2,
+          "name": "mlShorttext",
+          "kind": "shorttext",
+          "languageType": "language",
+          "displayName": "Some other multilanguage text",
+          "description": "A description of the multilanguage text column in table 2"
+        }
+      ],
+      "rows": {
+        "1": [
+          "some other thing",
+          "Welcome"
+        ]
+      }
+    }
+  }
+}

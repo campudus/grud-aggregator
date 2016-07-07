@@ -1,0 +1,50 @@
+{
+  "name": "tableaux-aggregator",
+  "version": "1.0.0",
+  "description": "Core aggregator functions",
+  "main": "lib/index.js",
+  "files": ["lib/"],
+  "scripts": {
+    "compile": "babel -q --ignore '*.spec.js' -d lib/ src",
+    "lint": "eslint src/",
+    "prepublish": "npm run compile -s && npm run lint -s && npm run test -s",
+    "test": "mocha --require source-map-support --compilers js:babel-core/register --colors $(find . -type d -name node_modules -prune -o -name '*.spec.js')",
+    "test:watch": "npm run test -- -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/campudus/aggregator.git"
+  },
+  "keywords": [
+    "tableaux",
+    "aggregation"
+  ],
+  "author": "Campudus GmbH",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/campudus/aggregator#readme",
+  "devDependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-eslint": "^6.1.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "babel-runtime": "^6.9.2",
+    "eslint": "^3.0.1",
+    "mocha": "^2.5.3",
+    "must": "^0.13.1",
+    "source-map-support": "^0.4.1",
+    "superagent": "^2.0.0",
+    "tmp": "0.0.28"
+  },
+  "dependencies": {
+    "fs-extra": "^0.30.0",
+    "imagemin": "^5.2.2",
+    "imagemin-pngquant": "^5.0.0",
+    "jimp": "^0.2.24",
+    "lodash": "^4.13.1",
+    "mime": "^1.3.4"
+  }
+}

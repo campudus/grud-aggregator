@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import http from 'http';
 import fs from 'fs';
-import config from '../../../src/config';
+import config from '../../../config';
 import { generateThumb, reduceImage } from './imageResizer';
 
-export function downloadAndResizeAttachments({database, dataDirectory, pimUrl, progress, errorProgress}, attachments) {
+export function downloadAndResizeAttachments({
+  database, dataDirectory, pimUrl, progress, errorProgress
+}, attachments) {
   const chunkSize = 2;
   // split list up into partitions
   const chunks = _.chunk(attachments, chunkSize);
@@ -16,7 +18,7 @@ export function downloadAndResizeAttachments({database, dataDirectory, pimUrl, p
   const preparePromise = _mkdir(directory)
     .then(() => _mkdir(directoryThumb))
     .then(() => _mkdir(directoryReduced))
-    .then(() => 0.0);
+    .then(() => ({done : 0, total : attachments.length}));
 
   return _.reduce(chunks, (promise, attachmentsInChunk) => promise.then(currentProgress => {
     return Promise.all(_.map(attachmentsInChunk, item => {
@@ -38,6 +40,7 @@ export function downloadAndResizeAttachments({database, dataDirectory, pimUrl, p
 
       return Promise.resolve()
         .then(() => {
+          console.log('downloading', url);
           const downloader = (currentInfo.downloaded) ? Promise.resolve(path) : download(url, path);
           return downloader.then(() => {
             console.log('Writing download in database');
@@ -93,12 +96,11 @@ export function downloadAndResizeAttachments({database, dataDirectory, pimUrl, p
         .catch(err => {
           console.error('Could not write to database!', err);
           errorProgress({message : 'Could not save database!', error : err});
-        })
+        });
     }).then(() => {
-      const cp = currentProgress + attachmentsInChunk.length;
-      const progressPercentage = cp / attachments.length;
-      progress({progressPercentage, message : `Finished chunk of size ${attachmentsInChunk.length}`});
-      return cp;
+      currentProgress.done = currentProgress.done + attachmentsInChunk.length;
+      progress({currentProgress, message : `Finished chunk of size ${attachmentsInChunk.length}`});
+      return currentProgress;
     });
 
   }), preparePromise);
@@ -134,7 +136,7 @@ export function downloadAndResizeAttachments({database, dataDirectory, pimUrl, p
         if (stats.size > config.maxImageSize) {
           throw new Error('Image too big to thumbnail!');
         } else {
-          return generateThumb(from, to);
+          return generateThumb({fromPath : from, toPath : to, minify : true});
         }
       });
   }
@@ -143,9 +145,9 @@ export function downloadAndResizeAttachments({database, dataDirectory, pimUrl, p
     return statOf(from)
       .then(stats => {
         if (stats.size > config.maxImageSize) {
-          throw new Error('Image too big to minify!');
+          return reduceImage({fromPath : from, toPath : to, minify : false});
         } else {
-          return reduceImage(from, to);
+          return reduceImage({fromPath : from, toPath : to, minify : true});
         }
       });
   }
@@ -162,29 +164,6 @@ export function downloadAndResizeAttachments({database, dataDirectory, pimUrl, p
       reader.on('close', resolve);
       reader.on('error', reject);
     });
-  }
-
-  function useErrorImage(path, pathThumb, pathReduced) {
-    return copyFile(path, [pathThumb, pathReduced]);
-  }
-
-  function generateVersionIfNotExists(from, to, mapper) {
-    return Promise.all([statOf(config.errorImage), statOf(to)])
-      .then(([errorImageFile, toFile]) => {
-        if (toFile.exists && toFile.size > 0) {
-          return to;
-        } else {
-          return mapper(from, to)
-            .then(statOf)
-            .then(file => {
-              if (file.exists) {
-                return to;
-              } else {
-                throw new Error(`Could not map image from ${from} to ${to}.\n`);
-              }
-            });
-        }
-      });
   }
 
   function statOf(path) {
