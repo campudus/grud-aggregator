@@ -1,11 +1,10 @@
 import _ from 'lodash';
 import http from 'http';
 import fs from 'fs';
-import config from '../../../config';
 import { generateThumb, reduceImage } from './imageResizer';
 
 export function downloadAndResizeAttachments({
-  database, dataDirectory, pimUrl, progress, errorProgress
+  database, dataDirectory, pimUrl, progress, errorProgress, maxImageSize, errorImage
 }, attachments) {
   const chunkSize = 2;
   // split list up into partitions
@@ -27,7 +26,7 @@ export function downloadAndResizeAttachments({
       const path = `${directory}/${item.path}`;
       const pathThumb = `${directoryThumb}/${item.path}`;
       const pathReduced = `${directoryReduced}/${item.path}`;
-      const pathError = config.errorImage;
+      const pathError = errorImage;
 
       database.defaults({
         attachments : {}
@@ -133,7 +132,7 @@ export function downloadAndResizeAttachments({
   function thumbnail(from, to) {
     return statOf(from)
       .then(stats => {
-        if (stats.size > config.maxImageSize) {
+        if (stats.size > maxImageSize) {
           throw new Error('Image too big to thumbnail!');
         } else {
           return generateThumb({fromPath : from, toPath : to, minify : true});
@@ -144,7 +143,7 @@ export function downloadAndResizeAttachments({
   function minify(from, to) {
     return statOf(from)
       .then(stats => {
-        if (stats.size > config.maxImageSize) {
+        if (stats.size > maxImageSize) {
           return reduceImage({fromPath : from, toPath : to, minify : false});
         } else {
           return reduceImage({fromPath : from, toPath : to, minify : true});

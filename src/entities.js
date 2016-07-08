@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { getCompleteTable, getTablesByNames } from './pimApi';
-import langtags from './langtags';
 import tablesForLanguages from './translatedTables';
 
-export function getEntitiesOfTables(pimUrl, ...tableNames) {
+export function getEntitiesOfTables(options, ...tableNames) {
+  const {pimUrl, langtags} = options;
 
   return getPimDataOfTables(pimUrl, tableNames).then(data => tablesForLanguages(data, langtags));
 
