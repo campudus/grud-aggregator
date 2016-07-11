@@ -1,0 +1,97 @@
+{
+  "de": {
+    "2": {
+      "id": 2,
+      "name": "anotherTestTable",
+      "columns": [
+        {
+          "id": 1,
+          "name": "testColumn",
+          "kind": "shorttext",
+          "identifier": true
+        },
+        {
+          "id": 2,
+          "name": "otherColumn",
+          "kind": "shorttext",
+          "identifier": false,
+          "languageType": "language"
+        }
+      ],
+      "rows": {
+        "1": [
+          "some other thing",
+          null
+        ],
+        "2": [
+          "some other thing in second row",
+          null
+        ]
+      }
+    }
+  },
+  "en": {
+    "2": {
+      "id": 2,
+      "name": "anotherTestTable",
+      "displayName": "Test table 2",
+      "description": "Another table to test",
+      "columns": [
+        {
+          "id": 1,
+          "name": "testColumn",
+          "kind": "shorttext",
+          "identifier": true,
+          "displayName": "Some other text",
+          "description": "A description of the simple text column in table 2"
+        },
+        {
+          "id": 2,
+          "name": "otherColumn",
+          "kind": "shorttext",
+          "identifier": false,
+          "languageType": "language",
+          "displayName": "Some other multilanguage text",
+          "description": "A description of the multilanguage text column in table 2"
+        }
+      ],
+      "rows": {
+        "2": [
+          "some other thing in second row",
+          "Welcome"
+        ]
+      }
+    }
+  },
+  "fr": {
+    "2": {
+      "id": 2,
+      "name": "anotherTestTable",
+      "columns": [
+        {
+          "id": 1,
+          "name": "testColumn",
+          "kind": "shorttext",
+          "identifier": true
+        },
+        {
+          "id": 2,
+          "name": "otherColumn",
+          "kind": "shorttext",
+          "identifier": false,
+          "languageType": "language"
+        }
+      ],
+      "rows": {
+        "1": [
+          "some other thing",
+          null
+        ],
+        "2": [
+          "some other thing in second row",
+          null
+        ]
+      }
+    }
+  }
+}

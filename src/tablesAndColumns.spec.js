@@ -27,7 +27,8 @@ describe('createLanguageJsonForTablesAndColumns', () => {
     const json = createLanguageJsonForTablesAndColumns(resultFixture)['de'];
     expect(Object.keys(json.tables).sort()).to.eql([
       'anotherTestTable',
-      'testTable'
+      'testTable',
+      'thirdTestTable'
     ]);
     expect(json.tables.testTable).to.exist();
     expect(json.tables.testTable).to.be('Test Tabelle');
@@ -35,7 +36,7 @@ describe('createLanguageJsonForTablesAndColumns', () => {
 
   it('results in {columns:{[internalTableName]:{[internalColumnName]:[name]}}} for columns', () => {
     const json = createLanguageJsonForTablesAndColumns(resultFixture)['de'];
-    expect(Object.keys(json.columns).sort()).to.eql(['anotherTestTable', 'testTable']);
+    expect(Object.keys(json.columns).sort()).to.eql(['anotherTestTable', 'testTable', 'thirdTestTable']);
     expect(json.columns.testTable).to.exist();
     expect(Object.keys(json.columns.testTable).sort()).to.eql([
       'mlShorttext',

@@ -21,16 +21,44 @@
         "concats": [
           {
             "id": 1,
-            "ordering": 1,
-            "kind": "shorttext",
-            "multilanguage": false,
+            "name": "anotherLink",
+            "kind": "link",
             "identifier": true,
+            "multilanguage": false,
             "displayName": {
-              "de": "Irgendein Text",
-              "en": "Some text"
+              "de": "Ein weiterer Link",
+              "en": "Some other link"
             },
-            "description": {},
-            "toTable": 2
+            "description": {
+              "de": "Eine Beschreibung dieser Linkspalte",
+              "en": "A description of this link column"
+            },
+            "toTable": 2,
+            "toColumn": {
+              "id": 1,
+              "name": "testColumn",
+              "kind": "shorttext",
+              "identifier": true,
+              "multilanguage": false,
+              "displayName": {
+                "en": "Some other text"
+              },
+              "description": {
+                "en": "A description of the simple text column in table 2"
+              }
+            }
+          },
+          {
+            "id": 2,
+            "name": "identifier",
+            "kind": "shorttext",
+            "identifier": true,
+            "multilanguage": false,
+            "displayName": {
+              "de": "Identifizierungsspalte",
+              "en": "Identification column"
+            },
+            "description": {}
           }
         ],
         "displayName": {
@@ -99,18 +127,49 @@
           "de": "Eine Beschreibung der Linkspalte",
           "en": "A description of the link column"
         },
-        "toTable": 2,
+        "toTable": 3,
         "toColumn": {
-          "id": 1,
-          "kind": "shorttext",
+          "id": 0,
+          "ordering": 0,
+          "name": "ID",
+          "kind": "concat",
           "multilanguage": false,
           "identifier": true,
-          "displayName": {
-            "en": "Some other text"
-          },
-          "description": {
-            "en": "A description of the simple text column in table 2"
-          }
+          "displayName": {},
+          "description": {},
+          "concats": [
+            {
+              "id": 2,
+              "ordering": 1,
+              "name": "manufacturer",
+              "kind": "link",
+              "multilanguage": false,
+              "identifier": true,
+              "displayName": {
+                "de": "Hersteller",
+                "en": "Manufacturer",
+                "fr": "Fabricant",
+                "es": "Fabricante"
+              },
+              "description": {},
+              "toTable": 2,
+              "toColumn": {
+                "id": 1,
+                "ordering": 1,
+                "name": "intentionallyDifferentName",
+                "kind": "shorttext",
+                "multilanguage": false,
+                "identifier": true,
+                "displayName": {
+                  "de": "Name",
+                  "en": "Name",
+                  "fr": "Nom",
+                  "es": "Nombre"
+                },
+                "description": {}
+              }
+            }
+          ]
         }
       }
     ],
@@ -175,7 +234,10 @@
             }
           ],
           [
-            1
+            {
+              "id": 1,
+              "value": "some other thing"
+            }
           ]
         ]
       }
@@ -235,6 +297,134 @@
           "some other thing in second row",
           {
             "en": "Welcome"
+          }
+        ]
+      }
+    }
+  },
+  "3": {
+    "id": 3,
+    "name": "thirdTestTable",
+    "langtags": [
+      "de",
+      "en"
+    ],
+    "displayName": {
+      "de": "Test Tabelle 3",
+      "en": "Test table 3"
+    },
+    "description": {
+      "de": "Eine dritte Tabelle zum Testen",
+      "en": "A third table to test"
+    },
+    "columns": [
+      {
+        "id": 1,
+        "name": "anotherLink",
+        "kind": "link",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {
+          "de": "Ein weiterer Link",
+          "en": "Some other link"
+        },
+        "description": {
+          "de": "Eine Beschreibung dieser Linkspalte",
+          "en": "A description of this link column"
+        },
+        "toTable": 2,
+        "toColumn": {
+          "id": 1,
+          "name": "testColumn",
+          "kind": "shorttext",
+          "identifier": true,
+          "multilanguage": false,
+          "displayName": {
+            "en": "Some other text"
+          },
+          "description": {
+            "en": "A description of the simple text column in table 2"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "name": "identifier",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {
+          "de": "Identifizierungsspalte",
+          "en": "Identification column"
+        },
+        "description": {}
+      },
+      {
+        "id": 3,
+        "name": "someNumber",
+        "kind": "number",
+        "identifier": true,
+        "multilanguage": true,
+        "languageType": "country",
+        "displayName": {
+          "de": "Irgendeine Zahl",
+          "en": "Some number"
+        },
+        "description": {}
+      }
+    ],
+    "rows": {
+      "1": {
+        "id": 1,
+        "values": [
+          [
+            {
+              "id": 1,
+              "value": [
+                "some other thing"
+              ]
+            }
+          ],
+          "my identifying text",
+          {
+            "de": "11",
+            "en": "12"
+          }
+        ]
+      },
+      "2": {
+        "id": 2,
+        "values": [
+          [
+            {
+              "id": 2,
+              "value": [
+                "some other thing in second row"
+              ]
+            }
+          ],
+          "my second row identifying text",
+          {
+            "de": "21",
+            "en": "22"
+          }
+        ]
+      },
+      "3": {
+        "id": 3,
+        "values": [
+          [
+            {
+              "id": 1,
+              "value": [
+                "some other thing"
+              ]
+            }
+          ],
+          "my third row identifying text",
+          {
+            "de": "31",
+            "en": "32"
           }
         ]
       }
