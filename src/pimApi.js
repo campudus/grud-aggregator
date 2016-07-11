@@ -5,9 +5,14 @@ export function getAllTables(pimUrl) {
   return request('GET', `${pimUrl}/tables`).then(data => data.tables);
 }
 
-export function getTablesByNames(pimUrl, names) {
+export function getTablesByNames(pimUrl, ...names) {
   return getAllTables(pimUrl)
-    .then(tables => _.filter(tables, t => _.some(names, name => t.name === name)));
+    .then(tables => {
+      console.log('found tables', tables);
+      const filtered = _.filter(tables, t => _.some(names, name => t.name === name));
+      console.log('filtered', filtered);
+      return filtered;
+    });
 }
 
 export function getCompleteTable(pimUrl, tableId) {

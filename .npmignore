@@ -1,4 +1,4 @@
 {
   "name": "tableaux-aggregator",
-  "files": ["lib/"]
+  "files": ["lib/", ".babelrc"]
 }
