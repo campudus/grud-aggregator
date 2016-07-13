@@ -40,7 +40,7 @@
       ],
       "rows": {
         "1": [
-          "something",
+          "something1 links to 1",
           "Hallo",
           [
             {
@@ -62,6 +62,29 @@
           ],
           [
             1
+          ]
+        ],
+        "2": [
+          "something2 links to 3 and 4",
+          "Hallo2",
+          [],
+          [
+            3,
+            4
+          ]
+        ],
+        "3": [
+          "something3 links to none",
+          "Hallo3",
+          [],
+          []
+        ],
+        "4": [
+          "something4 links to second row",
+          "Hallo3",
+          [],
+          [
+            2
           ]
         ]
       }
@@ -92,6 +115,10 @@
         "2": [
           "some other thing in second row",
           null
+        ],
+        "3": [
+          "a third item that is never linked",
+          null
         ]
       }
     },
@@ -121,7 +148,7 @@
           "id": 3,
           "name": "someNumber",
           "kind": "number",
-          "identifier": true,
+          "identifier": false,
           "languageType": "country",
           "displayName": "Irgendeine Zahl"
         }
@@ -131,7 +158,7 @@
           [
             1
           ],
-          "my identifying text",
+          "my identifying text, linking to row 1 in anotherTestTable",
           {
             "de": "11",
             "en": "12"
@@ -141,7 +168,7 @@
           [
             2
           ],
-          "my second row identifying text",
+          "my second row identifying text, linking to row 2 in anotherTestTable",
           {
             "de": "21",
             "en": "22"
@@ -149,12 +176,29 @@
         ],
         "3": [
           [
-            1
+            1,
+            2
           ],
-          "my third row identifying text",
+          "my third row identifying text, linking to both rows in anotherTestTable",
           {
             "de": "31",
             "en": "32"
+          }
+        ],
+        "4": [
+          [],
+          "my fourth row identifying text, linking to no rows in anotherTestTable",
+          {
+            "de": "41",
+            "en": "42"
+          }
+        ],
+        "5": [
+          [],
+          "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked",
+          {
+            "de": "51",
+            "en": "52"
           }
         ]
       }
@@ -201,7 +245,7 @@
       ],
       "rows": {
         "1": [
-          "something",
+          "something1 links to 1",
           "Hello",
           [
             {
@@ -223,6 +267,29 @@
           ],
           [
             1
+          ]
+        ],
+        "2": [
+          "something2 links to 3 and 4",
+          "Hello2",
+          [],
+          [
+            3,
+            4
+          ]
+        ],
+        "3": [
+          "something3 links to none",
+          "Hello3",
+          [],
+          []
+        ],
+        "4": [
+          "something4 links to second row",
+          "Hello3",
+          [],
+          [
+            2
           ]
         ]
       }
@@ -258,7 +325,11 @@
         ],
         "2": [
           "some other thing in second row",
-          "Welcome"
+          "Good day"
+        ],
+        "3": [
+          "a third item that is never linked",
+          "Hello"
         ]
       }
     },
@@ -288,7 +359,7 @@
           "id": 3,
           "name": "someNumber",
           "kind": "number",
-          "identifier": true,
+          "identifier": false,
           "languageType": "country",
           "displayName": "Some number"
         }
@@ -298,7 +369,7 @@
           [
             1
           ],
-          "my identifying text",
+          "my identifying text, linking to row 1 in anotherTestTable",
           {
             "de": "11",
             "en": "12"
@@ -308,7 +379,7 @@
           [
             2
           ],
-          "my second row identifying text",
+          "my second row identifying text, linking to row 2 in anotherTestTable",
           {
             "de": "21",
             "en": "22"
@@ -316,12 +387,29 @@
         ],
         "3": [
           [
-            1
+            1,
+            2
           ],
-          "my third row identifying text",
+          "my third row identifying text, linking to both rows in anotherTestTable",
           {
             "de": "31",
             "en": "32"
+          }
+        ],
+        "4": [
+          [],
+          "my fourth row identifying text, linking to no rows in anotherTestTable",
+          {
+            "de": "41",
+            "en": "42"
+          }
+        ],
+        "5": [
+          [],
+          "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked",
+          {
+            "de": "51",
+            "en": "52"
           }
         ]
       }
@@ -358,7 +446,7 @@
       ],
       "rows": {
         "1": [
-          "something",
+          "something1 links to 1",
           null,
           [
             {
@@ -372,6 +460,29 @@
           ],
           [
             1
+          ]
+        ],
+        "2": [
+          "something2 links to 3 and 4",
+          null,
+          [],
+          [
+            3,
+            4
+          ]
+        ],
+        "3": [
+          "something3 links to none",
+          null,
+          [],
+          []
+        ],
+        "4": [
+          "something4 links to second row",
+          null,
+          [],
+          [
+            2
           ]
         ]
       }
@@ -402,6 +513,10 @@
         "2": [
           "some other thing in second row",
           null
+        ],
+        "3": [
+          "a third item that is never linked",
+          null
         ]
       }
     },
@@ -426,7 +541,7 @@
           "id": 3,
           "name": "someNumber",
           "kind": "number",
-          "identifier": true,
+          "identifier": false,
           "languageType": "country"
         }
       ],
@@ -435,7 +550,7 @@
           [
             1
           ],
-          "my identifying text",
+          "my identifying text, linking to row 1 in anotherTestTable",
           {
             "de": "11",
             "en": "12"
@@ -445,7 +560,7 @@
           [
             2
           ],
-          "my second row identifying text",
+          "my second row identifying text, linking to row 2 in anotherTestTable",
           {
             "de": "21",
             "en": "22"
@@ -453,12 +568,29 @@
         ],
         "3": [
           [
-            1
+            1,
+            2
           ],
-          "my third row identifying text",
+          "my third row identifying text, linking to both rows in anotherTestTable",
           {
             "de": "31",
             "en": "32"
+          }
+        ],
+        "4": [
+          [],
+          "my fourth row identifying text, linking to no rows in anotherTestTable",
+          {
+            "de": "41",
+            "en": "42"
+          }
+        ],
+        "5": [
+          [],
+          "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked",
+          {
+            "de": "51",
+            "en": "52"
           }
         ]
       }

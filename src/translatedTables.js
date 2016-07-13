@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export default function tablesForLanguages(tablesObj, langtags) {
+export function tablesForLanguages(tablesObj, langtags) {
   return _.reduce(langtags, (acc, language) => Object.assign(acc, {
     [language] : _.mapValues(tablesObj, table => {
       return {

@@ -18,7 +18,7 @@ export function reference(entitiesOfPim, withoutLanguages) {
         denormalized[table.id][rowId] = orEmpty(denormalized, table.id, rowId);
         denormalized[table.id][rowId]['id'] = rowId;
 
-        return _.merge({id : rowId}, _.transform(table.columns, (cells, column, index) => {
+        return _.transform(table.columns, (cells, column, index) => {
           if (column.kind === 'link') {
             denormalized[table.id][rowId][column.name] = _.map(values[index], idInOtherTable => {
               const res = orEmpty(denormalized, column.toTable, idInOtherTable);
@@ -29,7 +29,7 @@ export function reference(entitiesOfPim, withoutLanguages) {
             denormalized[table.id][rowId][column.name] = values[index];
           }
           cells[column.name] = denormalized[table.id][rowId][column.name];
-        }, {}));
+        }, {id : rowId});
       });
     }, {});
   }
