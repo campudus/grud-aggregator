@@ -1,5 +1,5 @@
-export { createLanguageJsonForTablesAndColumns } from './tablesAndColumns';
+export { createSchemaFromLanguageTables } from './tablesAndColumns';
 export { downloadAndResizeAttachments } from './attachments/attachmentsAggregator';
 export { getEntitiesOfTable } from './entities';
-export { tablesForLanguages } from './translatedTables';
+export { tablesToLanguages } from './translatedTables';
 export { filter } from './filter';

@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-export function createLanguageJsonForTablesAndColumns(data, ...fallbackLanguages) {
+export function createSchemaFromLanguageTables(...fallbackLanguages) {
   // data is {'de':{...},'en':{...}, 'en-US':{...}}
-  return _.mapValues(data, (tables) => {
+  return data => _.mapValues(data, (tables) => {
     const json = {};
     json.tables = _.transform(tables, (result, table, tableId) => {
       result[table.name] = table.displayName || getFromFallback(data, [tableId, 'displayName']);

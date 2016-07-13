@@ -4,10 +4,21 @@ import filterFixture1 from './__tests__/filterFixture1.json';
 import filterFixture2 from './__tests__/filterFixture2.json';
 import filterFixture3 from './__tests__/filterFixture3.json';
 import filterFixture4 from './__tests__/filterFixture4.json';
+import filterFixture5 from './__tests__/filterFixture5.json';
 import { filter } from './filter';
 import expect from 'must';
 
 describe('filter', () => {
+
+  let myCounter = 0;
+  const countUp = () => {
+    myCounter += 1;
+    return false;
+  };
+
+  beforeEach(() => {
+    myCounter = 0;
+  });
 
   it('returns a function, so we can put it into Promise.then chains', () => {
     expect(filter()).to.be.a.function();
@@ -21,47 +32,76 @@ describe('filter', () => {
       });
   });
 
+  it('passes data through, if no filter.path was specified', () => {
+    return Promise.resolve(tablesFixture)
+      .then(filter({}))
+      .then(data => {
+        expect(data).to.eql(tablesFixture);
+      });
+  });
+
+  it('passes data through, if filter.path is empty', () => {
+    return Promise.resolve(tablesFixture)
+      .then(filter({
+        path : [],
+        predicate : countUp
+      }))
+      .then(data => {
+        expect(data).to.eql(tablesFixture);
+        countUp();
+        expect(myCounter).to.be(1);
+      });
+  });
+
   it('can filter everything so the result is an empty object', () => {
     return Promise.resolve(tablesFixture)
       .then(filter({
         path : ['anotherTestTable'],
-        predicate : () => false
+        predicate : countUp
       }))
       .then(data => {
         expect(data).to.eql(filterFixture0);
+        countUp();
+        expect(myCounter).to.be(1 + Object.keys(tablesFixture['2'].rows).length);
       });
   });
 
-  it('wrong paths will remove all data (1)', () => {
+  it('wrong initial table will remove all data', () => {
     return Promise.resolve(tablesFixture)
       .then(filter({
-        path : ['non-existant'],
-        predicate : () => false
+        path : ['non-existent'],
+        predicate : countUp
       }))
       .then(data => {
         expect(data).to.eql(filterFixture0);
+        countUp();
+        expect(myCounter).to.be(1);
       });
   });
 
-  it('wrong paths will remove all data (2)', () => {
+  it('non-existent table and path will remove all data', () => {
     return Promise.resolve(tablesFixture)
       .then(filter({
         path : ['non', 'existant'],
-        predicate : () => false
+        predicate : countUp
       }))
       .then(data => {
         expect(data).to.eql(filterFixture0);
+        countUp();
+        expect(myCounter).to.be(1);
       });
   });
 
-  it('wrong paths will remove all data (3)', () => {
+  it('non-existent path after table will remove all data', () => {
     return Promise.resolve(tablesFixture)
       .then(filter({
-        path : ['thirdTestTable', 'non-existant'],
-        predicate : () => false
+        path : ['thirdTestTable', 'non-existent'],
+        predicate : countUp
       }))
       .then(data => {
         expect(data).to.eql(filterFixture0);
+        countUp();
+        expect(myCounter).to.be(1);
       });
   });
 
@@ -123,6 +163,27 @@ describe('filter', () => {
       }))
       .then(data => {
         expect(data).to.eql(filterFixture4);
+      });
+  });
+
+  it('can be used to kick non linked entities', () => {
+    return Promise.resolve(tablesFixture)
+      .then(filter({
+        path : ['testTable'],
+        predicate : () => true
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture5);
+      });
+  });
+
+  it('no predicate will remove unused entities', () => {
+    return Promise.resolve(tablesFixture)
+      .then(filter({
+        path : ['testTable']
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture5);
       });
   });
 

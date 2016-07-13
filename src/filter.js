@@ -1,11 +1,12 @@
 import _ from 'lodash';
 
 export function filter(filter) {
+  const predicate = (!_.isNil(filter) && _.isFunction(filter.predicate)) ? filter.predicate : () => true;
   return data => {
-    if (filter) {
+    if (filter && !_.isEmpty(filter.path)) {
       // keep the table data
       const accTables = _.transform(data, (all, table) => {
-        all[table.id] = all[table.id] || _.omit(table, 'rows');
+        all[table.id] = _.omit(table, 'rows');
       }, {});
 
       // find table that we want to filter from
@@ -13,13 +14,10 @@ export function filter(filter) {
       if (table) {
 
         // find values that match predicate
-        const matchingRows = _.reduce(table.rows, (rows, row) => {
-          if (_.isEmpty(filter.path)) {
-            console.log('not matching empty path.');
-          } else if (matches(filter.path, row, table, filter.predicate)) {
+        const matchingRows = _.transform(table.rows, (rows, row) => {
+          if (matches(filter.path, row, table, predicate)) {
             rows[row.id] = row;
           }
-          return rows;
         }, {});
 
         // add all dependencies of this into allTables
@@ -63,7 +61,7 @@ export function filter(filter) {
         const nextColumnName = columnsToWalk[0];
         const nextColumnIdx = _.findIndex(currentTable.columns, col => col.name === nextColumnName);
         if (nextColumnIdx === -1) {
-          return false; // non existant path
+          return false; // non existent path
         } else {
           const nextColumn = currentTable.columns[nextColumnIdx];
           const nextLinks = _.map(row.values[nextColumnIdx], link => link.id);

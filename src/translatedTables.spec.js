@@ -1,9 +1,9 @@
 import expect from 'must';
 import tablesFixture from './__tests__/tablesFixture.json';
 import resultFixture from './__tests__/resultFixture.json';
-import { tablesForLanguages } from './translatedTables';
+import { tablesToLanguages } from './translatedTables';
 
-describe('translate tables', () => {
+describe('tablesToLanguages', () => {
 
   const langtags = {
     DE : 'de',
@@ -11,9 +11,17 @@ describe('translate tables', () => {
     FR : 'fr'
   };
 
+  it('is possible to put it into a Promise chain', () => {
+    expect(
+      Promise.resolve(tablesFixture)
+        .then(tablesToLanguages(langtags))
+        .then(() => true)
+    ).to.resolve.to.true();
+  });
+
   it('translates the table name correctly', () => {
 
-    const result = tablesForLanguages(tablesFixture, langtags);
+    const result = tablesToLanguages(langtags)(tablesFixture);
     expect(result['de']['1']['displayName']).to.eql(resultFixture['de']['1']['displayName']);
     expect(result['en']['1']['displayName']).to.eql(resultFixture['en']['1']['displayName']);
 
@@ -21,7 +29,7 @@ describe('translate tables', () => {
 
   it('translates the table description correctly', () => {
 
-    const result = tablesForLanguages(tablesFixture, langtags);
+    const result = tablesToLanguages(langtags)(tablesFixture);
     expect(result['de']['1']['description']).to.eql(resultFixture['de']['1']['description']);
     expect(result['en']['1']['description']).to.eql(resultFixture['en']['1']['description']);
 
@@ -29,14 +37,14 @@ describe('translate tables', () => {
 
   it('results in a correct representation for multilanguage strings', () => {
 
-    const result = tablesForLanguages(tablesFixture, langtags);
+    const result = tablesToLanguages(langtags)(tablesFixture);
     expect(result['de']['1']['rows']['1'][1]).to.eql(resultFixture['de']['1']['rows']['1'][1]);
     expect(result['en']['1']['rows']['1'][1]).to.eql(resultFixture['en']['1']['rows']['1'][1]);
 
   });
 
   it('should result in a correct representation for everything', () => {
-    const result = tablesForLanguages(tablesFixture, langtags);
+    const result = tablesToLanguages(langtags)(tablesFixture);
 
     // Uncomment next two lines for better debugging
     // const fs = require('fs-extra');

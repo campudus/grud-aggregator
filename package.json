@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "compile": "babel -q --ignore '*.spec.js' -d lib/ src",
-    "coverage": "babel-node ./node_modules/.bin/isparta cover _mocha -- --require source-map-support --compilers js:babel-core/register --colors $(find . -type d -name node_modules -prune -o -name '*.spec.js')",
+    "coverage": "nyc npm run test",
     "lint": "eslint src/",
     "lint:watch": "eslint src/ -w",
     "prepublish": "npm run compile -s && npm run lint -s && npm run test -s",
@@ -37,9 +37,9 @@
     "babel-register": "6.9.0",
     "babel-runtime": "6.9.2",
     "eslint": "3.0.1",
-    "isparta": "4.0.0",
     "mocha": "2.5.3",
     "must": "0.13.1",
+    "nyc": "^7.0.0",
     "source-map-support": "0.4.1",
     "superagent": "2.0.0",
     "tmp": "0.0.28"
