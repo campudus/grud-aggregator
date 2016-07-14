@@ -4,8 +4,15 @@ import fs from 'fs';
 import { generateThumb, reduceImage } from './imageResizer';
 
 export function downloadAndResizeAttachments({
-  database, dataDirectory, pimUrl, progress, errorProgress, maxImageSize, errorImage
+  database,
+  dataDirectory,
+  pimUrl,
+  progress,
+  errorProgress,
+  maxImageSize,
+  errorImage
 }, attachments) {
+
   const chunkSize = 2;
   // split list up into partitions
   const chunks = _.chunk(attachments, chunkSize);
