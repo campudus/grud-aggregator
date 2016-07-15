@@ -2,10 +2,7 @@ import expect from 'must';
 import express from 'express';
 import tmp from 'tmp';
 import fs from 'fs-extra';
-import entitiesWithAttachments from './__tests__/entitiesWithAttachments.json';
 import { downloader } from './downloader';
-import { findAttachments } from './findAttachments';
-import { filter } from '../filter';
 
 describe('downloader', () => {
 
@@ -32,10 +29,6 @@ describe('downloader', () => {
     server.close(done);
   });
 
-  it('returns a function so it can be used in promise chain', () => {
-    expect(downloader({pimUrl : SERVER_URL, downloadPath : 'out'})).to.be.a.function();
-  });
-
   it('expects a pimUrl option', () => {
     expect(() => downloader({downloadPath : 'out'})).to.throw(/missing pimUrl/i);
   });
@@ -44,16 +37,18 @@ describe('downloader', () => {
     expect(() => downloader({pimUrl : SERVER_URL})).to.throw(/missing downloadPath/i);
   });
 
-  it('is possible to download attachments', () => {
+  it('returns a function so it can be used in promise chain', () => {
+    expect(downloader({pimUrl : SERVER_URL, downloadPath : 'out'})).to.be.a.function();
+  });
+
+  it('is possible to download single file', () => {
     const tmpDir = tmp.dirSync({unsafeCleanup : true});
     const outPath = tmpDir.name;
 
-    return Promise.resolve(entitiesWithAttachments)
-      .then(filter({
-        path : ['testTable'],
-        predicate : v => v.identifier === '1'
-      }))
-      .then(findAttachments())
+    return Promise.resolve([{
+      url : '/files/11111111-1111-1111-1111-111111111111/en/1-english.png',
+      path : '11111111-1111-1111-0000-111111111111.png'
+    }])
       .then(downloader({
         pimUrl : SERVER_URL,
         downloadPath : outPath
@@ -70,22 +65,21 @@ describe('downloader', () => {
         expect(actualA.size).to.be(expectedA.size);
         expect(actualA.size).to.be(expectedB.size);
       })
-      .catch(err => {
-        expect(err).to.be.null();
-      })
+      .catch(err => expect(err).to.be.null())
       .then(cleanUp(tmpDir));
   });
 
-  it('can download multilanguage attachments', () => {
+  it('can download multiple attachments at once', () => {
     const tmpDir = tmp.dirSync({unsafeCleanup : true});
     const outPath = tmpDir.name;
 
-    return Promise.resolve(entitiesWithAttachments)
-      .then(filter({
-        path : ['testTable'],
-        predicate : v => v.identifier === '2'
-      }))
-      .then(findAttachments())
+    return Promise.resolve([{
+      url : '/files/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png',
+      path : '22222222-2222-2222-0000-aaaaaaaaaaaa.png'
+    }, {
+      url : '/files/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png',
+      path : '22222222-2222-2222-0000-bbbbbbbbbbbb.png'
+    }])
       .then(downloader({
         pimUrl : SERVER_URL,
         downloadPath : outPath
@@ -103,47 +97,72 @@ describe('downloader', () => {
         expect(actualA.size).to.be(expectedA.size);
         expect(actualB.size).to.be(expectedB.size);
       })
-      .catch(err => {
-        expect(err).to.be.null();
-      })
+      .catch(err => expect(err).to.be.null())
       .then(cleanUp(tmpDir));
   });
 
-  it('does not break when no attachments are found', () => {
+  it('does not break when empty array of files is given', () => {
     const tmpDir = tmp.dirSync({unsafeCleanup : true});
     const outPath = tmpDir.name;
 
-    return Promise.resolve(entitiesWithAttachments)
-      .then(filter({
-        path : ['testTable'],
-        predicate : v => v.identifier === '4'
-      }))
-      .then(findAttachments())
+    return Promise.resolve([])
       .then(downloader({
         pimUrl : SERVER_URL,
         downloadPath : outPath
       }))
-      .then(downloaded => {
-        expect(downloaded.length).to.be(0);
-      })
-      .catch(err => {
-        expect(err).to.be.null();
-      })
+      .then(downloaded => expect(downloaded.length).to.be(0))
+      .catch(err => expect(err).to.be.null())
       .then(cleanUp(tmpDir));
   });
 
-  it('fails gracefully if not fed array of {url, path}  objects', () => {
+  it('fails gracefully if fed with string', () => {
     return Promise.resolve('plain wrong.')
       .then(downloader({
         pimUrl : SERVER_URL,
         downloadPath : 'out'
       }))
-      .then(downloaded => {
-        expect(downloaded.length).to.be(0);
-      })
-      .catch(err => {
-        expect(err).to.be.an.error(/expected array of \{url, path}/i);
-      });
+      .then(downloaded => expect(downloaded.length).to.be(0))
+      .catch(err => expect(err).to.be.an.error(/expected array of \{url, path}/i));
+  });
+
+  it('fails gracefully if given an array with a string', () => {
+    return Promise.resolve(['plain wrong.'])
+      .then(downloader({
+        pimUrl : SERVER_URL,
+        downloadPath : 'out'
+      }))
+      .then(downloaded => expect(downloaded.length).to.be(0))
+      .catch(err => expect(err).to.be.an.error(/expected array of \{url, path}/i));
+  });
+
+  it('fails gracefully if fed with array of empty object', () => {
+    return Promise.resolve([{}])
+      .then(downloader({
+        pimUrl : SERVER_URL,
+        downloadPath : 'out'
+      }))
+      .then(downloaded => expect(downloaded.length).to.be(0))
+      .catch(err => expect(err).to.be.an.error(/expected array of \{url, path}/i));
+  });
+
+  it('fails gracefully if fed with array of objects where url is missing', () => {
+    return Promise.resolve([{path : '/out.png'}])
+      .then(downloader({
+        pimUrl : SERVER_URL,
+        downloadPath : 'out'
+      }))
+      .then(downloaded => expect(downloaded.length).to.be(0))
+      .catch(err => expect(err).to.be.an.error(/expected array of \{url, path}/i));
+  });
+
+  it('fails gracefully if fed with array of objects where path is missing', () => {
+    return Promise.resolve([{url : '/something'}])
+      .then(downloader({
+        pimUrl : SERVER_URL,
+        downloadPath : 'out'
+      }))
+      .then(downloaded => expect(downloaded.length).to.be(0))
+      .catch(err => expect(err).to.be.an.error(/expected array of \{url, path}/i));
   });
 
 });
