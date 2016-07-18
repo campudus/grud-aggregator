@@ -39,9 +39,9 @@ export function downloadAndResizeAttachments({
         attachments : {}
       }).value();
 
-      const currentInfo = database.get('attachments')
+      const currentInfo = database.find('attachments')
         .defaultsDeep({[item.path] : {id : item.path, downloaded : false, thumbnailed : false, minified : false}})
-        .get(item.path)
+        .find(item.path)
         .value();
 
       return Promise.resolve()
@@ -50,8 +50,8 @@ export function downloadAndResizeAttachments({
           const downloader = (currentInfo.downloaded) ? Promise.resolve(path) : download(url, path);
           return downloader.then(() => {
             console.log('Writing download in database');
-            return database.get('attachments')
-              .get(item.path)
+            return database.find('attachments')
+              .find(item.path)
               .assign({downloaded : true})
               .value();
           });
@@ -64,8 +64,8 @@ export function downloadAndResizeAttachments({
         .then(() => {
           const thumbnailer = (currentInfo.thumbnailed) ? Promise.resolve(pathThumb) : thumbnail(path, pathThumb);
           return thumbnailer.then(() => {
-            return database.get('attachments')
-              .get(item.path)
+            return database.find('attachments')
+              .find(item.path)
               .assign({thumbnailed : true})
               .value();
           });
@@ -77,8 +77,8 @@ export function downloadAndResizeAttachments({
         .then(() => {
           const minifier = (currentInfo.minified) ? Promise.resolve(pathReduced) : minify(path, pathReduced);
           return minifier.then(() => {
-            return database.get('attachments')
-              .get(item.path)
+            return database.find('attachments')
+              .find(item.path)
               .assign({minified : true})
               .value();
           });
@@ -88,8 +88,8 @@ export function downloadAndResizeAttachments({
           return Promise.reject(err);
         })
         .catch(() => {
-          database.get('attachments')
-            .get(item.path)
+          database.find('attachments')
+            .find(item.path)
             .assign({id : item.path, downloaded : false, thumbnailed : false, minified : false})
             .value();
 
@@ -114,7 +114,7 @@ export function downloadAndResizeAttachments({
   function download(url, path) {
     return new Promise((resolve, reject) => {
       http
-        .get(url, response => {
+        .find(url, response => {
           if (response.statusCode === 200) {
             const file = fs.createWriteStream(path);
             response.pipe(file);

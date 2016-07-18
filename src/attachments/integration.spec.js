@@ -3,6 +3,7 @@ import express from 'express';
 import tmp from 'tmp';
 import fs from 'fs-extra';
 import entitiesWithAttachments from './__tests__/entitiesWithAttachments.json';
+import { Database } from './database';
 import { downloader } from './downloader';
 import { findAttachments } from './findAttachments';
 import { filter } from '../filter';
@@ -35,6 +36,7 @@ describe('attachments integration', () => {
   it('is possible to download single attachment', () => {
     const tmpDir = tmp.dirSync({unsafeCleanup : true});
     const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/attachments.json`);
 
     return Promise.resolve(entitiesWithAttachments)
       .then(filter({
@@ -43,6 +45,7 @@ describe('attachments integration', () => {
       }))
       .then(findAttachments())
       .then(downloader({
+        database,
         pimUrl : SERVER_URL,
         downloadPath : outPath
       }))
@@ -67,6 +70,7 @@ describe('attachments integration', () => {
   it('can download multiple attachments at once', () => {
     const tmpDir = tmp.dirSync({unsafeCleanup : true});
     const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/attachments.json`);
 
     return Promise.resolve(entitiesWithAttachments)
       .then(filter({
@@ -75,6 +79,7 @@ describe('attachments integration', () => {
       }))
       .then(findAttachments())
       .then(downloader({
+        database,
         pimUrl : SERVER_URL,
         downloadPath : outPath
       }))
@@ -98,10 +103,12 @@ describe('attachments integration', () => {
   it('can download all sorts of attachments at once', () => {
     const tmpDir = tmp.dirSync({unsafeCleanup : true});
     const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/attachments.json`);
 
     return Promise.resolve(entitiesWithAttachments)
       .then(findAttachments())
       .then(downloader({
+        database,
         pimUrl : SERVER_URL,
         downloadPath : outPath
       }))

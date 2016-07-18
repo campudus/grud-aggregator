@@ -1,0 +1,585 @@
+{
+  "1": {
+    "id": 1,
+    "name": "testTable",
+    "displayName": {
+      "de": "Test Tabelle",
+      "en": "Test table"
+    },
+    "description": {
+      "de": "Eine Tabelle zum Testen",
+      "en": "A table to test"
+    },
+    "columns": [
+      {
+        "id": 1,
+        "name": "slShorttext",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {
+          "de": "Irgendein Text",
+          "en": "Some text"
+        },
+        "description": {
+          "de": "Eine Beschreibung der einfachen Textspalte",
+          "en": "A description of the simple text column"
+        }
+      },
+      {
+        "id": 2,
+        "name": "mlShorttext",
+        "kind": "shorttext",
+        "multilanguage": true,
+        "languageType": "language",
+        "displayName": {
+          "de": "Irgendein mehrsprachiger Text",
+          "en": "Some multilanguage text"
+        },
+        "description": {
+          "de": "Eine Beschreibung der mehrsprachigen Textspalte",
+          "en": "A description of the multilanguage text column"
+        }
+      },
+      {
+        "id": 3,
+        "name": "slAttachment",
+        "kind": "attachment",
+        "multilanguage": false,
+        "displayName": {
+          "de": "Irgendein sprachneutrales Attachment",
+          "en": "Some language neutral attachment"
+        },
+        "description": {
+          "de": "Eine Beschreibung der sprachneutralen Attachmentspalte",
+          "en": "A description of the language neutral attachment column"
+        }
+      },
+      {
+        "id": 4,
+        "name": "someLink",
+        "kind": "link",
+        "multilanguage": false,
+        "displayName": {
+          "de": "Irgendein Link",
+          "en": "Some link"
+        },
+        "description": {
+          "de": "Eine Beschreibung der Linkspalte",
+          "en": "A description of the link column"
+        },
+        "toTable": 3,
+        "toColumn": {
+          "id": 0,
+          "ordering": 0,
+          "name": "ID",
+          "kind": "concat",
+          "multilanguage": false,
+          "identifier": true,
+          "displayName": {},
+          "description": {},
+          "concats": [
+            {
+              "id": 1,
+              "name": "anotherLink",
+              "kind": "link",
+              "identifier": true,
+              "multilanguage": false,
+              "displayName": {
+                "de": "Ein weiterer Link",
+                "en": "Some other link"
+              },
+              "description": {
+                "de": "Eine Beschreibung dieser Linkspalte",
+                "en": "A description of this link column"
+              },
+              "toTable": 2,
+              "toColumn": {
+                "id": 1,
+                "name": "testColumn",
+                "kind": "shorttext",
+                "identifier": true,
+                "multilanguage": false,
+                "displayName": {
+                  "en": "Some other text"
+                },
+                "description": {
+                  "en": "A description of the simple text column in table 2"
+                }
+              }
+            },
+            {
+              "id": 2,
+              "name": "identifier",
+              "kind": "shorttext",
+              "identifier": true,
+              "multilanguage": false,
+              "displayName": {
+                "de": "Identifizierungsspalte",
+                "en": "Identification column"
+              },
+              "description": {}
+            }
+          ]
+        }
+      }
+    ],
+    "rows": {
+      "1": {
+        "id": 1,
+        "values": [
+          "something1 links to 1",
+          {
+            "de": "Hallo",
+            "en": "Hello"
+          },
+          [
+            {
+              "title": {
+                "de": "Titel des ersten Attachments",
+                "en": "Title of first attachment"
+              },
+              "description": {
+                "de": "Beschreibung des ersten Attachments",
+                "en": "Description of first attachment"
+              },
+              "externalName": {
+                "de": "externer-name.txt",
+                "en": "external-name.png"
+              },
+              "internalName": {
+                "de": "66845e6e-f186-4fa1-9540-0c6e9b1c4cfb.txt",
+                "en": "fd0488b2-4b59-474c-80af-461b379b0ce3.png"
+              },
+              "mimeType": {
+                "de": "text/plain",
+                "en": "image/png"
+              },
+              "url": {
+                "de": "/files/b1446686-bcec-4a6e-a2b5-54b209167499/de/externer-name.txt",
+                "en": "/files/66035e76-ee68-48af-8cdd-d46a3cb63de4/en/external-name.png"
+              }
+            },
+            {
+              "title": {
+                "de": "Titel des zweiten Attachments",
+                "en": "Title of second attachment"
+              },
+              "description": {
+                "en": "Description of second attachment"
+              },
+              "externalName": {
+                "de": "irgendeine-datei.txt",
+                "en": "some-file.txt"
+              },
+              "internalName": {
+                "en": "588a91d7-f526-4849-88b2-7ab20195038d.txt"
+              },
+              "mimeType": {
+                "en": "text/plain"
+              },
+              "url": {
+                "en": "/files/8a2bed0e-fb6e-42bb-a3fd-ec9da2bdd9a6/en/some-file.txt"
+              }
+            }
+          ],
+          [
+            {
+              "id": 1,
+              "value": [
+                [
+                  {
+                    "id": 1,
+                    "value": [
+                      "some other thing"
+                    ]
+                  }
+                ],
+                "my identifying text, linking to row 1 in anotherTestTable"
+              ]
+            }
+          ]
+        ]
+      },
+      "2": {
+        "id": 2,
+        "values": [
+          "something2 links to 3 and 4",
+          {
+            "de": "Hallo2",
+            "en": "Hello2"
+          },
+          [],
+          [
+            {
+              "id": 3,
+              "value": [
+                [
+                  {
+                    "id": 1,
+                    "value": [
+                      "some other thing"
+                    ]
+                  },
+                  {
+                    "id": 2,
+                    "value": [
+                      "some other thing in second row"
+                    ]
+                  }
+                ],
+                "my third row identifying text, linking to both rows in anotherTestTable"
+              ]
+            },
+            {
+              "id": 4,
+              "value": [
+                [],
+                "my fourth row identifying text, linking to no rows in anotherTestTable"
+              ]
+            }
+          ]
+        ]
+      },
+      "3": {
+        "id": 3,
+        "values": [
+          "something3 links to none",
+          {
+            "de": "Hallo3",
+            "en": "Hello3"
+          },
+          [],
+          []
+        ]
+      },
+      "4": {
+        "id": 4,
+        "values": [
+          "something4 links to second row",
+          {
+            "de": "Hallo3",
+            "en": "Hello3"
+          },
+          [],
+          [
+            {
+              "id": 2,
+              "value": [
+                [
+                  {
+                    "id": 2,
+                    "value": [
+                      "some other thing in second row"
+                    ]
+                  }
+                ],
+                "my second row identifying text, linking to row 2 in anotherTestTable"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "2": {
+    "id": 2,
+    "name": "anotherTestTable",
+    "displayName": {
+      "en": "Test table 2"
+    },
+    "description": {
+      "en": "Another table to test"
+    },
+    "columns": [
+      {
+        "id": 1,
+        "name": "testColumn",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {
+          "en": "Some other text"
+        },
+        "description": {
+          "en": "A description of the simple text column in table 2"
+        }
+      },
+      {
+        "id": 2,
+        "name": "otherColumn",
+        "kind": "shorttext",
+        "identifier": false,
+        "multilanguage": true,
+        "languageType": "language",
+        "displayName": {
+          "en": "Some other multilanguage text"
+        },
+        "description": {
+          "en": "A description of the multilanguage text column in table 2"
+        }
+      }
+    ],
+    "rows": {
+      "1": {
+        "id": 1,
+        "values": [
+          "some other thing",
+          {
+            "en": "Welcome"
+          }
+        ]
+      },
+      "2": {
+        "id": 2,
+        "values": [
+          "some other thing in second row",
+          {
+            "en": "Good day"
+          }
+        ]
+      }
+    }
+  },
+  "3": {
+    "id": 3,
+    "name": "thirdTestTable",
+    "langtags": [
+      "de",
+      "en"
+    ],
+    "displayName": {
+      "de": "Test Tabelle 3",
+      "en": "Test table 3"
+    },
+    "description": {
+      "de": "Eine dritte Tabelle zum Testen",
+      "en": "A third table to test"
+    },
+    "columns": [
+      {
+        "id": 0,
+        "ordering": 0,
+        "name": "ID",
+        "kind": "concat",
+        "multilanguage": false,
+        "identifier": true,
+        "displayName": {},
+        "description": {},
+        "concats": [
+          {
+            "id": 1,
+            "name": "anotherLink",
+            "kind": "link",
+            "identifier": true,
+            "multilanguage": false,
+            "displayName": {
+              "de": "Ein weiterer Link",
+              "en": "Some other link"
+            },
+            "description": {
+              "de": "Eine Beschreibung dieser Linkspalte",
+              "en": "A description of this link column"
+            },
+            "toTable": 2,
+            "toColumn": {
+              "id": 1,
+              "name": "testColumn",
+              "kind": "shorttext",
+              "identifier": true,
+              "multilanguage": false,
+              "displayName": {
+                "en": "Some other text"
+              },
+              "description": {
+                "en": "A description of the simple text column in table 2"
+              }
+            }
+          },
+          {
+            "id": 2,
+            "name": "identifier",
+            "kind": "shorttext",
+            "identifier": true,
+            "multilanguage": false,
+            "displayName": {
+              "de": "Identifizierungsspalte",
+              "en": "Identification column"
+            },
+            "description": {}
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "name": "anotherLink",
+        "kind": "link",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {
+          "de": "Ein weiterer Link",
+          "en": "Some other link"
+        },
+        "description": {
+          "de": "Eine Beschreibung dieser Linkspalte",
+          "en": "A description of this link column"
+        },
+        "toTable": 2,
+        "toColumn": {
+          "id": 1,
+          "name": "testColumn",
+          "kind": "shorttext",
+          "identifier": true,
+          "multilanguage": false,
+          "displayName": {
+            "en": "Some other text"
+          },
+          "description": {
+            "en": "A description of the simple text column in table 2"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "name": "identifier",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {
+          "de": "Identifizierungsspalte",
+          "en": "Identification column"
+        },
+        "description": {}
+      },
+      {
+        "id": 3,
+        "name": "someNumber",
+        "kind": "number",
+        "identifier": false,
+        "multilanguage": true,
+        "languageType": "country",
+        "displayName": {
+          "de": "Irgendeine Zahl",
+          "en": "Some number"
+        },
+        "description": {}
+      }
+    ],
+    "rows": {
+      "1": {
+        "id": 1,
+        "values": [
+          [
+            [
+              {
+                "id": 1,
+                "value": [
+                  "some other thing"
+                ]
+              }
+            ],
+            "my identifying text, linking to row 1 in anotherTestTable"
+          ],
+          [
+            {
+              "id": 1,
+              "value": [
+                "some other thing"
+              ]
+            }
+          ],
+          "my identifying text, linking to row 1 in anotherTestTable",
+          {
+            "de": "11",
+            "en": "12"
+          }
+        ]
+      },
+      "2": {
+        "id": 2,
+        "values": [
+          [
+            [
+              {
+                "id": 2,
+                "value": [
+                  "some other thing in second row"
+                ]
+              }
+            ],
+            "my second row identifying text, linking to row 2 in anotherTestTable"
+          ],
+          [
+            {
+              "id": 2,
+              "value": [
+                "some other thing in second row"
+              ]
+            }
+          ],
+          "my second row identifying text, linking to row 2 in anotherTestTable",
+          {
+            "de": "21",
+            "en": "22"
+          }
+        ]
+      },
+      "3": {
+        "id": 3,
+        "values": [
+          [
+            [
+              {
+                "id": 1,
+                "value": [
+                  "some other thing"
+                ]
+              },
+              {
+                "id": 2,
+                "value": [
+                  "some other thing in second row"
+                ]
+              }
+            ],
+            "my third row identifying text, linking to both rows in anotherTestTable"
+          ],
+          [
+            {
+              "id": 1,
+              "value": [
+                "some other thing"
+              ]
+            },
+            {
+              "id": 2,
+              "value": [
+                "some other thing in second row"
+              ]
+            }
+          ],
+          "my third row identifying text, linking to both rows in anotherTestTable",
+          {
+            "de": "31",
+            "en": "32"
+          }
+        ]
+      },
+      "4": {
+        "id": 4,
+        "values": [
+          [
+            [],
+            "my fourth row identifying text, linking to no rows in anotherTestTable"
+          ],
+          [],
+          "my fourth row identifying text, linking to no rows in anotherTestTable",
+          {
+            "de": "41",
+            "en": "42"
+          }
+        ]
+      }
+    }
+  }
+}

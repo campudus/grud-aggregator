@@ -1,7 +1,7 @@
 import expect from 'must';
 import tablesFixture from './__tests__/tablesFixture.json';
 import resultFixture from './__tests__/resultFixture.json';
-import { tablesToLanguages } from './translatedTables';
+import { tablesToLanguages } from './tablesToLanguages';
 
 describe('tablesToLanguages', () => {
 
@@ -38,8 +38,8 @@ describe('tablesToLanguages', () => {
   it('results in a correct representation for multilanguage strings', () => {
 
     const result = tablesToLanguages(langtags)(tablesFixture);
-    expect(result['de']['1']['rows']['1'][1]).to.eql(resultFixture['de']['1']['rows']['1'][1]);
-    expect(result['en']['1']['rows']['1'][1]).to.eql(resultFixture['en']['1']['rows']['1'][1]);
+    expect(result['de']['1']['rows']['1']['values'][1]).to.eql(resultFixture['de']['1']['rows']['1']['values'][1]);
+    expect(result['en']['1']['rows']['1']['values'][1]).to.eql(resultFixture['en']['1']['rows']['1']['values'][1]);
 
   });
 
@@ -48,7 +48,7 @@ describe('tablesToLanguages', () => {
 
     // Uncomment next two lines for better debugging
     // const fs = require('fs-extra');
-    // fs.outputFile('test.json', JSON.stringify(result));
+    // fs.outputFileSync('test.json', JSON.stringify(result));
 
     expect(JSON.stringify(result)).to.eql(JSON.stringify(resultFixture));
   });

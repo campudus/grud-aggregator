@@ -1,11 +1,17 @@
 import fs from 'fs-extra';
 import http from 'http';
+import path from 'path';
 import _ from 'lodash';
 
 export function downloader({
+  database,
   pimUrl,
   downloadPath
 } = {}) {
+
+  if (_.isEmpty(database)) {
+    throw new Error('Missing database option');
+  }
 
   if (_.isEmpty(pimUrl)) {
     throw new Error('Missing pimUrl option');
@@ -20,7 +26,17 @@ export function downloader({
       if (_.isEmpty(a.url) || _.isEmpty(a.path)) {
         return Promise.reject(new Error('Expected array of {url, path} mappings.'));
       } else {
-        return download(`${pimUrl}${a.url}`, `${downloadPath}/${a.path}`)
+        const from = `${pimUrl}${a.url}`;
+        const to = `${downloadPath}/${a.path}`;
+        if (database.find(path.basename(to), 'downloaded')) {
+          return Promise.resolve(to);
+        } else {
+          return download(from, to)
+            .then(to => {
+              database.insert(path.basename(to), 'downloaded');
+              return database.save().then(() => to);
+            });
+        }
       }
     }));
   };

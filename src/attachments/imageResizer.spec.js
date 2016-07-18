@@ -1,12 +1,12 @@
-import fs from 'fs';
 import { reduceImage, generateThumb } from './imageResizer';
+import { statOf } from './__tests__/fsHelpers';
 import tmp from 'tmp';
 import expect from 'must';
 
 const fixtureFile = `${__dirname}/__tests__/duck.png`;
 const thumbFile = `${__dirname}/__tests__/duck_thumb.png`;
 const wrongImageFile = `${__dirname}/__tests__/wrong-image.png`;
-const nonExistantFile = `${__dirname}/__tests__/non-existant.png`;
+const nonExistentFile = `${__dirname}/__tests__/non-existent.png`;
 
 describe('reduceImage', () => {
 
@@ -17,7 +17,7 @@ describe('reduceImage', () => {
       });
   });
 
-  it('reduces an image from a duck correctly', function () {
+  it('reduces an image of a duck correctly', function () {
     this.timeout(30 * 1000);
 
     const tempFile = tmp.fileSync();
@@ -31,7 +31,7 @@ describe('reduceImage', () => {
 
   it('results in error, if file does not exist', () => {
     const tempFile = tmp.fileSync();
-    return expect(reduceImage({fromPath : nonExistantFile, toPath : tempFile.name})).to.reject.with.error(/enoent/i);
+    return expect(reduceImage({fromPath : nonExistentFile, toPath : tempFile.name})).to.reject.with.error(/enoent/i);
   });
 
   it('results in error, if file is not an image', () => {
@@ -136,7 +136,7 @@ describe('generateThumb', () => {
   it('results in error, if file does not exist', () => {
     const tempFile = tmp.fileSync();
     return expect(generateThumb({
-      fromPath : nonExistantFile,
+      fromPath : nonExistentFile,
       toPath : tempFile.name,
       imageWidth : 20
     })).to.reject.with.error(/enoent/i);
@@ -178,33 +178,3 @@ describe('generateThumb', () => {
   });
 
 });
-
-describe('statOf', () => {
-
-  it('gives correct information', () => {
-    return statOf(__filename)
-      .then(stats => {
-        expect(stats.size).to.be.gt(0);
-      });
-  });
-
-  it('can result in an error if file not exists', () => {
-    return statOf('non-existant')
-      .catch(err => {
-        expect(err).not.to.be.null();
-      });
-  });
-
-});
-
-function statOf(file) {
-  return new Promise((resolve, reject) => {
-    fs.stat(file, (err, stats) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(stats);
-      }
-    });
-  });
-}

@@ -1,5 +1,5 @@
 import resultFixture from './__tests__/resultFixture.json';
-import { createSchemaFromLanguageTables } from './tablesAndColumns';
+import { createSchemaFromLanguageTables } from './createSchemaFromLanguageTables';
 import expect from 'must';
 import _ from 'lodash';
 
