@@ -1,0 +1,51 @@
+{
+  "tables": [
+    {
+      "id": 1,
+      "name": "testTable",
+      "displayName": {
+        "de": "Test Tabelle",
+        "en": "Test table"
+      },
+      "description": {
+        "de": "Eine Tabelle zum Testen",
+        "en": "A table to test"
+      },
+      "langtags": [
+        "de",
+        "en"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "anotherTestTable",
+      "displayName": {
+        "en": "Test table 2"
+      },
+      "description": {
+        "en": "Another table to test"
+      },
+      "langtags": [
+        "de",
+        "en"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "thirdTestTable",
+      "displayName": {
+        "de": "Test Tabelle 3",
+        "en": "Test table 3"
+      },
+      "description": {
+        "de": "Eine dritte Tabelle zum Testen",
+        "en": "A third table to test"
+      },
+      "langtags": [
+        "de",
+        "en"
+      ]
+    }
+  ],
+  "status": "ok"
+}

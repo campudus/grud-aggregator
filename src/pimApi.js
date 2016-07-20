@@ -7,12 +7,7 @@ export function getAllTables(pimUrl) {
 
 export function getTablesByNames(pimUrl, ...names) {
   return getAllTables(pimUrl)
-    .then(tables => {
-      console.log('found tables', tables);
-      const filtered = _.filter(tables, t => _.some(names, name => t.name === name));
-      console.log('filtered', filtered);
-      return filtered;
-    });
+    .then(tables => _.filter(tables, t => _.some(names, name => t.name === name)));
 }
 
 export function getCompleteTable(pimUrl, tableId) {

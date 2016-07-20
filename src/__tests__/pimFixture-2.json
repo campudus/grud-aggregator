@@ -1,0 +1,68 @@
+{
+  "id": 2,
+  "name": "anotherTestTable",
+  "displayName": {
+    "en": "Test table 2"
+  },
+  "description": {
+    "en": "Another table to test"
+  },
+  "columns": [
+    {
+      "id": 1,
+      "name": "testColumn",
+      "kind": "shorttext",
+      "identifier": true,
+      "multilanguage": false,
+      "displayName": {
+        "en": "Some other text"
+      },
+      "description": {
+        "en": "A description of the simple text column in table 2"
+      }
+    },
+    {
+      "id": 2,
+      "name": "otherColumn",
+      "kind": "shorttext",
+      "identifier": false,
+      "multilanguage": true,
+      "languageType": "language",
+      "displayName": {
+        "en": "Some other multilanguage text"
+      },
+      "description": {
+        "en": "A description of the multilanguage text column in table 2"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "values": [
+        "some other thing",
+        {
+          "en": "Welcome"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "values": [
+        "some other thing in second row",
+        {
+          "en": "Good day"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "values": [
+        "a third item that is never linked",
+        {
+          "en": "Hello"
+        }
+      ]
+    }
+  ]
+}

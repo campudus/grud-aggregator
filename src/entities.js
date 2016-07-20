@@ -8,11 +8,8 @@ export function getEntitiesOfTable(tableName, options) {
   const tables = {};
 
   return getTablesByNames(pimUrl, tableName)
-    .then(tablesFromPim => {
-      console.log('Tables from pim', tablesFromPim);
-      return Promise.all(_.map(tablesFromPim, table => getTableAndLinkedTablesAsPromise(table.id)));
-    })
-    .then(() => tables);
+    .then(tablesFromPim => Promise.all(_.map(tablesFromPim, table => getTableAndLinkedTablesAsPromise(table.id))))
+    .then(() => mapRowsOfTables(tables));
 
   function getTableAndLinkedTablesAsPromise(tableId) {
     if (!promises[tableId]) {
@@ -35,4 +32,15 @@ export function getEntitiesOfTable(tableName, options) {
       return promises[tableId];
     }
   }
+
+}
+
+function mapRowsOfTables(tables) {
+  return _.mapValues(tables, table => {
+    const mappedTable = table;
+    mappedTable.rows = _.transform(table.rows, (acc, row) => {
+      acc[row.id] = row;
+    }, {});
+    return mappedTable;
+  });
 }
