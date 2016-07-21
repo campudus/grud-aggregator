@@ -22,23 +22,24 @@ export function downloader({
   }
 
   return attachments => {
-    return Promise.all(_.map(attachments, a => {
-      if (_.isEmpty(a.url) || _.isEmpty(a.path)) {
+    return _.reduce(attachments, (promise, attachment) => promise.then(list => {
+      if (_.isEmpty(attachment.url) || _.isEmpty(attachment.path)) {
         return Promise.reject(new Error('Expected array of {url, path} mappings.'));
       } else {
-        const from = `${pimUrl}${a.url}`;
-        const to = `${downloadPath}/${a.path}`;
+        const from = `${pimUrl}${attachment.url}`;
+        const to = `${downloadPath}/${attachment.path}`;
         if (database.find(path.basename(to), 'downloaded')) {
-          return Promise.resolve(to);
+          return Promise.resolve(list.concat([to]));
         } else {
           return download(from, to)
             .then(to => {
               database.insert(path.basename(to), 'downloaded');
-              return database.save().then(() => to);
-            });
+              return database.save();
+            })
+            .then(() => list.concat([to]));
         }
       }
-    }));
+    }), Promise.resolve([]));
   };
 
 }

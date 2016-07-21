@@ -1,9 +1,13 @@
 {
-  "duck.png": {
-    "downloaded": true,
-    "test": true
-  },
-  "duck_thumb.png": {
-    "test": true
+  "attachments": {
+    "duck.png": {
+      "id": "duck.png",
+      "downloaded": true,
+      "test": true
+    },
+    "duck_thumb.png": {
+      "id": "duck_thumb.png",
+      "test": true
+    }
   }
 }

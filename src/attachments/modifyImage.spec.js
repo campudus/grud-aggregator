@@ -215,6 +215,7 @@ describe('image modification', () => {
         .then(results => {
           expect(results.length).to.be(2);
           expect(database.find(path.basename(results[0]), 'test')).to.be.true();
+          expect(database.find(path.basename(results[1]), 'test')).to.be.true();
         })
     );
   });

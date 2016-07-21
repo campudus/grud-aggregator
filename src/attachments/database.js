@@ -12,7 +12,9 @@ export class Database {
 
   find(attachment, key) {
     return this.database
-      .defaultsDeep({[attachment] : {[key] : false}})
+      .defaults({attachments : {}})
+      .get('attachments')
+      .defaultsDeep({[attachment] : {'id' : attachment, [key] : false}})
       .get(attachment)
       .get(key)
       .value();
@@ -20,7 +22,9 @@ export class Database {
 
   insert(attachment, key) {
     this.database
-      .defaultsDeep({[attachment] : {[key] : false}})
+      .defaults({attachments : {}})
+      .get('attachments')
+      .defaultsDeep({[attachment] : {'id' : attachment, [key] : false}})
       .get(attachment)
       .assign({[key] : true})
       .value();
