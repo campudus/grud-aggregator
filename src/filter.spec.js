@@ -1,10 +1,13 @@
 import tablesFixture from './__tests__/tablesFixture.json';
+import cyclicTablesFixture from './__tests__/cyclicTablesFixture.json';
 import filterFixture0 from './__tests__/filterFixture0.json';
 import filterFixture1 from './__tests__/filterFixture1.json';
 import filterFixture2 from './__tests__/filterFixture2.json';
 import filterFixture3 from './__tests__/filterFixture3.json';
 import filterFixture4 from './__tests__/filterFixture4.json';
 import filterFixture5 from './__tests__/filterFixture5.json';
+import filterFixture6 from './__tests__/filterFixture6.json';
+import filterFixture7 from './__tests__/filterFixture7.json';
 import { filter } from './filter';
 import expect from 'must';
 
@@ -184,6 +187,27 @@ describe('filter', () => {
       }))
       .then(data => {
         expect(data).to.eql(filterFixture5);
+      });
+  });
+
+  it('can work with cyclic files', () => {
+    return Promise.resolve(cyclicTablesFixture)
+      .then(filter({
+        path : ['tableA']
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture6);
+      });
+  });
+
+  it('has entities which were backlinked in a cycle, even if they are filtered out by predicate', () => {
+    return Promise.resolve(cyclicTablesFixture)
+      .then(filter({
+        path : ['tableB'],
+        predicate : v => v.linkToA.length > 0
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture7);
       });
   });
 
