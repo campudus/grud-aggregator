@@ -6,7 +6,9 @@ import _ from 'lodash';
 export function downloader({
   database,
   pimUrl,
-  downloadPath
+  progress,
+  downloadPath,
+  errorImage
 } = {}) {
 
   if (_.isEmpty(database)) {
@@ -21,14 +23,43 @@ export function downloader({
     throw new Error('Missing downloadPath option');
   }
 
+  if (!_.isNil(progress) && !_.isFunction(progress)) {
+    throw new Error('Option `progress` needs to be a function ({error, message, currentStep, steps}).');
+  }
+
+  if (!_.isNil(errorImage) && (!_.isString(errorImage) || _.isEmpty(errorImage))) {
+    throw new Error('Option `errorImage` expects a path as string to a file');
+  }
+
   return attachments => {
-    return _.reduce(attachments, (promise, attachment) => promise.then(list => {
+    const steps = attachments.length;
+    let currentStep = 0;
+
+    if (progress) {
+      progress({
+        error : false,
+        message : 'Start downloading attachments',
+        currentStep,
+        steps
+      });
+    }
+
+    return _.reduce(attachments, (promise, attachment, index) => promise.then(list => {
       if (_.isEmpty(attachment.url) || _.isEmpty(attachment.path)) {
         return Promise.reject(new Error('Expected array of {url, path} mappings.'));
       } else {
         const from = `${pimUrl}${attachment.url}`;
         const to = `${downloadPath}/${attachment.path}`;
+        currentStep = currentStep + 1;
         if (database.find(path.basename(to), 'downloaded')) {
+          if (progress) {
+            progress({
+              error : false,
+              message : `Already downloaded file ${to}`,
+              currentStep,
+              steps
+            });
+          }
           return Promise.resolve(list.concat([to]));
         } else {
           return download(from, to)
@@ -36,12 +67,52 @@ export function downloader({
               database.insert(path.basename(to), 'downloaded');
               return database.save();
             })
-            .then(() => list.concat([to]));
+            .then(() => {
+              if (progress) {
+                progress({
+                  error : false,
+                  message : `Downloaded ${to} from ${from}`,
+                  currentStep,
+                  steps
+                });
+              }
+              return list.concat([to]);
+            })
+            .catch(err => {
+              if (errorImage) {
+                return copyFile(errorImage, to)
+                  .then(() => {
+                    if (progress) {
+                      progress({
+                        error : true,
+                        message : `Downloaded ${to} from ${from}`,
+                        currentStep,
+                        steps
+                      });
+                    }
+                    return list.concat([to]);
+                  });
+              } else {
+                return Promise.reject(err);
+              }
+            });
         }
       }
     }), Promise.resolve([]));
   };
 
+}
+
+function copyFile(from, to) {
+  return new Promise((resolve, reject) => {
+    fs.copy(from, to, err => {
+      if (err) {
+        return reject(err);
+      } else {
+        return resolve();
+      }
+    });
+  });
 }
 
 function download(url, path) {

@@ -13,6 +13,7 @@ describe('downloader', () => {
   const SERVER_URL = `http://localhost:${TEST_PORT}`;
   const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
+  const errorImage = `${__dirname}/__tests__/error.png`;
   let server;
   let requests = [];
 
@@ -214,4 +215,164 @@ describe('downloader', () => {
         expect(requests).to.eql([url2]);
       }));
   });
+
+  it('fails when downloading a missing attachment (and not having set an error image)', () => {
+    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const outPath = tmpDir.name;
+    const databasePath = `${outPath}/attachments.json`;
+    fs.copySync(dbFixturePath, databasePath);
+    const database = new Database(databasePath);
+
+    return cleanUpWhenDone(tmpDir)(Promise.resolve([
+      {url : '/files/missing.png', path : 'missing.png'}
+    ])
+      .then(downloader({
+        database,
+        pimUrl : SERVER_URL,
+        downloadPath : outPath
+      }))
+      .then(something => {
+        // should not occur!
+        expect(something).to.be.null();
+        expect(true).to.be(false);
+      })
+      .catch(err => {
+        expect(err).to.be.an.error(/download.*failed/i);
+      }));
+  });
+
+  it('can show progress when downloading', () => {
+    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const outPath = tmpDir.name;
+    const databasePath = `${outPath}/attachments.json`;
+    const database = new Database(databasePath);
+    let gotError = false;
+    let count = 0;
+
+    return cleanUpWhenDone(tmpDir)(Promise.resolve([{
+      url : '/files/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png',
+      path : '22222222-2222-2222-0000-aaaaaaaaaaaa.png'
+    }, {
+      url : '/files/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png',
+      path : '22222222-2222-2222-0000-bbbbbbbbbbbb.png'
+    }])
+      .then(downloader({
+        database,
+        pimUrl : SERVER_URL,
+        downloadPath : outPath,
+        progress : ({error, currentStep, steps}) => {
+          expect(steps).to.be(2);
+          expect(currentStep).to.be(count);
+          gotError = gotError || error;
+          count = count + 1;
+        }
+      }))
+      .then(downloaded => {
+        expect(downloaded.length).to.be(2);
+        expect(downloaded[0]).to.be(`${outPath}/22222222-2222-2222-0000-aaaaaaaaaaaa.png`);
+        expect(downloaded[1]).to.be(`${outPath}/22222222-2222-2222-0000-bbbbbbbbbbbb.png`);
+        return Promise.all([
+          statOf(`${__dirname}/__tests__/server/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png`),
+          statOf(`${__dirname}/__tests__/server/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png`),
+          statOf(`${outPath}/22222222-2222-2222-0000-aaaaaaaaaaaa.png`),
+          statOf(`${outPath}/22222222-2222-2222-0000-bbbbbbbbbbbb.png`)
+        ]);
+      })
+      .then(([expectedA, expectedB, actualA, actualB]) => {
+        expect(actualA.size).to.be(expectedA.size);
+        expect(actualB.size).to.be(expectedB.size);
+      }));
+  });
+
+  it('shows progress even if files were already downloaded', () => {
+    const url = '/files/11111111-1111-1111-1111-111111111111/de/1-deutsch.png';
+
+    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const outPath = tmpDir.name;
+    const databasePath = `${outPath}/attachments.json`;
+    fs.copySync(dbFixturePath, databasePath);
+    const database = new Database(databasePath);
+    let gotError = false;
+    let count = 0;
+
+    return cleanUpWhenDone(tmpDir)(Promise.resolve([
+      {url : '/does/not/matter', path : 'duck.png'},
+      {url, path : 'duck_thumb.png'}
+    ])
+      .then(downloader({
+        database,
+        pimUrl : SERVER_URL,
+        downloadPath : outPath,
+        progress : ({error, currentStep, steps}) => {
+          expect(steps).to.be(2);
+          expect(currentStep).to.be(count);
+          gotError = gotError || error;
+          count = count + 1;
+        }
+      }))
+      .then(downloaded => {
+        expect(downloaded.length).to.be(2);
+        expect(requests).to.eql([url]);
+      }));
+  });
+
+  it('expects a string for errorImage option or it throws', () => {
+    expect(() => downloader({
+      database : dbFixture,
+      pimUrl : SERVER_URL,
+      downloadPath : '.',
+      errorImage : 1234
+    })).to.throw(/errorImage.*string/i);
+  });
+
+  it('expects a string with content for errorImage option or it throws', () => {
+    expect(() => downloader({
+      database : dbFixture,
+      pimUrl : SERVER_URL,
+      downloadPath : '.',
+      errorImage : ''
+    })).to.throw(/errorImage.*string/i);
+  });
+
+  it('can use an error image in case of missing attachment', () => {
+    const filename = 'missing.png';
+    const nonExistentUrl = '/files/missing.png';
+    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const outPath = tmpDir.name;
+    const databasePath = `${outPath}/attachments.json`;
+    fs.copySync(dbFixturePath, databasePath);
+    const database = new Database(databasePath);
+    let count = 0;
+
+    return cleanUpWhenDone(tmpDir)(Promise.resolve([
+      {url : nonExistentUrl, path : filename}
+    ])
+      .then(downloader({
+        database,
+        pimUrl : SERVER_URL,
+        downloadPath : outPath,
+        progress : ({error, currentStep}) => {
+          count = count + 1;
+          if (count === 2 && currentStep === 1) {
+            expect(error).to.be.true();
+          } else {
+            expect(error).to.be.false();
+          }
+        },
+        errorImage
+      }))
+      .then(downloaded => {
+        expect(count).to.be(2);
+        expect(downloaded.length).to.be(1);
+        expect(downloaded[0]).to.match(new RegExp(`${filename}$`, 'i'));
+        return Promise.all([
+          statOf(`${outPath}/${filename}`),
+          statOf(errorImage),
+        ]);
+      })
+      .then(([missingFile, errorFile]) => {
+        expect(missingFile.size).to.be(errorFile.size);
+      }));
+  });
+
 });
