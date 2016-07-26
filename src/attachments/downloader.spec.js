@@ -367,7 +367,7 @@ describe('downloader', () => {
         expect(downloaded[0]).to.match(new RegExp(`${filename}$`, 'i'));
         return Promise.all([
           statOf(`${outPath}/${filename}`),
-          statOf(errorImage),
+          statOf(errorImage)
         ]);
       })
       .then(([missingFile, errorFile]) => {

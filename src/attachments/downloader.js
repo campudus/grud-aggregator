@@ -44,7 +44,7 @@ export function downloader({
       });
     }
 
-    return _.reduce(attachments, (promise, attachment, index) => promise.then(list => {
+    return _.reduce(attachments, (promise, attachment) => promise.then(list => {
       if (_.isEmpty(attachment.url) || _.isEmpty(attachment.path)) {
         return Promise.reject(new Error('Expected array of {url, path} mappings.'));
       } else {

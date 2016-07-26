@@ -177,7 +177,7 @@ export function downloadAndResizeAttachments({
       fs.stat(path, (err, stats) => {
         if (!err) {
           resolve({...stats, exists : true});
-        } else if (err && err.code === 'ENOENT') {
+        } else if (err && err.action === 'ENOENT') {
           resolve({exists : false});
         } else {
           reject(err);
@@ -189,7 +189,7 @@ export function downloadAndResizeAttachments({
   function _mkdir(path) {
     return new Promise((resolve, reject) => {
       fs.mkdir(path, error => {
-        if (error === null || error.code === 'EEXIST') {
+        if (error === null || error.action === 'EEXIST') {
           resolve(path);
         } else {
           reject(error);
