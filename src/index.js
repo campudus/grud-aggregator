@@ -7,3 +7,4 @@ export { findAttachments } from './attachments/findAttachments';
 export { modifyImages } from './attachments/modifyImage';
 export { referencer } from './referencer/referencer';
 export { tablesToLanguages } from './tablesToLanguages';
+export { start } from './aggregationProcess';

@@ -2,11 +2,12 @@ import _ from 'lodash';
 import cp from 'child_process';
 
 export function start({
-  aggregator,
-  progress
+  aggregatorFile,
+  progress,
+  ...rest
 } = {}) {
 
-  if (_.isNil(aggregator) || _.isEmpty(aggregator)) {
+  if (_.isNil(aggregatorFile) || _.isEmpty(aggregatorFile)) {
     throw new Error('Need to supply the filename of the aggregator');
   }
 
@@ -16,7 +17,7 @@ export function start({
 
   return Promise.resolve()
     .then(() => new Promise((resolve, reject) => {
-      const child = cp.fork(`${__dirname}/forker.js`, [aggregator], {silent : false});
+      const child = cp.fork(`${__dirname}/forker.js`, {silent : false});
       let initialized = false;
       let fulfilled = false;
       let allDone = false;
@@ -28,7 +29,7 @@ export function start({
           allSteps = payload.stepsInAggregator;
           if (progress) {
             progress({
-              message : `Starting aggregator ${aggregator}`,
+              message : `Starting aggregator ${aggregatorFile}`,
               currentStep : 0,
               steps : allSteps
             });
@@ -55,13 +56,23 @@ export function start({
 
       child.on('exit', fulfill);
 
+      child.send({
+        action : 'run',
+        data : {
+          aggregatorFile,
+          options : rest
+        }
+      });
+
       function fulfill(code, signal) {
         if (!fulfilled) {
           fulfilled = true;
           if (allDone) {
             resolve();
           } else if (!initialized) {
-            reject(new Error(`Could not start up aggregator ${aggregator}. Correct path? Uncaught exception in init?`));
+            reject(
+              new Error(`Could not start up aggregator ${aggregatorFile}. Correct path? Uncaught exception in init?`)
+            );
           } else if (signal !== null) {
             reject(new Error(`Aggregator got killed with signal ${signal}`));
           } else if (code !== 0) {

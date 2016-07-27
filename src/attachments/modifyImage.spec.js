@@ -139,23 +139,23 @@ describe('image modification', () => {
       outPath,
       imageWidth : 500,
       minify : true,
-      progress : (status, currentStep, steps) => {
+      progress : ({message, currentStep, steps}) => {
         counter++;
         expect(steps).to.be(4);
         if (counter === 1) {
-          expect(status).not.to.be.empty();
+          expect(message).not.to.be.empty();
           expect(currentStep).to.be(0);
         } else if (counter === 2) {
-          expect(status).to.contain(path.basename(fixtureFile));
+          expect(message).to.contain(path.basename(fixtureFile));
           expect(currentStep).to.be(0);
         } else if (counter === 3) {
-          expect(status).to.contain(path.basename(thumbFile));
+          expect(message).to.contain(path.basename(thumbFile));
           expect(currentStep).to.be(1);
         } else if (counter === 4) {
-          expect(status).to.contain(path.basename(fixtureFile));
+          expect(message).to.contain(path.basename(fixtureFile));
           expect(currentStep).to.be(2);
         } else if (counter === 5) {
-          expect(status).to.contain(path.basename(thumbFile));
+          expect(message).to.contain(path.basename(thumbFile));
           expect(currentStep).to.be(3);
         } else if (counter === 6) {
           expect(currentStep).to.be(4);

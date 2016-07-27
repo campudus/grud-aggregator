@@ -1,57 +1,85 @@
-const file = process.argv[2];
+'use strict';
+
 require('babel-register');
 const errors = require('./errorCodes.js');
 
-let allSteps = 1;
-let lastStep = 0;
+process.on('message', function (event) {
+  switch (event.action) {
+    case 'run' :
+      // mkDirs(event.data.dataDirectory);
+      run(event.data.aggregatorFile, event.data.options);
+      break;
+    default:
+      process.exit(errors.UNKNOWN_ACTION);
+      break;
+  }
+});
 
-try {
-  const aggregator = require(file);
-  aggregator({step : step})
-    .then(() => {
+function run(aggregatorFile, options) {
+
+  let allSteps = 1;
+  let lastStep = 0;
+
+  try {
+    const aggregator = require(aggregatorFile);
+    aggregator(step, progress, options)
+      .then(() => {
+        process.send({
+          action : 'DONE',
+          payload : {
+            error : false,
+            message : 'Done.',
+            currentStep : allSteps,
+            steps : allSteps
+          }
+        });
+      })
+      .catch(err => {
+        console.error('Error during aggregation', err);
+        process.exit(3);
+      });
+
+    process.send({
+      action : 'INIT',
+      payload : {
+        stepsInAggregator : allSteps
+      }
+    });
+  } catch (err) {
+    if (err.code === 'MODULE_NOT_FOUND') {
+      process.exit(errors.MODULE_NOT_FOUND);
+    } else {
+      console.error('Uncaught error during initializatin of aggregator', err);
+      process.exit(2);
+    }
+  }
+
+  function step(message) {
+    allSteps = allSteps + 1;
+
+    return data => {
+      lastStep = lastStep + 1;
       process.send({
-        action : 'DONE',
+        action : 'PROGRESS',
         payload : {
-          error : false,
-          message : 'Done.',
-          currentStep : allSteps,
+          message : message,
+          currentStep : lastStep,
           steps : allSteps
         }
       });
-    })
-    .catch(err => {
-      console.error('Error during aggregation', err);
-      process.exit(3);
-    });
-
-  process.send({
-    action : 'INIT',
-    payload : {
-      stepsInAggregator : allSteps
-    }
-  });
-} catch (err) {
-  if (err.code === 'MODULE_NOT_FOUND') {
-    process.exit(errors.MODULE_NOT_FOUND);
-  } else {
-    console.error('Uncaught error during initializatin of aggregator', err);
-    process.exit(2);
+      return data;
+    };
   }
-}
 
-function step(message) {
-  allSteps = allSteps + 1;
-
-  return data => {
-    lastStep = lastStep + 1;
+  function progress(error, message, currentStepProgress) {
     process.send({
       action : 'PROGRESS',
       payload : {
+        error: error,
         message : message,
-        currentStep : lastStep,
+        currentStep : lastStep + currentStepProgress,
         steps : allSteps
       }
     });
-    return data;
-  };
+  }
 }

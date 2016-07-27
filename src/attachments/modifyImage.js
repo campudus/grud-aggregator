@@ -1,6 +1,6 @@
 import path from 'path';
 import _ from 'lodash';
-import { generateThumb, reduceImage } from './imageResizer';
+import {generateThumb, reduceImage} from './imageResizer';
 
 export function modifyImages({
   imageWidth = 0,
@@ -40,13 +40,23 @@ export function modifyImages({
 
     return Promise.resolve({currentStep : 0, files : inputs})
       .then(stepAndFiles => {
-        progress('Modifying images', stepAndFiles.currentStep, steps);
+        progress({
+          error : false,
+          message : 'Modifying images',
+          currentStep : stepAndFiles.currentStep,
+          steps
+        });
         return stepAndFiles;
       })
       .then(stepAndFiles => {
         if (resize) {
           return _.reduce(stepAndFiles.files, (promise, file) => promise.then(({currentStep, files}) => {
-            progress(`Resizing image ${file.fromPath}`, currentStep, steps);
+            progress({
+              error : false,
+              message : `Resizing image ${file.fromPath}`,
+              currentStep,
+              steps
+            });
             const to = file.toPath;
             const result = {
               files : files.concat([{
@@ -72,7 +82,12 @@ export function modifyImages({
       .then(stepAndFiles => {
         if (minify) {
           return _.reduce(stepAndFiles.files, (promise, file) => promise.then(({currentStep, files}) => {
-            progress(`Minifying image ${file.fromPath}`, currentStep, steps);
+            progress({
+              error : false,
+              message : `Minifying image ${file.fromPath}`,
+              currentStep,
+              steps
+            });
             const to = file.toPath;
             const result = {
               files : files.concat([{
@@ -93,7 +108,12 @@ export function modifyImages({
         }
       })
       .then(stepAndFiles => {
-        progress('Modified images', steps, steps);
+        progress({
+          error : false,
+          message : 'Modified images',
+          currentStep : steps,
+          steps
+        });
         const modifiedFiles = _.map(stepAndFiles.files, file => {
           database.insert(path.basename(file.toPath), key);
           return file.toPath;
