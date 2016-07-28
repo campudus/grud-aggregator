@@ -4,7 +4,7 @@ import { start } from './aggregationProcess';
 describe('aggregation-process', () => {
 
   const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
-  const aggregator = `${__dirname}/__tests__/aggregatorWorking.js`;
+  const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
   const aggregatorNonExistent = 'non-existant-file.js';
 
   it('needs a filename to the aggregator process script', () => {
@@ -13,13 +13,13 @@ describe('aggregation-process', () => {
 
   it('does not need a progress function to work', () => {
     return start({
-      aggregator : aggregatorDummy
+      aggregatorFile : aggregatorDummy
     });
   });
 
   it('returns a promise', () => {
     expect(start({
-      aggregator : aggregatorDummy
+      aggregatorFile : aggregatorDummy
     }).then).to.be.a.function();
   });
 
@@ -27,7 +27,7 @@ describe('aggregation-process', () => {
     let called = false;
 
     return start({
-      aggregator,
+      aggregatorFile,
       progress : () => {
         called = true;
       }
@@ -42,7 +42,7 @@ describe('aggregation-process', () => {
     let lastStep = -1;
 
     return start({
-      aggregator : aggregatorDummy,
+      aggregatorFile : aggregatorDummy,
       progress : ({message, currentStep, steps}) => {
         console.log('called progress!', message, currentStep, steps);
         expect(message).not.to.be.null();
@@ -61,7 +61,7 @@ describe('aggregation-process', () => {
 
   it('should result in an error if the aggregator to fork is not found', () => {
     return start({
-      aggregator : aggregatorNonExistent
+      aggregatorFile : aggregatorNonExistent
     }).then(result => {
       // should not occur!
       expect(result).to.be.null();
