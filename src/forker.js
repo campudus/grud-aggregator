@@ -6,8 +6,14 @@ const errors = require('./errorCodes.js');
 process.on('message', function (event) {
   switch (event.action) {
     case 'run' :
-      mkDirs(event.data.options.dataDirectory);
-      run(event.data.aggregatorFile, event.data.options);
+      mkDirs(event.data.options.dataDirectory)
+        .then(() => {
+          run(event.data.aggregatorFile, event.data.options);
+        })
+        .catch((err)=> {
+          console.error('Error creating data directory.', err);
+          process.exit(2);
+        });
       break;
     default:
       process.exit(errors.UNKNOWN_ACTION);
@@ -16,9 +22,19 @@ process.on('message', function (event) {
 });
 
 function mkDirs(dataDirectory) {
-  if (dataDirectory) {
-    fs.mkdirpSync(`${dataDirectory}/attachments`);
-  }
+  return new Promise((resolve, reject) => {
+    if (dataDirectory) {
+      fs.mkdirp(`${dataDirectory}/attachments`, err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    } else {
+      resolve();
+    }
+  });
 }
 
 function run(aggregatorFile, options) {

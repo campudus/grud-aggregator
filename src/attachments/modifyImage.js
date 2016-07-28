@@ -1,6 +1,6 @@
 import path from 'path';
 import _ from 'lodash';
-import {generateThumb, reduceImage} from './imageResizer';
+import { generateThumb, reduceImage } from './imageResizer';
 
 export function modifyImages({
   imageWidth = 0,
