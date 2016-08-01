@@ -1,14 +1,22 @@
 import expect from 'must';
 import tablesFixture from './__tests__/tablesFixture.json';
+import missingFixture from './__tests__/missingFixture.json';
+import missingResultFixture from './__tests__/missingResultFixture.json';
 import resultFixture from './__tests__/resultFixture.json';
 import { tablesToLanguages } from './tablesToLanguages';
 
 describe('tablesToLanguages', () => {
 
   const langtags = {
-    DE : 'de',
-    EN : 'en',
-    FR : 'fr'
+    de : [],
+    en : [],
+    fr : []
+  };
+
+  const langtagsForMissing = {
+    de : ['en'],
+    en : [],
+    fr : ['de', 'en']
   };
 
   it('is possible to put it into a Promise chain', () => {
@@ -51,6 +59,12 @@ describe('tablesToLanguages', () => {
     // fs.outputFileSync('test.json', JSON.stringify(result));
 
     expect(JSON.stringify(result)).to.eql(JSON.stringify(resultFixture));
+  });
+
+  it('can use fallbacks', () => {
+    const result = tablesToLanguages(langtagsForMissing)(missingFixture);
+
+    expect(JSON.stringify(result)).to.eql(JSON.stringify(missingResultFixture));
   });
 
 });

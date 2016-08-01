@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 export function tablesToLanguages(langtags) {
-  return tablesObj => _.reduce(langtags, (acc, language) => Object.assign(acc, {
+  return tablesObj => _.reduce(langtags, (acc, fallbacks, language) => Object.assign(acc, {
     [language] : _.mapValues(tablesObj, table => {
       return {
         id : table.id,
@@ -55,7 +55,18 @@ export function tablesToLanguages(langtags) {
               } else if (c.kind === 'link') {
                 return [_.map(row.values[index], cell => cell.id)];
               } else if (c.multilanguage && c.languageType === 'language') {
-                return [row.values[index][language]];
+                const value = row.values[index][language];
+                if (_.isNil(value)) {
+                  const fallbackValues = _.map(fallbacks, lang => row.values[index][lang]);
+                  const valueIndex = _.findIndex(fallbackValues, v => !_.isNil(v));
+                  if (valueIndex >= 0) {
+                    return [fallbackValues[valueIndex]];
+                  } else {
+                    return [value];
+                  }
+                } else {
+                  return [value];
+                }
               } else {
                 return [row.values[index]];
               }
