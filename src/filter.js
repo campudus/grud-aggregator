@@ -30,6 +30,7 @@ export function filter(filter) {
     }
 
     function addDependenciesOfTable(data, accTables, currentTable) {
+
       const linksOfCurrentTableToCheck = _.transform(currentTable.columns, (acc, column, idx) => {
         if (column.kind === 'link') {
           acc[column.toTable] = _.reduce(currentTable.rows, (linkIds, rowValue) => {
@@ -37,20 +38,20 @@ export function filter(filter) {
           }, acc[column.toTable] || []);
         }
       }, {});
+
       const missing = _.transform(linksOfCurrentTableToCheck, (missing, linkedRowIds, tableId) => {
         const existingRows = _.map(accTables[tableId].rows, row => row.id);
         missing[tableId] = missing[tableId] || linkedRowIds;
         missing[tableId] = _.difference(missing[tableId], existingRows);
       }, {});
 
-      if (!_.every(missing, _.isEmpty)) {
-        _.forEach(missing, (linksInTable, tableId) => {
-          accTables[tableId].rows = _.transform(linksInTable, (rows, toRowId) => {
-            rows[toRowId] = data[tableId].rows[toRowId];
-          }, accTables[tableId].rows || {});
-          addDependenciesOfTable(data, accTables, accTables[tableId], linksInTable);
-        });
-      }
+      const filteredMissing = _.omitBy(missing, _.isEmpty);
+      _.forEach(filteredMissing, (linksInTable, tableId) => {
+        accTables[tableId].rows = _.transform(linksInTable, (rows, toRowId) => {
+          rows[toRowId] = data[tableId].rows[toRowId];
+        }, accTables[tableId].rows || {});
+        addDependenciesOfTable(data, accTables, accTables[tableId]);
+      });
     }
 
     function matches([currentColumn, ...columnsToWalk], row, currentTable, predicate) {
