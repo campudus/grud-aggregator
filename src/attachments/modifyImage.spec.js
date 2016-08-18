@@ -102,7 +102,7 @@ describe('image modification', () => {
       }));
   });
 
-  it('can resize an image by height only', function() {
+  it('can resize an image by height only', function () {
     this.timeout(30 * 1000);
 
     const tmpDir = tmp.dirSync({unsafeCleanup : true});
@@ -125,7 +125,7 @@ describe('image modification', () => {
       }));
   });
 
-  it('can resize an image by width and height and fills with transparency', function() {
+  it('can resize an image by width and height and fills with transparency', function () {
     this.timeout(30 * 1000);
 
     const tmpDir = tmp.dirSync({unsafeCleanup : true});

@@ -97,7 +97,13 @@ describe('generateThumb', () => {
 
     const tempFile = tmp.fileSync();
 
-    return generateThumb({fromPath : fixtureFile, toPath : tempFile.name, imageWidth : 500, imageHeight : 400, minify : true})
+    return generateThumb({
+      fromPath : fixtureFile,
+      toPath : tempFile.name,
+      imageWidth : 500,
+      imageHeight : 400,
+      minify : true
+    })
       .then(() => Promise.all([statOf(fixtureFile), statOf(tempFile.name), statOf(scaleResizeFile)]))
       .then(([fixture, output, scaleResize]) => {
         expect(output.size).to.be.lt(fixture.size);
