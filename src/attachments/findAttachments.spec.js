@@ -77,4 +77,14 @@ describe('findAttachments', () => {
       });
   });
 
+  it('can get a filter that fetches only the wanted attachments', () => {
+    return Promise.resolve(data)
+      .then(findAttachments({
+        filter : ['option', 'imagesStraight']
+      }))
+      .then(attachments => {
+        expect(attachments.length).to.be(9);
+      });
+  });
+
 });

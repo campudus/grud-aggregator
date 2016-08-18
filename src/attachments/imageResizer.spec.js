@@ -5,6 +5,7 @@ import expect from 'must';
 
 const fixtureFile = `${__dirname}/__tests__/duck.png`;
 const thumbFile = `${__dirname}/__tests__/duck_thumb.png`;
+const scaleResizeFile = `${__dirname}/__tests__/duck_500x400.png`;
 const wrongImageFile = `${__dirname}/__tests__/wrong-image.png`;
 const nonExistentFile = `${__dirname}/__tests__/non-existent.png`;
 
@@ -87,6 +88,20 @@ describe('generateThumb', () => {
       .then(([fixture, output, thumb]) => {
         expect(output.size).to.be.lt(fixture.size);
         expect(output.size).to.be.lt(thumb.size);
+      });
+
+  });
+
+  it('can minify a scaled resized image even further', function () {
+    this.timeout(30 * 1000);
+
+    const tempFile = tmp.fileSync();
+
+    return generateThumb({fromPath : fixtureFile, toPath : tempFile.name, imageWidth : 500, imageHeight : 400, minify : true})
+      .then(() => Promise.all([statOf(fixtureFile), statOf(tempFile.name), statOf(scaleResizeFile)]))
+      .then(([fixture, output, scaleResize]) => {
+        expect(output.size).to.be.lt(fixture.size);
+        expect(output.size).to.be.lt(scaleResize.size);
       });
 
   });

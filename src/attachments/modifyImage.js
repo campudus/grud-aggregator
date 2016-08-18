@@ -3,7 +3,8 @@ import _ from 'lodash';
 import { generateThumb, reduceImage } from './imageResizer';
 
 export function modifyImages({
-  imageWidth = 0,
+  imageWidth = 'auto',
+  imageHeight = 'auto',
   database,
   key,
   minify = false,
@@ -11,7 +12,8 @@ export function modifyImages({
   progress = () => {
   }
 } = {
-  imageWidth : 0,
+  imageWidth : 'auto',
+  imageHeight : 'auto',
   minify : false,
   dataDirectory : 'out',
   outPath : 'out',
@@ -35,7 +37,7 @@ export function modifyImages({
       fromPath : i,
       toPath : `${outPath}/${path.basename(i)}`
     }));
-    const resize = imageWidth > 0;
+    const resize = imageWidth !== 'auto' || imageHeight !== 'auto';
     const steps = inputs.length * ((resize ? 1 : 0) + (minify ? 1 : 0));
 
     return Promise.resolve({currentStep : 0, files : inputs})
@@ -71,7 +73,8 @@ export function modifyImages({
             } else {
               return generateThumb({
                 ...file,
-                imageWidth
+                imageWidth,
+                imageHeight
               }).then(() => result);
             }
           }), Promise.resolve({currentStep : stepAndFiles.currentStep, files : []}));

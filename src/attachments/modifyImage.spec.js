@@ -10,6 +10,7 @@ describe('image modification', () => {
 
   const fixtureFile = `${__dirname}/__tests__/duck.png`;
   const thumbFile = `${__dirname}/__tests__/duck_thumb.png`;
+  const scaleResizeFile = `${__dirname}/__tests__/duck_500x400.png`;
 // const wrongImageFile = `${__dirname}/__tests__/wrong-image.png`;
 // const nonExistentFile = `${__dirname}/__tests__/non-existent.png`;
 
@@ -78,7 +79,7 @@ describe('image modification', () => {
       }));
   });
 
-  it('can resize an image', function () {
+  it('can resize an image by width only', function () {
     this.timeout(30 * 1000);
 
     const tmpDir = tmp.dirSync({unsafeCleanup : true});
@@ -98,6 +99,53 @@ describe('image modification', () => {
       })
       .then(([thumb, minified]) => {
         expect(minified.size).to.be(thumb.size);
+      }));
+  });
+
+  it('can resize an image by height only', function() {
+    this.timeout(30 * 1000);
+
+    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/database.json`);
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key : 'test',
+      outPath,
+      imageHeight : 463
+    })([fixtureFile])
+      .then(results => {
+        expect(results).to.be.an.array();
+        expect(results[0]).to.be(`${outPath}/duck.png`);
+        return Promise.all([statOf(thumbFile), statOf(results[0])]);
+      })
+      .then(([thumb, minified]) => {
+        expect(minified.size).to.be(thumb.size);
+      }));
+  });
+
+  it('can resize an image by width and height and fills with transparency', function() {
+    this.timeout(30 * 1000);
+
+    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/database.json`);
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key : 'test',
+      outPath,
+      imageWidth : 500,
+      imageHeight : 400
+    })([fixtureFile])
+      .then(results => {
+        expect(results).to.be.an.array();
+        expect(results[0]).to.be(`${outPath}/duck.png`);
+        return Promise.all([statOf(scaleResizeFile), statOf(results[0])]);
+      })
+      .then(([scaledResize, minified]) => {
+        expect(minified.size).to.be(scaledResize.size);
       }));
   });
 

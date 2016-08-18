@@ -4,9 +4,9 @@ import imagemin from 'imagemin';
 import pngquant from 'imagemin-pngquant';
 
 export function generateThumb(options) {
-  const {fromPath, toPath, imageWidth, minify} = options;
+  const {fromPath, toPath, imageHeight, imageWidth, minify} = options;
   return readImage(fromPath)
-    .then(resizeImage(imageWidth))
+    .then(resizeImage({imageHeight, imageWidth}))
     .then(minifyImage(minify))
     .then(saveImage(toPath));
 }
@@ -43,20 +43,33 @@ function readImage(fromPath) {
   });
 }
 
-function resizeImage(imageWidth) {
+function resizeImage({
+  imageHeight = 'auto',
+  imageWidth = 'auto'
+}) {
+  const height = imageHeight === 'auto' ? jimp.AUTO : imageHeight;
+  const width = imageWidth === 'auto' ? jimp.AUTO : imageWidth;
+  const isFittingToScale = imageHeight !== 'auto' && imageWidth !== 'auto';
   return image => new Promise((resolve, reject) => {
     // resize the width to <imageSize> and scale the height accordingly
     try {
-      image
-        .resize(imageWidth, jimp.AUTO)
-        .getBuffer(image._originalMime, (err, buffer) => {
-          if (err) {
-            console.log(`could not get buffer to resize with mime type ${image._originalMime}`);
-            reject(err);
-          } else {
-            resolve(buffer);
-          }
-        });
+      const bufferCb = (err, buffer) => {
+        if (err) {
+          console.log(`could not get buffer to resize with mime type ${image._originalMime}`);
+          reject(err);
+        } else {
+          resolve(buffer);
+        }
+      };
+      if (isFittingToScale) {
+        image
+          .contain(width, height)
+          .getBuffer(image._originalMime, bufferCb);
+      } else {
+        image
+          .resize(width, height)
+          .getBuffer(image._originalMime, bufferCb);
+      }
     } catch (e) {
       reject(e);
     }
