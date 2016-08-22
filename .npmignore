@@ -1,4 +1,1 @@
-{
-  "name": "tableaux-aggregator",
-  "files": ["lib/", ".babelrc"]
-}
+src/
