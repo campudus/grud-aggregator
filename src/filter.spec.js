@@ -8,10 +8,11 @@ import filterFixture4 from './__tests__/filterFixture4.json';
 import filterFixture5 from './__tests__/filterFixture5.json';
 import filterFixture6 from './__tests__/filterFixture6.json';
 import filterFixture7 from './__tests__/filterFixture7.json';
-import { filter } from './filter';
+import filterFixture8 from './__tests__/filterFixture8.json';
+import {filter} from './filter';
 import expect from 'must';
 
-describe('filter', () => {
+describe.only('filter', () => {
 
   let myCounter = 0;
   const countUp = () => {
@@ -208,6 +209,26 @@ describe('filter', () => {
       }))
       .then(data => {
         expect(data).to.eql(filterFixture7);
+      });
+  });
+
+  it('can handle missing tables as links, as long as no data really links it', () => {
+    return Promise.resolve(tablesFixture)
+      .then(filter({
+        path : ['thirdTestTable'],
+        predicate : v => v.anotherLink.length === 0
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture8);
+        return data;
+      })
+      .then(filter({ // should stay the same after doing the same filter
+        path : ['thirdTestTable'],
+        predicate : v => v.anotherLink.length === 0
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture8);
+        return data;
       });
   });
 

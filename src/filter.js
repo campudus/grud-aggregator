@@ -40,7 +40,7 @@ export function filter(filter) {
       }, {});
 
       const missing = _.transform(linksOfCurrentTableToCheck, (missing, linkedRowIds, tableId) => {
-        const existingRows = _.map(accTables[tableId].rows, row => row.id);
+        const existingRows = _.isNil(accTables[tableId]) ? [] : _.map(accTables[tableId].rows, row => row.id);
         missing[tableId] = missing[tableId] || linkedRowIds;
         missing[tableId] = _.difference(missing[tableId], existingRows);
       }, {});
