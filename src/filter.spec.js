@@ -244,4 +244,15 @@ describe('filter', () => {
       });
   });
 
+  it('will add the id of the row in the predicate when using deep links', () => {
+    return Promise.resolve(tablesFixture)
+      .then(filter({
+        path : ['testTable', 'someLink', 'anotherLink'],
+        predicate : value => value.id == 2
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture3);
+      });
+  });
+
 });
