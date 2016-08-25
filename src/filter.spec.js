@@ -1,5 +1,6 @@
 import tablesFixture from './__tests__/tablesFixture.json';
 import cyclicTablesFixture from './__tests__/cyclicTablesFixture.json';
+import cyclicTablesWithDependencyLinkFixture from './__tests__/cyclicTablesWithDependencyLinkFixture.json';
 import filterFixture0 from './__tests__/filterFixture0.json';
 import filterFixture1 from './__tests__/filterFixture1.json';
 import filterFixture2 from './__tests__/filterFixture2.json';
@@ -10,10 +11,11 @@ import filterFixture6 from './__tests__/filterFixture6.json';
 import filterFixture7 from './__tests__/filterFixture7.json';
 import filterFixture8 from './__tests__/filterFixture8.json';
 import filterFixture9 from './__tests__/filterFixture9.json';
+import filterFixture10 from './__tests__/filterFixture10.json';
 import {filter} from './filter';
 import expect from 'must';
 
-describe('filter', () => {
+describe.only('filter', () => {
 
   let myCounter = 0;
   const countUp = () => {
@@ -237,7 +239,7 @@ describe('filter', () => {
     return Promise.resolve(tablesFixture)
       .then(filter({
         path : ['anotherTestTable'],
-        predicate : v => v.id == 1 || v.id == 2
+        predicate : v => v.id === 1 || v.id === 2
       }))
       .then(data => {
         expect(data).to.eql(filterFixture9);
@@ -248,10 +250,22 @@ describe('filter', () => {
     return Promise.resolve(tablesFixture)
       .then(filter({
         path : ['testTable', 'someLink', 'anotherLink'],
-        predicate : value => value.id == 2
+        predicate : value => value.id === 2
       }))
       .then(data => {
         expect(data).to.eql(filterFixture3);
+      });
+  });
+
+  it.skip('can exclude backlink-dependencies to the first table', () => {
+    return Promise.resolve(cyclicTablesWithDependencyLinkFixture)
+      .then(filter({
+        excludeBacklinks : true,
+        path : ['tableA'],
+        predicate : v => v.id !== 3
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture10.json);
       });
   });
 
