@@ -80,7 +80,7 @@ export function filter(filter) {
       return _.reduce(table.columns, (element, column, idx) => {
         element[column.name] = row.values[idx];
         return element;
-      }, {});
+      }, {id : row.id});
     }
   };
 }

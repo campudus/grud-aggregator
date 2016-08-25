@@ -9,10 +9,11 @@ import filterFixture5 from './__tests__/filterFixture5.json';
 import filterFixture6 from './__tests__/filterFixture6.json';
 import filterFixture7 from './__tests__/filterFixture7.json';
 import filterFixture8 from './__tests__/filterFixture8.json';
+import filterFixture9 from './__tests__/filterFixture9.json';
 import {filter} from './filter';
 import expect from 'must';
 
-describe.only('filter', () => {
+describe('filter', () => {
 
   let myCounter = 0;
   const countUp = () => {
@@ -229,6 +230,17 @@ describe.only('filter', () => {
       .then(data => {
         expect(data).to.eql(filterFixture8);
         return data;
+      });
+  });
+
+  it('will add the id of the row in the predicate check', () => {
+    return Promise.resolve(tablesFixture)
+      .then(filter({
+        path : ['anotherTestTable'],
+        predicate : v => v.id == 1 || v.id == 2
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture9);
       });
   });
 
