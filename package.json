@@ -48,6 +48,7 @@
   "dependencies": {
     "fs-extra": "0.30.0",
     "imagemin": "5.2.2",
+    "imagemin-jpegoptim": "^5.0.0",
     "imagemin-pngquant": "5.0.0",
     "jimp": "0.2.24",
     "lodash": "4.13.1",

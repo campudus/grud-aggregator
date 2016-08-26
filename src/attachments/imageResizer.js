@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import jimp from 'jimp';
 import imagemin from 'imagemin';
 import pngquant from 'imagemin-pngquant';
+import jpegopti from 'imagemin-jpegoptim';
 
 export function generateThumb(options) {
   const {fromPath, toPath, imageHeight, imageWidth, minify} = options;
@@ -89,7 +90,11 @@ function minifyImage(minify) {
 function minifyImageBuffer(buffer) {
   return imagemin.buffer(buffer, {
     plugins : [
-      pngquant()
+      pngquant(),
+      jpegopti({
+        progressive : false,
+        max : 80
+      })
     ]
   });
 }
