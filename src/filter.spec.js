@@ -12,10 +12,11 @@ import filterFixture7 from './__tests__/filterFixture7.json';
 import filterFixture8 from './__tests__/filterFixture8.json';
 import filterFixture9 from './__tests__/filterFixture9.json';
 import filterFixture10 from './__tests__/filterFixture10.json';
+import filterFixture11 from './__tests__/filterFixture11.json';
 import {filter} from './filter';
 import expect from 'must';
 
-describe.only('filter', () => {
+describe('filter', () => {
 
   let myCounter = 0;
   const countUp = () => {
@@ -215,6 +216,16 @@ describe.only('filter', () => {
       });
   });
 
+  it('can handle deeper cyclic dependencies', () => {
+    return Promise.resolve(cyclicTablesWithDependencyLinkFixture)
+      .then(filter({
+        path : ['tableA']
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixture11);
+      });
+  });
+
   it('can handle missing tables as links, as long as no data really links it', () => {
     return Promise.resolve(tablesFixture)
       .then(filter({
@@ -257,7 +268,7 @@ describe.only('filter', () => {
       });
   });
 
-  it.skip('can exclude backlink-dependencies to the first table', () => {
+  it('can exclude backlink-dependencies to the first table', () => {
     return Promise.resolve(cyclicTablesWithDependencyLinkFixture)
       .then(filter({
         excludeBacklinks : true,
@@ -265,7 +276,7 @@ describe.only('filter', () => {
         predicate : v => v.id !== 3
       }))
       .then(data => {
-        expect(data).to.eql(filterFixture10.json);
+        expect(data).to.eql(filterFixture10);
       });
   });
 

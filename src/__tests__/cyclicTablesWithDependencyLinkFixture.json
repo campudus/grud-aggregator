@@ -84,8 +84,15 @@
         "id": 3,
         "values": [
           "A3",
-          "links nowhere",
-          []
+          "links to B4",
+          [
+            {
+              "id": 4,
+              "value": [
+                "B4"
+              ]
+            }
+          ]
         ]
       },
       "4": {
@@ -107,6 +114,14 @@
               ]
             }
           ]
+        ]
+      },
+      "5": {
+        "id": 5,
+        "values": [
+          "A5",
+          "links nowhere",
+          []
         ]
       }
     }
@@ -240,6 +255,14 @@
               ]
             }
           ]
+        ]
+      },
+      "6": {
+        "id": 6,
+        "values": [
+          "B6",
+          "links nowhere and does not get linked",
+          []
         ]
       }
     }
