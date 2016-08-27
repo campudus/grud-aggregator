@@ -1,10 +1,11 @@
 import expect from 'must';
 import { start } from './aggregationProcess';
 
-describe('aggregation-process', () => {
+describe.only('aggregation-process', () => {
 
   const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
   const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
+  const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubSteps.js`;
   const aggregatorNonExistent = 'non-existant-file.js';
 
   it('needs a filename to the aggregator process script', () => {
@@ -68,6 +69,26 @@ describe('aggregation-process', () => {
       expect(true).to.be.false();
     }).catch(err => {
       expect(err).to.be.an.error(new RegExp(`could not start.*${aggregatorNonExistent}`, 'i'));
+    });
+  });
+
+  it('can use the step function in sub-steps', () => {
+    const lastProgress = {
+      currentStep : 0,
+      steps : 5
+    };
+    return start({
+      aggregatorFile : aggregatorFileSubsteps,
+      progress : ({message, currentStep, steps}) => {
+        expect(message).not.to.be.null();
+        expect(currentStep).to.be.gte(lastProgress.currentStep);
+        expect(currentStep).to.be.lte(lastProgress.steps);
+        expect(steps).to.be(lastProgress.steps);
+        lastProgress.steps = steps;
+        lastProgress.currentStep = currentStep;
+      }
+    }).then(() => {
+      expect(lastProgress.currentStep).to.be(lastProgress.steps);
     });
   });
 
