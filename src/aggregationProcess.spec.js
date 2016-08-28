@@ -1,7 +1,7 @@
 import expect from 'must';
-import { start } from './aggregationProcess';
+import {start} from './aggregationProcess';
 
-describe.only('aggregation-process', () => {
+describe('aggregation-process', () => {
 
   const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
   const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
@@ -39,17 +39,14 @@ describe.only('aggregation-process', () => {
   });
 
   it('shows the correct amount steps and the currentStep', () => {
-    const numberOfSteps = 5;
+    const messages = ['Starting aggregator', 'step A', 'step B', 'step C', 'step D', 'Done'];
     let lastStep = -1;
+    const numberOfSteps = messages.length - 1;
 
     return start({
       aggregatorFile : aggregatorDummy,
       progress : ({message, currentStep, steps}) => {
-        console.log('called progress!', message, currentStep, steps);
-        expect(message).not.to.be.null();
-        if (1 <= currentStep && currentStep <= 4) {
-          expect(message).to.be(`step ${String.fromCharCode('A'.charCodeAt(0) + currentStep - 1)}`);
-        }
+        expect(message).to.startWith(messages[currentStep]);
         expect(lastStep).to.be.lt(currentStep);
         lastStep = currentStep;
         expect(currentStep).to.be.at.most(steps);
@@ -73,21 +70,26 @@ describe.only('aggregation-process', () => {
   });
 
   it('can use the step function in sub-steps', () => {
+    const messages = ['one', 'two', 'three', 'four', 'five', 'six', 'seven'];
     const lastProgress = {
-      currentStep : 0,
-      steps : 5
+      currentStep : -1,
+      steps : 8
     };
     return start({
       aggregatorFile : aggregatorFileSubsteps,
       progress : ({message, currentStep, steps}) => {
-        expect(message).not.to.be.null();
-        expect(currentStep).to.be.gte(lastProgress.currentStep);
+        if (currentStep > 0 && currentStep <= messages.length) {
+          expect(message).to.be(messages[currentStep - 1]);
+        }
+        expect(currentStep).to.eql(lastProgress.currentStep + 1);
         expect(currentStep).to.be.lte(lastProgress.steps);
         expect(steps).to.be(lastProgress.steps);
         lastProgress.steps = steps;
         lastProgress.currentStep = currentStep;
+        lastProgress.message = message;
       }
     }).then(() => {
+      expect(lastProgress.message);
       expect(lastProgress.currentStep).to.be(lastProgress.steps);
     });
   });
