@@ -214,6 +214,48 @@ describe('image modification', () => {
       }));
   });
 
+  it('will print the correct progress status during the steps with a chunkSize set', function () {
+    this.timeout(30 * 1000);
+
+    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/database.json`);
+    let counter = 0;
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key : 'test',
+      outPath,
+      imageWidth : 10,
+      chunkSize : 2,
+      minify : true,
+      progress : ({message, currentStep, steps}) => {
+        counter++;
+        expect(steps).to.be(3);
+        if (counter === 1) { // "init" message
+          expect(message).not.to.be.empty();
+          expect(currentStep).to.be(0);
+        } else if (counter === 2) {
+          expect(message).to.contain(path.basename(fixtureFile));
+          expect(message).to.contain(path.basename(fixtureFile2));
+          expect(message).not.to.contain(path.basename(fixtureFile3));
+          expect(currentStep).to.be(0);
+        } else if (counter === 3) {
+          expect(message).not.to.contain(path.basename(fixtureFile));
+          expect(message).not.to.contain(path.basename(fixtureFile2));
+          expect(message).to.contain(path.basename(fixtureFile3));
+          expect(currentStep).to.be(2);
+        } else if (counter === 4) { // "done" message
+          expect(message).not.to.be.empty();
+          expect(currentStep).to.be(3);
+        }
+      }
+    })([fixtureFile, fixtureFile2, fixtureFile3])
+      .then(() => {
+        expect(counter).to.be(4);
+      }));
+  });
+
   it('will write information into a lowdb', function () {
     this.timeout(30 * 1000);
 

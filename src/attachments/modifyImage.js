@@ -107,7 +107,7 @@ export function modifyImages({
                   .then(() => {
                     return {
                       files : status.files.concat(_.map(filesInChunkWithStatus, file => _.omit(file, 'done'))),
-                      currentStep : status.currentStep + 1
+                      currentStep : status.currentStep + filesInChunkWithStatus.length
                     };
                   });
               });
