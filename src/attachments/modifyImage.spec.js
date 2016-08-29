@@ -320,7 +320,7 @@ describe('image modification', () => {
       outPath,
       imageWidth : 10,
       minify : true,
-      progress : progress => {
+      progress : () => {
         steps++;
       }
     })([fixtureFile, fixtureFile2, fixtureFile3])

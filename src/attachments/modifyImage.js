@@ -99,7 +99,7 @@ export function modifyImages({
                 }).then(() => file);
               }
             }))
-              .then(res => {
+              .then(() => {
                 return {
                   files : status.files.concat(_.map(filesInChunkWithStatus, file => _.omit(file, 'done'))),
                   currentStep : status.currentStep + 1

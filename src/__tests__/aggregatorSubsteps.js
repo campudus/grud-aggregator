@@ -12,7 +12,7 @@ export default function start(step) {
     const addStep = step(message);
     return data => Promise.resolve(data)
       .then(addStep)
-      .then(data => new Promise((resolve, reject) => {
+      .then(data => new Promise(resolve => {
         setTimeout(() => {
           const result = data + 1;
           resolve(result);
@@ -24,7 +24,7 @@ export default function start(step) {
     const multStep = step(message);
     return data => Promise.resolve(data)
       .then(multStep)
-      .then(data => new Promise((resolve, reject) => {
+      .then(data => new Promise(resolve => {
         setTimeout(() => {
           const result = data * 2;
           resolve(result);

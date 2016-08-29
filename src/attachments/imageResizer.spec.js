@@ -247,7 +247,8 @@ describe('generateThumb', () => {
   it('results in error, if file is an incorrect image (png)', test012('png'));
   it('results in error, if file is an incorrect image (jpg)', test012('jpg'));
   function test012(extension) {
-    return () => {
+    return function () {
+      this.timeout(10 * 1000);
       const tempFile = tmp.fileSync();
       return expect(generateThumb({
         fromPath : wrongImageFile(extension),
@@ -260,7 +261,8 @@ describe('generateThumb', () => {
   it('results in error, if fed a wrong image size (png)', test013('png'));
   it('results in error, if fed a wrong image size (jpg)', test013('jpg'));
   function test013(extension) {
-    return () => {
+    return function () {
+      this.timeout(10 * 1000);
       const tempFile = tmp.fileSync();
       return expect(generateThumb({
         fromPath : fixtureFile(extension),
@@ -273,7 +275,8 @@ describe('generateThumb', () => {
   it('results in error, if it cannot save into directory (png)', test014('png'));
   it('results in error, if it cannot save into directory (jpg)', test014('jpg'));
   function test014(extension) {
-    return () => {
+    return function () {
+      this.timeout(10 * 1000);
       return expect(generateThumb({
         fromPath : fixtureFile(extension),
         toPath : `${__dirname}/__tests__/non/writable/path/file.txt`,
