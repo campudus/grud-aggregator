@@ -1,8 +1,9 @@
 import path from 'path';
 import _ from 'lodash';
-import { generateThumb, reduceImage } from './imageResizer';
+import {generateThumb, reduceImage} from './imageResizer';
 
 export function modifyImages({
+  chunkSize = 1,
   imageWidth = 'auto',
   imageHeight = 'auto',
   database,
@@ -12,6 +13,7 @@ export function modifyImages({
   progress = () => {
   }
 } = {
+  chunkSize : 1,
   imageWidth : 'auto',
   imageHeight : 'auto',
   minify : false,
@@ -38,7 +40,7 @@ export function modifyImages({
       toPath : `${outPath}/${path.basename(i)}`
     }));
     const resize = imageWidth !== 'auto' || imageHeight !== 'auto';
-    const steps = inputs.length * ((resize ? 1 : 0) + (minify ? 1 : 0));
+    const steps = inputs.length;
 
     return Promise.resolve({currentStep : 0, files : inputs})
       .then(stepAndFiles => {
@@ -51,60 +53,58 @@ export function modifyImages({
         return stepAndFiles;
       })
       .then(stepAndFiles => {
-        if (resize) {
-          return _.reduce(stepAndFiles.files, (promise, file) => promise.then(({currentStep, files}) => {
+        if (resize || minify) { // resize can resize AND minify at the same time
+          return _.reduce(_.chunk(stepAndFiles.files, chunkSize), (promise, chunkFiles) => promise.then(status => {
+
+            const doing = resize && minify ? 'Resizing and minifying' : resize ? 'Resizing' : 'Minifying';
+            const multiple = chunkSize > 1;
+
             progress({
               error : false,
-              message : `Resizing image ${file.fromPath}`,
-              currentStep,
+              message : `${doing} image${multiple ? 's' : ''} ${_.map(chunkFiles, file => file.fromPath).join(', ')}`,
+              currentStep : status.currentStep,
               steps
             });
-            const to = file.toPath;
-            const result = {
-              files : files.concat([{
-                fromPath : to,
-                toPath : to
-              }]),
-              currentStep : currentStep + 1
-            };
 
-            if (database.find(path.basename(to), key)) {
-              return result;
-            } else {
-              return generateThumb({
-                ...file,
-                imageWidth,
-                imageHeight
-              }).then(() => result);
-            }
-          }), Promise.resolve({currentStep : stepAndFiles.currentStep, files : []}));
-        } else {
-          return stepAndFiles;
-        }
-      })
-      .then(stepAndFiles => {
-        if (minify) {
-          return _.reduce(stepAndFiles.files, (promise, file) => promise.then(({currentStep, files}) => {
-            progress({
-              error : false,
-              message : `Minifying image ${file.fromPath}`,
-              currentStep,
-              steps
+            const filesInChunkWithStatus = _.map(chunkFiles, file => {
+              const to = file.toPath;
+              if (database.find(path.basename(to), key)) {
+                return {
+                  done : true,
+                  fromPath : file.fromPath,
+                  toPath : to
+                };
+              } else {
+                return {
+                  done : false,
+                  fromPath : file.fromPath,
+                  toPath : to
+                };
+              }
             });
-            const to = file.toPath;
-            const result = {
-              files : files.concat([{
-                fromPath : to,
-                toPath : to
-              }]),
-              currentStep : currentStep + 1
-            };
 
-            if (database.find(path.basename(to), key)) {
-              return result;
-            } else {
-              return reduceImage({...file}).then(() => result);
-            }
+            return Promise.all(_.map(filesInChunkWithStatus, file => {
+              if (file.done) {
+                return Promise.resolve(file);
+              } else if (resize) { // resize (and maybe minify)
+                return generateThumb({
+                  ...file,
+                  imageWidth,
+                  imageHeight,
+                  minify
+                }).then(() => file);
+              } else { // only minify
+                return reduceImage({
+                  ...file
+                }).then(() => file);
+              }
+            }))
+              .then(res => {
+                return {
+                  files : status.files.concat(_.map(filesInChunkWithStatus, file => _.omit(file, 'done'))),
+                  currentStep : status.currentStep + 1
+                };
+              });
           }), Promise.resolve({currentStep : stepAndFiles.currentStep, files : []}));
         } else {
           return stepAndFiles;
@@ -122,7 +122,9 @@ export function modifyImages({
           return file.toPath;
         });
 
-        return database.save().then(() => modifiedFiles);
+        return database.save()
+          .then(() => modifiedFiles);
       });
-  };
+  }
+    ;
 }
