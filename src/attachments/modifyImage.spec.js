@@ -238,6 +238,41 @@ describe('image modification', () => {
       }));
   });
 
+  it('will write information into a lowdb after every chunk', function () {
+    this.timeout(30 * 1000);
+
+    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const outPath = tmpDir.name;
+    const databasePath = `${outPath}/database.json`;
+    const database = new Database(databasePath);
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key : 'test',
+      outPath,
+      imageWidth : 200,
+      minify : true,
+      chunkSize : 2,
+      progress : ({currentStep, steps}) => {
+        if (currentStep > 0 && currentStep < steps) {
+          expect(database.find(path.basename(fixtureFile), 'test')).to.be.true();
+          expect(database.find(path.basename(fixtureFile2), 'test')).to.be.true();
+          expect(database.find(path.basename(fixtureFile3), 'test')).to.be.falsy();
+        }
+      }
+    })([fixtureFile, fixtureFile2, fixtureFile3])
+      .then(results => {
+        expect(results.length).to.be(3);
+        expect(database.find(path.basename(fixtureFile), 'test')).to.be.true();
+        expect(database.find(path.basename(fixtureFile2), 'test')).to.be.true();
+        expect(database.find(path.basename(fixtureFile3), 'test')).to.be.true();
+        return statOf(databasePath);
+      })
+      .then(dbStat => {
+        expect(dbStat.size).to.be.gt(0);
+      }));
+  });
+
   it('will use information from lowdb to skip files', () => {
     // no timeout here, as it should finish very quickly
     const tmpDir = tmp.dirSync({unsafeCleanup : true});

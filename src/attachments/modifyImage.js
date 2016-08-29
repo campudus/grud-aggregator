@@ -100,10 +100,16 @@ export function modifyImages({
               }
             }))
               .then(() => {
-                return {
-                  files : status.files.concat(_.map(filesInChunkWithStatus, file => _.omit(file, 'done'))),
-                  currentStep : status.currentStep + 1
-                };
+                return Promise.all(_.map(filesInChunkWithStatus, file => {
+                  database.insert(path.basename(file.toPath), key);
+                }))
+                  .then(() => database.save())
+                  .then(() => {
+                    return {
+                      files : status.files.concat(_.map(filesInChunkWithStatus, file => _.omit(file, 'done'))),
+                      currentStep : status.currentStep + 1
+                    };
+                  });
               });
           }), Promise.resolve({currentStep : stepAndFiles.currentStep, files : []}));
         } else {
