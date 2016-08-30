@@ -71,7 +71,7 @@ function run(aggregatorFile, options) {
     if (err.code === 'MODULE_NOT_FOUND') {
       process.exit(errors.MODULE_NOT_FOUND);
     } else {
-      console.error('Uncaught error during initializatin of aggregator', err);
+      console.error('Uncaught error during initialization of aggregator', err);
       process.exit(2);
     }
   }

@@ -6,6 +6,7 @@ describe('aggregation-process', () => {
   const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
   const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
   const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubSteps.js`;
+  const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubSteps2.js`;
   const aggregatorNonExistent = 'non-existant-file.js';
 
   it('needs a filename to the aggregator process script', () => {
@@ -77,6 +78,32 @@ describe('aggregation-process', () => {
     };
     return start({
       aggregatorFile : aggregatorFileSubsteps,
+      progress : ({message, currentStep, steps}) => {
+        if (currentStep > 0 && currentStep <= messages.length) {
+          expect(message).to.be(messages[currentStep - 1]);
+        }
+        expect(currentStep).to.eql(lastProgress.currentStep + 1);
+        expect(currentStep).to.be.lte(lastProgress.steps);
+        expect(steps).to.be(lastProgress.steps);
+        lastProgress.steps = steps;
+        lastProgress.currentStep = currentStep;
+        lastProgress.message = message;
+      }
+    }).then(() => {
+      expect(lastProgress.message);
+      expect(lastProgress.currentStep).to.be(lastProgress.steps);
+    });
+  });
+
+  // TODO maybe extend and overwrite function prototype for this...? :)
+  it.skip('can use the step function in sub-steps with an easier way to type', () => {
+    const messages = ['one', 'two', 'three', 'four', 'five', 'six', 'seven'];
+    const lastProgress = {
+      currentStep : -1,
+      steps : 8
+    };
+    return start({
+      aggregatorFile : aggregatorFileSubsteps2,
       progress : ({message, currentStep, steps}) => {
         if (currentStep > 0 && currentStep <= messages.length) {
           expect(message).to.be(messages[currentStep - 1]);

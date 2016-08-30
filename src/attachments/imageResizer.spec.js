@@ -1,7 +1,8 @@
-import {reduceImage, generateThumb} from './imageResizer';
-import {statOf} from './__tests__/fsHelpers';
+import fs from 'fs';
 import tmp from 'tmp';
 import expect from 'must';
+import {statOf} from './__tests__/fsHelpers';
+import {reduceImage, generateThumb} from './imageResizer';
 
 const fixtureFile = extension => `${__dirname}/__tests__/duck.${extension}`;
 const thumbFile = extension => `${__dirname}/__tests__/duck_thumb.${extension}`;
@@ -76,10 +77,15 @@ describe('reduceImage', () => {
     return function () {
       this.timeout(30 * 1000);
 
+      const tmpDir = tmp.dirSync();
+      const path = tmpDir.name;
+      fs.chmodSync(path, 444);
+
       return expect(reduceImage({
         fromPath : fixtureFile(extension),
-        toPath : `${__dirname}/__tests__/non/writable/path/file.txt`
-      })).to.reject.with.error(/eacces/i);
+        toPath : `${path}/file.txt`
+      })).to.reject.with.error(/eacces/i)
+        .then(() => tmpDir.removeCallback());
     };
   }
 
@@ -277,11 +283,20 @@ describe('generateThumb', () => {
   function test014(extension) {
     return function () {
       this.timeout(10 * 1000);
+
+      const tmpDir = tmp.dirSync();
+      const path = tmpDir.name;
+      fs.chmodSync(path, 444);
+
       return expect(generateThumb({
         fromPath : fixtureFile(extension),
-        toPath : `${__dirname}/__tests__/non/writable/path/file.txt`,
+        toPath : `${path}/file.txt`,
         imageWidth : 500
-      })).to.reject.with.error(/eacces/i);
+      })).to.reject.with.error(/eacces/i)
+        .then(() => {
+          console.log(`removing tempdir ${path}`);
+          tmpDir.removeCallback();
+        });
     };
   }
 
