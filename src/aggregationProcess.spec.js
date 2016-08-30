@@ -5,8 +5,8 @@ describe('aggregation-process', () => {
 
   const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
   const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
-  const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubSteps.js`;
-  const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubSteps2.js`;
+  const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubsteps.js`;
+  const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubsteps2.js`;
   const aggregatorNonExistent = 'non-existant-file.js';
 
   it('needs a filename to the aggregator process script', () => {
