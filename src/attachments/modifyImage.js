@@ -1,6 +1,6 @@
 import path from 'path';
+import {fork} from 'child_process';
 import _ from 'lodash';
-import {generateThumb, reduceImage} from './imageResizer';
 
 export function modifyImages({
   chunkSize = 1,
@@ -87,16 +87,11 @@ export function modifyImages({
               if (file.done) {
                 return Promise.resolve(file);
               } else if (resize) { // resize (and maybe minify)
-                return generateThumb({
-                  ...file,
-                  imageWidth,
-                  imageHeight,
-                  minify
-                }).then(() => file);
+                return startImageModificationProcess([file.fromPath, file.toPath, minify, imageWidth, imageHeight])
+                  .then(() => file);
               } else { // only minify
-                return reduceImage({
-                  ...file
-                }).then(() => file);
+                return startImageModificationProcess([file.fromPath, file.toPath, minify])
+                  .then(() => file);
               }
             }))
               .then(() => {
@@ -133,4 +128,18 @@ export function modifyImages({
       });
   }
     ;
+}
+
+function startImageModificationProcess(args) {
+  return new Promise((resolve, reject) => {
+    const cp = fork(`${__dirname}/modifyImageProcess.js`, args);
+
+    cp.on('close', code => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error('Could not modify image with args'));
+      }
+    });
+  });
 }
