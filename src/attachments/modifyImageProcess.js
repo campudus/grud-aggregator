@@ -7,30 +7,30 @@ const imageWidth = process.argv[5];
 const imageHeight = process.argv[6];
 
 if (imageWidth && imageHeight) {
-  const options = {
-    fromPath,
-    toPath,
-    minify,
+  const resizeOptions = {
+    fromPath : fromPath,
+    toPath : toPath,
+    minify : minify,
     imageWidth : (imageWidth === 'auto') ? 'auto' : JSON.parse(imageWidth),
     imageHeight : (imageHeight === 'auto') ? 'auto' : JSON.parse(imageHeight)
   };
 
-  imageResizer.generateThumb(options)
+  imageResizer.generateThumb(resizeOptions)
     .then(() => process.exit(0))
     .catch(err => {
-      console.log('Could not generate thumb', options, err);
+      console.log('Could not generate thumb', resizeOptions, err);
       process.exit(1);
     });
 } else {
-  const options = {
-    fromPath,
-    toPath,
-    minify
+  const reduceOptions = {
+    fromPath : fromPath,
+    toPath : toPath,
+    minify : minify
   };
-  imageResizer.reduceImage(options)
+  imageResizer.reduceImage(reduceOptions)
     .then(() => process.exit(0))
     .catch(err => {
-      console.log('Could not reduce image', options, err);
+      console.log('Could not reduce image', reduceOptions, err);
       process.exit(1);
     });
 }
