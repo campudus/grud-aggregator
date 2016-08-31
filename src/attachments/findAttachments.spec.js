@@ -1,7 +1,8 @@
 import expect from 'must';
 import data from './__tests__/entitiesWithAttachments.json';
-import { filter } from '../filter';
-import { findAttachments } from './findAttachments';
+import {filter} from '../filter';
+import {findAttachments} from './findAttachments';
+import _ from 'lodash';
 
 describe('findAttachments', () => {
 
@@ -77,13 +78,31 @@ describe('findAttachments', () => {
       });
   });
 
-  it('can get a filter that fetches only the wanted attachments', () => {
+  // TODO filter attachments to only get from specific tables / columns
+  it.skip('can get a filter that fetches only the wanted attachments', () => {
     return Promise.resolve(data)
       .then(findAttachments({
         filter : ['option', 'imagesStraight']
       }))
       .then(attachments => {
         expect(attachments.length).to.be(9);
+      });
+  });
+
+  it('can add mappings from externalName to internalName', () => {
+    return Promise.resolve(data)
+      .then(findAttachments({
+        withMapping : true
+      }))
+      .then(attachments => {
+        expect(attachments.length).to.be(9);
+        expect(_.every(attachments, a => {
+          return _.has(a, ['externalName']) &&
+            _.has(a, ['internalName']) &&
+            _.has(a, ['lang']) &&
+            _.has(a, ['url']) &&
+            _.has(a, ['path']);
+        })).to.be.true();
       });
   });
 
