@@ -1,5 +1,6 @@
 import expect from 'must';
 import data from './__tests__/entitiesWithAttachments.json';
+import resultWithAttachments from './__tests__/resultWithAttachments.json';
 import {filter} from '../filter';
 import {findAttachments} from './findAttachments';
 import _ from 'lodash';
@@ -113,15 +114,7 @@ describe('findAttachments', () => {
       }))
       .then(attachments => {
         expect(attachments.length).to.be(9);
-        expect(_.every(attachments, a => {
-          return _.has(a, ['attachment']) &&
-            _.has(a, ['attachment', 'title']) &&
-            _.has(a, ['attachment', 'description']) &&
-            _.has(a, ['attachment', 'externalName']) &&
-            _.has(a, ['attachment', 'internalName']) &&
-            _.has(a, ['attachment', 'mimeType']) &&
-            _.has(a, ['attachment', 'url']);
-        })).to.be.true();
+        expect(attachments).to.eql(resultWithAttachments);
       });
   });
 

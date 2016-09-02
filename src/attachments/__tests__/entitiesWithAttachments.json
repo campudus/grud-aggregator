@@ -110,6 +110,7 @@
                 "en": "22222222-2222-2222-0000-aaaaaaaaaaaa.png"
               },
               "mimeType": {
+                "de": "image/png",
                 "en": "image/png"
               },
               "url": {
@@ -192,6 +193,7 @@
                 "en": "33333333-3333-3333-0000-cccccccccccc.png"
               },
               "mimeType": {
+                "de": "image/png",
                 "en": "image/png"
               },
               "url": {
@@ -217,6 +219,7 @@
                 "en": "33333333-3333-3333-0000-eeeeeeeeeeee.png"
               },
               "mimeType": {
+                "de": "image/png",
                 "en": "image/png"
               },
               "url": {
@@ -279,16 +282,16 @@
           [
             {
               "title": {
-                "de": "second-Titel des Attachments 1",
-                "en": "second-Title of attachment 1"
+                "de": "Titel des Attachments 1",
+                "en": "Title of attachment 1"
               },
               "description": {
-                "de": "second-Beschreibung des Attachments 1",
-                "en": "second-Description of attachment 1"
+                "de": "Beschreibung des Attachments 1",
+                "en": "Description of attachment 1"
               },
               "externalName": {
-                "de": "second-1-deutsch.png",
-                "en": "second-1-english.png"
+                "de": "1-deutsch.png",
+                "en": "1-english.png"
               },
               "internalName": {
                 "en": "11111111-1111-1111-0000-111111111111.png"
@@ -328,6 +331,7 @@
                 "en": "22222222-2222-2222-0000-aaaaaaaaaaaa.png"
               },
               "mimeType": {
+                "de": "image/png",
                 "en": "image/png"
               },
               "url": {
@@ -410,6 +414,7 @@
                 "en": "33333333-3333-3333-0000-cccccccccccc.png"
               },
               "mimeType": {
+                "de": "image/png",
                 "en": "image/png"
               },
               "url": {
@@ -435,6 +440,7 @@
                 "en": "33333333-3333-3333-0000-eeeeeeeeeeee.png"
               },
               "mimeType": {
+                "de": "image/png",
                 "en": "image/png"
               },
               "url": {

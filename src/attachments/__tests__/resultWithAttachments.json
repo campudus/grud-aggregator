@@ -1,0 +1,266 @@
+[
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 1",
+        "en": "Title of attachment 1"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 1",
+        "en": "Description of attachment 1"
+      },
+      "externalName": {
+        "de": "1-deutsch.png",
+        "en": "1-english.png"
+      },
+      "internalName": {
+        "en": "11111111-1111-1111-0000-111111111111.png"
+      },
+      "mimeType": {
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/11111111-1111-1111-1111-111111111111/de/1-deutsch.png",
+        "en": "/files/11111111-1111-1111-1111-111111111111/en/1-english.png"
+      }
+    },
+    "path": "11111111-1111-1111-0000-111111111111.png",
+    "url": "/files/11111111-1111-1111-1111-111111111111/en/1-english.png"
+  },
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 2",
+        "en": "Title of attachment 2"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 2",
+        "en": "Description of attachment 2"
+      },
+      "externalName": {
+        "de": "2b-deutsch.png",
+        "en": "2a-english.png"
+      },
+      "internalName": {
+        "de": "22222222-2222-2222-0000-bbbbbbbbbbbb.png",
+        "en": "22222222-2222-2222-0000-aaaaaaaaaaaa.png"
+      },
+      "mimeType": {
+        "de": "image/png",
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png",
+        "en": "/files/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png"
+      }
+    },
+    "path": "22222222-2222-2222-0000-bbbbbbbbbbbb.png",
+    "url": "/files/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png"
+  },
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 2",
+        "en": "Title of attachment 2"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 2",
+        "en": "Description of attachment 2"
+      },
+      "externalName": {
+        "de": "2b-deutsch.png",
+        "en": "2a-english.png"
+      },
+      "internalName": {
+        "de": "22222222-2222-2222-0000-bbbbbbbbbbbb.png",
+        "en": "22222222-2222-2222-0000-aaaaaaaaaaaa.png"
+      },
+      "mimeType": {
+        "de": "image/png",
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png",
+        "en": "/files/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png"
+      }
+    },
+    "path": "22222222-2222-2222-0000-aaaaaaaaaaaa.png",
+    "url": "/files/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png"
+  },
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 3a",
+        "en": "Title of attachment 3a"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 3a",
+        "en": "Description of attachment 3a"
+      },
+      "externalName": {
+        "de": "3a-deutsch.png",
+        "en": "3a-english.png"
+      },
+      "internalName": {
+        "en": "33333333-3333-3333-0000-aaaaaaaaaaaa.png"
+      },
+      "mimeType": {
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/33333333-3333-3333-3333-aaaaaaaaaaaa/de/3a-deutsch.png",
+        "en": "/files/33333333-3333-3333-3333-aaaaaaaaaaaa/en/3a-english.png"
+      }
+    },
+    "path": "33333333-3333-3333-0000-aaaaaaaaaaaa.png",
+    "url": "/files/33333333-3333-3333-3333-aaaaaaaaaaaa/en/3a-english.png"
+  },
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 3b",
+        "en": "Title of attachment 3b"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 3b",
+        "en": "Description of attachment 3b"
+      },
+      "externalName": {
+        "de": "3b-deutsch.png",
+        "en": "3b-english.png"
+      },
+      "internalName": {
+        "en": "33333333-3333-3333-0000-bbbbbbbbbbbb.png"
+      },
+      "mimeType": {
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/33333333-3333-3333-3333-bbbbbbbbbbbb/de/3b-deutsch.png",
+        "en": "/files/33333333-3333-3333-3333-bbbbbbbbbbbb/en/3b-english.png"
+      }
+    },
+    "path": "33333333-3333-3333-0000-bbbbbbbbbbbb.png",
+    "url": "/files/33333333-3333-3333-3333-bbbbbbbbbbbb/en/3b-english.png"
+  },
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 3cd",
+        "en": "Title of attachment 3cd"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 3cd",
+        "en": "Description of attachment 3cd"
+      },
+      "externalName": {
+        "de": "3d-deutsch.png",
+        "en": "3c-english.png"
+      },
+      "internalName": {
+        "de": "33333333-3333-3333-0000-dddddddddddd.png",
+        "en": "33333333-3333-3333-0000-cccccccccccc.png"
+      },
+      "mimeType": {
+        "de": "image/png",
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/33333333-3333-3333-3333-dddddddddddd/de/3d-deutsch.png",
+        "en": "/files/33333333-3333-3333-3333-cccccccccccc/en/3c-english.png"
+      }
+    },
+    "path": "33333333-3333-3333-0000-dddddddddddd.png",
+    "url": "/files/33333333-3333-3333-3333-dddddddddddd/de/3d-deutsch.png"
+  },
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 3cd",
+        "en": "Title of attachment 3cd"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 3cd",
+        "en": "Description of attachment 3cd"
+      },
+      "externalName": {
+        "de": "3d-deutsch.png",
+        "en": "3c-english.png"
+      },
+      "internalName": {
+        "de": "33333333-3333-3333-0000-dddddddddddd.png",
+        "en": "33333333-3333-3333-0000-cccccccccccc.png"
+      },
+      "mimeType": {
+        "de": "image/png",
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/33333333-3333-3333-3333-dddddddddddd/de/3d-deutsch.png",
+        "en": "/files/33333333-3333-3333-3333-cccccccccccc/en/3c-english.png"
+      }
+    },
+    "path": "33333333-3333-3333-0000-cccccccccccc.png",
+    "url": "/files/33333333-3333-3333-3333-cccccccccccc/en/3c-english.png"
+  },
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 3ef",
+        "en": "Title of attachment 3ef"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 3ef",
+        "en": "Description of attachment 3ef"
+      },
+      "externalName": {
+        "de": "3f-deutsch.png",
+        "en": "3e-english.png"
+      },
+      "internalName": {
+        "de": "33333333-3333-3333-0000-ffffffffffff.png",
+        "en": "33333333-3333-3333-0000-eeeeeeeeeeee.png"
+      },
+      "mimeType": {
+        "de": "image/png",
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/33333333-3333-3333-3333-ffffffffffff/de/3f-deutsch.png",
+        "en": "/files/33333333-3333-3333-3333-eeeeeeeeeeee/en/3e-english.png"
+      }
+    },
+    "path": "33333333-3333-3333-0000-ffffffffffff.png",
+    "url": "/files/33333333-3333-3333-3333-ffffffffffff/de/3f-deutsch.png"
+  },
+  {
+    "attachment": {
+      "title": {
+        "de": "Titel des Attachments 3ef",
+        "en": "Title of attachment 3ef"
+      },
+      "description": {
+        "de": "Beschreibung des Attachments 3ef",
+        "en": "Description of attachment 3ef"
+      },
+      "externalName": {
+        "de": "3f-deutsch.png",
+        "en": "3e-english.png"
+      },
+      "internalName": {
+        "de": "33333333-3333-3333-0000-ffffffffffff.png",
+        "en": "33333333-3333-3333-0000-eeeeeeeeeeee.png"
+      },
+      "mimeType": {
+        "de": "image/png",
+        "en": "image/png"
+      },
+      "url": {
+        "de": "/files/33333333-3333-3333-3333-ffffffffffff/de/3f-deutsch.png",
+        "en": "/files/33333333-3333-3333-3333-eeeeeeeeeeee/en/3e-english.png"
+      }
+    },
+    "path": "33333333-3333-3333-0000-eeeeeeeeeeee.png",
+    "url": "/files/33333333-3333-3333-3333-eeeeeeeeeeee/en/3e-english.png"
+  }
+]
