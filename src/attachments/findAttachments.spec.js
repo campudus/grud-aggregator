@@ -106,4 +106,48 @@ describe('findAttachments', () => {
       });
   });
 
+  it('can keep the original attachment with the withAttachment option', () => {
+    return Promise.resolve(data)
+      .then(findAttachments({
+        withAttachment : true
+      }))
+      .then(attachments => {
+        expect(attachments.length).to.be(9);
+        expect(_.every(attachments, a => {
+          return _.has(a, ['attachment']) &&
+            _.has(a, ['attachment', 'title']) &&
+            _.has(a, ['attachment', 'description']) &&
+            _.has(a, ['attachment', 'externalName']) &&
+            _.has(a, ['attachment', 'internalName']) &&
+            _.has(a, ['attachment', 'mimeType']) &&
+            _.has(a, ['attachment', 'url']);
+        })).to.be.true();
+      });
+  });
+
+  it('can have the original attachment and a mapping at the same time', () => {
+    return Promise.resolve(data)
+      .then(findAttachments({
+        withAttachment : true,
+        withMapping : true
+      }))
+      .then(attachments => {
+        expect(attachments.length).to.be(9);
+        expect(_.every(attachments, a => {
+          return _.has(a, ['attachment']) &&
+            _.has(a, ['attachment', 'title']) &&
+            _.has(a, ['attachment', 'description']) &&
+            _.has(a, ['attachment', 'externalName']) &&
+            _.has(a, ['attachment', 'internalName']) &&
+            _.has(a, ['attachment', 'mimeType']) &&
+            _.has(a, ['attachment', 'url']) &&
+            _.has(a, ['externalName']) &&
+            _.has(a, ['internalName']) &&
+            _.has(a, ['lang']) &&
+            _.has(a, ['url']) &&
+            _.has(a, ['path']);
+        })).to.be.true();
+      });
+  });
+
 });

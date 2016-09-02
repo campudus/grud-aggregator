@@ -1,8 +1,10 @@
 import _ from 'lodash';
 
 export function findAttachments({
+  withAttachment = false,
   withMapping = false
 } = {
+  withAttachment : false,
   withMapping : false
 }) {
   return data => {
@@ -20,6 +22,9 @@ export function findAttachments({
                   att.lang = lang;
                   att.internalName = path;
                   att.externalName = attachment.url[lang];
+                }
+                if (withAttachment) {
+                  att.attachment = attachment;
                 }
                 return att;
               });
