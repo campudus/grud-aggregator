@@ -20,17 +20,23 @@ export function getEntitiesOfTable(tableName, options = {}) {
   const tables = {};
 
   return getTablesByNames(pimUrl, tableName)
-    .then(tablesFromPim => Promise.all(_.map(tablesFromPim, table => getTableAndLinkedTablesAsPromise(table.id))))
+    .then(tablesFromPim => Promise.all(
+      _.map(tablesFromPim, table => getTableAndLinkedTablesAsPromise(table.id, disableFollow))
+    ))
     .then(() => mapRowsOfTables(tables));
 
-  function getTableAndLinkedTablesAsPromise(tableId) {
+  function getTableAndLinkedTablesAsPromise(tableId, disableFollow) {
     if (!promises[tableId]) {
       const promiseOfLinkedTables = getCompleteTable(pimUrl, tableId)
         .then(table => {
           tables[tableId] = table;
           return Promise.all(_.flatMap(table.columns, column => {
-            if (!promises[column.toTable] && column.kind === 'link') {
-              return [getTableAndLinkedTablesAsPromise(column.toTable)];
+            if (!promises[column.toTable] && column.kind === 'link' && !isDisabled(column.name, disableFollow)) {
+              const filteredDisableFollow = _.filter(disableFollow, columns => {
+                return !_.isEmpty(columns) && _.head(columns) === column.name;
+              });
+              const nextDisableFollow = _.map(filteredDisableFollow, columns => _.tail(columns));
+              return [getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow)];
             } else {
               return [];
             }
@@ -45,6 +51,10 @@ export function getEntitiesOfTable(tableName, options = {}) {
     }
   }
 
+  function isDisabled(columnName, disableFollow) {
+    const disabledFollowInTable = _.filter(disableFollow, columns => _.size(columns) === 1);
+    return _.some(disabledFollowInTable, columns => _.head(columns) === columnName);
+  }
 }
 
 function mapRowsOfTables(tables) {
