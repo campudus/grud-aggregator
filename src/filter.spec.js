@@ -13,6 +13,10 @@ import filterFixture8 from './__tests__/filterFixture8.json';
 import filterFixture9 from './__tests__/filterFixture9.json';
 import filterFixture10 from './__tests__/filterFixture10.json';
 import filterFixture11 from './__tests__/filterFixture11.json';
+import filterFixture12 from './__tests__/filterFixture12.json';
+import filterFixture13 from './__tests__/filterFixture13.json';
+import testTableDisableFollow2 from './__tests__/testTableDisableFollow2.json';
+import missingEntitiesFixture from './__tests__/missingEntitiesFixture.json';
 import {filter} from './filter';
 import expect from 'must';
 
@@ -243,6 +247,76 @@ describe('filter', () => {
       .then(data => {
         expect(data).to.eql(filterFixture8);
         return data;
+      });
+  });
+
+  it('will ignore missing tables as links but emit a warning', () => {
+    const warn = console.warn;
+    let warned = false;
+    console.warn = function () {
+      warned = true;
+      warn.apply(this, arguments);
+    };
+    return Promise.resolve(testTableDisableFollow2)
+      .then(filter({
+        path : ['testTable']
+      }))
+      .then(result => {
+        expect(result).to.eql(filterFixture12);
+        expect(warned).to.be(true);
+      });
+  });
+
+  it('will ignore missing tables as links and can ignore the warning', () => {
+    const warn = console.warn;
+    let warned = false;
+    console.warn = function () {
+      warned = true;
+      warn.apply(this, arguments);
+    };
+    return Promise.resolve(testTableDisableFollow2)
+      .then(filter({
+        path : ['testTable'],
+        ignoreMissing : true
+      }))
+      .then(result => {
+        expect(result).to.eql(filterFixture12);
+        expect(warned).to.be(false);
+      });
+  });
+
+  it('will ignore missing entities but emit a warning', () => {
+    const warn = console.warn;
+    let warned = false;
+    console.warn = function () {
+      warned = true;
+      warn.apply(this, arguments);
+    };
+    return Promise.resolve(missingEntitiesFixture)
+      .then(filter({
+        path : ['testTable']
+      }))
+      .then(result => {
+        expect(result).to.eql(filterFixture13);
+        expect(warned).to.be(true);
+      });
+  });
+
+  it('will ignore missing entities and can ignore the warning', () => {
+    const warn = console.warn;
+    let warned = false;
+    console.warn = function () {
+      warned = true;
+      warn.apply(this, arguments);
+    };
+    return Promise.resolve(missingEntitiesFixture)
+      .then(filter({
+        path : ['testTable'],
+        ignoreMissing : true
+      }))
+      .then(result => {
+        expect(result).to.eql(filterFixture13);
+        expect(warned).to.be(false);
       });
   });
 

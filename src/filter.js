@@ -5,11 +5,13 @@ const defaultPredicate = () => true;
 export function filter({
   excludeBacklinks = false,
   path = [],
-  predicate = defaultPredicate
+  predicate = defaultPredicate,
+  ignoreMissing = false
 } = {
   excludeBacklinks : false,
   path : [],
-  predicate : defaultPredicate
+  predicate : defaultPredicate,
+  ignoreMissing : false
 }) {
 
   return data => {
@@ -30,7 +32,15 @@ export function filter({
             rows[row.id] = row;
           }
         }, {});
-        addDependenciesOfTable(data, accTables, accTables[firstTable.id], excludeBacklinks, `${firstTable.id}`);
+
+        addDependenciesOfTable(
+          data,
+          accTables,
+          accTables[firstTable.id],
+          excludeBacklinks,
+          `${firstTable.id}`,
+          ignoreMissing
+        );
 
         if (excludeBacklinks) {
           return _.omitBy(removeBrokenLinksToFirstTable(accTables, firstTable.id), table => _.isEmpty(table.rows));
@@ -70,12 +80,16 @@ function removeBrokenLinksToFirstTable(accTables, firstTableId) {
   });
 }
 
-function addDependenciesOfTable(allTables, accTables, currentTable, excludeBacklinks, excludedTableId) {
+function addDependenciesOfTable(allTables, accTables, currentTable, excludeBacklinks, excludedTableId, ignoreMissing) {
 
   const linksOfCurrentTableToCheck = _.transform(currentTable.columns, (acc, column, idx) => {
     if (column.kind === 'link') {
       acc[column.toTable] = _.reduce(currentTable.rows, (linkIds, rowValue) => {
-        return _.union(linkIds, _.map(rowValue.values[idx], link => link.id));
+        if (_.isNil(rowValue)) {
+          return linkIds;
+        } else {
+          return _.union(linkIds, _.map(rowValue.values[idx], link => link.id));
+        }
       }, acc[column.toTable] || []);
     }
   }, {});
@@ -92,10 +106,31 @@ function addDependenciesOfTable(allTables, accTables, currentTable, excludeBackl
   const filteredMissing = _.omitBy(missing, _.isEmpty);
 
   _.forEach(filteredMissing, (linksInTable, tableId) => {
-    accTables[tableId].rows = _.transform(linksInTable, (rows, toRowId) => {
-      rows[toRowId] = allTables[tableId].rows[toRowId];
-    }, accTables[tableId].rows || {});
-    addDependenciesOfTable(allTables, accTables, accTables[tableId], excludeBacklinks, excludedTableId);
+    if (_.isNil(accTables[tableId])) {
+      if (!ignoreMissing) {
+        console.warn('Linking to a missing table - ignoring!', ignoreMissing);
+      }
+    } else {
+      accTables[tableId].rows = _.transform(linksInTable, (rows, toRowId) => {
+        const entity = allTables[tableId].rows[toRowId];
+        if (_.isNil(entity)) {
+          if (!ignoreMissing) {
+            console.warn('Missing entity', toRowId, 'in table', tableId);
+          }
+        } else {
+          rows[toRowId] = entity;
+        }
+      }, accTables[tableId].rows || {});
+
+      addDependenciesOfTable(
+        allTables,
+        accTables,
+        accTables[tableId],
+        excludeBacklinks,
+        excludedTableId,
+        ignoreMissing
+      );
+    }
   });
 
 }
