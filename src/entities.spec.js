@@ -1,8 +1,8 @@
 import expect from 'must';
 import express from 'express';
-import { getEntitiesOfTable } from './entities';
+import {getEntitiesOfTable} from './entities';
 
-describe('getEntitiesOfTable', () => {
+describe.only('getEntitiesOfTable', () => {
 
   const TEST_PORT = 14432;
   const SERVER_URL = `http://localhost:${TEST_PORT}`;
@@ -52,6 +52,45 @@ describe('getEntitiesOfTable', () => {
         expect(result['1'].rows).to.be.an.object();
         expect(Object.keys(result['1'].rows)).to.eql(['1', '2', '3', '4']);
       });
+  });
+
+  it('requires a pimUrl', () => {
+    expect(() => {
+      getEntitiesOfTable('someTable');
+    }).to.throw(/missing option pimUrl/i);
+  });
+
+  it('requires a pimUrl as string', () => {
+    expect(() => {
+      getEntitiesOfTable('someTable', {pimUrl : true});
+    }).to.throw(/pimUrl.*string/i);
+    expect(() => {
+      getEntitiesOfTable('someTable', {pimUrl : false});
+    }).to.throw(/pimUrl.*string/i);
+    expect(() => {
+      getEntitiesOfTable('someTable', {pimUrl : []});
+    }).to.throw(/pimUrl.*string/i);
+    expect(() => {
+      getEntitiesOfTable('someTable', {pimUrl : 123});
+    }).to.throw(/pimUrl.*string/i);
+    expect(() => {
+      getEntitiesOfTable('someTable', {pimUrl : SERVER_URL});
+    }).not.to.throw();
+  });
+
+  describe('setting disableFollow', () => {
+
+    it('requires an array of arrays', () => {
+      expect(() => {
+        getEntitiesOfTable('someTable', {pimUrl : SERVER_URL, disableFollow : true})
+      }).to.throw(/array of columns/i);
+    });
+
+    it('should not download the specified links', () => {
+      // FIXME correct test
+      expect(true).to.be.false();
+    });
+
   });
 
 });

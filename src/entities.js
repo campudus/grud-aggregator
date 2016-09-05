@@ -1,8 +1,20 @@
 import _ from 'lodash';
-import { getCompleteTable, getTablesByNames } from './pimApi';
+import {getCompleteTable, getTablesByNames} from './pimApi';
 
-export function getEntitiesOfTable(tableName, options) {
-  const {pimUrl} = options;
+export function getEntitiesOfTable(tableName, options = {}) {
+  const {disableFollow = [], pimUrl} = options;
+
+  if (_.isNil(pimUrl)) {
+    throw new Error('Missing option pimUrl');
+  }
+
+  if (!_.isString(pimUrl)) {
+    throw new Error('Expecting pimUrl to be a string');
+  }
+
+  if (!_.isArray(disableFollow) || _.some(disableFollow, columns => !_.isArray(columns))) {
+    throw new Error('Expecting an array of columns as disableFollow');
+  }
 
   const promises = {};
   const tables = {};
