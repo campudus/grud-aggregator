@@ -100,19 +100,22 @@
     "2": {
       "id": 2,
       "name": "anotherTestTable",
+      "displayName": "Test table 2",
       "columns": [
         {
           "id": 1,
           "name": "testColumn",
           "kind": "shorttext",
-          "identifier": true
+          "identifier": true,
+          "displayName": "Some other text"
         },
         {
           "id": 2,
           "name": "otherColumn",
           "kind": "shorttext",
           "identifier": false,
-          "languageType": "language"
+          "languageType": "language",
+          "displayName": "Some other multilanguage text"
         }
       ],
       "rows": {
@@ -467,28 +470,33 @@
     "1": {
       "id": 1,
       "name": "testTable",
+      "displayName": "Test Tabelle",
       "columns": [
         {
           "id": 1,
           "name": "slShorttext",
           "kind": "shorttext",
-          "identifier": true
+          "identifier": true,
+          "displayName": "Irgendein Text"
         },
         {
           "id": 2,
           "name": "mlShorttext",
           "kind": "shorttext",
-          "languageType": "language"
+          "languageType": "language",
+          "displayName": "Irgendein mehrsprachiger Text"
         },
         {
           "id": 3,
           "name": "slAttachment",
-          "kind": "attachment"
+          "kind": "attachment",
+          "displayName": "Irgendein sprachneutrales Attachment"
         },
         {
           "id": 4,
           "name": "someLink",
           "kind": "link",
+          "displayName": "Irgendein Link",
           "toTable": 3
         }
       ],
@@ -546,19 +554,22 @@
     "2": {
       "id": 2,
       "name": "anotherTestTable",
+      "displayName": "Test table 2",
       "columns": [
         {
           "id": 1,
           "name": "testColumn",
           "kind": "shorttext",
-          "identifier": true
+          "identifier": true,
+          "displayName": "Some other text"
         },
         {
           "id": 2,
           "name": "otherColumn",
           "kind": "shorttext",
           "identifier": false,
-          "languageType": "language"
+          "languageType": "language",
+          "displayName": "Some other multilanguage text"
         }
       ],
       "rows": {
@@ -585,26 +596,30 @@
     "3": {
       "id": 3,
       "name": "thirdTestTable",
+      "displayName": "Test Tabelle 3",
       "columns": [
         {
           "id": 1,
           "name": "anotherLink",
           "kind": "link",
           "identifier": true,
+          "displayName": "Ein weiterer Link",
           "toTable": 2
         },
         {
           "id": 2,
           "name": "identifier",
           "kind": "shorttext",
-          "identifier": true
+          "identifier": true,
+          "displayName": "Identifizierungsspalte"
         },
         {
           "id": 3,
           "name": "someNumber",
           "kind": "number",
           "identifier": false,
-          "languageType": "country"
+          "languageType": "country",
+          "displayName": "Irgendeine Zahl"
         }
       ],
       "rows": {

@@ -27,12 +27,10 @@ describe('tablesToLanguages', () => {
     ).to.resolve.to.true();
   });
 
-  it('translates the table name correctly', () => {
-
+  it('translates the table display name correctly', () => {
     const result = tablesToLanguages(langtags)(tablesFixture);
     expect(result['de']['1']['displayName']).to.eql(resultFixture['de']['1']['displayName']);
     expect(result['en']['1']['displayName']).to.eql(resultFixture['en']['1']['displayName']);
-
   });
 
   it('translates the table description correctly', () => {
