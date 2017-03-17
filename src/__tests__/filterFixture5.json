@@ -127,6 +127,7 @@
     "rows": {
       "1": {
         "id": 1,
+        "final": true,
         "values": [
           "something1 links to 1",
           {

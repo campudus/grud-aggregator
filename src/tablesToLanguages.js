@@ -40,7 +40,9 @@ export function tablesToLanguages(langtags) {
           return [_.omit(updatedColumn, ['toColumn', 'multilanguage'])];
         }),
         rows : _.transform(rows, (rows, row) => {
+
           rows[row.id] = {
+            final : row.final || false,
             values : _.flatMap(columns, (column, index) => {
               const {kind, multilanguage, languageType} = column;
               const rowValue = row.values[index];

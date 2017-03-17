@@ -40,6 +40,7 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             "something1 links to 1",
             "Hallo",
@@ -67,6 +68,7 @@
           ]
         },
         "2": {
+          "final": false,
           "values": [
             "something2 links to 3 and 4",
             "Hallo2",
@@ -78,6 +80,7 @@
           ]
         },
         "3": {
+          "final": false,
           "values": [
             "something3 links to none",
             "Hallo3",
@@ -86,6 +89,7 @@
           ]
         },
         "4": {
+          "final": false,
           "values": [
             "something4 links to second row",
             "Hallo4",
@@ -120,18 +124,21 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             "some other thing",
             "Welcome"
           ]
         },
         "2": {
+          "final": false,
           "values": [
             "some other thing in second row",
             null
           ]
         },
         "3": {
+          "final": false,
           "values": [
             "a third item that is never linked",
             "Hallo"
@@ -172,6 +179,7 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             [
               1
@@ -184,6 +192,7 @@
           ]
         },
         "2": {
+          "final": false,
           "values": [
             [
               2
@@ -196,6 +205,7 @@
           ]
         },
         "3": {
+          "final": false,
           "values": [
             [
               1,
@@ -209,6 +219,7 @@
           ]
         },
         "4": {
+          "final": false,
           "values": [
             [],
             "my fourth row identifying text, linking to no rows in anotherTestTable",
@@ -219,6 +230,7 @@
           ]
         },
         "5": {
+          "final": false,
           "values": [
             [],
             "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked",
@@ -272,6 +284,7 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             "something1 links to 1",
             "Hello",
@@ -299,6 +312,7 @@
           ]
         },
         "2": {
+          "final": false,
           "values": [
             "something2 links to 3 and 4",
             "Hello2",
@@ -310,6 +324,7 @@
           ]
         },
         "3": {
+          "final": false,
           "values": [
             "something3 links to none",
             "Hello3",
@@ -318,6 +333,7 @@
           ]
         },
         "4": {
+          "final": false,
           "values": [
             "something4 links to second row",
             "Hello4",
@@ -355,18 +371,21 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             "some other thing",
             "Welcome"
           ]
         },
         "2": {
+          "final": false,
           "values": [
             "some other thing in second row",
             null
           ]
         },
         "3": {
+          "final": false,
           "values": [
             "a third item that is never linked",
             "Hello"
@@ -407,6 +426,7 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             [
               1
@@ -419,6 +439,7 @@
           ]
         },
         "2": {
+          "final": false,
           "values": [
             [
               2
@@ -431,6 +452,7 @@
           ]
         },
         "3": {
+          "final": false,
           "values": [
             [
               1,
@@ -444,6 +466,7 @@
           ]
         },
         "4": {
+          "final": false,
           "values": [
             [],
             "my fourth row identifying text, linking to no rows in anotherTestTable",
@@ -454,6 +477,7 @@
           ]
         },
         "5": {
+          "final": false,
           "values": [
             [],
             "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked",
@@ -502,6 +526,7 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             "something1 links to 1",
             "Hallo",
@@ -521,6 +546,7 @@
           ]
         },
         "2": {
+          "final": false,
           "values": [
             "something2 links to 3 and 4",
             "Hallo2",
@@ -532,6 +558,7 @@
           ]
         },
         "3": {
+          "final": false,
           "values": [
             "something3 links to none",
             "Hallo3",
@@ -540,6 +567,7 @@
           ]
         },
         "4": {
+          "final": false,
           "values": [
             "something4 links to second row",
             "Hallo4",
@@ -574,18 +602,21 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             "some other thing",
             "Welcome"
           ]
         },
         "2": {
+          "final": false,
           "values": [
             "some other thing in second row",
             null
           ]
         },
         "3": {
+          "final": false,
           "values": [
             "a third item that is never linked",
             "Hallo"
@@ -624,6 +655,7 @@
       ],
       "rows": {
         "1": {
+          "final": false,
           "values": [
             [
               1
@@ -636,6 +668,7 @@
           ]
         },
         "2": {
+          "final": false,
           "values": [
             [
               2
@@ -648,6 +681,7 @@
           ]
         },
         "3": {
+          "final": false,
           "values": [
             [
               1,
@@ -661,6 +695,7 @@
           ]
         },
         "4": {
+          "final": false,
           "values": [
             [],
             "my fourth row identifying text, linking to no rows in anotherTestTable",
@@ -671,6 +706,7 @@
           ]
         },
         "5": {
+          "final": false,
           "values": [
             [],
             "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked",
