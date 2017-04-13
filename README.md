@@ -15,6 +15,28 @@ Use `npm run test` to run all tests once. `npm run test:watch` runs the tests wh
 The aggregator module includes many functions that can be used in a chain of promises. It provides a way to easily fork
 an aggregation process and use this to pull data from GRUD (tableaux) and reference it.
 
+The easiest way to show how this works is by example. Imagine the following code 
+
+```javascript
+const GOOD_RATING_THRESHOLD = 4;
+
+export default function start(step, progress, options) {
+  return getEntitiesOfTable("songs", {pimUrl: "http://localhost:8080"})
+    .then(step("Filter all songs with a good rating"))
+    .then(filter({
+      path: ["songs", "album"]
+      predicate: album => album.rating > GOOD_RATING_THRESHOLD
+    }))
+    .then(step("Printing complete duration of all good songs"))
+    .then(tablesCaintainingSongsWithGoodAlbummRatings => {
+      const tables = referencer()(tablesCaintainingSongsWithGoodAlbummRatings);
+      const songs = tables.songs;
+      const summedDuration = songs.reduce((duration, song) => duration + song.duration);
+      console.log("Duration of all songs with rating >", GOOD_RATING_THRESHOLD, " =", summedDuration);
+    });
+}
+```
+
 #### `start(aggregatorFile, progress[, options])`
 
 * `aggregatorFile` is the file that should be spawn into a process. It consists of an exported default function 
@@ -31,13 +53,37 @@ passed to some of the helper functions used in the promise chains. `options` is 
 * `options` is an object containing variables that should be sent to the newly spawned aggregation process. The options 
 will be serialized to JSON and back, therefore it is not possible to pass functions.
 
-#### `getEntitiesOfTable(tableName, options)`
+#### `getEntitiesOfTable(tableName, options): Promise[GrudTables]`
 
 * `tableName` is the entry point for downloading all entities that are (recursively) linked.
 * `options` is an object consisting of the following options:
   * `pimUrl`, `String` (required) - The URL pointing to the GRUD instance.
   * `disableFollow`, `Array[String]`(optional) - An array of column names that will not be followed.
 
+#### `filter(options): GrudTables => GrudTables`
+
+This function filters all entities in the promise chain matching a specific condition.
+
+* `options` is an object containing:
+  * `path` (`Array[String]`, reguired) - The path to follow for the `predicate`.
+  * `predicate` (`(object) => Boolean`, required) - This function checks `object` for a specified condition.
+
+#### `referencer([options]): (GrudTables) => GrudEntities`
+
+This function can be called in the promise chain or used in client code to denormalize the entities. Use it to simplify
+following links.
+
+* `options` may contain
+  * `withLanguages` (`Boolean`, optional, defaults to `false`), this assumes that the first level are languages and not 
+    tables. When using `tablesToLanguages`, this needs to be set, otherwise it can not correctly denormalize the 
+    entities. If set to `false`, all multi-language columns will still contain objects with te values for all languages.
+
+#### `tablesToLanguages(fallbacks): GrudTables => MultilanguageGrudTables`
+
+This function separates the tables into languages set in the `fallbacks` object. 
+
+* `fallbacks` is an object containing language keys as keys and an `Array[LanguageKey]` to define fallback languages to 
+  use if the selected language is not set.
 
 ## Release Notes
 
