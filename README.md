@@ -28,8 +28,16 @@ passed to some of the helper functions used in the promise chains. `options` is 
   * `currentStep` - the current step. Use `steps` and `currentStep` to calculate the percentage of your progress.
   * `message` - An optional message of the current step.
   * `error` - Usually `false`, but if there was an error during aggregation, you can make the outer process aware of it.
+* `options` is an object containing variables that should be sent to the newly spawned aggregation process. The options 
+will be serialized to JSON and back, therefore it is not possible to pass functions.
 
-#### 
+#### `getEntitiesOfTable(tableName, options)`
+
+* `tableName` is the entry point for downloading all entities that are (recursively) linked.
+* `options` is an object consisting of the following options:
+  * `pimUrl`, `String` (required) - The URL pointing to the GRUD instance.
+  * `disableFollow`, `Array[String]`(optional) - An array of column names that will not be followed.
+
 
 ## Release Notes
 
