@@ -58,7 +58,11 @@ will be serialized to JSON and back, therefore it is not possible to pass functi
 * `tableName` is the entry point for downloading all entities that are (recursively) linked.
 * `options` is an object consisting of the following options:
   * `pimUrl`, `String` (required) - The URL pointing to the GRUD instance.
-  * `disableFollow`, `Array[String]`(optional) - An array of column names that will not be followed.
+  * `disableFollow`, `Array[String]` (optional) - Defaults to empty array. An array of column names that will not be 
+    followed.
+  * `maxEntriesPerRequest`, `Integer` (optional) - Defaults to 500. An integer greater than 0 to limit the amount of 
+    work on each request done by the Grud instance. Higher values make less requests but may run into timeouts if the 
+    Grud instance is not able to handle as much data.
 
 #### `filter(options): GrudTables => GrudTables`
 
@@ -86,6 +90,15 @@ This function separates the tables into languages set in the `fallbacks` object.
   use if the selected language is not set.
 
 ## Release Notes
+
+### 2.5.0 - Feature 
+
+* Use pagination to request data from Grud. Introduced `maxEntriesPerRequest` option to `getEntitiesOfTable()` to set 
+this limit.
+
+### 2.4.0 - Feature
+
+* Expose `getAllTables` to retrieve all table names of a Grud instance.
 
 ### 2.0.0 - Breaking change
 

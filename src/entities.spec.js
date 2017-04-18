@@ -106,27 +106,68 @@ describe('getEntitiesOfTable', () => {
     return expect(getEntitiesOfTable('testTable', {pimUrl: SERVER_URL})).to.resolve.not.to.null();
   });
 
-  it('may download in a paged fashion', () => {
-    return getEntitiesOfTable('testTable', {
-      pimUrl: SERVER_URL,
-      maxEntriesPerRequest: 2
-    }).then(result => {
-      expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
-      expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
-      expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=4&limit=2/.test(elem))).to.be.true();
+  describe('maxEntriesPerRequest setting', () => {
 
-      expect(result['1'].rows).not.to.be.an.array();
-      expect(result['1'].rows).to.be.an.object();
-      expect(Object.keys(result['1'].rows)).to.eql(['1', '2', '3', '4']);
+    it('may download in a paged fashion', () => {
+      return getEntitiesOfTable('testTable', {
+        pimUrl: SERVER_URL,
+        maxEntriesPerRequest: 2
+      }).then(result => {
+        expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
+        expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=4&limit=2/.test(elem))).to.be.true();
+
+        expect(result['1'].rows).not.to.be.an.array();
+        expect(result['1'].rows).to.be.an.object();
+        expect(Object.keys(result['1'].rows)).to.eql(['1', '2', '3', '4']);
+      });
     });
+
+    it('will throw on a negative number', () => {
+      expect(() => getEntitiesOfTable('testTable', {
+        pimUrl: SERVER_URL,
+        maxEntriesPerRequest: -1
+      })).to.throw();
+      expect(() => getEntitiesOfTable('testTable', {
+        pimUrl: SERVER_URL,
+        maxEntriesPerRequest: -5143
+      })).to.throw();
+    });
+
+    it('will throw on NaN', () => {
+      expect(() => getEntitiesOfTable('testTable', {
+        pimUrl: SERVER_URL,
+        maxEntriesPerRequest: NaN
+      })).to.throw();
+      expect(() => getEntitiesOfTable('testTable', {
+        pimUrl: SERVER_URL,
+        maxEntriesPerRequest: "hello"
+      })).to.throw();
+    });
+
+    it('will throw on non-integer values', () => {
+      expect(() => getEntitiesOfTable('testTable', {
+        pimUrl: SERVER_URL,
+        maxEntriesPerRequest: 0.5
+      })).to.throw();
+      expect(() => getEntitiesOfTable('testTable', {
+        pimUrl: SERVER_URL,
+        maxEntriesPerRequest: -6.5
+      })).to.throw();
+      expect(() => getEntitiesOfTable('testTable', {
+        pimUrl: SERVER_URL,
+        maxEntriesPerRequest: Math.PI
+      })).to.throw();
+    });
+
   });
 
   describe('setting disableFollow', () => {

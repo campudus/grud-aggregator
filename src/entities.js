@@ -16,6 +16,10 @@ export function getEntitiesOfTable(tableName, options = {}) {
     throw new Error('Expecting an array of columns as disableFollow');
   }
 
+  if (!_.isInteger(maxEntriesPerRequest) || maxEntriesPerRequest <= 0) {
+    throw new Error('Expecting maxEntriesPerRequest to be a positive integer greater than 0');
+  }
+
   const promises = {};
   const tables = {};
 
