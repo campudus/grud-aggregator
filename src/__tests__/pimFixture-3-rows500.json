@@ -1,0 +1,139 @@
+{
+  "page": {
+    "offset": 0,
+    "limit": 500,
+    "totalSize": 5
+  },
+  "rows": [
+    {
+      "id": 1,
+      "values": [
+        [
+          [
+            {
+              "id": 1,
+              "value": [
+                "some other thing"
+              ]
+            }
+          ],
+          "my identifying text, linking to row 1 in anotherTestTable"
+        ],
+        [
+          {
+            "id": 1,
+            "value": [
+              "some other thing"
+            ]
+          }
+        ],
+        "my identifying text, linking to row 1 in anotherTestTable",
+        {
+          "de": "11",
+          "en": "12"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "values": [
+        [
+          [
+            {
+              "id": 2,
+              "value": [
+                "some other thing in second row"
+              ]
+            }
+          ],
+          "my second row identifying text, linking to row 2 in anotherTestTable"
+        ],
+        [
+          {
+            "id": 2,
+            "value": [
+              "some other thing in second row"
+            ]
+          }
+        ],
+        "my second row identifying text, linking to row 2 in anotherTestTable",
+        {
+          "de": "21",
+          "en": "22"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "values": [
+        [
+          [
+            {
+              "id": 1,
+              "value": [
+                "some other thing"
+              ]
+            },
+            {
+              "id": 2,
+              "value": [
+                "some other thing in second row"
+              ]
+            }
+          ],
+          "my third row identifying text, linking to both rows in anotherTestTable"
+        ],
+        [
+          {
+            "id": 1,
+            "value": [
+              "some other thing"
+            ]
+          },
+          {
+            "id": 2,
+            "value": [
+              "some other thing in second row"
+            ]
+          }
+        ],
+        "my third row identifying text, linking to both rows in anotherTestTable",
+        {
+          "de": "31",
+          "en": "32"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "values": [
+        [
+          [],
+          "my fourth row identifying text, linking to no rows in anotherTestTable"
+        ],
+        [],
+        "my fourth row identifying text, linking to no rows in anotherTestTable",
+        {
+          "de": "41",
+          "en": "42"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "values": [
+        [
+          [],
+          "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked"
+        ],
+        [],
+        "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked",
+        {
+          "de": "51",
+          "en": "52"
+        }
+      ]
+    }
+  ],
+  "status": "ok"
+}

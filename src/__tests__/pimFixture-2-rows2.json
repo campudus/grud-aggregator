@@ -1,0 +1,19 @@
+{
+  "page": {
+    "offset": 2,
+    "limit": 2,
+    "totalSize": 3
+  },
+  "rows": [
+    {
+      "id": 3,
+      "values": [
+        "a third item that is never linked",
+        {
+          "en": "Hello"
+        }
+      ]
+    }
+  ],
+  "status": "ok"
+}

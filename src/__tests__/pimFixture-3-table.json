@@ -1,0 +1,17 @@
+{
+  "id": 3,
+  "name": "thirdTestTable",
+  "langtags": [
+    "de",
+    "en"
+  ],
+  "displayName": {
+    "de": "Test Tabelle 3",
+    "en": "Test table 3"
+  },
+  "description": {
+    "de": "Eine dritte Tabelle zum Testen",
+    "en": "A third table to test"
+  },
+  "status": "ok"
+}

@@ -1,0 +1,126 @@
+{
+  "page": {
+    "offset": 0,
+    "limit": 2,
+    "totalSize": 4
+  },
+  "rows": [
+    {
+      "id": 1,
+      "values": [
+        "something1 links to 1",
+        {
+          "de": "Hallo",
+          "en": "Hello"
+        },
+        [
+          {
+            "title": {
+              "de": "Titel des ersten Attachments",
+              "en": "Title of first attachment"
+            },
+            "description": {
+              "de": "Beschreibung des ersten Attachments",
+              "en": "Description of first attachment"
+            },
+            "externalName": {
+              "de": "externer-name.txt",
+              "en": "external-name.png"
+            },
+            "internalName": {
+              "de": "66845e6e-f186-4fa1-9540-0c6e9b1c4cfb.txt",
+              "en": "fd0488b2-4b59-474c-80af-461b379b0ce3.png"
+            },
+            "mimeType": {
+              "de": "text/plain",
+              "en": "image/png"
+            },
+            "url": {
+              "de": "/files/b1446686-bcec-4a6e-a2b5-54b209167499/de/externer-name.txt",
+              "en": "/files/66035e76-ee68-48af-8cdd-d46a3cb63de4/en/external-name.png"
+            }
+          },
+          {
+            "title": {
+              "de": "Titel des zweiten Attachments",
+              "en": "Title of second attachment"
+            },
+            "description": {
+              "en": "Description of second attachment"
+            },
+            "externalName": {
+              "de": "irgendeine-datei.txt",
+              "en": "some-file.txt"
+            },
+            "internalName": {
+              "en": "588a91d7-f526-4849-88b2-7ab20195038d.txt"
+            },
+            "mimeType": {
+              "en": "text/plain"
+            },
+            "url": {
+              "en": "/files/8a2bed0e-fb6e-42bb-a3fd-ec9da2bdd9a6/en/some-file.txt"
+            }
+          }
+        ],
+        [
+          {
+            "id": 1,
+            "value": [
+              [
+                {
+                  "id": 1,
+                  "value": [
+                    "some other thing"
+                  ]
+                }
+              ],
+              "my identifying text, linking to row 1 in anotherTestTable"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": 2,
+      "values": [
+        "something2 links to 3 and 4",
+        {
+          "de": "Hallo2",
+          "en": "Hello2"
+        },
+        [],
+        [
+          {
+            "id": 3,
+            "value": [
+              [
+                {
+                  "id": 1,
+                  "value": [
+                    "some other thing"
+                  ]
+                },
+                {
+                  "id": 2,
+                  "value": [
+                    "some other thing in second row"
+                  ]
+                }
+              ],
+              "my third row identifying text, linking to both rows in anotherTestTable"
+            ]
+          },
+          {
+            "id": 4,
+            "value": [
+              [],
+              "my fourth row identifying text, linking to no rows in anotherTestTable"
+            ]
+          }
+        ]
+      ]
+    }
+  ],
+  "status": "ok"
+}

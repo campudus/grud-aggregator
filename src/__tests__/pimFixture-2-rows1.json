@@ -1,0 +1,28 @@
+{
+  "page": {
+    "offset": 0,
+    "limit": 2,
+    "totalSize": 3
+  },
+  "rows": [
+    {
+      "id": 1,
+      "values": [
+        "some other thing",
+        {
+          "en": "Welcome"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "values": [
+        "some other thing in second row",
+        {
+          "en": "Good day"
+        }
+      ]
+    }
+  ],
+  "status": "ok"
+}

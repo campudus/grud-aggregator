@@ -1,0 +1,117 @@
+{
+  "columns": [
+    {
+      "id": 1,
+      "name": "slShorttext",
+      "kind": "shorttext",
+      "identifier": true,
+      "multilanguage": false,
+      "displayName": {
+        "de": "Irgendein Text",
+        "en": "Some text"
+      },
+      "description": {
+        "de": "Eine Beschreibung der einfachen Textspalte",
+        "en": "A description of the simple text column"
+      }
+    },
+    {
+      "id": 2,
+      "name": "mlShorttext",
+      "kind": "shorttext",
+      "multilanguage": true,
+      "languageType": "language",
+      "displayName": {
+        "de": "Irgendein mehrsprachiger Text",
+        "en": "Some multilanguage text"
+      },
+      "description": {
+        "de": "Eine Beschreibung der mehrsprachigen Textspalte",
+        "en": "A description of the multilanguage text column"
+      }
+    },
+    {
+      "id": 3,
+      "name": "slAttachment",
+      "kind": "attachment",
+      "multilanguage": false,
+      "displayName": {
+        "de": "Irgendein sprachneutrales Attachment",
+        "en": "Some language neutral attachment"
+      },
+      "description": {
+        "de": "Eine Beschreibung der sprachneutralen Attachmentspalte",
+        "en": "A description of the language neutral attachment column"
+      }
+    },
+    {
+      "id": 4,
+      "name": "someLink",
+      "kind": "link",
+      "multilanguage": false,
+      "displayName": {
+        "de": "Irgendein Link",
+        "en": "Some link"
+      },
+      "description": {
+        "de": "Eine Beschreibung der Linkspalte",
+        "en": "A description of the link column"
+      },
+      "toTable": 3,
+      "toColumn": {
+        "id": 0,
+        "ordering": 0,
+        "name": "ID",
+        "kind": "concat",
+        "multilanguage": false,
+        "identifier": true,
+        "displayName": {},
+        "description": {},
+        "concats": [
+          {
+            "id": 1,
+            "name": "anotherLink",
+            "kind": "link",
+            "identifier": true,
+            "multilanguage": false,
+            "displayName": {
+              "de": "Ein weiterer Link",
+              "en": "Some other link"
+            },
+            "description": {
+              "de": "Eine Beschreibung dieser Linkspalte",
+              "en": "A description of this link column"
+            },
+            "toTable": 2,
+            "toColumn": {
+              "id": 1,
+              "name": "testColumn",
+              "kind": "shorttext",
+              "identifier": true,
+              "multilanguage": false,
+              "displayName": {
+                "en": "Some other text"
+              },
+              "description": {
+                "en": "A description of the simple text column in table 2"
+              }
+            }
+          },
+          {
+            "id": 2,
+            "name": "identifier",
+            "kind": "shorttext",
+            "identifier": true,
+            "multilanguage": false,
+            "displayName": {
+              "de": "Identifizierungsspalte",
+              "en": "Identification column"
+            },
+            "description": {}
+          }
+        ]
+      }
+    }
+  ],
+  "status": "ok"
+}

@@ -1,0 +1,37 @@
+{
+  "page": {
+    "offset": 0,
+    "limit": 500,
+    "totalSize": 3
+  },
+  "rows": [
+    {
+      "id": 1,
+      "values": [
+        "some other thing",
+        {
+          "en": "Welcome"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "values": [
+        "some other thing in second row",
+        {
+          "en": "Good day"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "values": [
+        "a third item that is never linked",
+        {
+          "en": "Hello"
+        }
+      ]
+    }
+  ],
+  "status": "ok"
+}

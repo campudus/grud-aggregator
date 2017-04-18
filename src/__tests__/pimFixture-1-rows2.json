@@ -1,0 +1,49 @@
+{
+  "page": {
+    "offset": 2,
+    "limit": 2,
+    "totalSize": 4
+  },
+  "rows": [
+    {
+      "id": 3,
+      "values": [
+        "something3 links to none",
+        {
+          "de": "Hallo3",
+          "en": "Hello3"
+        },
+        [],
+        []
+      ]
+    },
+    {
+      "id": 4,
+      "values": [
+        "something4 links to second row",
+        {
+          "de": "Hallo3",
+          "en": "Hello3"
+        },
+        [],
+        [
+          {
+            "id": 2,
+            "value": [
+              [
+                {
+                  "id": 2,
+                  "value": [
+                    "some other thing in second row"
+                  ]
+                }
+              ],
+              "my second row identifying text, linking to row 2 in anotherTestTable"
+            ]
+          }
+        ]
+      ]
+    }
+  ],
+  "status": "ok"
+}

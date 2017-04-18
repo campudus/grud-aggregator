@@ -1,0 +1,68 @@
+{
+  "page": {
+    "offset": 0,
+    "limit": 2,
+    "totalSize": 5
+  },
+  "rows": [
+    {
+      "id": 1,
+      "values": [
+        [
+          [
+            {
+              "id": 1,
+              "value": [
+                "some other thing"
+              ]
+            }
+          ],
+          "my identifying text, linking to row 1 in anotherTestTable"
+        ],
+        [
+          {
+            "id": 1,
+            "value": [
+              "some other thing"
+            ]
+          }
+        ],
+        "my identifying text, linking to row 1 in anotherTestTable",
+        {
+          "de": "11",
+          "en": "12"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "values": [
+        [
+          [
+            {
+              "id": 2,
+              "value": [
+                "some other thing in second row"
+              ]
+            }
+          ],
+          "my second row identifying text, linking to row 2 in anotherTestTable"
+        ],
+        [
+          {
+            "id": 2,
+            "value": [
+              "some other thing in second row"
+            ]
+          }
+        ],
+        "my second row identifying text, linking to row 2 in anotherTestTable",
+        {
+          "de": "21",
+          "en": "22"
+        }
+      ]
+    }
+  ],
+  "status": "ok"
+}

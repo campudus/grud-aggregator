@@ -1,0 +1,11 @@
+{
+  "id": 2,
+  "name": "anotherTestTable",
+  "displayName": {
+    "en": "Test table 2"
+  },
+  "description": {
+    "en": "Another table to test"
+  },
+  "status": "ok"
+}

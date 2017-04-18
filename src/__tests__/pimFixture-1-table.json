@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "name": "testTable",
+  "displayName": {
+    "de": "Test Tabelle",
+    "en": "Test table"
+  },
+  "description": {
+    "de": "Eine Tabelle zum Testen",
+    "en": "A table to test"
+  },
+  "status": "ok"
+}

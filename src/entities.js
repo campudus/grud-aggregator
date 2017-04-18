@@ -2,7 +2,7 @@ import _ from 'lodash';
 import {getCompleteTable, getTablesByNames} from './pimApi';
 
 export function getEntitiesOfTable(tableName, options = {}) {
-  const {disableFollow = [], pimUrl} = options;
+  const {disableFollow = [], pimUrl, maxEntriesPerRequest = 500} = options;
 
   if (_.isNil(pimUrl)) {
     throw new Error('Missing option pimUrl');
@@ -21,13 +21,13 @@ export function getEntitiesOfTable(tableName, options = {}) {
 
   return getTablesByNames(pimUrl, tableName)
     .then(tablesFromPim => Promise.all(
-      _.map(tablesFromPim, table => getTableAndLinkedTablesAsPromise(table.id, disableFollow))
+      _.map(tablesFromPim, table => getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest))
     ))
     .then(() => mapRowsOfTables(tables));
 
-  function getTableAndLinkedTablesAsPromise(tableId, disableFollow) {
+  function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest) {
     if (!promises[tableId]) {
-      const promiseOfLinkedTables = getCompleteTable(pimUrl, tableId)
+      const promiseOfLinkedTables = getCompleteTable(pimUrl, tableId, maxEntriesPerRequest)
         .then(table => {
           tables[tableId] = table;
           return Promise.all(_.flatMap(table.columns, column => {
@@ -36,7 +36,7 @@ export function getEntitiesOfTable(tableName, options = {}) {
                 return !_.isEmpty(columns) && _.head(columns) === column.name;
               });
               const nextDisableFollow = _.map(filteredDisableFollow, columns => _.tail(columns));
-              return [getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow)];
+              return [getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow, maxEntriesPerRequest)];
             } else {
               return [];
             }

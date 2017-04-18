@@ -1,0 +1,25 @@
+{
+  "page": {
+    "offset": 4,
+    "limit": 2,
+    "totalSize": 5
+  },
+  "rows": [
+    {
+      "id": 5,
+      "values": [
+        [
+          [],
+          "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked"
+        ],
+        [],
+        "my fifth row identifying text, linking to no rows in anotherTestTable and not gets linked",
+        {
+          "de": "51",
+          "en": "52"
+        }
+      ]
+    }
+  ],
+  "status": "ok"
+}
