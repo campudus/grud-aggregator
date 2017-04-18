@@ -23,9 +23,7 @@ export function getCompleteTable(pimUrl, tableId, maxEntries) {
       return request('GET', `${pimUrl}/tables/${tableId}/rows?offset=0&limit=${maxEntries}`).then(result => {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
-        const requests = Array
-          .apply(null, {length : elements - 1})
-          .map((x, idx) => `${pimUrl}/tables/${tableId}/rows?offset=${(idx + 1) * maxEntries}&limit=${maxEntries}`);
+        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements);
 
         return requests.reduce((promise, requestUrl) => {
           return promise
@@ -42,6 +40,14 @@ export function getCompleteTable(pimUrl, tableId, maxEntries) {
         }));
       });
     });
+}
+
+function createArrayOfRequests(pimUrl, tableId, maxEntries, elements) {
+  const arr = [];
+  for (let i = 0; i < elements - 1; i++) {
+    arr.push(`${pimUrl}/tables/${tableId}/rows?offset=${(i + 1) * maxEntries}&limit=${maxEntries}`);
+  }
+  return arr;
 }
 
 function request(requestMethod, url) {
