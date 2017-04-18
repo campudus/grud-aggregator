@@ -79,14 +79,14 @@ describe('getEntitiesOfTable', () => {
   });
 
   it('finds the server with all entities', () => {
-    return getEntitiesOfTable('testTable', {pimUrl: SERVER_URL})
+    return getEntitiesOfTable('testTable', {pimUrl : SERVER_URL})
       .then(result => {
         expect(Object.keys(result)).to.eql(['1', '2', '3']);
       });
   });
 
   it('maps the rows to their object ids', () => {
-    return getEntitiesOfTable('testTable', {pimUrl: SERVER_URL})
+    return getEntitiesOfTable('testTable', {pimUrl : SERVER_URL})
       .then(result => {
         expect(result['1'].rows).not.to.be.an.array();
         expect(result['1'].rows).to.be.an.object();
@@ -99,19 +99,19 @@ describe('getEntitiesOfTable', () => {
   });
 
   it('requires a pimUrl as string', () => {
-    expect(() => getEntitiesOfTable('testTable', {pimUrl: true})).to.throw(/pimUrl.*string/i);
-    expect(() => getEntitiesOfTable('testTable', {pimUrl: false})).to.throw(/pimUrl.*string/i);
-    expect(() => getEntitiesOfTable('testTable', {pimUrl: []})).to.throw(/pimUrl.*string/i);
-    expect(() => getEntitiesOfTable('testTable', {pimUrl: 123})).to.throw(/pimUrl.*string/i);
-    return expect(getEntitiesOfTable('testTable', {pimUrl: SERVER_URL})).to.resolve.not.to.null();
+    expect(() => getEntitiesOfTable('testTable', {pimUrl : true})).to.throw(/pimUrl.*string/i);
+    expect(() => getEntitiesOfTable('testTable', {pimUrl : false})).to.throw(/pimUrl.*string/i);
+    expect(() => getEntitiesOfTable('testTable', {pimUrl : []})).to.throw(/pimUrl.*string/i);
+    expect(() => getEntitiesOfTable('testTable', {pimUrl : 123})).to.throw(/pimUrl.*string/i);
+    return expect(getEntitiesOfTable('testTable', {pimUrl : SERVER_URL})).to.resolve.not.to.null();
   });
 
   describe('maxEntriesPerRequest setting', () => {
 
     it('may download in a paged fashion', () => {
       return getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        maxEntriesPerRequest: 2
+        pimUrl : SERVER_URL,
+        maxEntriesPerRequest : 2
       }).then(result => {
         expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
         expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
@@ -133,38 +133,38 @@ describe('getEntitiesOfTable', () => {
 
     it('will throw on a negative number', () => {
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        maxEntriesPerRequest: -1
+        pimUrl : SERVER_URL,
+        maxEntriesPerRequest : -1
       })).to.throw();
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        maxEntriesPerRequest: -5143
+        pimUrl : SERVER_URL,
+        maxEntriesPerRequest : -5143
       })).to.throw();
     });
 
     it('will throw on NaN', () => {
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        maxEntriesPerRequest: NaN
+        pimUrl : SERVER_URL,
+        maxEntriesPerRequest : NaN
       })).to.throw();
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        maxEntriesPerRequest: "hello"
+        pimUrl : SERVER_URL,
+        maxEntriesPerRequest : 'hello'
       })).to.throw();
     });
 
     it('will throw on non-integer values', () => {
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        maxEntriesPerRequest: 0.5
+        pimUrl : SERVER_URL,
+        maxEntriesPerRequest : 0.5
       })).to.throw();
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        maxEntriesPerRequest: -6.5
+        pimUrl : SERVER_URL,
+        maxEntriesPerRequest : -6.5
       })).to.throw();
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        maxEntriesPerRequest: Math.PI
+        pimUrl : SERVER_URL,
+        maxEntriesPerRequest : Math.PI
       })).to.throw();
     });
 
@@ -174,15 +174,15 @@ describe('getEntitiesOfTable', () => {
 
     it('requires an array', () => {
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        disableFollow: true
+        pimUrl : SERVER_URL,
+        disableFollow : true
       })).to.throw(/array of columns/i);
     });
 
     it('requires an array of arrays', () => {
       expect(() => getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        disableFollow: [
+        pimUrl : SERVER_URL,
+        disableFollow : [
           'abc', 2, true
         ]
       })).to.throw(/array of columns/i);
@@ -190,8 +190,8 @@ describe('getEntitiesOfTable', () => {
 
     it('should not download the specified links', () => {
       return getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        disableFollow: [
+        pimUrl : SERVER_URL,
+        disableFollow : [
           ['someLink']
         ]
       }).then(result => {
@@ -201,8 +201,8 @@ describe('getEntitiesOfTable', () => {
 
     it('should not download specified links in sub-tables if defined', () => {
       return getEntitiesOfTable('testTable', {
-        pimUrl: SERVER_URL,
-        disableFollow: [
+        pimUrl : SERVER_URL,
+        disableFollow : [
           ['someLink', 'anotherLink']
         ]
       }).then(result => {

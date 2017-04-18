@@ -13,10 +13,10 @@ export function getTablesByNames(pimUrl, ...names) {
 export function getCompleteTable(pimUrl, tableId, maxEntries) {
   return request('GET', `${pimUrl}/tables/${tableId}`)
     .then(table => {
-      const tableWithoutMeta = _.omit(table, ["status"]);
+      const tableWithoutMeta = _.omit(table, ['status']);
       return request('GET', `${pimUrl}/tables/${tableId}/columns`).then(result => ({
         ...tableWithoutMeta,
-        columns: result.columns
+        columns : result.columns
       }));
     })
     .then(tableAndColumns => {
@@ -24,7 +24,7 @@ export function getCompleteTable(pimUrl, tableId, maxEntries) {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
         const requests = Array
-          .apply(null, {length: elements - 1})
+          .apply(null, {length : elements - 1})
           .map((x, idx) => `${pimUrl}/tables/${tableId}/rows?offset=${(idx + 1) * maxEntries}&limit=${maxEntries}`);
 
         return requests.reduce((promise, requestUrl) => {
@@ -33,12 +33,12 @@ export function getCompleteTable(pimUrl, tableId, maxEntries) {
               return request('GET', requestUrl)
                 .then(rowResult => ({
                   ...tableColumnsAndRows,
-                  rows: tableColumnsAndRows.rows.concat(rowResult.rows)
+                  rows : tableColumnsAndRows.rows.concat(rowResult.rows)
                 }));
             });
         }, Promise.resolve({
           ...tableAndColumns,
-          rows: result.rows
+          rows : result.rows
         }));
       });
     });
