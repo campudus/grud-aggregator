@@ -72,6 +72,23 @@ This function filters all entities in the promise chain matching a specific cond
   * `path` (`Array[String]`, reguired) - The path to follow for the `predicate`.
   * `predicate` (`(object) => Boolean`, required) - This function checks `object` for a specified condition.
 
+#### `exclude(options): GrudTables => GrudTables`
+
+To remove columns from the resulting GrudTables.
+
+* `options` is an object containing:
+  * `paths` (`Array[Array[String]]`, optional) - The paths contain the names of the table and column to kick. For 
+  example:
+```
+[
+  ['tableA', 'columnInTableA'],
+  ['tableB', 'columnInTableB']
+]
+```
+  * `predicate` (`(GrudColumn, GrudTable) => Boolean`, optional) - A function to check if this column should be excluded
+  in the result.
+  * `preserveConcats` (`Boolean`, optional, defaults to `true`) - To remove all concat columns, set the flag to `false`. 
+
 #### `referencer([options]): (GrudTables) => GrudEntities`
 
 This function can be called in the promise chain or used in client code to denormalize the entities. Use it to simplify
@@ -90,6 +107,10 @@ This function separates the tables into languages set in the `fallbacks` object.
   use if the selected language is not set.
 
 ## Release Notes
+
+### 2.6.0 - Feature
+
+* Add `exclude` to filter out data.
 
 ### 2.5.0 - Feature 
 
