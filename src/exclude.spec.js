@@ -6,6 +6,7 @@ import fixtureDeletedLinkColumn from './__tests__/excludeFixture-deletedLinkColu
 import fixtureDeletedMultipleColumns from './__tests__/excludeFixture-deletedMultipleColumns.json';
 import fixtureDeletedMultipleColumnsInTables from './__tests__/excludeFixture-deletedMultipleColumnsInTables.json';
 import fixtureDeletedColumnsAndConcats from './__tests__/excludeFixture-deletedColumnsAndConcats.json';
+import fixtureDeletedByFunction from './__tests__/excludeFixture-deletedByFunction.json';
 import {exclude} from './exclude';
 import expect from 'must';
 
@@ -98,7 +99,7 @@ describe('exclude', () => {
     return Promise
       .resolve(tablesFixture)
       .then(exclude({
-        paths:[
+        paths: [
           ['testTable', 'mlShorttext']
         ]
       }))
@@ -111,7 +112,7 @@ describe('exclude', () => {
     return Promise
       .resolve(tablesFixture)
       .then(exclude({
-        paths:[
+        paths: [
           ['testTable', 'someLink']
         ]
       }))
@@ -124,7 +125,7 @@ describe('exclude', () => {
     return Promise
       .resolve(tablesFixture)
       .then(exclude({
-        paths:[
+        paths: [
           ['testTable', 'slAttachment'],
           ['testTable', 'mlShorttext']
         ]
@@ -138,7 +139,7 @@ describe('exclude', () => {
     return Promise
       .resolve(tablesFixture)
       .then(exclude({
-        paths:[
+        paths: [
           ['testTable', 'slShorttext'],
           ['thirdTestTable', 'someNumber'],
           ['testTable', 'someLink']
@@ -153,7 +154,7 @@ describe('exclude', () => {
     return Promise
       .resolve(tablesFixture)
       .then(exclude({
-        paths:[
+        paths: [
           ['testTable', 'slShorttext'],
           ['thirdTestTable', 'someNumber'],
           ['testTable', 'someLink']
@@ -162,6 +163,21 @@ describe('exclude', () => {
       }))
       .then(data => {
         expect(data).to.eql(fixtureDeletedColumnsAndConcats);
+      });
+  });
+
+  it('can use a predicate function to determine if a column should be kicked', () => {
+    return Promise
+      .resolve(tablesFixture)
+      .then(exclude({
+        predicate: (column, table) => (
+          table.name !== "anotherTestTable"
+          && column.kind === 'shorttext'
+          && !column.multilanguage
+        )
+      }))
+      .then(data => {
+        expect(data).to.eql(fixtureDeletedByFunction);
       });
   });
 

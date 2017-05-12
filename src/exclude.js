@@ -1,7 +1,7 @@
 import {filter, flatten, flatMap, mapValues, transform} from "lodash";
 
 export function exclude(options = {}) {
-  const {paths = [], preserveConcats = true} = options;
+  const {paths = [], predicate = () => false, preserveConcats = true} = options;
 
   return data => {
     const tablesToKickNames = flatten(paths.filter(p => p.length === 1));
@@ -17,10 +17,11 @@ export function exclude(options = {}) {
 
   function removeColumns(table, columnNamesToRemove, removeLinksToTableIds) {
     const columnsToKickIndices = transform(table.columns, (ids, column, idx) => {
+      const shouldKickByFunction = predicate(column, table);
       const shouldKickColumn = columnNamesToRemove.includes(column.name);
       const shouldKickLink = column.kind === "link" && removeLinksToTableIds.includes(column.toTable);
       const shouldKickConcat = !preserveConcats && column.kind === "concat";
-      if (shouldKickColumn || shouldKickLink || shouldKickConcat) {
+      if (shouldKickColumn || shouldKickByFunction || shouldKickLink || shouldKickConcat) {
         ids.push(idx);
       }
     }, []);
