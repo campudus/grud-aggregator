@@ -1,6 +1,6 @@
 {
   "name": "tableaux-aggregator",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Core aggregator functions",
   "main": "lib/index.js",
   "files": [
