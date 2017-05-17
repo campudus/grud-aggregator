@@ -1,5 +1,5 @@
-import fs from 'fs-extra';
-import expect from 'must';
+import fs from "fs-extra";
+import expect from "must";
 
 export function cleanUpWhenDone(tmpDir) {
   return promise => promise
@@ -23,17 +23,17 @@ export function statOf(file) {
   });
 }
 
-describe('statOf', () => {
+describe("statOf", () => {
 
-  it('gives correct information', () => {
+  it("gives correct information", () => {
     return statOf(__filename)
       .then(stats => {
         expect(stats.size).to.be.gt(0);
       });
   });
 
-  it('can result in an error if file not exists', () => {
-    return statOf('non-existant')
+  it("can result in an error if file not exists", () => {
+    return statOf("non-existant")
       .catch(err => {
         expect(err).not.to.be.null();
       });

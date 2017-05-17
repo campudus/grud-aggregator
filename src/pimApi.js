@@ -1,8 +1,8 @@
-import _ from 'lodash';
-import superagent from 'superagent';
+import _ from "lodash";
+import superagent from "superagent";
 
 export function getAllTables(pimUrl) {
-  return request('GET', `${pimUrl}/tables`).then(data => data.tables);
+  return request("GET", `${pimUrl}/tables`).then(data => data.tables);
 }
 
 export function getTablesByNames(pimUrl, ...names) {
@@ -11,16 +11,16 @@ export function getTablesByNames(pimUrl, ...names) {
 }
 
 export function getCompleteTable(pimUrl, tableId, maxEntries) {
-  return request('GET', `${pimUrl}/tables/${tableId}`)
+  return request("GET", `${pimUrl}/tables/${tableId}`)
     .then(table => {
-      const tableWithoutMeta = _.omit(table, ['status']);
-      return request('GET', `${pimUrl}/tables/${tableId}/columns`).then(result => ({
+      const tableWithoutMeta = _.omit(table, ["status"]);
+      return request("GET", `${pimUrl}/tables/${tableId}/columns`).then(result => ({
         ...tableWithoutMeta,
-        columns : result.columns
+        columns: result.columns
       }));
     })
     .then(tableAndColumns => {
-      return request('GET', `${pimUrl}/tables/${tableId}/rows?offset=0&limit=${maxEntries}`).then(result => {
+      return request("GET", `${pimUrl}/tables/${tableId}/rows?offset=0&limit=${maxEntries}`).then(result => {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
         const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements);
@@ -28,15 +28,15 @@ export function getCompleteTable(pimUrl, tableId, maxEntries) {
         return requests.reduce((promise, requestUrl) => {
           return promise
             .then(tableColumnsAndRows => {
-              return request('GET', requestUrl)
+              return request("GET", requestUrl)
                 .then(rowResult => ({
                   ...tableColumnsAndRows,
-                  rows : tableColumnsAndRows.rows.concat(rowResult.rows)
+                  rows: tableColumnsAndRows.rows.concat(rowResult.rows)
                 }));
             });
         }, Promise.resolve({
           ...tableAndColumns,
-          rows : result.rows
+          rows: result.rows
         }));
       });
     });

@@ -1,12 +1,13 @@
 export default function start(step) {
-  return Promise.resolve(0)
-    .then(add('one'))
-    .then(mult('two'))
-    .then(add('three'))
-    .then(mult('four'))
-    .then(add('five'))
-    .then(mult('six'))
-    .then(step('seven'));
+  return Promise
+    .resolve(0)
+    .then(add("one"))
+    .then(mult("two"))
+    .then(add("three"))
+    .then(mult("four"))
+    .then(add("five"))
+    .then(mult("six"))
+    .then(step("seven"));
 
   function add(message) {
     return step(message)

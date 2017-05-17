@@ -1,42 +1,44 @@
-import _ from 'lodash';
-import cp from 'child_process';
+import * as _ from "lodash";
+import cp from "child_process";
 
-export function start({
-  aggregatorFile,
-  progress,
-  ...rest
-} = {}) {
+export function start(
+  {
+    aggregatorFile,
+    progress,
+    ...rest
+  } = {}) {
 
   if (_.isNil(aggregatorFile) || _.isEmpty(aggregatorFile)) {
-    throw new Error('Need to supply the filename of the aggregator');
+    throw new Error("Need to supply the filename of the aggregator");
   }
 
   if (!_.isNil(progress) && !_.isFunction(progress)) {
-    throw new Error('Expects function for optional `progress` parameter');
+    throw new Error("Expects function for optional `progress` parameter");
   }
 
-  return Promise.resolve()
+  return Promise
+    .resolve()
     .then(() => new Promise((resolve, reject) => {
-      const child = cp.fork(`${__dirname}/forker.js`, {silent : false});
+      const child = cp.fork(`${__dirname}/forker.js`, {silent: false});
       let initialized = false;
       let fulfilled = false;
       let allDone = false;
       let allSteps = 0;
 
-      child.on('message', ({action, payload}) => {
-        if (action === 'INIT') {
+      child.on("message", ({action, payload}) => {
+        if (action === "INIT") {
           initialized = true;
           allSteps = payload.stepsInAggregator;
           if (progress) {
             progress({
-              message : `Starting aggregator ${aggregatorFile}`,
-              currentStep : 0,
-              steps : allSteps
+              message: `Starting aggregator ${aggregatorFile}`,
+              currentStep: 0,
+              steps: allSteps
             });
           }
-        } else if (action === 'PROGRESS' && progress) {
+        } else if (action === "PROGRESS" && progress) {
           progress(payload);
-        } else if (action === 'DONE') {
+        } else if (action === "DONE") {
           if (progress) {
             progress(payload);
           }
@@ -44,9 +46,10 @@ export function start({
           child.kill();
         }
       });
-      child.on('close', fulfill);
 
-      child.on('error', err => {
+      child.on("close", fulfill);
+
+      child.on("error", err => {
         if (!fulfilled) {
           fulfilled = true;
           console.log(`Aggregator broke due to an uncaught error ${err.message}`);
@@ -54,13 +57,13 @@ export function start({
         }
       });
 
-      child.on('exit', fulfill);
+      child.on("exit", fulfill);
 
       child.send({
-        action : 'run',
-        data : {
+        action: "run",
+        data: {
           aggregatorFile,
-          options : rest
+          options: rest
         }
       });
 
@@ -78,7 +81,10 @@ export function start({
           } else if (code !== 0) {
             reject(new Error(`Aggregator broke, possible uncaught exception. Exit code ${code}`));
           } else {
-            resolve({code, signal});
+            resolve({
+              code,
+              signal
+            });
           }
         }
       }

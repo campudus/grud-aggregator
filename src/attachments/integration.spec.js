@@ -1,14 +1,14 @@
-import expect from 'must';
-import express from 'express';
-import tmp from 'tmp';
-import fs from 'fs-extra';
-import entitiesWithAttachments from './__tests__/entitiesWithAttachments.json';
-import { Database } from './database';
-import { downloader } from './downloader';
-import { findAttachments } from './findAttachments';
-import { filter } from '../filter';
+import expect from "must";
+import express from "express";
+import tmp from "tmp";
+import fs from "fs-extra";
+import entitiesWithAttachments from "./__tests__/entitiesWithAttachments.json";
+import {Database} from "./database";
+import {downloader} from "./downloader";
+import {findAttachments} from "./findAttachments";
+import {filter} from "../filter";
 
-describe('attachments integration', () => {
+describe("attachments integration", () => {
 
   const TEST_PORT = 14432;
   const SERVER_FIXTURES = `${__dirname}/__tests__/server`;
@@ -18,7 +18,7 @@ describe('attachments integration', () => {
   before(() => {
     return new Promise((resolve, reject) => {
       const app = express();
-      app.use('/files', express.static(SERVER_FIXTURES));
+      app.use("/files", express.static(SERVER_FIXTURES));
       server = app.listen(TEST_PORT, function (err) {
         if (err) {
           return reject(err);
@@ -33,21 +33,22 @@ describe('attachments integration', () => {
     server.close(done);
   });
 
-  it('is possible to download single attachment', () => {
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+  it("is possible to download single attachment", () => {
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/attachments.json`);
 
-    return Promise.resolve(entitiesWithAttachments)
+    return Promise
+      .resolve(entitiesWithAttachments)
       .then(filter({
-        path : ['testTable'],
-        predicate : v => v.identifier === '1'
+        path: ["testTable"],
+        predicate: v => v.identifier === "1"
       }))
       .then(findAttachments())
       .then(downloader({
         database,
-        pimUrl : SERVER_URL,
-        downloadPath : outPath
+        pimUrl: SERVER_URL,
+        downloadPath: outPath
       }))
       .then(downloaded => {
         expect(downloaded.length).to.be(1);
@@ -67,21 +68,22 @@ describe('attachments integration', () => {
       .then(cleanUp(tmpDir));
   });
 
-  it('can download multiple attachments at once', () => {
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+  it("can download multiple attachments at once", () => {
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/attachments.json`);
 
-    return Promise.resolve(entitiesWithAttachments)
+    return Promise
+      .resolve(entitiesWithAttachments)
       .then(filter({
-        path : ['testTable'],
-        predicate : v => v.identifier === '2'
+        path: ["testTable"],
+        predicate: v => v.identifier === "2"
       }))
       .then(findAttachments())
       .then(downloader({
         database,
-        pimUrl : SERVER_URL,
-        downloadPath : outPath
+        pimUrl: SERVER_URL,
+        downloadPath: outPath
       }))
       .then(downloaded => {
         expect(downloaded.length).to.be(2);
@@ -100,17 +102,18 @@ describe('attachments integration', () => {
       .then(cleanUp(tmpDir));
   });
 
-  it('can download all sorts of attachments at once', () => {
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+  it("can download all sorts of attachments at once", () => {
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/attachments.json`);
 
-    return Promise.resolve(entitiesWithAttachments)
+    return Promise
+      .resolve(entitiesWithAttachments)
       .then(findAttachments())
       .then(downloader({
         database,
-        pimUrl : SERVER_URL,
-        downloadPath : outPath
+        pimUrl: SERVER_URL,
+        downloadPath: outPath
       }))
       .then(downloaded => {
         expect(downloaded.length).to.be(9);
@@ -136,9 +139,9 @@ describe('attachments integration', () => {
         ]);
       })
       .then(([
-        expected1, expected2a, expected2b, expected3a, expected3b, expected3c, expected3d, expected3e, expected3f,
-        actual1, actual2a, actual2b, actual3a, actual3b, actual3c, actual3d, actual3e, actual3f
-      ]) => {
+               expected1, expected2a, expected2b, expected3a, expected3b, expected3c, expected3d, expected3e, expected3f,
+               actual1, actual2a, actual2b, actual3a, actual3b, actual3c, actual3d, actual3e, actual3f
+             ]) => {
         expect(actual1.size).to.be(expected1.size);
         expect(actual2a.size).to.be(expected2a.size);
         expect(actual2b.size).to.be(expected2b.size);

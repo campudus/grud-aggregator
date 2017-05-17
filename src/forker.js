@@ -1,17 +1,17 @@
-'use strict';
-const fs = require('fs-extra');
-require('babel-register');
-const errors = require('./errorCodes.js');
+"use strict";
+const fs = require("fs-extra");
+require("babel-register");
+const errors = require("./errorCodes.js");
 
-process.on('message', function (event) {
+process.on("message", function (event) {
   switch (event.action) {
-    case 'run' :
+    case "run":
       mkDirs(event.data.options.dataDirectory)
         .then(() => {
           run(event.data.aggregatorFile, event.data.options);
         })
-        .catch((err)=> {
-          console.error('Error creating data directory.', err);
+        .catch((err) => {
+          console.error("Error creating data directory.", err);
           process.exit(2);
         });
       break;
@@ -47,31 +47,31 @@ function run(aggregatorFile, options) {
     aggregator(step, progress, options)
       .then(() => {
         process.send({
-          action : 'DONE',
-          payload : {
-            error : false,
-            message : 'Done.',
-            currentStep : allSteps,
-            steps : allSteps
+          action: "DONE",
+          payload: {
+            error: false,
+            message: "Done.",
+            currentStep: allSteps,
+            steps: allSteps
           }
         });
       })
       .catch(err => {
-        console.error('Error during aggregation', err);
+        console.error("Error during aggregation", err);
         process.exit(3);
       });
 
     process.send({
-      action : 'INIT',
-      payload : {
-        stepsInAggregator : allSteps
+      action: "INIT",
+      payload: {
+        stepsInAggregator: allSteps
       }
     });
   } catch (err) {
-    if (err.code === 'MODULE_NOT_FOUND') {
+    if (err.code === "MODULE_NOT_FOUND") {
       process.exit(errors.MODULE_NOT_FOUND);
     } else {
-      console.error('Uncaught error during initialization of aggregator', err);
+      console.error("Uncaught error during initialization of aggregator", err);
       process.exit(2);
     }
   }
@@ -82,11 +82,11 @@ function run(aggregatorFile, options) {
     return data => {
       lastStep = lastStep + 1;
       process.send({
-        action : 'PROGRESS',
-        payload : {
-          message : message,
-          currentStep : lastStep,
-          steps : allSteps
+        action: "PROGRESS",
+        payload: {
+          message: message,
+          currentStep: lastStep,
+          steps: allSteps
         }
       });
       return data;
@@ -95,12 +95,12 @@ function run(aggregatorFile, options) {
 
   function progress(options) {
     process.send({
-      action : 'PROGRESS',
-      payload : {
-        error : options.error || false,
-        message : options.message || '',
-        currentStep : lastStep + ((options.currentStep / options.steps) || 0),
-        steps : allSteps
+      action: "PROGRESS",
+      payload: {
+        error: options.error || false,
+        message: options.message || "",
+        currentStep: lastStep + ((options.currentStep / options.steps) || 0),
+        steps: allSteps
       }
     });
   }

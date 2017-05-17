@@ -1,23 +1,23 @@
-import _ from 'lodash';
-import {getCompleteTable, getTablesByNames} from './pimApi';
+import _ from "lodash";
+import {getCompleteTable, getTablesByNames} from "./pimApi";
 
 export function getEntitiesOfTable(tableName, options = {}) {
   const {disableFollow = [], pimUrl, maxEntriesPerRequest = 500} = options;
 
   if (_.isNil(pimUrl)) {
-    throw new Error('Missing option pimUrl');
+    throw new Error("Missing option pimUrl");
   }
 
   if (!_.isString(pimUrl)) {
-    throw new Error('Expecting pimUrl to be a string');
+    throw new Error("Expecting pimUrl to be a string");
   }
 
   if (!_.isArray(disableFollow) || _.some(disableFollow, columns => !_.isArray(columns))) {
-    throw new Error('Expecting an array of columns as disableFollow');
+    throw new Error("Expecting an array of columns as disableFollow");
   }
 
   if (!_.isInteger(maxEntriesPerRequest) || maxEntriesPerRequest <= 0) {
-    throw new Error('Expecting maxEntriesPerRequest to be a positive integer greater than 0');
+    throw new Error("Expecting maxEntriesPerRequest to be a positive integer greater than 0");
   }
 
   const promises = {};
@@ -35,7 +35,7 @@ export function getEntitiesOfTable(tableName, options = {}) {
         .then(table => {
           tables[tableId] = table;
           return Promise.all(_.flatMap(table.columns, column => {
-            if (!promises[column.toTable] && column.kind === 'link' && !isDisabled(column.name, disableFollow)) {
+            if (!promises[column.toTable] && column.kind === "link" && !isDisabled(column.name, disableFollow)) {
               const filteredDisableFollow = _.filter(disableFollow, columns => {
                 return !_.isEmpty(columns) && _.head(columns) === column.name;
               });

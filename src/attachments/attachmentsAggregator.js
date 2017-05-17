@@ -1,17 +1,18 @@
-import _ from 'lodash';
-import http from 'http';
-import fs from 'fs';
-import { generateThumb, reduceImage } from './imageResizer';
+import _ from "lodash";
+import http from "http";
+import fs from "fs";
+import {generateThumb, reduceImage} from "./imageResizer";
 
-export function downloadAndResizeAttachments({
-  database,
-  dataDirectory,
-  pimUrl,
-  progress,
-  errorProgress,
-  maxImageSize,
-  errorImage
-}, attachments) {
+export function downloadAndResizeAttachments(
+  {
+    database,
+    dataDirectory,
+    pimUrl,
+    progress,
+    errorProgress,
+    maxImageSize,
+    errorImage
+  }, attachments) {
 
   const chunkSize = 2;
   // split list up into partitions
@@ -24,7 +25,10 @@ export function downloadAndResizeAttachments({
   const preparePromise = _mkdir(directory)
     .then(() => _mkdir(directoryThumb))
     .then(() => _mkdir(directoryReduced))
-    .then(() => ({done : 0, total : attachments.length}));
+    .then(() => ({
+      done: 0,
+      total: attachments.length
+    }));
 
   return _.reduce(chunks, (promise, attachmentsInChunk) => promise.then(currentProgress => {
     return Promise.all(_.map(attachmentsInChunk, item => {
@@ -36,61 +40,88 @@ export function downloadAndResizeAttachments({
       const pathError = errorImage;
 
       database.defaults({
-        attachments : {}
+        attachments: {}
       }).value();
 
-      const currentInfo = database.find('attachments')
-        .defaultsDeep({[item.path] : {id : item.path, downloaded : false, thumbnailed : false, minified : false}})
+      const currentInfo = database
+        .find("attachments")
+        .defaultsDeep({
+          [item.path]: {
+            id: item.path,
+            downloaded: false,
+            thumbnailed: false,
+            minified: false
+          }
+        })
         .find(item.path)
         .value();
 
-      return Promise.resolve()
+      return Promise
+        .resolve()
         .then(() => {
-          console.log('downloading', url);
+          console.log("downloading", url);
           const downloader = (currentInfo.downloaded) ? Promise.resolve(path) : download(url, path);
           return downloader.then(() => {
-            console.log('Writing download in database');
-            return database.find('attachments')
+            console.log("Writing download in database");
+            return database
+              .find("attachments")
               .find(item.path)
-              .assign({downloaded : true})
+              .assign({downloaded: true})
               .value();
           });
         })
         .catch(err => {
-          console.error('Error downloading', err);
-          errorProgress({message : `Could not download ${item.path}`, error : err});
+          console.error("Error downloading", err);
+          errorProgress({
+            message: `Could not download ${item.path}`,
+            error: err
+          });
           return Promise.reject(err);
         })
         .then(() => {
           const thumbnailer = (currentInfo.thumbnailed) ? Promise.resolve(pathThumb) : thumbnail(path, pathThumb);
           return thumbnailer.then(() => {
-            return database.find('attachments')
+            return database
+              .find("attachments")
               .find(item.path)
-              .assign({thumbnailed : true})
+              .assign({thumbnailed: true})
               .value();
           });
         })
         .catch(err => {
-          errorProgress({message : `Could not thumbnail ${item.path}`, error : err});
+          errorProgress({
+            message: `Could not thumbnail ${item.path}`,
+            error: err
+          });
           return Promise.reject(err);
         })
         .then(() => {
           const minifier = (currentInfo.minified) ? Promise.resolve(pathReduced) : minify(path, pathReduced);
           return minifier.then(() => {
-            return database.find('attachments')
+            return database
+              .find("attachments")
               .find(item.path)
-              .assign({minified : true})
+              .assign({minified: true})
               .value();
           });
         })
         .catch(err => {
-          errorProgress({message : `Could not minify ${item.path}`, error : err});
+          errorProgress({
+            message: `Could not minify ${item.path}`,
+            error: err
+          });
           return Promise.reject(err);
         })
         .catch(() => {
-          database.find('attachments')
+          database
+            .find("attachments")
             .find(item.path)
-            .assign({id : item.path, downloaded : false, thumbnailed : false, minified : false})
+            .assign({
+              id: item.path,
+              downloaded: false,
+              thumbnailed: false,
+              minified: false
+            })
             .value();
 
           return copyFile(pathError, [path, pathThumb, pathReduced]);
@@ -100,12 +131,18 @@ export function downloadAndResizeAttachments({
       return database
         .write()
         .catch(err => {
-          console.error('Could not write to database!', err);
-          errorProgress({message : 'Could not save database!', error : err});
+          console.error("Could not write to database!", err);
+          errorProgress({
+            message: "Could not save database!",
+            error: err
+          });
         });
     }).then(() => {
       currentProgress.done = currentProgress.done + attachmentsInChunk.length;
-      progress({currentProgress, message : `Finished chunk of size ${attachmentsInChunk.length}`});
+      progress({
+        currentProgress,
+        message: `Finished chunk of size ${attachmentsInChunk.length}`
+      });
       return currentProgress;
     });
 
@@ -123,11 +160,11 @@ export function downloadAndResizeAttachments({
             reject(new Error(`Download of ${url} failed with status code ${response.statusCode}.\n`));
           }
         })
-        .on('close', () => {
+        .on("close", () => {
           resolve(path);
         })
-        .on('error', err => {
-          console.error('Could not download file.', url, path, err.message);
+        .on("error", err => {
+          console.error("Could not download file.", url, path, err.message);
 
           fs.unlink(path, () => {
             reject(err);
@@ -140,9 +177,13 @@ export function downloadAndResizeAttachments({
     return statOf(from)
       .then(stats => {
         if (stats.size > maxImageSize) {
-          throw new Error('Image too big to thumbnail!');
+          throw new Error("Image too big to thumbnail!");
         } else {
-          return generateThumb({fromPath : from, toPath : to, minify : true});
+          return generateThumb({
+            fromPath: from,
+            toPath: to,
+            minify: true
+          });
         }
       });
   }
@@ -151,9 +192,17 @@ export function downloadAndResizeAttachments({
     return statOf(from)
       .then(stats => {
         if (stats.size > maxImageSize) {
-          return reduceImage({fromPath : from, toPath : to, minify : false});
+          return reduceImage({
+            fromPath: from,
+            toPath: to,
+            minify: false
+          });
         } else {
-          return reduceImage({fromPath : from, toPath : to, minify : true});
+          return reduceImage({
+            fromPath: from,
+            toPath: to,
+            minify: true
+          });
         }
       });
   }
@@ -167,8 +216,8 @@ export function downloadAndResizeAttachments({
         reader.pipe(file);
       });
 
-      reader.on('close', resolve);
-      reader.on('error', reject);
+      reader.on("close", resolve);
+      reader.on("error", reject);
     });
   }
 
@@ -176,9 +225,12 @@ export function downloadAndResizeAttachments({
     return new Promise((resolve, reject) => {
       fs.stat(path, (err, stats) => {
         if (!err) {
-          resolve({...stats, exists : true});
-        } else if (err && err.action === 'ENOENT') {
-          resolve({exists : false});
+          resolve({
+            ...stats,
+            exists: true
+          });
+        } else if (err && err.action === "ENOENT") {
+          resolve({exists: false});
         } else {
           reject(err);
         }
@@ -189,7 +241,7 @@ export function downloadAndResizeAttachments({
   function _mkdir(path) {
     return new Promise((resolve, reject) => {
       fs.mkdir(path, error => {
-        if (error === null || error.action === 'EEXIST') {
+        if (error === null || error.action === "EEXIST") {
           resolve(path);
         } else {
           reject(error);

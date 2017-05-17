@@ -1,13 +1,16 @@
-import fs from 'fs-extra';
-import jimp from 'jimp';
-import imagemin from 'imagemin';
-import pngquant from 'imagemin-pngquant';
-import jpegopti from 'imagemin-jpegoptim';
+import fs from "fs-extra";
+import jimp from "jimp";
+import imagemin from "imagemin";
+import pngquant from "imagemin-pngquant";
+import jpegopti from "imagemin-jpegoptim";
 
 export function generateThumb(options) {
   const {fromPath, toPath, imageHeight, imageWidth, minify} = options;
   return readImage(fromPath)
-    .then(resizeImage({imageHeight, imageWidth}))
+    .then(resizeImage({
+      imageHeight,
+      imageWidth
+    }))
     .then(minifyImage(minify))
     .then(saveImage(toPath));
 }
@@ -44,13 +47,15 @@ function readImage(fromPath) {
   });
 }
 
-function resizeImage({
-  imageHeight = 'auto',
-  imageWidth = 'auto'
-}) {
-  const height = imageHeight === 'auto' ? jimp.AUTO : imageHeight;
-  const width = imageWidth === 'auto' ? jimp.AUTO : imageWidth;
-  const isFittingToScale = imageHeight !== 'auto' && imageWidth !== 'auto';
+function resizeImage(
+  {
+    imageHeight = "auto",
+    imageWidth = "auto"
+  }) {
+
+  const height = imageHeight === "auto" ? jimp.AUTO : imageHeight;
+  const width = imageWidth === "auto" ? jimp.AUTO : imageWidth;
+  const isFittingToScale = imageHeight !== "auto" && imageWidth !== "auto";
   return image => new Promise((resolve, reject) => {
     // resize the width to <imageSize> and scale the height accordingly
     try {
@@ -89,11 +94,11 @@ function minifyImage(minify) {
 
 function minifyImageBuffer(buffer) {
   return imagemin.buffer(buffer, {
-    plugins : [
+    plugins: [
       pngquant(),
       jpegopti({
-        progressive : false,
-        max : 80
+        progressive: false,
+        max: 80
       })
     ]
   });

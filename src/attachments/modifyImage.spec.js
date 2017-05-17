@@ -1,12 +1,12 @@
-import path from 'path';
-import expect from 'must';
-import fs from 'fs-extra';
-import tmp from 'tmp';
-import {Database} from './database';
-import {modifyImages} from './modifyImage';
-import {cleanUpWhenDone, statOf} from './__tests__/fsHelpers';
+import path from "path";
+import expect from "must";
+import fs from "fs-extra";
+import tmp from "tmp";
+import {Database} from "./database";
+import {modifyImages} from "./modifyImage";
+import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers";
 
-describe('image modification', () => {
+describe("image modification", () => {
 
   const fixtureFile = `${__dirname}/__tests__/duck.png`;
   const fixtureFile2 = `${__dirname}/__tests__/duck2.png`;
@@ -18,37 +18,52 @@ describe('image modification', () => {
   const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
 
-  it('returns a function to be able to pass it into promise chain', () => {
-    expect(modifyImages({database : dbFixture, key : 'test'})).to.be.a.function();
+  it("returns a function to be able to pass it into promise chain", () => {
+    expect(modifyImages({
+      database: dbFixture,
+      key: "test"
+    })).to.be.a.function();
   });
 
-  it('expects a key option to be able to save images', () => {
-    expect(() => modifyImages({database : dbFixture})).to.throw(/missing key/i);
-    expect(() => modifyImages({database : dbFixture, key : null})).to.throw(/missing key/i);
+  it("expects a key option to be able to save images", () => {
+    expect(() => modifyImages({database: dbFixture})).to.throw(/missing key/i);
+    expect(() => modifyImages({
+      database: dbFixture,
+      key: null
+    })).to.throw(/missing key/i);
   });
 
-  it('expects a key option to be able to save images', () => {
-    expect(() => modifyImages({key : 'test'})).to.throw(/missing database/i);
-    expect(() => modifyImages({key : 'test', database : null})).to.throw(/missing database/i);
+  it("expects a key option to be able to save images", () => {
+    expect(() => modifyImages({key: "test"})).to.throw(/missing database/i);
+    expect(() => modifyImages({
+      key: "test",
+      database: null
+    })).to.throw(/missing database/i);
   });
 
-  it('expects an array of images to modify', () => {
-    expect(() => modifyImages({database : dbFixture, key : 'test'})({})).to.throw(/expected array/i);
+  it("expects an array of images to modify", () => {
+    expect(() => modifyImages({
+      database: dbFixture,
+      key: "test"
+    })({})).to.throw(/expected array/i);
   });
 
-  it('will not complain if no elements were given', () => {
-    expect(() => modifyImages({database : dbFixture, key : 'test'})([])).not.to.throw();
+  it("will not complain if no elements were given", () => {
+    expect(() => modifyImages({
+      database: dbFixture,
+      key: "test"
+    })([])).not.to.throw();
   });
 
-  it('can use the outPath option to save a file somewhere', function () {
+  it("can use the outPath option to save a file somewhere", function () {
     this.timeout(30 * 1000);
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath
     })([fixtureFile])
       .then(results => {
@@ -57,18 +72,18 @@ describe('image modification', () => {
       }));
   });
 
-  it('can reduce the image size of a non-minified image', function () {
+  it("can reduce the image size of a non-minified image", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      minify : true
+      minify: true
     })([fixtureFile])
       .then(results => {
         expect(results).to.be.an.array();
@@ -80,18 +95,18 @@ describe('image modification', () => {
       }));
   });
 
-  it('can resize an image by width only', function () {
+  it("can resize an image by width only", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageWidth : 500
+      imageWidth: 500
     })([fixtureFile])
       .then(results => {
         expect(results).to.be.an.array();
@@ -103,18 +118,18 @@ describe('image modification', () => {
       }));
   });
 
-  it('can resize an image by height only', function () {
+  it("can resize an image by height only", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageHeight : 463
+      imageHeight: 463
     })([fixtureFile])
       .then(results => {
         expect(results).to.be.an.array();
@@ -126,19 +141,19 @@ describe('image modification', () => {
       }));
   });
 
-  it('can resize an image by width and height and fills with transparency', function () {
+  it("can resize an image by width and height and fills with transparency", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageWidth : 500,
-      imageHeight : 400
+      imageWidth: 500,
+      imageHeight: 400
     })([fixtureFile])
       .then(results => {
         expect(results).to.be.an.array();
@@ -150,19 +165,19 @@ describe('image modification', () => {
       }));
   });
 
-  it('can resize and minify an image in one step', function () {
+  it("can resize and minify an image in one step", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageWidth : 500,
-      minify : true
+      imageWidth: 500,
+      minify: true
     })([fixtureFile])
       .then(results => {
         expect(results).to.be.an.array();
@@ -174,21 +189,21 @@ describe('image modification', () => {
       }));
   });
 
-  it('can get progress status during the steps', function () {
+  it("can get progress status during the steps", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
     let counter = 0;
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageWidth : 10,
-      minify : true,
-      progress : ({message, currentStep, steps}) => {
+      imageWidth: 10,
+      minify: true,
+      progress: ({message, currentStep, steps}) => {
         counter++;
         expect(steps).to.be(3);
         if (counter === 1) { // "init" message
@@ -214,22 +229,22 @@ describe('image modification', () => {
       }));
   });
 
-  it('will print the correct progress status during the steps with a chunkSize set', function () {
+  it("will print the correct progress status during the steps with a chunkSize set", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
     let counter = 0;
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageWidth : 10,
-      chunkSize : 2,
-      minify : true,
-      progress : ({message, currentStep, steps}) => {
+      imageWidth: 10,
+      chunkSize: 2,
+      minify: true,
+      progress: ({message, currentStep, steps}) => {
         counter++;
         expect(steps).to.be(3);
         if (counter === 1) { // "init" message
@@ -256,23 +271,23 @@ describe('image modification', () => {
       }));
   });
 
-  it('will write information into a lowdb', function () {
+  it("will write information into a lowdb", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const databasePath = `${outPath}/database.json`;
     const database = new Database(databasePath);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageWidth : 10
+      imageWidth: 10
     })([fixtureFile])
       .then(results => {
         expect(results.length).to.be(1);
-        expect(database.find(path.basename(results[0]), 'test')).to.be.true();
+        expect(database.find(path.basename(results[0]), "test")).to.be.true();
         return statOf(databasePath);
       })
       .then(dbStat => {
@@ -280,34 +295,34 @@ describe('image modification', () => {
       }));
   });
 
-  it('will write information into a lowdb after every chunk', function () {
+  it("will write information into a lowdb after every chunk", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const databasePath = `${outPath}/database.json`;
     const database = new Database(databasePath);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageWidth : 200,
-      minify : true,
-      chunkSize : 2,
-      progress : ({currentStep, steps}) => {
+      imageWidth: 200,
+      minify: true,
+      chunkSize: 2,
+      progress: ({currentStep, steps}) => {
         if (currentStep > 0 && currentStep < steps) {
-          expect(database.find(path.basename(fixtureFile), 'test')).to.be.true();
-          expect(database.find(path.basename(fixtureFile2), 'test')).to.be.true();
-          expect(database.find(path.basename(fixtureFile3), 'test')).to.be.falsy();
+          expect(database.find(path.basename(fixtureFile), "test")).to.be.true();
+          expect(database.find(path.basename(fixtureFile2), "test")).to.be.true();
+          expect(database.find(path.basename(fixtureFile3), "test")).to.be.falsy();
         }
       }
     })([fixtureFile, fixtureFile2, fixtureFile3])
       .then(results => {
         expect(results.length).to.be(3);
-        expect(database.find(path.basename(fixtureFile), 'test')).to.be.true();
-        expect(database.find(path.basename(fixtureFile2), 'test')).to.be.true();
-        expect(database.find(path.basename(fixtureFile3), 'test')).to.be.true();
+        expect(database.find(path.basename(fixtureFile), "test")).to.be.true();
+        expect(database.find(path.basename(fixtureFile2), "test")).to.be.true();
+        expect(database.find(path.basename(fixtureFile3), "test")).to.be.true();
         return statOf(databasePath);
       })
       .then(dbStat => {
@@ -315,40 +330,41 @@ describe('image modification', () => {
       }));
   });
 
-  it('will use information from lowdb to skip files', () => {
+  it("will use information from lowdb to skip files", () => {
     // no timeout here, as it should finish very quickly
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const databasePath = `${outPath}/attachments.json`;
     fs.copySync(dbFixturePath, databasePath);
     const database = new Database(databasePath);
 
     return cleanUpWhenDone(tmpDir)(
-      Promise.resolve([fixtureFile, thumbFile])
+      Promise
+        .resolve([fixtureFile, thumbFile])
         .then(files => {
-          expect(database.find(path.basename(files[0]), 'test')).to.be.true();
-          expect(database.find(path.basename(files[1]), 'test')).to.be.true();
+          expect(database.find(path.basename(files[0]), "test")).to.be.true();
+          expect(database.find(path.basename(files[1]), "test")).to.be.true();
           return files;
         })
         .then(modifyImages({
           database,
-          imageWidth : 1000,
-          key : 'test',
-          minify : true,
+          imageWidth: 1000,
+          key: "test",
+          minify: true,
           outPath
         }))
         .then(results => {
           expect(results.length).to.be(2);
-          expect(database.find(path.basename(results[0]), 'test')).to.be.true();
-          expect(database.find(path.basename(results[1]), 'test')).to.be.true();
+          expect(database.find(path.basename(results[0]), "test")).to.be.true();
+          expect(database.find(path.basename(results[1]), "test")).to.be.true();
         })
     );
   });
 
-  it('can modify multiple images at once', function () {
+  it("can modify multiple images at once", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const databasePath = `${outPath}/database.json`;
     const database = new Database(databasePath);
@@ -356,17 +372,17 @@ describe('image modification', () => {
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      chunkSize : 3,
-      imageWidth : 10,
-      progress : () => {
+      chunkSize: 3,
+      imageWidth: 10,
+      progress: () => {
         steps++;
       }
     })([fixtureFile, fixtureFile2, fixtureFile3])
       .then(results => {
         expect(results.length).to.be(3);
-        expect(database.find(path.basename(results[0]), 'test')).to.be.true();
+        expect(database.find(path.basename(results[0]), "test")).to.be.true();
         return Promise.all([
           statOf(`${outPath}/${path.basename(fixtureFile)}`),
           statOf(`${outPath}/${path.basename(fixtureFile2)}`),
@@ -382,10 +398,10 @@ describe('image modification', () => {
       }));
   });
 
-  it('can minify and resize images at once', function () {
+  it("can minify and resize images at once", function () {
     this.timeout(30 * 1000);
 
-    const tmpDir = tmp.dirSync({unsafeCleanup : true});
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const databasePath = `${outPath}/database.json`;
     const database = new Database(databasePath);
@@ -393,19 +409,19 @@ describe('image modification', () => {
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,
-      key : 'test',
+      key: "test",
       outPath,
-      imageWidth : 10,
-      minify : true,
-      progress : () => {
+      imageWidth: 10,
+      minify: true,
+      progress: () => {
         steps++;
       }
     })([fixtureFile, fixtureFile2, fixtureFile3])
       .then(results => {
         expect(results.length).to.be(3);
-        expect(database.find(path.basename(results[0]), 'test')).to.be.true();
-        expect(database.find(path.basename(results[1]), 'test')).to.be.true();
-        expect(database.find(path.basename(results[2]), 'test')).to.be.true();
+        expect(database.find(path.basename(results[0]), "test")).to.be.true();
+        expect(database.find(path.basename(results[1]), "test")).to.be.true();
+        expect(database.find(path.basename(results[2]), "test")).to.be.true();
         return Promise.all([
           statOf(`${outPath}/${path.basename(fixtureFile)}`),
           statOf(`${outPath}/${path.basename(fixtureFile2)}`),

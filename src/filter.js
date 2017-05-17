@@ -1,24 +1,25 @@
-import _ from 'lodash';
+import _ from "lodash";
 
 const defaultPredicate = () => true;
 
-export function filter({
-  excludeBacklinks = false,
-  path = [],
-  predicate = defaultPredicate,
-  ignoreMissing = false
-} = {
-  excludeBacklinks : false,
-  path : [],
-  predicate : defaultPredicate,
-  ignoreMissing : false
-}) {
+export function filter(
+  {
+    excludeBacklinks = false,
+    path = [],
+    predicate = defaultPredicate,
+    ignoreMissing = false
+  } = {
+    excludeBacklinks: false,
+    path: [],
+    predicate: defaultPredicate,
+    ignoreMissing: false
+  }) {
 
   return data => {
     if (!_.isEmpty(path)) {
       // keep the table data without any initial data (rows)
       const accTables = _.transform(data, (all, table) => {
-        all[table.id] = _.omit(table, 'rows');
+        all[table.id] = _.omit(table, "rows");
       }, {});
 
       // find table that we want to filter from
@@ -60,14 +61,14 @@ export function filter({
 function removeBrokenLinksToFirstTable(accTables, firstTableId) {
   return _.mapValues(accTables, table => {
     const columnIdxsOfLinks = _.transform(table.columns, (cols, column, idx) => {
-      if (column.kind === 'link' && column.toTable === firstTableId) {
+      if (column.kind === "link" && column.toTable === firstTableId) {
         cols.push(idx);
       }
     }, []);
     table.rows = _.mapValues(table.rows, row => {
       return {
         ...row,
-        values : _.map(row.values, (value, idx) => {
+        values: _.map(row.values, (value, idx) => {
           if (_.includes(columnIdxsOfLinks, idx)) {
             return _.filter(value, link => !_.isNil(accTables[firstTableId].rows[link.id]));
           } else {
@@ -83,7 +84,7 @@ function removeBrokenLinksToFirstTable(accTables, firstTableId) {
 function addDependenciesOfTable(allTables, accTables, currentTable, excludeBacklinks, excludedTableId, ignoreMissing) {
 
   const linksOfCurrentTableToCheck = _.transform(currentTable.columns, (acc, column, idx) => {
-    if (column.kind === 'link') {
+    if (column.kind === "link") {
       acc[column.toTable] = _.reduce(currentTable.rows, (linkIds, rowValue) => {
         if (_.isNil(rowValue)) {
           return linkIds;
@@ -108,14 +109,14 @@ function addDependenciesOfTable(allTables, accTables, currentTable, excludeBackl
   _.forEach(filteredMissing, (linksInTable, tableId) => {
     if (_.isNil(accTables[tableId])) {
       if (!ignoreMissing) {
-        console.warn('Linking to a missing table - ignoring!', ignoreMissing);
+        console.warn("Linking to a missing table - ignoring!", ignoreMissing);
       }
     } else {
       accTables[tableId].rows = _.transform(linksInTable, (rows, toRowId) => {
         const entity = allTables[tableId].rows[toRowId];
         if (_.isNil(entity)) {
           if (!ignoreMissing) {
-            console.warn('Missing entity', toRowId, 'in table', tableId);
+            console.warn("Missing entity", toRowId, "in table", tableId);
           }
         } else {
           rows[toRowId] = entity;
@@ -161,5 +162,5 @@ function toElement(row, table) {
   return _.reduce(table.columns, (element, column, idx) => {
     element[column.name] = row.values[idx];
     return element;
-  }, {id : row.id});
+  }, {id: row.id});
 }

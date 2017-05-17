@@ -1,21 +1,23 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-export function findAttachments({
-  withAttachment = false,
-  withMapping = false
-} = {
-  withAttachment : false,
-  withMapping : false
-}) {
+export function findAttachments(
+  {
+    withAttachment = false,
+    withMapping = false
+  } = {
+    withAttachment: false,
+    withMapping: false
+  }) {
+
   return data => {
     return _.uniqBy(_.reduce(data, (arr, table) => {
       return arr.concat(_.flatMap(table.columns, (col, index) => {
-        if (col.kind === 'attachment') {
+        if (col.kind === "attachment") {
           return _.flatMap(table.rows, row => {
             return _.flatMap(row.values[index], attachment => {
               return _.map(attachment.internalName, (path, lang) => {
                 const att = {
-                  url : attachment.url[lang],
+                  url: attachment.url[lang],
                   path
                 };
                 if (withMapping) {
@@ -34,6 +36,7 @@ export function findAttachments({
           return [];
         }
       }));
-    }, []), 'url');
+    }, []), "url");
   };
+
 }
