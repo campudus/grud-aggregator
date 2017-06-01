@@ -108,6 +108,11 @@ This function separates the tables into languages set in the `fallbacks` object.
 
 ## Release Notes
 
+### 3.0.0 - Breaking change
+
+Channel closed exceptions are now automatically handled / swallowed. You should not rely on a closed channel for your
+aggregator to work.
+
 ### 2.6.0 - Feature
 
 * Add `exclude` to filter out data.
