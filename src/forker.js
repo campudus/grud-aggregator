@@ -21,6 +21,15 @@ process.on("message", function (event) {
   }
 });
 
+process.on("error", (error) => {
+  if (error.message === "channel closed") {
+    // handled.
+    console.log("Channel closed in forked aggregator.", error);
+  } else {
+    throw error;
+  }
+});
+
 function mkDirs(dataDirectory) {
   return new Promise((resolve, reject) => {
     if (dataDirectory) {

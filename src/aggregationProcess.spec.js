@@ -1,3 +1,4 @@
+import cp from "child_process";
 import expect from "must";
 import {start} from "./aggregationProcess";
 
@@ -94,6 +95,25 @@ describe("aggregation-process", function () {
     }).then(() => {
       expect(lastProgress.message);
       expect(lastProgress.currentStep).to.be(lastProgress.steps);
+    });
+  });
+
+  it.only("will not die when child process exits", function () {
+    this.timeout(5000);
+
+    return new Promise((resolve, reject) => {
+      const myPid = process.pid;
+      const child = cp.fork(`${__dirname}/__tests__/killableForker.js`);
+
+      child.on("message", (message) => {
+        if (message === "INIT") {
+          child.send(myPid);
+        }
+      });
+
+      process.once("SIGINT", () => {
+        resolve();
+      });
     });
   });
 
