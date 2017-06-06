@@ -69,6 +69,10 @@ will be serialized to JSON and back, therefore it is not possible to pass functi
 This function filters all entities in the promise chain matching a specific condition.
 
 * `options` is an object containing:
+  * `excludeBacklinks` (`Boolean`, optional) - Defaults to false. This option will exclude all backlinks from another 
+    table, meaning if a cyclic link occurs, this link will not add new entities to the filtered table.
+  * `ignoreMissing` (`Boolean`, optional) - Defaults to false. If a table is missing, the `filter` method usually emits 
+    a `console.warn` warning. This warning can be disabled by setting `ignoreMissing` to `true`.
   * `path` (`Array[String]`, reguired) - The path to follow for the `predicate`.
   * `predicate` (`(object) => Boolean`, required) - This function checks `object` for a specified condition.
 
@@ -78,7 +82,7 @@ To remove columns from the resulting GrudTables.
 
 * `options` is an object containing:
   * `paths` (`Array[Array[String]]`, optional) - The paths contain the names of the table and column to kick. For 
-  example:
+    example:
 ```
 [
   ['tableA', 'columnInTableA'],
@@ -86,7 +90,7 @@ To remove columns from the resulting GrudTables.
 ]
 ```
   * `predicate` (`(GrudColumn, GrudTable) => Boolean`, optional) - A function to check if this column should be excluded
-  in the result.
+    in the result.
   * `preserveConcats` (`Boolean`, optional, defaults to `true`) - To remove all concat columns, set the flag to `false`. 
 
 #### `referencer([options]): (GrudTables) => GrudEntities`
