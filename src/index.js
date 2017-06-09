@@ -9,3 +9,4 @@ export {referencer} from "./referencer/referencer";
 export {tablesToLanguages} from "./tablesToLanguages";
 export {start} from "./aggregationProcess";
 export {getAllTables} from "./pimApi";
+export {exclude} from "./exclude";
