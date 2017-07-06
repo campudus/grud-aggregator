@@ -132,10 +132,10 @@ describe("aggregation-process", function () {
         countedSteps.push(currentStep);
       },
       timeoutToResendStatus: 50,
-      howLong: 20,
+      howLong: 20
     }).then(() => {
       expect(countedSteps).to.eql([0, 1, 2, 3, 4, 5, 6, 7]);
-    })
+    });
   });
 
   it("will send latest progress status if there is no new progress sent by the aggregator", function () {
