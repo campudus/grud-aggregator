@@ -12,7 +12,7 @@ process.on("message", message => {
       progress: (p) => {
         if (/^\d+/.test(p.message)) {
           aggregatorPid = p.message;
-          process.kill(aggregatorPid, "SIGINT");
+          process.kill(aggregatorPid, "SIGHUP");
         }
         process.send(p.message);
       }

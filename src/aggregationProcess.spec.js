@@ -10,6 +10,7 @@ describe("aggregation-process", function () {
   const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
   const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubsteps.js`;
   const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubsteps2.js`;
+  const aggregatorLongRunning = `${__dirname}/__tests__/aggregatorLongRunning.js`;
   const aggregatorNonExistent = "non-existant-file.js";
 
   it("needs a filename to the aggregator process script", () => {
@@ -98,7 +99,7 @@ describe("aggregation-process", function () {
     });
   });
 
-  it.only("will not die when child process exits", function () {
+  it("will not die when child process exits", function () {
     this.timeout(5000);
 
     return new Promise((resolve, reject) => {
@@ -111,7 +112,7 @@ describe("aggregation-process", function () {
         }
       });
 
-      process.once("SIGINT", () => {
+      process.once("SIGHUP", () => {
         resolve();
       });
     });

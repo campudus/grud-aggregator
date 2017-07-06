@@ -1,5 +1,5 @@
 const wait = () => new Promise(resolve => {
-  process.once("SIGINT", () => {
+  process.once("SIGHUP", () => {
     process.disconnect();
     resolve();
   });
@@ -12,7 +12,7 @@ export default function start(step, progress, options) {
     .then(wait)
     .then(step("second step (channel should be closed)"))
     .then(() => {
-      process.kill(options.pid, "SIGINT");
+      process.kill(options.pid, "SIGHUP");
     })
     .catch(err => {
       console.log("should not get here", err);
