@@ -37,21 +37,24 @@ export default function start(step, progress, options) {
 }
 ```
 
-#### `start(aggregatorFile, progress[, options])`
+#### `start({ aggregatorFile, progress, timeoutToResendStatus[, ...other options] })`
 
-* `aggregatorFile` is the file that should be spawn into a process. It consists of an exported default function 
-`start(step, progress[, options])`, which will be called with these parameters: `step` is a function for promise chains
-that will count the current steps and sends a debug message as soon as the aggregator runs over this step. The 
-`progress` function is used for longer running "inner" processes, like minification of images. This function can be 
-passed to some of the helper functions used in the promise chains. `options` is a JSON object that was passed to the 
-`start` function. This can be used to provide variables from the outer process to the forked one. 
+* `aggregatorFile` (`string`, required) is the file that should be spawn into a process. It consists of an exported 
+  default function `start(step, progress[, options])`, which will be called with these parameters: `step` is a function 
+  for promise chains that will count the current steps and sends a debug message as soon as the aggregator runs over 
+  this step. The `progress` function is used for longer running "inner" processes, like minification of images. This 
+  function can be passed to some of the helper functions used in the promise chains. `options` is a JSON object that was
+   passed to the `start` function. This can be used to provide variables from the outer process to the forked one. 
 * `progress` is a function that will be called with an object three properties:
   * `steps` - the number of all counted steps. 
   * `currentStep` - the current step. Use `steps` and `currentStep` to calculate the percentage of your progress.
   * `message` - An optional message of the current step.
   * `error` - Usually `false`, but if there was an error during aggregation, you can make the outer process aware of it.
-* `options` is an object containing variables that should be sent to the newly spawned aggregation process. The options 
-will be serialized to JSON and back, therefore it is not possible to pass functions.
+* `timeoutToResendStatus` (number, defaults to `2000`) is a number in milliseconds when the aggregator should resend the
+  latest status to the `progress` function. This helps to prevent the closing of a channel if an aggregator takes too 
+  long to respond with a new progress.
+* All other keys in the argument passed to start will be sent to the newly spawned aggregation process. The options will
+  be serialized to JSON and back, therefore it is not possible to pass functions.
 
 #### `getEntitiesOfTable(tableName, options): Promise[GrudTables]`
 
@@ -111,6 +114,12 @@ This function separates the tables into languages set in the `fallbacks` object.
   use if the selected language is not set.
 
 ## Release Notes
+
+### 4.0.0 - Breaking change
+
+* Add `timeoutToResendStatus` option that generally resends the progress status, if the aggregator does not send a new 
+  status by itself. You should not rely on the count of messages but on the real `currentStep` / `steps` provided in the
+  progress message.
 
 ### 3.0.0 - Breaking change
 
