@@ -11,6 +11,7 @@ describe("aggregation-process", function () {
   const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubsteps.js`;
   const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubsteps2.js`;
   const aggregatorLongRunning = `${__dirname}/__tests__/aggregatorLongRunning.js`;
+  const aggregatorLongRunningMultipleWaits = `${__dirname}/__tests__/aggregatorLongRunningMultipleWaits.js`;
   const aggregatorNonExistent = "non-existant-file.js";
 
   it("needs a filename to the aggregator process script", () => {
@@ -115,6 +116,76 @@ describe("aggregation-process", function () {
       process.once("SIGHUP", () => {
         resolve();
       });
+    });
+  });
+
+  it("will not resend latest progress if it was always quick enough", function () {
+    this.timeout(6000);
+
+    const allSteps = 7;
+    const countedSteps = [];
+
+    return start({
+      aggregatorFile: aggregatorLongRunningMultipleWaits,
+      progress: ({message, currentStep, steps}) => {
+        expect(steps).to.be(allSteps);
+        countedSteps.push(currentStep);
+      },
+      timeoutToResendStatus: 50,
+      howLong: 20,
+    }).then(() => {
+      expect(countedSteps).to.eql([0, 1, 2, 3, 4, 5, 6, 7]);
+    })
+  });
+
+  it("will send latest progress status if there is no new progress sent by the aggregator", function () {
+    this.timeout(6000);
+
+    const allSteps = 4;
+    const countedSteps = [];
+
+    return start({
+      aggregatorFile: aggregatorLongRunning,
+      progress: ({message, currentStep, steps}) => {
+        expect(steps).to.be(allSteps);
+        countedSteps.push(currentStep);
+        if (currentStep === 1) {
+          expect(message).to.be("started");
+        } else if (currentStep === 2) {
+          expect(message).to.be("waiting");
+        } else if (currentStep === 3) {
+          expect(message).to.be("second");
+        }
+      },
+      howLong: 2500
+    }).then(() => {
+      expect(countedSteps).to.eql([0, 1, 2, 2, 3, 4]);
+    });
+  });
+
+  it("can change the timeout to resend latest progress with an option", function () {
+    this.timeout(5000);
+
+    const allSteps = 4;
+    const countedSteps = [];
+
+    return start({
+      aggregatorFile: aggregatorLongRunning,
+      progress: ({message, currentStep, steps}) => {
+        expect(steps).to.be(allSteps);
+        countedSteps.push(currentStep);
+        if (currentStep === 1) {
+          expect(message).to.be("started");
+        } else if (currentStep === 2) {
+          expect(message).to.be("waiting");
+        } else if (currentStep === 3) {
+          expect(message).to.be("second");
+        }
+      },
+      timeoutToResendStatus: 100,
+      howLong: 150
+    }).then(() => {
+      expect(countedSteps).to.eql([0, 1, 2, 2, 3, 4]);
     });
   });
 

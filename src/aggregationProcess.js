@@ -5,6 +5,7 @@ export function start(
   {
     aggregatorFile,
     progress,
+    timeoutToResendStatus = 2000,
     ...rest
   } = {}) {
 
@@ -24,23 +25,24 @@ export function start(
       let fulfilled = false;
       let allDone = false;
       let allSteps = 0;
+      let resendProgressTimerId = null;
 
       child.on("message", ({action, payload}) => {
         if (action === "INIT") {
           initialized = true;
           allSteps = payload.stepsInAggregator;
-          if (progress) {
-            progress({
-              message: `Starting aggregator ${aggregatorFile}`,
-              currentStep: 0,
-              steps: allSteps
-            });
-          }
-        } else if (action === "PROGRESS" && progress) {
-          progress(payload);
+          sendProgress({
+            message: `Starting aggregator ${aggregatorFile}`,
+            currentStep: 0,
+            steps: allSteps
+          });
+        } else if (action === "PROGRESS") {
+          sendProgress(payload);
         } else if (action === "DONE") {
-          if (progress) {
-            progress(payload);
+          sendProgress(payload);
+          if (resendProgressTimerId !== null) {
+            clearTimeout(resendProgressTimerId);
+            resendProgressTimerId = null;
           }
           allDone = true;
           child.kill();
@@ -66,6 +68,18 @@ export function start(
           options: rest
         }
       });
+
+      function sendProgress(payload) {
+        if (resendProgressTimerId !== null) {
+          clearTimeout(resendProgressTimerId);
+        }
+        if (progress) {
+          progress(payload);
+        }
+        resendProgressTimerId = setTimeout(() => {
+          sendProgress(payload);
+        }, timeoutToResendStatus);
+      }
 
       function fulfill(code, signal) {
         if (!fulfilled) {
