@@ -24,7 +24,7 @@ export default function start(step, progress, options) {
   return getEntitiesOfTable("songs", {pimUrl: "http://localhost:8080"})
     .then(step("Filter all songs with a good rating"))
     .then(filter({
-      path: ["songs", "album"]
+      path: ["songs", "album"],
       predicate: album => album.rating > GOOD_RATING_THRESHOLD
     }))
     .then(step("Printing complete duration of all good songs"))
@@ -124,7 +124,7 @@ aggregator to work.
 ### 2.5.0 - Feature 
 
 * Use pagination to request data from Grud. Introduced `maxEntriesPerRequest` option to `getEntitiesOfTable()` to set 
-this limit.
+  this limit.
 
 ### 2.4.0 - Feature
 
@@ -133,5 +133,5 @@ this limit.
 ### 2.0.0 - Breaking change
 
 * `getEntitiesOfTable()` now requires the tableName parameter and `pimUrl` option. If getEntitiesOfTable was used 
-correctly, this should still not throw any exceptions. If it was used incorrectly, it would not have thrown but was 
-probably not used as it would have resulted in an error during the aggregation.
+  correctly, this should still not throw any exceptions. If it was used incorrectly, it would not have thrown but was 
+  probably not used as it would have resulted in an error during the aggregation.
