@@ -23,7 +23,7 @@ describe("referencer and tablesToLanguages", () => {
           .to.eql("my fourth row identifying text, linking to no rows in anotherTestTable");
 
         expect(de.testTable["2"].someLink[0].anotherLink[0].testColumn).to.eql("some other thing");
-      })
+      });
   });
 
   it("works without using languages after tablesToLanguages", () => {
@@ -43,7 +43,7 @@ describe("referencer and tablesToLanguages", () => {
           .to.eql("my fourth row identifying text, linking to no rows in anotherTestTable");
 
         expect(referenced.testTable["2"].someLink[0].anotherLink[0].testColumn).to.eql("some other thing");
-      })
+      });
   });
 
 });
