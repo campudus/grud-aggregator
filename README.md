@@ -96,7 +96,7 @@ To remove columns from the resulting GrudTables.
     in the result.
   * `preserveConcats` (`Boolean`, optional, defaults to `true`) - To remove all concat columns, set the flag to `false`. 
 
-#### `referencer([options]): (GrudTables) => GrudEntities`
+#### `referencer([options]): (MultilanguageGrudTables|GrudTables) => GrudEntities`
 
 This function can be called in the promise chain or used in client code to denormalize the entities. Use it to simplify
 following links.
@@ -114,6 +114,13 @@ This function separates the tables into languages set in the `fallbacks` object.
   use if the selected language is not set.
 
 ## Release Notes
+
+### 5.0.0 - Breaking change
+
+* `referencer` now works without using `tablesToLanguages` before, without adding the link results into `linkRowId`. As 
+  someone may have used this bug, this could break changes. An integration test was added to test that existing code 
+  usually should not break, if not abusing the bug-behavior. Obviously, `tablesToLanguages` does more than it should do
+  currently, which should be changed in a future version.
 
 ### 4.0.0 - Breaking change
 

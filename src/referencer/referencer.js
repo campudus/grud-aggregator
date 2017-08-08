@@ -25,7 +25,8 @@ export function referencer(options = {
           return _.transform(table.columns, (cells, column, index) => {
             const cellValue = row.values[index];
             if (column.kind === "link") {
-              denormalized[table.id][rowId][column.name] = _.map(cellValue, idInOtherTable => {
+              denormalized[table.id][rowId][column.name] = _.map(cellValue, idInOtherTableValue => {
+                const idInOtherTable = idInOtherTableValue.id || idInOtherTableValue;
                 const res = orEmpty(denormalized, column.toTable, idInOtherTable);
                 res.linkRowId = idInOtherTable;
                 return res;
