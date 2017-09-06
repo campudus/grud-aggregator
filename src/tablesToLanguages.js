@@ -17,16 +17,21 @@ function getDisplayName(tableOrColumn, langTag, fallbackLangTags) {
   return displayName;
 }
 
-export function tablesToLanguages(langtags) {
+export function tablesToLanguages(langtags, {fallbackOnly = false} = {}) {
+  if (fallbackOnly && _.some(langtags, (value) => _.isEmpty(value))) {
+    throw new Error("Missing values inside of language tag arrays.");
+  }
+
   return tablesObj => _.reduce(langtags, (acc, fallbackLangTags, language) => Object.assign(acc, {
     [language]: _.mapValues(tablesObj, table => {
+      const defaultLanguage = fallbackOnly ? fallbackLangTags[0] : language;
       const {id: tableId, name: tableName, description: tableDescription, columns, rows} = table;
 
       return {
         id: tableId,
         name: tableName,
-        displayName: getDisplayName(table, language, fallbackLangTags),
-        description: tableDescription[language],
+        displayName: getDisplayName(table, defaultLanguage, fallbackLangTags),
+        description: tableDescription[defaultLanguage],
         columns: _.flatMap(columns, column => {
           if (column.kind === "concat") {
             return [];
@@ -34,8 +39,8 @@ export function tablesToLanguages(langtags) {
 
           const updatedColumn = {
             ...column,
-            displayName: getDisplayName(column, language, fallbackLangTags),
-            description: column.description[language]
+            displayName: getDisplayName(column, defaultLanguage, fallbackLangTags),
+            description: column.description[defaultLanguage]
           };
           return [_.omit(updatedColumn, ["toColumn", "multilanguage"])];
         }),
@@ -52,25 +57,25 @@ export function tablesToLanguages(langtags) {
               } else if (kind === "attachment") {
                 return [
                   _.flatMap(rowValue, cell => {
-                    if (!_.isEmpty(cell.internalName[language])) { // found an attachment in this language
+                    if (!_.isEmpty(cell.internalName[defaultLanguage])) { // found an attachment in this language
                       return [
                         {
                           ...cell,
-                          internalName: cell.internalName[language],
-                          externalName: cell.externalName[language],
-                          mimeType: cell.mimeType[language],
-                          description: cell.description[language],
-                          title: cell.title[language],
-                          url: cell.url[language]
+                          internalName: cell.internalName[defaultLanguage],
+                          externalName: cell.externalName[defaultLanguage],
+                          mimeType: cell.mimeType[defaultLanguage],
+                          description: cell.description[defaultLanguage],
+                          title: cell.title[defaultLanguage],
+                          url: cell.url[defaultLanguage]
                         }
                       ];
                     } else if (_.size(cell.internalName) === 1) { // if there is just one attachment, it counts for all
                       const fallback = Object.keys(cell.internalName)[0];
                       return {
                         ...cell,
-                        title: cell.title[language] || cell.title[fallback],
-                        description: cell.description[language] || cell.description[fallback],
-                        externalName: cell.externalName[language] || cell.externalName[fallback],
+                        title: cell.title[defaultLanguage] || cell.title[fallback],
+                        description: cell.description[defaultLanguage] || cell.description[fallback],
+                        externalName: cell.externalName[defaultLanguage] || cell.externalName[fallback],
                         mimeType: cell.mimeType[fallback],
                         internalName: cell.internalName[fallback],
                         url: cell.url[fallback]
@@ -83,7 +88,7 @@ export function tablesToLanguages(langtags) {
               } else if (kind === "link") {
                 return [_.map(rowValue, cell => cell.id)];
               } else if (multilanguage && languageType === "language") {
-                const value = rowValue[language];
+                const value = rowValue[defaultLanguage];
                 if (_.isNil(value)) {
                   const fallbackLangTag = _.find(fallbackLangTags, langTag => !_.isNil(rowValue[langTag]));
                   const fallbackValue = fallbackLangTag ? rowValue[fallbackLangTag] : value;

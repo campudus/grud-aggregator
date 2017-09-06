@@ -106,12 +106,17 @@ following links.
     tables. When using `tablesToLanguages`, this needs to be set, otherwise it can not correctly denormalize the 
     entities. If set to `false`, all multi-language columns will still contain objects with te values for all languages.
 
-#### `tablesToLanguages(fallbacks): GrudTables => MultilanguageGrudTables`
+#### `tablesToLanguages(fallbacks, [options]): GrudTables => MultilanguageGrudTables`
 
 This function separates the tables into languages set in the `fallbacks` object. 
 
 * `fallbacks` is an object containing language keys as keys and an `Array[LanguageKey]` to define fallback languages to 
   use if the selected language is not set.
+* `options` may contain
+  * `fallbackOnly` (`Boolean`, optional, defaults to `true`), this assumes the fallback array as the single source of 
+    truth, meaning the key in the `fallbacks` options are not used as default language, but the first element in the 
+    provided array for each key. If you turn this option on, you need to have at least one language set in each array or
+    the call to `tablesToLanguages` will result in an error.
 
 ## Release Notes
 

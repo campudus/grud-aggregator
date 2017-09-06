@@ -19,6 +19,12 @@ describe("tablesToLanguages", () => {
     fr: ["de", "en"]
   };
 
+  const langtagsInFallback = {
+    de: ["de", "en"],
+    en: ["en"],
+    fr: ["fr", "de", "en"]
+  };
+
   it("is possible to put it into a Promise chain", () => {
     expect(
       Promise
@@ -64,6 +70,41 @@ describe("tablesToLanguages", () => {
     const result = tablesToLanguages(langtagsForMissing)(missingFixture);
 
     expect(JSON.stringify(result)).to.eql(JSON.stringify(missingResultFixture));
+  });
+
+  it("results in the same thing if first language tag in fallbacks is same as the key", () => {
+    const resultKeys = tablesToLanguages(langtagsForMissing)(missingFixture);
+    const resultFallback = tablesToLanguages(langtagsInFallback)(missingFixture);
+
+    expect(JSON.stringify(resultKeys)).to.eql(JSON.stringify(resultFallback));
+  });
+
+  describe("fallback only option", () => {
+
+    it("should throw if a fallback array is empty and the option turned on", () => {
+      expect(() => tablesToLanguages(langtagsForMissing, {fallbackOnly: true})(missingFixture))
+        .to.throw(/missing/i);
+    });
+
+    it("should not throw if a fallback array is empty and the option turned off", () => {
+      expect(() => tablesToLanguages(langtagsForMissing, {fallbackOnly: false})(missingFixture))
+        .not.to.throw();
+    });
+
+    it("uses the fallback array instead of the key as single source of truth", () => {
+      // The test just replaces de with en arrays
+      const result = tablesToLanguages({
+        fr: ["de"],
+        de: ["en"],
+        en: ["fr"]
+      }, {fallbackOnly: true})(tablesFixture);
+
+      expect(JSON.stringify(result)).not.to.eql(JSON.stringify(resultFixture));
+      expect(JSON.stringify(result["de"])).to.eql(JSON.stringify(resultFixture["en"]));
+      expect(JSON.stringify(result["en"])).to.eql(JSON.stringify(resultFixture["fr"]));
+      expect(JSON.stringify(result["fr"])).to.eql(JSON.stringify(resultFixture["de"]));
+    });
+
   });
 
 });
