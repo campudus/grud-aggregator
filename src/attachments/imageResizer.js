@@ -98,6 +98,7 @@ function minifyImageBuffer(buffer) {
       pngquant(),
       jpegopti({
         progressive: false,
+        stripAll: true,
         max: 80
       })
     ]

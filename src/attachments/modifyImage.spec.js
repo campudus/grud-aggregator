@@ -11,6 +11,7 @@ describe("image modification", () => {
   const fixtureFile = `${__dirname}/__tests__/duck.png`;
   const fixtureFile2 = `${__dirname}/__tests__/duck2.png`;
   const fixtureFile3 = `${__dirname}/__tests__/duck3.png`;
+  const fixtureWithExifFile = `${__dirname}/__tests__/exif_test.jpg`;
   const thumbFile = `${__dirname}/__tests__/duck_thumb.png`;
   const tinyFile = `${__dirname}/__tests__/duck_tiny.png`;
   const scaleResizeFile = `${__dirname}/__tests__/duck_500x400.png`;
@@ -53,6 +54,26 @@ describe("image modification", () => {
       database: dbFixture,
       key: "test"
     })([])).not.to.throw();
+  });
+
+  it("can strip out EXIF data", function () {
+    this.timeout(30 * 1000);
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/database.json`);
+    console.log("outpath=", outPath);
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key: "test",
+      minify: true,
+      resize: 50,
+      outPath
+    })([fixtureWithExifFile])
+      .then(results => {
+        expect(results).to.be.an.array();
+        expect(results[0]).to.be(`${outPath}/exif_test.jpg`);
+      }));
   });
 
   it("can use the outPath option to save a file somewhere", function () {

@@ -115,6 +115,10 @@ This function separates the tables into languages set in the `fallbacks` object.
 
 ## Release Notes
 
+##### 5.0.1 - Bugfix
+
+* Moved `babel-register` into `dependencies` as `start` uses it.
+
 ### 5.0.0 - Breaking change
 
 * `referencer` now works without using `tablesToLanguages` before, without adding the link results into `linkRowId`. As 
