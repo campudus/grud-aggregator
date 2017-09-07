@@ -113,12 +113,17 @@ This function separates the tables into languages set in the `fallbacks` object.
 * `fallbacks` is an object containing language keys as keys and an `Array[LanguageKey]` to define fallback languages to 
   use if the selected language is not set.
 * `options` may contain
-  * `fallbackOnly` (`Boolean`, optional, defaults to `true`), this assumes the fallback array as the single source of 
+  * `fallbackOnly` (`Boolean`, optional, defaults to `false`), this assumes the fallback array as the single source of 
     truth, meaning the key in the `fallbacks` options are not used as default language, but the first element in the 
     provided array for each key. If you turn this option on, you need to have at least one language set in each array or
     the call to `tablesToLanguages` will result in an error.
 
 ## Release Notes
+
+#### 5.1.0 - Feature: `fallbackOnly` option in `tablesToLanguages`
+
+* Added option to `tablesToLanguages` to be able to not use the key of a language, but just the fallbacks in the 
+  langtags. This way it is not necessary to have a valid language key as a key in the `fallbacks`. 
 
 ##### 5.0.1 - Bugfix
 
