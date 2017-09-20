@@ -17,7 +17,7 @@ function getDisplayName(tableOrColumn, langTag, fallbackLangTags) {
   return displayName;
 }
 
-export function tablesToLanguages(langtags, {fallbackOnly = false} = {}) {
+export function tablesToLanguages(langtags, {fallbackOnly = false, fallbackOnEmptyString = true} = {}) {
   if (fallbackOnly && _.some(langtags, (value) => _.isEmpty(value))) {
     throw new Error("Missing values inside of language tag arrays.");
   }
@@ -90,7 +90,7 @@ export function tablesToLanguages(langtags, {fallbackOnly = false} = {}) {
               } else if (multilanguage && languageType === "language") {
                 const value = rowValue[defaultLanguage];
                 if (needsFallback(kind, value)) {
-                  const fallbackLangTag = _.find(fallbackLangTags, langTag => !needsFallback(rowValue[langTag]));
+                  const fallbackLangTag = _.find(fallbackLangTags, langTag => !needsFallback(kind, rowValue[langTag]));
                   const fallbackValue = fallbackLangTag ? rowValue[fallbackLangTag] : value;
                   return [fallbackValue];
                 } else {
@@ -105,11 +105,13 @@ export function tablesToLanguages(langtags, {fallbackOnly = false} = {}) {
       };
     })
   }), {});
+
+  function needsFallback(kind, value) {
+    const isString = _.endsWith(kind, "text");
+    return fallbackOnEmptyString && isString
+      ? _.trim(value).length === 0
+      : _.isNil(value);
+  }
+
 }
 
-function needsFallback(kind, value) {
-  const isString = _.endsWith(kind, "text");
-  return isString
-    ? _.trim(value).length === 0
-    : _.isNil(value);
-}

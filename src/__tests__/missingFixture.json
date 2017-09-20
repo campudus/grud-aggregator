@@ -326,6 +326,7 @@
         "values": [
           "some other thing",
           {
+            "de": "  ",
             "en": "Welcome"
           }
         ]

@@ -2,10 +2,11 @@ import expect from "must";
 import tablesFixture from "./__tests__/tablesFixture.json";
 import missingFixture from "./__tests__/missingFixture.json";
 import missingResultFixture from "./__tests__/missingResultFixture.json";
+import missingStayEmptyFixture from "./__tests__/missingStayEmptyFixture.json";
 import resultFixture from "./__tests__/resultFixture.json";
 import {tablesToLanguages} from "./tablesToLanguages";
 
-describe("tablesToLanguages", () => {
+describe.only("tablesToLanguages", () => {
 
   const langtags = {
     de: [],
@@ -70,6 +71,12 @@ describe("tablesToLanguages", () => {
     const result = tablesToLanguages(langtagsForMissing)(missingFixture);
 
     expect(JSON.stringify(result)).to.eql(JSON.stringify(missingResultFixture));
+  });
+
+  it("may not replace empty/trimmed strings, if fallbackOnEmptyString option is set to false", () => {
+    const result = tablesToLanguages(langtagsForMissing, {fallbackOnEmptyString: false})(missingFixture);
+
+    expect(JSON.stringify(result)).to.eql(JSON.stringify(missingStayEmptyFixture));
   });
 
   it("results in the same thing if first language tag in fallbacks is same as the key", () => {
