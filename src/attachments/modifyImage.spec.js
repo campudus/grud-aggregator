@@ -61,7 +61,6 @@ describe("image modification", () => {
     const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
-    console.log("outpath=", outPath);
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
       database,

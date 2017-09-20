@@ -1,4 +1,4 @@
-import _ from "lodash";
+import * as _ from "lodash";
 
 function getDisplayName(tableOrColumn, langTag, fallbackLangTags) {
   const displayNames = tableOrColumn.displayName;
@@ -89,8 +89,8 @@ export function tablesToLanguages(langtags, {fallbackOnly = false} = {}) {
                 return [_.map(rowValue, cell => cell.id)];
               } else if (multilanguage && languageType === "language") {
                 const value = rowValue[defaultLanguage];
-                if (_.isNil(value)) {
-                  const fallbackLangTag = _.find(fallbackLangTags, langTag => !_.isNil(rowValue[langTag]));
+                if (needsFallback(kind, value)) {
+                  const fallbackLangTag = _.find(fallbackLangTags, langTag => !needsFallback(rowValue[langTag]));
                   const fallbackValue = fallbackLangTag ? rowValue[fallbackLangTag] : value;
                   return [fallbackValue];
                 } else {
@@ -105,4 +105,11 @@ export function tablesToLanguages(langtags, {fallbackOnly = false} = {}) {
       };
     })
   }), {});
+}
+
+function needsFallback(kind, value) {
+  const isString = _.endsWith(kind, "text");
+  return isString
+    ? _.trim(value).length === 0
+    : _.isNil(value);
 }
