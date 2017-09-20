@@ -6,7 +6,7 @@ import missingStayEmptyFixture from "./__tests__/missingStayEmptyFixture.json";
 import resultFixture from "./__tests__/resultFixture.json";
 import {tablesToLanguages} from "./tablesToLanguages";
 
-describe.only("tablesToLanguages", () => {
+describe("tablesToLanguages", () => {
 
   const langtags = {
     de: [],
