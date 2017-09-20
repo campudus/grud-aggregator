@@ -117,8 +117,15 @@ This function separates the tables into languages set in the `fallbacks` object.
     truth, meaning the key in the `fallbacks` options are not used as default language, but the first element in the 
     provided array for each key. If you turn this option on, you need to have at least one language set in each array or
     the call to `tablesToLanguages` will result in an error.
+  * `fallbackOnEmptyString` (`Boolean`, optional, defaults to `true`), will trim texts (based on the column kind) and 
+    use the fallback languages if the trimmed text is empty.
 
 ## Release Notes
+
+### 6.0.0 - Breaking change `fallbackOnEmptyString`
+
+* Added option to `tablesToLanguages` to fallback on empty strings or strings which become empty after a trim. This 
+  option is set to `true` on default and hence breaking.
 
 #### 5.1.0 - Feature: `fallbackOnly` option in `tablesToLanguages`
 
