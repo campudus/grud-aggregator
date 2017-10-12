@@ -6,6 +6,7 @@ describe("aggregation-process", function () {
 
   this.timeout(5000);
 
+  const aggregatorBreaking = `${__dirname}/__tests__/aggregatorBreaking.js`;
   const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
   const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
   const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubsteps.js`;
@@ -186,6 +187,33 @@ describe("aggregation-process", function () {
       howLong: 150
     }).then(() => {
       expect(countedSteps).to.eql([0, 1, 2, 2, 3, 4]);
+    });
+  });
+
+  it("will not continue writing process if it breaks", function () {
+    this.timeout(5000);
+
+    const seenMessage = {};
+    let brokeDown = false;
+
+    return new Promise((resolve, reject) => {
+      start({
+        aggregatorFile: aggregatorBreaking,
+        progress: ({message, currentStep, steps}) => {
+          const step = `${currentStep}/${steps}`;
+          if (brokeDown && seenMessage[message] && seenMessage[message] === step) {
+            reject("saw a message multiple times");
+          }
+          seenMessage[message] = step;
+        },
+        timeoutToResendStatus: 100,
+        howLong: 150
+      })
+        .catch(err => {
+          expect(err).to.error(/aggregator broke/i);
+          brokeDown = true;
+        })
+        .then(() => setTimeout(resolve, 500));
     });
   });
 

@@ -82,6 +82,9 @@ export function start(
       }
 
       function fulfill(code, signal) {
+        if (resendProgressTimerId !== null) {
+          clearTimeout(resendProgressTimerId);
+        }
         if (!fulfilled) {
           fulfilled = true;
           if (allDone) {
