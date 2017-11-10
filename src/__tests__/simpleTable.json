@@ -1,0 +1,75 @@
+{
+  "1": {
+    "id": 1,
+    "name": "simpleTestTable",
+    "displayName": {},
+    "description": {},
+    "columns": [
+      {
+        "id": 1,
+        "name": "identifier",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {},
+        "description": {}
+      }
+    ],
+    "rows": {
+      "1": {
+        "id": 1,
+        "values": [
+          "first"
+        ]
+      },
+      "2": {
+        "id": 2,
+        "values": [
+          "second"
+        ]
+      },
+      "3": {
+        "id": 3,
+        "values": [
+          "third"
+        ]
+      },
+      "4": {
+        "id": 4,
+        "values": [
+          "fourth"
+        ]
+      },
+      "5": {
+        "id": 5,
+        "values": [
+          "fifth"
+        ]
+      },
+      "6": {
+        "id": 6,
+        "values": [
+          "sixth"
+        ]
+      },
+      "7": {
+        "id": 7,
+        "values": [
+          "seventh"
+        ]
+      },
+      "8": {
+        "id": 8,
+        "values": [
+          "eighth"
+        ]
+      },
+      "9": {
+        "id": 9,
+        "values": [
+          "ninth"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "1": {
+    "id": 1,
+    "name": "selfRefTestTable",
+    "displayName": {},
+    "description": {},
+    "columns": [
+      {
+        "id": 1,
+        "name": "identifier",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {},
+        "description": {}
+      },
+      {
+        "id": 2,
+        "name": "description",
+        "kind": "shorttext",
+        "identifier": false,
+        "multilanguage": false,
+        "displayName": {},
+        "description": {}
+      },
+      {
+        "id": 3,
+        "name": "mylink",
+        "kind": "link",
+        "identifier": false,
+        "multilanguage": false,
+        "displayName": {},
+        "description": {},
+        "toTable": 1,
+        "toColumn": {
+          "id": 1,
+          "name": "identifier",
+          "kind": "shorttext",
+          "identifier": true,
+          "multilanguage": false,
+          "displayName": {},
+          "description": {}
+        }
+      }
+    ],
+    "rows": {
+      "1": {
+        "id": 1,
+        "values": [
+          "first",
+          "First row, referencing row 2",
+          [{"id":2,"value":"second"}]
+        ]
+      },
+      "2": {
+        "id": 2,
+        "values": [
+          "second",
+          "Second row, referenced by row 1, not linking",
+          []
+        ]
+      },
+      "3": {
+        "id": 3,
+        "values": [
+          "third",
+          "Third row, not referenced and not linked anywhere",
+          []
+        ]
+      },
+      "4": {
+        "id": 4,
+        "values": [
+          "fourth",
+          "Fourth row, referencing row 5",
+          [{"id":5,"value":"fifth"}]
+        ]
+      },
+      "5": {
+        "id": 5,
+        "values": [
+          "fifth",
+          "Fifth row, referencing row 4",
+          [{"id":4,"value":"fourth"}]
+        ]
+      },
+      "6": {
+        "id": 6,
+        "values": [
+          "sixth",
+          "Sixth row, referencing row 7 and 8",
+          [{"id":7,"value":"seventh"},{"id":8,"value":"eighth"}]
+        ]
+      },
+      "7": {
+        "id": 7,
+        "values": [
+          "seventh",
+          "Seventh row, referencing row 8",
+          [{"id":8,"value":"eighth"}]
+        ]
+      },
+      "8": {
+        "id": 8,
+        "values": [
+          "eighth",
+          "Eighth row, referencing row 6 and 9",
+          [{"id":6,"value":"sixth"},{"id":9,"value":"ninth"}]
+        ]
+      },
+      "9": {
+        "id": 9,
+        "values": [
+          "ninth",
+          "Ninth row, referencing row 9 (itself)",
+          [{"id":9,"value":"ninth"}]
+        ]
+      }
+    }
+  }
+}
