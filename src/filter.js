@@ -5,11 +5,13 @@ const defaultPredicate = () => true;
 export function filter(
   {
     excludeBacklinks = false,
+    filterBacklinks = false,
     path = [],
     predicate = defaultPredicate,
     ignoreMissing = false
   } = {
     excludeBacklinks: false,
+    filterBacklinks: false,
     path: [],
     predicate: defaultPredicate,
     ignoreMissing: false
@@ -40,10 +42,11 @@ export function filter(
           accTables[firstTable.id],
           excludeBacklinks,
           `${firstTable.id}`,
-          ignoreMissing
+          ignoreMissing,
+          filterBacklinks
         );
 
-        if (excludeBacklinks) {
+        if (excludeBacklinks || filterBacklinks) {
           return _.omitBy(removeBrokenLinksToFirstTable(accTables, firstTable.id), table => _.isEmpty(table.rows));
         }
 
@@ -81,7 +84,15 @@ function removeBrokenLinksToFirstTable(accTables, firstTableId) {
   });
 }
 
-function addDependenciesOfTable(allTables, accTables, currentTable, excludeBacklinks, excludedTableId, ignoreMissing) {
+function addDependenciesOfTable(
+  allTables,
+  accTables,
+  currentTable,
+  excludeBacklinks,
+  excludedTableId,
+  ignoreMissing,
+  filterBacklinks
+) {
 
   const linksOfCurrentTableToCheck = _.transform(currentTable.columns, (acc, column, idx) => {
     if (column.kind === "link") {
@@ -111,6 +122,9 @@ function addDependenciesOfTable(allTables, accTables, currentTable, excludeBackl
       if (!ignoreMissing) {
         console.warn("Linking to a missing table - ignoring!", ignoreMissing);
       }
+    } else if (filterBacklinks && tableId === excludedTableId) {
+      // do not care about first table
+      console.log("back link to first table", tableId);
     } else {
       accTables[tableId].rows = _.transform(linksInTable, (rows, toRowId) => {
         const entity = allTables[tableId].rows[toRowId];
@@ -129,7 +143,8 @@ function addDependenciesOfTable(allTables, accTables, currentTable, excludeBackl
         accTables[tableId],
         excludeBacklinks,
         excludedTableId,
-        ignoreMissing
+        ignoreMissing,
+        filterBacklinks
       );
     }
   });

@@ -15,6 +15,7 @@ import filterFixture10 from "./__tests__/filterFixture10.json";
 import filterFixture11 from "./__tests__/filterFixture11.json";
 import filterFixture12 from "./__tests__/filterFixture12.json";
 import filterFixture13 from "./__tests__/filterFixture13.json";
+import filterFixtureA3AndA4 from "./__tests__/filterFixtureA3AndA4.json";
 import testTableDisableFollow2 from "./__tests__/testTableDisableFollow2.json";
 import missingEntitiesFixture from "./__tests__/missingEntitiesFixture.json";
 import {filter} from "./filter";
@@ -379,4 +380,16 @@ describe("filter", () => {
       });
   });
 
+  it("can reuse the predicate on backlink-dependencies and filter them", () => {
+    return Promise
+      .resolve(cyclicTablesWithDependencyLinkFixture)
+      .then(filter({
+        filterBacklinks: true,
+        path: ["tableA"],
+        predicate: v => v.identifier === "A3" || v.identifier === "A4"
+      }))
+      .then(data => {
+        expect(data).to.eql(filterFixtureA3AndA4);
+      });
+  });
 });
