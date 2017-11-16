@@ -101,7 +101,7 @@ describe("tablesToLanguages", () => {
       .eql(JSON.stringify(simpleTableExpected));
   });
 
-  it("results in the same thing for each language if there are no multilanguage columns", () => {
+  it("works with self referencing tables", () => {
     const result = tablesToLanguages({
       "de": [],
       "en": []
