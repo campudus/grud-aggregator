@@ -1,6 +1,6 @@
 {
   "name": "tableaux-aggregator",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "description": "Core aggregator functions",
   "main": "lib/index.js",
   "files": [
@@ -20,11 +20,13 @@
     "url": "git+ssh://git@github.com:campudus/grud-aggregator.git"
   },
   "keywords": [
-    "tableaux",
-    "aggregation"
+    "aggregate",
+    "aggregation",
+    "data",
+    "grud"
   ],
   "author": "Campudus GmbH",
-  "license": "MIT",
+  "license": "ASL2.0",
   "homepage": "https://github.com/campudus/grud-aggregator#readme",
   "devDependencies": {
     "babel-cli": "6.10.1",
