@@ -118,14 +118,12 @@ function addDependenciesOfTable(
   const filteredMissing = _.omitBy(missing, _.isEmpty);
 
   _.forEach(filteredMissing, (linksInTable, tableId) => {
+    const filtered = filterBacklinks && tableId === excludedTableId;
     if (_.isNil(accTables[tableId])) {
       if (!ignoreMissing) {
         console.warn("Linking to a missing table - ignoring!", ignoreMissing);
       }
-    } else if (filterBacklinks && tableId === excludedTableId) {
-      // do not care about first table
-      console.log("back link to first table", tableId);
-    } else {
+    } else if (!filtered) {
       accTables[tableId].rows = _.transform(linksInTable, (rows, toRowId) => {
         const entity = allTables[tableId].rows[toRowId];
         if (_.isNil(entity)) {
