@@ -1,0 +1,106 @@
+{
+  "de": {
+    "1": {
+      "id": 1,
+      "name": "simpleTestTable",
+      "columns": [
+        {
+          "id": 1,
+          "name": "identifier",
+          "kind": "shorttext",
+          "identifier": true
+        }
+      ],
+      "rows": {
+        "1": {
+          "final": false,
+          "values": ["first"]
+        },
+        "2": {
+          "final": false,
+          "values": ["second"]
+        },
+        "3": {
+          "final": false,
+          "values": ["third"]
+        },
+        "4": {
+          "final": false,
+          "values": ["fourth"]
+        },
+        "5": {
+          "final": false,
+          "values": ["fifth"]
+        },
+        "6": {
+          "final": false,
+          "values": ["sixth"]
+        },
+        "7": {
+          "final": false,
+          "values": ["seventh"]
+        },
+        "8": {
+          "final": false,
+          "values": ["eighth"]
+        },
+        "9": {
+          "final": false,
+          "values": ["ninth"]
+        }
+      }
+    }
+  },
+  "en": {
+    "1": {
+      "id": 1,
+      "name": "simpleTestTable",
+      "columns": [
+        {
+          "id": 1,
+          "name": "identifier",
+          "kind": "shorttext",
+          "identifier": true
+        }
+      ],
+      "rows": {
+        "1": {
+          "final": false,
+          "values": ["first"]
+        },
+        "2": {
+          "final": false,
+          "values": ["second"]
+        },
+        "3": {
+          "final": false,
+          "values": ["third"]
+        },
+        "4": {
+          "final": false,
+          "values": ["fourth"]
+        },
+        "5": {
+          "final": false,
+          "values": ["fifth"]
+        },
+        "6": {
+          "final": false,
+          "values": ["sixth"]
+        },
+        "7": {
+          "final": false,
+          "values": ["seventh"]
+        },
+        "8": {
+          "final": false,
+          "values": ["eighth"]
+        },
+        "9": {
+          "final": false,
+          "values": ["ninth"]
+        }
+      }
+    }
+  }
+}

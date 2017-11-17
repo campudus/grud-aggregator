@@ -86,7 +86,7 @@ describe("findAttachments", () => {
   });
 
   // TODO filter attachments to only get from specific tables / columns
-  it.skip("can get a filter that fetches only the wanted attachments", () => {
+  it.skip("can use an option to fetch only the wanted attachments", () => {
     return Promise
       .resolve(data)
       .then(findAttachments({

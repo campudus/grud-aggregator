@@ -73,7 +73,11 @@ This function filters all entities in the promise chain matching a specific cond
 
 * `options` is an object containing:
   * `excludeBacklinks` (`Boolean`, optional) - Defaults to false. This option will exclude all backlinks from another 
-    table, meaning if a cyclic link occurs, this link will not add new entities to the filtered table.
+    table, meaning if a cyclic link occurs, this link will not add new entities to the filtered table. Most of the time
+    you will want to use `filterBacklinks` instead of removing all columns containing a link to the first table.
+  * `filterBacklinks` (`Boolean`, optional) - Defaults to false. This option will exclude all backlinks from another 
+    table if the entity is not already in the first table. You want to use this option when you want to keep links to 
+    the first table but remove all links to entities that do not match your initial `predicate`.
   * `ignoreMissing` (`Boolean`, optional) - Defaults to false. If a table is missing, the `filter` method usually emits 
     a `console.warn` warning. This warning can be disabled by setting `ignoreMissing` to `true`.
   * `path` (`Array[String]`, reguired) - The path to follow for the `predicate`.

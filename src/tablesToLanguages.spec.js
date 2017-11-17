@@ -1,4 +1,8 @@
 import expect from "must";
+import simpleTable from "./__tests__/simpleTable.json";
+import simpleTableExpected from "./__tests__/simpleTableTTLExpected.json";
+import selfReferencingTable from "./__tests__/selfReferencingTable.json";
+import selfReferencingTableExpected from "./__tests__/selfReferencingTableTTLExpected.json";
 import tablesFixture from "./__tests__/tablesFixture.json";
 import missingFixture from "./__tests__/missingFixture.json";
 import missingResultFixture from "./__tests__/missingResultFixture.json";
@@ -84,6 +88,28 @@ describe("tablesToLanguages", () => {
     const resultFallback = tablesToLanguages(langtagsInFallback)(missingFixture);
 
     expect(JSON.stringify(resultKeys)).to.eql(JSON.stringify(resultFallback));
+  });
+
+  it("results in the same thing for each language if there are no multilanguage columns", () => {
+    const result = tablesToLanguages({
+      "de": [],
+      "en": []
+    })(simpleTable);
+
+    expect(JSON.stringify(result))
+      .to
+      .eql(JSON.stringify(simpleTableExpected));
+  });
+
+  it("works with self referencing tables", () => {
+    const result = tablesToLanguages({
+      "de": [],
+      "en": []
+    })(selfReferencingTable);
+
+    expect(JSON.stringify(result))
+      .to
+      .eql(JSON.stringify(selfReferencingTableExpected));
   });
 
   describe("fallback only option", () => {

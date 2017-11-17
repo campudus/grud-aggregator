@@ -1,0 +1,169 @@
+{
+  "1": {
+    "id": 1,
+    "name": "tableA",
+    "displayName": {},
+    "description": {},
+    "columns": [
+      {
+        "id": 1,
+        "name": "identifier",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {},
+        "description": {}
+      },
+      {
+        "id": 2,
+        "name": "description",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {},
+        "description": {}
+      },
+      {
+        "id": 3,
+        "name": "linkToB",
+        "kind": "link",
+        "multilanguage": false,
+        "displayName": {},
+        "description": {},
+        "toTable": 2,
+        "toColumn": {
+          "id": 1,
+          "ordering": 0,
+          "name": "identifier",
+          "kind": "shorttext",
+          "multilanguage": false,
+          "identifier": true,
+          "displayName": {},
+          "description": {}
+        }
+      }
+    ],
+    "rows": {
+      "3": {
+        "id": 3,
+        "values": [
+          "A3",
+          "links to B4",
+          [
+            {
+              "id": 4,
+              "value": [
+                "B4"
+              ]
+            }
+          ]
+        ]
+      },
+      "4": {
+        "id": 4,
+        "values": [
+          "A4",
+          "links to B1 and B5",
+          [
+            {
+              "id": 1,
+              "value": [
+                "B1"
+              ]
+            },
+            {
+              "id": 5,
+              "value": [
+                "B5"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "2": {
+    "id": 2,
+    "name": "tableB",
+    "displayName": {},
+    "description": {},
+    "columns": [
+      {
+        "id": 1,
+        "name": "identifier",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {},
+        "description": {}
+      },
+      {
+        "id": 2,
+        "name": "description",
+        "kind": "shorttext",
+        "identifier": true,
+        "multilanguage": false,
+        "displayName": {},
+        "description": {}
+      },
+      {
+        "id": 3,
+        "name": "linkToA",
+        "kind": "link",
+        "multilanguage": false,
+        "displayName": {},
+        "description": {},
+        "toTable": 1,
+        "toColumn": {
+          "id": 1,
+          "ordering": 0,
+          "name": "identifier",
+          "kind": "shorttext",
+          "multilanguage": false,
+          "identifier": true,
+          "displayName": {},
+          "description": {}
+        }
+      }
+    ],
+    "rows": {
+      "1": {
+        "id": 1,
+        "values": [
+          "B1",
+          "backlink to A1",
+          []
+        ]
+      },
+      "4": {
+        "id": 4,
+        "values": [
+          "B4",
+          "links to A2",
+          []
+        ]
+      },
+      "5": {
+        "id": 5,
+        "values": [
+          "B5",
+          "links to A1 and A3 and A4",
+          [
+            {
+              "id": 3,
+              "value": [
+                "A3"
+              ]
+            },
+            {
+              "id": 4,
+              "value": [
+                "A4"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "de": {
+    "1": {
+      "id": 1,
+      "name": "selfRefTestTable",
+      "columns": [
+        {
+          "id": 1,
+          "name": "identifier",
+          "kind": "shorttext",
+          "identifier": true
+        },
+        {
+          "id": 2,
+          "name": "description",
+          "kind": "shorttext",
+          "identifier": false
+        },
+        {
+          "id": 3,
+          "name": "mylink",
+          "kind": "link",
+          "identifier": false,
+          "toTable": 1
+        }
+      ],
+      "rows": {
+        "1": {
+          "final": false,
+          "values": ["first", "First row, referencing row 2", [2]]
+        },
+        "2": {
+          "final": false,
+          "values": ["second", "Second row, referenced by row 1, not linking", []]
+        },
+        "3": {
+          "final": false,
+          "values": ["third", "Third row, not referenced and not linked anywhere", []]
+        },
+        "4": {
+          "final": false,
+          "values": ["fourth", "Fourth row, referencing row 5", [5]]
+        },
+        "5": {
+          "final": false,
+          "values": ["fifth", "Fifth row, referencing row 4", [4]]
+        },
+        "6": {
+          "final": false,
+          "values": ["sixth", "Sixth row, referencing row 7 and 8", [7, 8]]
+        },
+        "7": {
+          "final": false,
+          "values": ["seventh", "Seventh row, referencing row 8", [8]]
+        },
+        "8": {
+          "final": false,
+          "values": ["eighth", "Eighth row, referencing row 6 and 9", [6, 9]]
+        },
+        "9": {
+          "final": false,
+          "values": ["ninth", "Ninth row, referencing row 9 (itself)", [9]]
+        }
+      }
+    }
+  },
+  "en": {
+    "1": {
+      "id": 1,
+      "name": "selfRefTestTable",
+      "columns": [
+        {
+          "id": 1,
+          "name": "identifier",
+          "kind": "shorttext",
+          "identifier": true
+        },
+        {
+          "id": 2,
+          "name": "description",
+          "kind": "shorttext",
+          "identifier": false
+        },
+        {
+          "id": 3,
+          "name": "mylink",
+          "kind": "link",
+          "identifier": false,
+          "toTable": 1
+        }
+      ],
+      "rows": {
+        "1": {
+          "final": false,
+          "values": ["first", "First row, referencing row 2", [2]]
+        },
+        "2": {
+          "final": false,
+          "values": ["second", "Second row, referenced by row 1, not linking", []]
+        },
+        "3": {
+          "final": false,
+          "values": ["third", "Third row, not referenced and not linked anywhere", []]
+        },
+        "4": {
+          "final": false,
+          "values": ["fourth", "Fourth row, referencing row 5", [5]]
+        },
+        "5": {
+          "final": false,
+          "values": ["fifth", "Fifth row, referencing row 4", [4]]
+        },
+        "6": {
+          "final": false,
+          "values": ["sixth", "Sixth row, referencing row 7 and 8", [7, 8]]
+        },
+        "7": {
+          "final": false,
+          "values": ["seventh", "Seventh row, referencing row 8", [8]]
+        },
+        "8": {
+          "final": false,
+          "values": ["eighth", "Eighth row, referencing row 6 and 9", [6, 9]]
+        },
+        "9": {
+          "final": false,
+          "values": ["ninth", "Ninth row, referencing row 9 (itself)", [9]]
+        }
+      }
+    }
+  }
+}

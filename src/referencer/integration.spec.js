@@ -1,7 +1,11 @@
 import expect from "must";
 import {referencer} from "./referencer";
 import {tablesToLanguages} from "../tablesToLanguages";
+import {exclude} from "../exclude";
+import {filter} from "../filter";
 import allTables from "./__tests__/allTables.json";
+import selfReferencingTable from "./../__tests__/selfReferencingTable.json";
+import selfReferencingTableExpected from "./../__tests__/selfReferencingTableTTLExpected.json";
 
 describe("referencer and tablesToLanguages", () => {
 
@@ -46,4 +50,22 @@ describe("referencer and tablesToLanguages", () => {
       });
   });
 
+  it("can use filters and tablesToLangauges on self referencing tables without removing links", () => {
+    const filterResult = filter({
+      path: ["selfRefTestTable"],
+      predicate: () => true
+    })(selfReferencingTable);
+    const excludeResult = exclude({
+      predicate: () => false
+    })(filterResult);
+    const result = tablesToLanguages({
+      "de": [],
+      "en": []
+    })(excludeResult);
+
+    expect(JSON.stringify(result))
+      .to
+      .eql(JSON.stringify(selfReferencingTableExpected));
+
+  });
 });
