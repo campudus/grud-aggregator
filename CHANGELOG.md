@@ -1,5 +1,15 @@
 # Release Notes
 
+## 6.1.0 - Feature: `filterBacklinks` option in `filter`
+
+* Added option to `filterBacklinks` in `filter`. This option is set to `false` by default. It is usually a good idea to
+  use this option instead of `excludeBacklinks` which will completely remove such columns.
+
+## 6.0.1 - Bugfix
+
+* When aggregator broke, it would still send progress callbacks. This is fixed and the aggregator process should stop if
+  the process was crashing.
+
 ## 6.0.0 - Breaking change `fallbackOnEmptyString`
 
 * Added option to `tablesToLanguages` to fallback on empty strings or strings which become empty after a trim. This 
