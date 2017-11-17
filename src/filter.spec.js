@@ -392,4 +392,26 @@ describe("filter", () => {
         expect(data).to.eql(filterFixtureA3AndA4);
       });
   });
+
+  it("should warn if both filterBacklinks and excludeBacklinks are turned on", () => {
+    const warn = console.warn;
+    let warned = false;
+    console.warn = function (...args) {
+      warned = /filterBacklinks.*excludeBacklinks/.test(args[0]);
+      warn.apply(this, args);
+    };
+
+    return Promise
+      .resolve(cyclicTablesWithDependencyLinkFixture)
+      .then(filter({
+        excludeBacklinks: true,
+        filterBacklinks: true,
+        path: ["tableA"],
+        predicate: v => v.id !== 3
+      }))
+      .then(result => {
+        expect(result).to.eql(filterFixture10);
+        expect(warned).to.be(true);
+      });
+  });
 });

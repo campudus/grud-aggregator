@@ -17,6 +17,11 @@ export function filter(
     ignoreMissing: false
   }) {
 
+  if (excludeBacklinks && filterBacklinks) {
+    console.warn("Both filterBacklinks and excludeBacklinks options are turned on. excludeBacklinks will override " +
+      "the filterBacklinks setting!");
+  }
+
   return data => {
     if (!_.isEmpty(path)) {
       // keep the table data without any initial data (rows)
