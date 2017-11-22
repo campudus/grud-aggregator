@@ -1,4 +1,4 @@
-# tableaux-aggregator
+# grud-aggregator
 
 This module helps to extract and aggregate information from a tableaux database.
 
