@@ -62,7 +62,6 @@ describe("pimApi", () => {
       expect(() => getAllTables({pimUrl: true})).to.throw(/pimUrl.*string/i);
       expect(() => getAllTables({pimUrl: {}})).to.throw(/pimUrl.*string/i);
       expect(() => getAllTables({pimUrl: 123})).to.throw(/pimUrl.*string/i);
-      expect(() => getAllTables({pimUrl: 123})).to.throw(/pimUrl.*string/i);
       return expect(getAllTables({pimUrl: SERVER_URL})).to.resolve.not.to.null();
     });
 
@@ -91,7 +90,6 @@ describe("pimApi", () => {
       expect(() => getTablesByNames({pimUrl: false})).to.throw(/pimUrl.*string/i);
       expect(() => getTablesByNames({pimUrl: true})).to.throw(/pimUrl.*string/i);
       expect(() => getTablesByNames({pimUrl: {}})).to.throw(/pimUrl.*string/i);
-      expect(() => getTablesByNames({pimUrl: 123})).to.throw(/pimUrl.*string/i);
       expect(() => getTablesByNames({pimUrl: 123})).to.throw(/pimUrl.*string/i);
       return expect(getTablesByNames({pimUrl: SERVER_URL})).to.resolve.not.to.null();
     });
@@ -133,22 +131,21 @@ describe("pimApi", () => {
 
   describe("getCompleteTable", () => {
     it("should expect an object with entry 'pimUrl' or a string as param", () => {
-      expect(() => getCompleteTable({}, 1, 100)).to.throw(/pimUrl.*missing/i);
-      expect(() => getCompleteTable({pimUrl: false}, 1, 100)).to.throw(/pimUrl.*string/i);
-      expect(() => getCompleteTable({pimUrl: true}, 1, 100)).to.throw(/pimUrl.*string/i);
-      expect(() => getCompleteTable({pimUrl: {}}, 1, 100)).to.throw(/pimUrl.*string/i);
-      expect(() => getCompleteTable({pimUrl: 123}, 1, 100)).to.throw(/pimUrl.*string/i);
-      expect(() => getCompleteTable({pimUrl: 123}, 1, 100)).to.throw(/pimUrl.*string/i);
+      expect(() => getCompleteTable({}, 1, 500)).to.throw(/pimUrl.*missing/i);
+      expect(() => getCompleteTable({pimUrl: false}, 1, 500)).to.throw(/pimUrl.*string/i);
+      expect(() => getCompleteTable({pimUrl: true}, 1, 500)).to.throw(/pimUrl.*string/i);
+      expect(() => getCompleteTable({pimUrl: {}}, 1, 500)).to.throw(/pimUrl.*string/i);
+      expect(() => getCompleteTable({pimUrl: 123}, 1, 500)).to.throw(/pimUrl.*string/i);
       return expect(getCompleteTable({pimUrl: SERVER_URL}, 1, 500)).to.resolve.not.to.null();
     });
 
     it("should expect param tableId as positive integer", () => {
-      expect(() => getCompleteTable({pimUrl: SERVER_URL}, "1", 100)).to.throw(/tableId.*integer/i);
-      expect(() => getCompleteTable({pimUrl: SERVER_URL}, false, 100)).to.throw(/tableId.*integer/i);
-      expect(() => getCompleteTable({pimUrl: SERVER_URL}, true, 100)).to.throw(/tableId.*integer/i);
-      expect(() => getCompleteTable({pimUrl: SERVER_URL}, {}, 100)).to.throw(/tableId.*integer/i);
-      expect(() => getCompleteTable({pimUrl: SERVER_URL}, [], 100)).to.throw(/tableId.*integer/i);
-      expect(() => getCompleteTable({pimUrl: SERVER_URL}, null, 100)).to.throw(/tableId.*integer/i);
+      expect(() => getCompleteTable({pimUrl: SERVER_URL}, "1", 500)).to.throw(/tableId.*integer/i);
+      expect(() => getCompleteTable({pimUrl: SERVER_URL}, false, 500)).to.throw(/tableId.*integer/i);
+      expect(() => getCompleteTable({pimUrl: SERVER_URL}, true, 500)).to.throw(/tableId.*integer/i);
+      expect(() => getCompleteTable({pimUrl: SERVER_URL}, {}, 500)).to.throw(/tableId.*integer/i);
+      expect(() => getCompleteTable({pimUrl: SERVER_URL}, [], 500)).to.throw(/tableId.*integer/i);
+      expect(() => getCompleteTable({pimUrl: SERVER_URL}, null, 500)).to.throw(/tableId.*integer/i);
       return expect(getCompleteTable({pimUrl: SERVER_URL}, 1, 500)).to.resolve.not.to.null();
     });
 
