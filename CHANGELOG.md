@@ -1,5 +1,10 @@
 # Release Notes
 
+## 6.2.0 - Feature `headers` option in `getEntitiesOfTable`
+
+* Added option to `getEntitiesOfTable` to be able to set headers for the http requests.
+
+
 ## 6.1.0 - Feature: `filterBacklinks` option in `filter`
 
 * Added option to `filterBacklinks` in `filter`. This option is set to `false` by default. It is usually a good idea to

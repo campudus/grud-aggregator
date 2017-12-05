@@ -66,6 +66,7 @@ export default function start(step, progress, options) {
   * `maxEntriesPerRequest`, `Integer` (optional) - Defaults to 500. An integer greater than 0 to limit the amount of 
     work on each request done by the Grud instance. Higher values make less requests but may run into timeouts if the 
     Grud instance is not able to handle as much data.
+  * `headers`, `Object` (optional) - Defaults to {}. An object with key values pairs for http headers to set on every request.
 
 #### `filter(options): GrudTables => GrudTables`
 

@@ -2,7 +2,7 @@ import _ from "lodash";
 import {getCompleteTable, getTablesByNames} from "./pimApi";
 
 export function getEntitiesOfTable(tableName, options = {}) {
-  const {disableFollow = [], pimUrl, maxEntriesPerRequest = 500} = options;
+  const {disableFollow = [], pimUrl, maxEntriesPerRequest = 500, headers = {}} = options;
 
   if (_.isNil(pimUrl)) {
     throw new Error("Missing option pimUrl");
@@ -20,10 +20,14 @@ export function getEntitiesOfTable(tableName, options = {}) {
     throw new Error("Expecting maxEntriesPerRequest to be a positive integer greater than 0");
   }
 
+  if (!_.isPlainObject(headers) || _.some(headers, value => !_.isString(value))) {
+    throw new Error("Expecting headers to be an object of key value pairs (string:string)");
+  }
+
   const promises = {};
   const tables = {};
 
-  return getTablesByNames(pimUrl, tableName)
+  return getTablesByNames({pimUrl, headers}, tableName)
     .then(tablesFromPim => Promise.all(
       _.map(tablesFromPim, table => getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest))
     ))
@@ -31,7 +35,7 @@ export function getEntitiesOfTable(tableName, options = {}) {
 
   function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest) {
     if (!promises[tableId]) {
-      const promiseOfLinkedTables = getCompleteTable(pimUrl, tableId, maxEntriesPerRequest)
+      const promiseOfLinkedTables = getCompleteTable({pimUrl, headers}, tableId, maxEntriesPerRequest)
         .then(table => {
           tables[tableId] = table;
           return Promise.all(_.flatMap(table.columns, column => {
