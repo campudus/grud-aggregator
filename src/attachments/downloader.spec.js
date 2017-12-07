@@ -16,12 +16,14 @@ describe("downloader", () => {
   const errorImage = `${__dirname}/__tests__/error.png`;
   let server;
   let requests = [];
+  let headers = {};
 
   before(() => {
     return new Promise((resolve, reject) => {
       const app = express();
       app.use(function (req, res, next) {
         requests.push(req.path);
+        headers = req.headers;
         next();
       });
       app.use("/files", express.static(SERVER_FIXTURES));
@@ -37,6 +39,7 @@ describe("downloader", () => {
 
   beforeEach(() => {
     requests = [];
+    headers = {};
   });
 
   after(done => {
@@ -70,6 +73,15 @@ describe("downloader", () => {
       pimUrl: SERVER_URL,
       downloadPath: "out"
     })).to.be.a.function();
+  });
+
+  it("expects a header object with string key value pairs", () => {
+    expect(() => downloader({
+      database: dbFixture,
+      pimUrl: SERVER_URL,
+      downloadPath: "out",
+      headers: {"test": 1234}
+    })).to.throw(/headers.*string:string/i);
   });
 
   it("is possible to download single file", () => {
@@ -423,6 +435,31 @@ describe("downloader", () => {
       .then(([missingFile, errorFile]) => {
         expect(missingFile.size).to.be(errorFile.size);
       }));
+  });
+
+  it("should set headers if available in options", () => {
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/attachments.json`);
+
+    return cleanUpWhenDone(tmpDir)(Promise
+      .resolve([
+        {
+          url: "/files/11111111-1111-1111-1111-111111111111/en/1-english.png",
+          path: "11111111-1111-1111-0000-111111111111.png"
+        }
+      ])
+      .then(downloader({
+        database,
+        pimUrl: SERVER_URL,
+        downloadPath: outPath,
+        headers: {"test": "test"}
+      }))
+      .then(() => {
+        expect(headers).to.have.property("test");
+        expect(headers.test).to.equal("test");
+      })
+    );
   });
 
 });

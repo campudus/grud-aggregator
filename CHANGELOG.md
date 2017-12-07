@@ -1,5 +1,9 @@
 # Release Notes
 
+## 6.2.1 - Fixed missing `headers` option in `downloader`
+
+* Added headers option from 6.2.0 to `downloader` to be able to set headers for the http requests when downloading attachments.
+
 ## 6.2.0 - Feature `headers` option in `getEntitiesOfTable`
 
 * Added option to `getEntitiesOfTable` to be able to set headers for the http requests.

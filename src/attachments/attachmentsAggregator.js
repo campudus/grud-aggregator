@@ -1,7 +1,7 @@
 import _ from "lodash";
-import http from "http";
 import fs from "fs";
 import {generateThumb, reduceImage} from "./imageResizer";
+import {download} from "./downloader";
 
 export function downloadAndResizeAttachments(
   {
@@ -11,7 +11,8 @@ export function downloadAndResizeAttachments(
     progress,
     errorProgress,
     maxImageSize,
-    errorImage
+    errorImage,
+    headers = {}
   }, attachments) {
 
   const chunkSize = 2;
@@ -60,7 +61,7 @@ export function downloadAndResizeAttachments(
         .resolve()
         .then(() => {
           console.log("downloading", url);
-          const downloader = (currentInfo.downloaded) ? Promise.resolve(path) : download(url, path);
+          const downloader = (currentInfo.downloaded) ? Promise.resolve(path) : download(url, path, headers);
           return downloader.then(() => {
             console.log("Writing download in database");
             return database
@@ -147,31 +148,6 @@ export function downloadAndResizeAttachments(
     });
 
   }), preparePromise);
-
-  function download(url, path) {
-    return new Promise((resolve, reject) => {
-      http
-        .find(url, response => {
-          if (response.statusCode === 200) {
-            const file = fs.createWriteStream(path);
-            response.pipe(file);
-          } else {
-            console.error(`Download of ${url} failed with status code ${response.statusCode}`);
-            reject(new Error(`Download of ${url} failed with status code ${response.statusCode}.\n`));
-          }
-        })
-        .on("close", () => {
-          resolve(path);
-        })
-        .on("error", err => {
-          console.error("Could not download file.", url, path, err.message);
-
-          fs.unlink(path, () => {
-            reject(err);
-          });
-        });
-    });
-  }
 
   function thumbnail(from, to) {
     return statOf(from)
