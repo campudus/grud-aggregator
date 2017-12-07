@@ -1,5 +1,6 @@
 import fs from "fs-extra";
 import http from "http";
+import nodeUrl from "url";
 import path from "path";
 import _ from "lodash";
 
@@ -8,7 +9,8 @@ export function downloader({
                              pimUrl,
                              progress,
                              downloadPath,
-                             errorImage
+                             errorImage,
+                             headers = {}
                            } = {}) {
 
   if (_.isEmpty(database)) {
@@ -29,6 +31,10 @@ export function downloader({
 
   if (!_.isNil(errorImage) && (!_.isString(errorImage) || _.isEmpty(errorImage))) {
     throw new Error("Option `errorImage` expects a path as string to a file");
+  }
+
+  if (!_.isPlainObject(headers) || _.some(headers, value => !_.isString(value))) {
+    throw new Error("Expecting headers to be an object of key value pairs (string:string)");
   }
 
   return attachments => {
@@ -62,7 +68,7 @@ export function downloader({
           }
           return Promise.resolve(list.concat([to]));
         } else {
-          return download(from, to)
+          return download(from, to, headers)
             .then(to => {
               database.insert(path.basename(to), "downloaded");
               return database.save();
@@ -115,10 +121,17 @@ function copyFile(from, to) {
   });
 }
 
-function download(url, path) {
+export function download(url, path, headers) {
   return new Promise((resolve, reject) => {
+    const parsedUrl = nodeUrl.parse(url);
     http
-      .get(url, response => {
+      .get({
+        protocol: parsedUrl.protocol,
+        hostname: parsedUrl.hostname,
+        port: parsedUrl.port,
+        path: parsedUrl.path,
+        headers
+      }, response => {
         if (response.statusCode === 200) {
           const file = fs.createWriteStream(path);
           response
