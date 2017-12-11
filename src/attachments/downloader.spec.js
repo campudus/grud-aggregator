@@ -2,39 +2,66 @@ import expect from "must";
 import express from "express";
 import fs from "fs-extra";
 import tmp from "tmp";
+import https from "https";
+import http from "http";
 import {Database} from "./database";
 import {downloader} from "./downloader";
 import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers";
 
-describe("downloader", () => {
+const tests = (protocol) => () => {
 
   const TEST_PORT = 14432;
   const SERVER_FIXTURES = `${__dirname}/__tests__/server`;
-  const SERVER_URL = `http://localhost:${TEST_PORT}`;
+  const SERVER_URL = `${protocol}://localhost:${TEST_PORT}`;
   const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
   const errorImage = `${__dirname}/__tests__/error.png`;
-  let server;
   let requests = [];
   let headers = {};
+  let server;
+
+  const isHttps = protocol === "https";
+
+  if (isHttps) {
+    // Allow self signed cert for testing
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  }
 
   before(() => {
-    return new Promise((resolve, reject) => {
-      const app = express();
-      app.use(function (req, res, next) {
-        requests.push(req.path);
-        headers = req.headers;
-        next();
-      });
-      app.use("/files", express.static(SERVER_FIXTURES));
-      server = app.listen(TEST_PORT, function (err) {
-        if (err) {
-          return reject(err);
-        } else {
-          return resolve();
-        }
-      });
+    const app = express();
+    app.use((req, res, next) => {
+      requests.push(req.path);
+      headers = req.headers;
+      next();
     });
+    app.use("/files", express.static(SERVER_FIXTURES));
+
+    if (isHttps) {
+      const options = {
+        key: fs.readFileSync(`${__dirname}/__tests__/private.pem`),
+        cert: fs.readFileSync(`${__dirname}/__tests__/public.pem`)
+      };
+
+      return new Promise((resolve, reject) => {
+        server = https.createServer(options, app).listen(TEST_PORT, err => {
+          if (err) {
+            return reject(err);
+          } else {
+            return resolve();
+          }
+        });
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        server = http.createServer(app).listen(TEST_PORT, err => {
+          if (err) {
+            return reject(err);
+          } else {
+            return resolve();
+          }
+        });
+      });
+    }
   });
 
   beforeEach(() => {
@@ -43,7 +70,7 @@ describe("downloader", () => {
   });
 
   after(done => {
-    server.close(done);
+    server.close(done());
   });
 
   it("expects a pimUrl option", () => {
@@ -461,5 +488,7 @@ describe("downloader", () => {
       })
     );
   });
+};
 
-});
+describe("downloader with http", tests("http"));
+describe("downloader with https", tests("https"));
