@@ -125,10 +125,7 @@ function copyFile(from, to) {
 export function download(url, path, headers) {
   return new Promise((resolve, reject) => {
     const parsedUrl = nodeUrl.parse(url);
-    let client = http;
-    if (parsedUrl.protocol === "https:") {
-      client = https;
-    }
+    const client = parsedUrl.protocol === "https:" ? https : http;
     client
       .get({
         protocol: parsedUrl.protocol,
