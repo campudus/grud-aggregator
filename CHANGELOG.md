@@ -1,5 +1,9 @@
 # Release Notes
 
+## 6.2.2 - Fixed `downloader` to work with https connections
+
+* When the protocol used for downloading attachments was https, the downloader broke. This is now fixed and https connections are possible.
+
 ## 6.2.1 - Fixed missing `headers` option in `downloader`
 
 * Added headers option from 6.2.0 to `downloader` to be able to set headers for the http requests when downloading attachments.

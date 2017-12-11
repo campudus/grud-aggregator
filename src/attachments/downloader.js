@@ -1,17 +1,18 @@
 import fs from "fs-extra";
 import http from "http";
+import https from "https";
 import nodeUrl from "url";
 import path from "path";
 import _ from "lodash";
 
 export function downloader({
-                             database,
-                             pimUrl,
-                             progress,
-                             downloadPath,
-                             errorImage,
-                             headers = {}
-                           } = {}) {
+  database,
+  pimUrl,
+  progress,
+  downloadPath,
+  errorImage,
+  headers = {}
+} = {}) {
 
   if (_.isEmpty(database)) {
     throw new Error("Missing database option");
@@ -124,7 +125,11 @@ function copyFile(from, to) {
 export function download(url, path, headers) {
   return new Promise((resolve, reject) => {
     const parsedUrl = nodeUrl.parse(url);
-    http
+    let client = http;
+    if (parsedUrl.protocol === "https:") {
+      client = https;
+    }
+    client
       .get({
         protocol: parsedUrl.protocol,
         hostname: parsedUrl.hostname,

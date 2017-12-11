@@ -2,6 +2,8 @@ import expect from "must";
 import express from "express";
 import fs from "fs-extra";
 import tmp from "tmp";
+import https from "https";
+import http from "http";
 import {Database} from "./database";
 import {downloader} from "./downloader";
 import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers";
@@ -9,32 +11,52 @@ import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers";
 describe("downloader", () => {
 
   const TEST_PORT = 14432;
+  const TEST_PORT_SSL = 14433;
   const SERVER_FIXTURES = `${__dirname}/__tests__/server`;
   const SERVER_URL = `http://localhost:${TEST_PORT}`;
+  const SERVER_URL_HTTPS = `https://localhost:${TEST_PORT_SSL}`;
   const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
   const errorImage = `${__dirname}/__tests__/error.png`;
-  let server;
   let requests = [];
   let headers = {};
+  let httpServer, httpsServer;
+
+  // Allow self signed cert for testing
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
   before(() => {
+    const app = express();
+    app.use(function (req, res, next) {
+      requests.push(req.path);
+      headers = req.headers;
+      next();
+    });
+    app.use("/files", express.static(SERVER_FIXTURES));
+
+    const options = {
+      key: fs.readFileSync(`${__dirname}/__tests__/private.pem`),
+      cert: fs.readFileSync(`${__dirname}/__tests__/public.pem`)
+    };
+
     return new Promise((resolve, reject) => {
-      const app = express();
-      app.use(function (req, res, next) {
-        requests.push(req.path);
-        headers = req.headers;
-        next();
-      });
-      app.use("/files", express.static(SERVER_FIXTURES));
-      server = app.listen(TEST_PORT, function (err) {
+      httpServer = http.createServer(app).listen(TEST_PORT, err => {
         if (err) {
           return reject(err);
         } else {
           return resolve();
         }
       });
-    });
+    })
+      .then(new Promise((resolve, reject) => {
+        httpsServer = https.createServer(options, app).listen(TEST_PORT_SSL, err => {
+          if (err) {
+            return reject(err);
+          } else {
+            return resolve();
+          }
+        });
+      }));
   });
 
   beforeEach(() => {
@@ -43,7 +65,17 @@ describe("downloader", () => {
   });
 
   after(done => {
-    server.close(done);
+    httpServer.close(errHttp => {
+      httpsServer.close(errHttps => {
+        if (errHttp) {
+          done(errHttp);
+        } else if (errHttps) {
+          done(errHttps);
+        } else {
+          done();
+        }
+      });
+    });
   });
 
   it("expects a pimUrl option", () => {
@@ -460,6 +492,42 @@ describe("downloader", () => {
         expect(headers.test).to.equal("test");
       })
     );
+  });
+
+  it("should work with https", () => {
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/attachments.json`);
+
+    return cleanUpWhenDone(tmpDir)(Promise
+      .resolve([
+        {
+          url: "/files/11111111-1111-1111-1111-111111111111/en/1-english.png",
+          path: "11111111-1111-1111-0000-111111111111.png"
+        }
+      ])
+      .then(downloader({
+        database,
+        pimUrl: SERVER_URL_HTTPS,
+        downloadPath: outPath,
+        headers: {"test": "test"}
+      }))
+      .then(downloaded => {
+        expect(headers).to.have.property("test");
+        expect(headers.test).to.equal("test");
+
+        expect(downloaded.length).to.be(1);
+        expect(downloaded[0]).to.be(`${outPath}/11111111-1111-1111-0000-111111111111.png`);
+        return Promise.all([
+          statOf(`${__dirname}/__tests__/server/11111111-1111-1111-1111-111111111111/en/1-english.png`),
+          statOf(`${__dirname}/__tests__/server/11111111-1111-1111-1111-111111111111/de/1-deutsch.png`),
+          statOf(`${outPath}/11111111-1111-1111-0000-111111111111.png`)
+        ]);
+      })
+      .then(([expectedA, expectedB, actualA]) => {
+        expect(actualA.size).to.be(expectedA.size);
+        expect(actualA.size).to.be(expectedB.size);
+      }));
   });
 
 });
