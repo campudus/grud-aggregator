@@ -1,5 +1,4 @@
 import _ from "lodash";
-import dns from "dns";
 import requestPromise from "request-promise-native";
 
 export function getAllTables(options) {
@@ -91,6 +90,8 @@ function request(method, uri, options) {
     headers,
     // We have to set family: 4 to prevent the underlying node http libs from throwing
     // errors when requesting the same domain too often.
+    // https://github.com/nodejs/node/issues/5436
+    // https://github.com/request/request-promise-native/issues/6
     family: 4,
     simple: true, // now the promise fails on status codes other than 2XX
     json: true
