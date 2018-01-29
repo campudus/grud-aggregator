@@ -1,12 +1,19 @@
 # Release Notes
 
+## 6.2.3 - Fixed `getaddrinfo ENOTFOUND` errors in request
+
+* We've added a workaround for API requests resulting in above error message. We need to use `family: 4` in our requests
+  which could be done by using the `request-promise-native` library rather than `superagent`.
+
 ## 6.2.2 - Fixed `downloader` to work with https connections
 
-* When the protocol used for downloading attachments was https, the downloader broke. This is now fixed and https connections are possible.
+* When the protocol used for downloading attachments was https, the downloader broke. This is now fixed and https 
+  connections are possible.
 
 ## 6.2.1 - Fixed missing `headers` option in `downloader`
 
-* Added headers option from 6.2.0 to `downloader` to be able to set headers for the http requests when downloading attachments.
+* Added headers option from 6.2.0 to `downloader` to be able to set headers for the http requests when downloading 
+  attachments.
 
 ## 6.2.0 - Feature `headers` option in `getEntitiesOfTable`
 
