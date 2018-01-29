@@ -87,6 +87,8 @@ function request(method, uri, options) {
   return requestPromise({
     method,
     uri,
-    headers
+    headers,
+    simple: true, // now the promise fails on status codes other than 2XX
+    json: true
   });
 }
