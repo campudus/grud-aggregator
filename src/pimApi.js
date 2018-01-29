@@ -1,6 +1,10 @@
 import _ from "lodash";
 import requestPromise from "request-promise-native";
 
+// We have to set family: 4 to prevent the underlying node http libs from throwing
+// errors when requesting the same domain too often.
+requestPromise.defaults({family: 4});
+
 export function getAllTables(options) {
   const {pimUrl, headers = {}} = getOptionsFromParam(options, "getAllTables");
 
