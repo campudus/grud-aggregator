@@ -2,7 +2,7 @@ import expect from "must";
 import express from "express";
 import {getAllTables, getTablesByNames, getCompleteTable} from "./pimApi";
 
-describe("pimApi", () => {
+describe.only("pimApi", () => {
 
   const TEST_PORT = 14432;
   const SERVER_URL = `http://localhost:${TEST_PORT}`;
