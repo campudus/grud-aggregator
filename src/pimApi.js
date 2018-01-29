@@ -1,5 +1,5 @@
 import _ from "lodash";
-import superagent from "superagent";
+import requestPromise from "request-promise-native";
 
 export function getAllTables(options) {
   const {pimUrl, headers = {}} = getOptionsFromParam(options, "getAllTables");
@@ -79,17 +79,21 @@ function createArrayOfRequests(pimUrl, tableId, maxEntries, elements) {
   return arr;
 }
 
-function request(requestMethod, url, options) {
-  const {headers} = options;
-  return new Promise(function (resolve, reject) {
-    superagent(requestMethod, url)
-      .set(headers)
-      .end((error, response) => {
-        if (!error && response.statusCode === 200) {
-          resolve(response.body);
-        } else {
-          reject(error);
-        }
-      });
+function request(method, uri, options) {
+  const {
+    headers
+  } = options;
+
+  return requestPromise({
+    method,
+    uri,
+    headers,
+    // We have to set family: 4 to prevent the underlying node http libs from throwing
+    // errors when requesting the same domain too often.
+    // https://github.com/nodejs/node/issues/5436
+    // https://github.com/request/request-promise-native/issues/6
+    family: 4,
+    simple: true, // now the promise fails on status codes other than 2XX
+    json: true
   });
 }
