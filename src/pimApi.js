@@ -1,9 +1,6 @@
 import _ from "lodash";
+import dns from "dns";
 import requestPromise from "request-promise-native";
-
-// We have to set family: 4 to prevent the underlying node http libs from throwing
-// errors when requesting the same domain too often.
-requestPromise.defaults({family: 4});
 
 export function getAllTables(options) {
   const {pimUrl, headers = {}} = getOptionsFromParam(options, "getAllTables");
@@ -92,6 +89,9 @@ function request(method, uri, options) {
     method,
     uri,
     headers,
+    // We have to set family: 4 to prevent the underlying node http libs from throwing
+    // errors when requesting the same domain too often.
+    family: 4,
     simple: true, // now the promise fails on status codes other than 2XX
     json: true
   });
