@@ -54,7 +54,6 @@
     "imagemin": "5.3.1",
     "imagemin-jpegoptim": "5.2.0",
     "imagemin-pngquant": "5.0.0",
-    "jpegoptim-bin": "4.0.0",
     "jimp": "0.2.24",
     "lodash": "4.13.1",
     "lowdb": "0.13.1",
