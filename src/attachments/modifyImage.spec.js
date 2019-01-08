@@ -15,7 +15,8 @@ describe("image modification", () => {
   const thumbFile = `${__dirname}/__tests__/duck_thumb.png`;
   const tinyFile = `${__dirname}/__tests__/duck_tiny.png`;
   const scaleResizeFile = `${__dirname}/__tests__/duck_500x400.png`;
-  const wrongImageFile = `${__dirname}/__tests__/wrong.png`;
+  const wrongImageFile1 = `${__dirname}/__tests__/wrong-image.png`;
+  const wrongImageFile2 = `${__dirname}/__tests__/wrong-image.jpg`;
 
   const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
@@ -353,10 +354,10 @@ describe("image modification", () => {
     const tmpDir = tmp.dirSync({unsafeCleanup: true});
     const outPath = tmpDir.name;
     const database = new Database(`${outPath}/database.json`);
-    const images = [fixtureFile, wrongImageFile, fixtureFile2];
-    const [image1, image2, image3] = images;
+    const images = [fixtureFile, wrongImageFile1, wrongImageFile2, fixtureFile2];
+    const [image1, image2, image3, image4] = images;
 
-    let onErrorCalled = false;
+    let onErrorCalledCounter = 0;
     let counter = 0;
 
     return cleanUpWhenDone(tmpDir)(modifyImages({
@@ -366,16 +367,18 @@ describe("image modification", () => {
       imageWidth: 10,
       minify: true,
       chunkSize: 2,
-      onError: (error, path) => {
-        onErrorCalled = true;
+      onError: (error, filePath) => {
+        onErrorCalledCounter++;
 
-        expect(error).to.contain(path.basename(image2));
-        expect(path).to.contain(path.basename(image2));
+        const expectedWrongImage = onErrorCalledCounter === 1 ? image2 : image3;
+
+        expect(error).to.be.error();
+        expect(filePath).to.contain(path.basename(expectedWrongImage));
       },
       progress: ({error, message, currentStep, steps}) => {
         counter++;
 
-        expect(steps).to.be(3);
+        expect(steps).to.be(4);
 
         if (counter === 1) {
           // "init" message
@@ -392,19 +395,25 @@ describe("image modification", () => {
           expect(error).not.to.be(false);
           expect(currentStep).to.be(0);
         } else if (counter === 4) {
-          // try modifying image3
+          // try modifying image3 and image4
           expect(message).to.contain(path.basename(image3));
+          expect(message).to.contain(path.basename(image4));
           expect(currentStep).to.be(2);
         } else if (counter === 5) {
+          // error message for image3
+          expect(message).to.contain(path.basename(image3));
+          expect(error).not.to.be(false);
+          expect(currentStep).to.be(2);
+        } else if (counter === 6) {
           // "done" message
           expect(message).not.to.be.empty();
-          expect(currentStep).to.be(3);
+          expect(currentStep).to.be(4);
         }
       }
     })(images)
       .then(modifiedFiles => {
-        expect(counter).to.be(5);
-        expect(onErrorCalled).to.be.true();
+        expect(counter).to.be(6);
+        expect(onErrorCalledCounter).to.be(2);
         expect(modifiedFiles).to.have.length(2);
       }));
   });
