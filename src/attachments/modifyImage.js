@@ -11,6 +11,7 @@ export function modifyImages(
     key,
     minify = false,
     outPath = "out",
+    onError = _.noop,
     progress = () => {
     }
   } = {
@@ -20,6 +21,7 @@ export function modifyImages(
     minify: false,
     dataDirectory: "out",
     outPath: "out",
+    onError: _.noop,
     progress: () => {
     }
   }) {
@@ -37,10 +39,11 @@ export function modifyImages(
       throw new Error("Expected Array as images");
     }
 
-    const inputs = _.map(images, i => ({
-      fromPath: i,
-      toPath: `${outPath}/${path.basename(i)}`
+    const inputs = _.map(images, image => ({
+      fromPath: image,
+      toPath: `${outPath}/${path.basename(image)}`
     }));
+
     const resize = imageWidth !== "auto" || imageHeight !== "auto";
     const steps = inputs.length;
 
@@ -56,82 +59,108 @@ export function modifyImages(
           currentStep: stepAndFiles.currentStep,
           steps
         });
+
         return stepAndFiles;
       })
-      .then(stepAndFiles => {
-        if (resize || minify) { // resize can resize AND minify at the same time
-          return _.reduce(_.chunk(stepAndFiles.files, chunkSize),
-            (promise, chunkFiles) => promise
-              .then(status => {
+      .then(stepAndAllFiles => {
+        // resize can resize AND minify at the same time
+        if (!resize && !minify) {
+          return stepAndAllFiles;
+        }
 
-                const doing = resize && minify ? "Resizing and minifying" : resize ? "Resizing" : "Minifying";
-                const multiple = chunkSize > 1;
+        const chunkedFiles = _.chunk(stepAndAllFiles.files, chunkSize);
+        const stepAndFiles = Promise.resolve({
+          currentStep: stepAndAllFiles.currentStep,
+          files: []
+        });
 
+        return _.reduce(chunkedFiles, (promise, chunkFiles) => promise.then(stepAndFiles => {
+          const {currentStep, files: previousFiles} = stepAndFiles;
+
+          const doing = resize && minify ? "Resizing and minifying" : resize ? "Resizing" : "Minifying";
+          const multiple = chunkSize > 1;
+
+          progress({
+            error: false,
+            message: `${doing} image${multiple ? "s" : ""} ${_.map(chunkFiles, file => file.fromPath).join(", ")}`,
+            currentStep,
+            steps
+          });
+
+          const numFiles = _.size(chunkFiles);
+
+          const filesInChunkWithStatus = _.map(chunkFiles, file => {
+            const {fromPath, toPath} = file;
+            const isDone = !!database.find(path.basename(toPath), key);
+
+            return {
+              done: isDone,
+              fromPath: fromPath,
+              toPath: toPath
+            };
+          });
+
+          return Promise
+            .all(_.map(filesInChunkWithStatus, file => {
+              const {fromPath, toPath} = file;
+
+              if (file.done) {
                 progress({
                   error: false,
-                  message: `${doing} image${multiple ? "s" : ""} ${_.map(chunkFiles, file => file.fromPath)
-                                                                    .join(", ")}`,
-                  currentStep: status.currentStep,
+                  message: `Already modified image ${toPath}`,
+                  currentStep,
                   steps
                 });
 
-                const filesInChunkWithStatus = _.map(chunkFiles, file => {
-                  const to = file.toPath;
-                  if (database.find(path.basename(to), key)) {
-                    return {
-                      done: true,
-                      fromPath: file.fromPath,
-                      toPath: to
-                    };
-                  } else {
-                    return {
-                      done: false,
-                      fromPath: file.fromPath,
-                      toPath: to
-                    };
-                  }
+                return Promise.resolve(file);
+              }
+
+              /* resize (and maybe minify) */
+
+              const handleError = (error) => {
+                progress({
+                  error,
+                  message: `Could not modify image ${fromPath}`,
+                  currentStep,
+                  steps
                 });
 
-                return Promise
-                  .all(_.map(filesInChunkWithStatus, file => {
-                    if (file.done) {
-                      return Promise.resolve(file);
-                    } else if (resize) { // resize (and maybe minify)
-                      return startImageModificationProcess([
-                        file.fromPath,
-                        file.toPath,
-                        minify,
-                        imageWidth,
-                        imageHeight
-                      ])
-                        .then(() => file);
-                    } else { // only minify
-                      return startImageModificationProcess([file.fromPath, file.toPath, minify])
-                        .then(() => file);
-                    }
-                  }))
-                  .then(() => {
-                    return Promise
-                      .all(_.map(filesInChunkWithStatus, file => {
-                        database.insert(path.basename(file.toPath), key);
-                      }))
-                      .then(() => database.save())
-                      .then(() => {
-                        return {
-                          files: status.files.concat(_.map(filesInChunkWithStatus,
-                            file => _.omit(file, "done"))),
-                          currentStep: status.currentStep + filesInChunkWithStatus.length
-                        };
-                      });
-                  });
-              }),
-            Promise.resolve({
-              currentStep: stepAndFiles.currentStep,
-              files: []
-            }));
-        } else {
-          return stepAndFiles;
-        }
+                if (_.isFunction(onError)) {
+                  onError(error, fromPath);
+                }
+
+                return {
+                  ...file,
+                  error
+                };
+              };
+
+              const modificationArguments = [fromPath, toPath, minify];
+
+              if (resize) {
+                modificationArguments.push(imageWidth, imageHeight);
+              }
+
+              return startImageModificationProcess(modificationArguments)
+                .then(() => file)
+                .catch(handleError);
+            }))
+            .then(processedFiles => {
+              const successfullyProcessedFiles = _.reject(processedFiles, "error");
+
+              return Promise
+                .all(_.map(successfullyProcessedFiles, file => database.insert(path.basename(file.toPath), key)))
+                .then(() => database.save())
+                .then(() => {
+                  const currentFiles = _.map(successfullyProcessedFiles, file => _.omit(file, "done"));
+
+                  return {
+                    files: previousFiles.concat(currentFiles),
+                    currentStep: currentStep + numFiles
+                  };
+                });
+            });
+        }), stepAndFiles);
       })
       .then(stepAndFiles => {
         progress({
@@ -140,17 +169,20 @@ export function modifyImages(
           currentStep: steps,
           steps
         });
+
         const modifiedFiles = _.map(stepAndFiles.files, file => {
-          database.insert(path.basename(file.toPath), key);
-          return file.toPath;
+          const {toPath} = file;
+
+          database.insert(path.basename(toPath), key);
+
+          return toPath;
         });
 
         return database
           .save()
           .then(() => modifiedFiles);
       });
-  }
-    ;
+  };
 }
 
 function startImageModificationProcess(args) {
