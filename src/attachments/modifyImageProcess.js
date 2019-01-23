@@ -1,4 +1,4 @@
-require("babel-register");
+require("@babel/register");
 const imageResizer = require("./imageResizer");
 const fromPath = process.argv[2];
 const toPath = process.argv[3];
