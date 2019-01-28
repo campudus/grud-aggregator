@@ -1,7 +1,8 @@
 {
   "presets": [
-    "es2015",
-    "stage-0"
+    "@babel/preset-env"
   ],
-  "plugins": ["babel-plugin-add-module-exports"]
+  "plugins": [
+    "babel-plugin-add-module-exports"
+  ]
 }

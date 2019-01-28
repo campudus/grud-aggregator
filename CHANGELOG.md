@@ -1,5 +1,9 @@
 # Release Notes
 
+## 7.0.0 - Upgraded to Babel 7
+
+* Updated `babel-*` node packages to `@babel/*`, `babel-register` hook to `@babel/register` and `.babelrc` configuration file.
+
 ## 6.2.3 - Fixed `getaddrinfo ENOTFOUND` errors in request
 
 * We've added a workaround for API requests resulting in above error message. We need to use `family: 4` in our requests

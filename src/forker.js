@@ -1,6 +1,6 @@
 "use strict";
 const fs = require("fs-extra");
-require("babel-register");
+require("@babel/register");
 const errors = require("./errorCodes.js");
 
 process.on("message", function (event) {
