@@ -54,15 +54,16 @@ function run(aggregatorFile, options) {
   try {
     const aggregator = require(aggregatorFile);
     aggregator(step, progress, options)
-      .then(() => {
+      .then(result => {
         process.send({
           action: "DONE",
           payload: {
             error: false,
             message: "Done.",
             currentStep: allSteps,
-            steps: allSteps
-          }
+            steps: allSteps,
+          },
+          data: result
         });
       })
       .catch(err => {

@@ -45,6 +45,18 @@ describe("aggregation-process", function () {
       });
   });
 
+  it("returns the aggregation result", () => {
+    const expected = {foo: "bar", qux: 42};
+
+    return start({
+      aggregatorFile: aggregatorFile,
+      expectedResult: expected
+    })
+      .then(({result}) => {
+        expect(result).to.eql(expected);
+      });
+  });
+
   it("shows the correct amount steps and the currentStep", () => {
     const messages = ["Starting aggregator", "step A", "step B", "step C", "step D", "Done"];
     let lastStep = -1;

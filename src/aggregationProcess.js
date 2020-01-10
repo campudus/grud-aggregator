@@ -26,8 +26,9 @@ export function start(
       let allDone = false;
       let allSteps = 0;
       let resendProgressTimerId = null;
+      let result;
 
-      child.on("message", ({action, payload}) => {
+      child.on("message", ({action, payload, data}) => {
         if (action === "INIT") {
           initialized = true;
           allSteps = payload.stepsInAggregator;
@@ -45,6 +46,7 @@ export function start(
             resendProgressTimerId = null;
           }
           allDone = true;
+          result = data;
           child.kill();
         }
       });
@@ -88,7 +90,7 @@ export function start(
         if (!fulfilled) {
           fulfilled = true;
           if (allDone) {
-            resolve();
+            resolve({result});
           } else if (!initialized) {
             reject(
               new Error(`Could not start up aggregator ${aggregatorFile}. Correct path? Uncaught exception in init?`)
@@ -98,10 +100,7 @@ export function start(
           } else if (code !== 0) {
             reject(new Error(`Aggregator broke, possible uncaught exception. Exit code ${code}`));
           } else {
-            resolve({
-              code,
-              signal
-            });
+            resolve({result, code, signal});
           }
         }
       }
