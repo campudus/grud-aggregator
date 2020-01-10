@@ -1,5 +1,9 @@
 # Release Notes
 
+## 7.0.1 - Return aggregation result
+
+* The aggregator now properly returns its result in a Promise to the caller of the `start()` function.
+
 ## 7.0.0 - Upgraded to Babel 7
 
 * Updated `babel-*` node packages to `@babel/*`, `babel-register` hook to `@babel/register` and `.babelrc` configuration file.
