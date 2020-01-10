@@ -61,7 +61,7 @@ function run(aggregatorFile, options) {
             error: false,
             message: "Done.",
             currentStep: allSteps,
-            steps: allSteps,
+            steps: allSteps
           },
           data: result
         });
