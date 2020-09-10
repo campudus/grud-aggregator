@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@babel/register": "7.0.0",
-    "axios": "^0.20.0",
+    "axios": "0.20.0",
     "fs-extra": "0.30.0",
     "imagemin": "5.3.1",
     "imagemin-jpegoptim": "5.2.0",
