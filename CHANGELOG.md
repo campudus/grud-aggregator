@@ -1,5 +1,10 @@
 # Release Notes
 
+## 7.0.2 - Removed deprecated `request-promise-native`
+
+* Removed deprecated package `request-promise-native`.
+* Added `axios` as an alternative.
+
 ## 7.0.1 - Return aggregation result
 
 * The aggregator now properly returns its result in a Promise to the caller of the `start()` function.
