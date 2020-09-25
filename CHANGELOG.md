@@ -1,5 +1,9 @@
 # Release Notes
 
+## 7.0.3 - Moved `@babel/core` from `devDependencies` to `dependencies`
+
+* Moved`@babel/core` from `devDependencies` to `dependencies`.
+
 ## 7.0.2 - Removed deprecated `request-promise-native`
 
 * Removed deprecated package `request-promise-native`.
