@@ -35,7 +35,7 @@ process.on("error", (error) => {
 function mkDirs(dataDirectory) {
   return new Promise<void>((resolve, reject) => {
     if (dataDirectory) {
-      fs.mkdirp(`${dataDirectory}/attachments`, err => {
+      fs.mkdirp(`${dataDirectory}/attachments`, (err) => {
         if (err) {
           reject(err);
         } else {
@@ -49,26 +49,25 @@ function mkDirs(dataDirectory) {
 }
 
 function run(aggregatorFile, options) {
-
   let allSteps = 1;
   let lastStep = 0;
 
   try {
     const aggregator = require(aggregatorFile);
     aggregator(step, progress, options)
-      .then(result => {
+      .then((result) => {
         process.send({
           action: "DONE",
           payload: {
             error: false,
             message: "Done.",
             currentStep: allSteps,
-            steps: allSteps
+            steps: allSteps,
           },
-          data: result
+          data: result,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error during aggregation", err);
         process.exit(3);
       });
@@ -76,8 +75,8 @@ function run(aggregatorFile, options) {
     process.send({
       action: "INIT",
       payload: {
-        stepsInAggregator: allSteps
-      }
+        stepsInAggregator: allSteps,
+      },
     });
   } catch (err) {
     if (err.code === "MODULE_NOT_FOUND") {
@@ -91,15 +90,15 @@ function run(aggregatorFile, options) {
   function step(message) {
     allSteps = allSteps + 1;
 
-    return data => {
+    return (data) => {
       lastStep = lastStep + 1;
       process.send({
         action: "PROGRESS",
         payload: {
           message: message,
           currentStep: lastStep,
-          steps: allSteps
-        }
+          steps: allSteps,
+        },
       });
       return data;
     };
@@ -111,9 +110,9 @@ function run(aggregatorFile, options) {
       payload: {
         error: options.error || false,
         message: options.message || "",
-        currentStep: lastStep + ((options.currentStep / options.steps) || 0),
-        steps: allSteps
-      }
+        currentStep: lastStep + (options.currentStep / options.steps || 0),
+        steps: allSteps,
+      },
     });
   }
 }

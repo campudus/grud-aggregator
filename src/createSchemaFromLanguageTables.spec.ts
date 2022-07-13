@@ -1,14 +1,12 @@
 import resultFixture from "./__tests__/resultFixture.json";
-import {createSchemaFromLanguageTables} from "./createSchemaFromLanguageTables";
+import { createSchemaFromLanguageTables } from "./createSchemaFromLanguageTables";
 import expect from "must";
 import _ from "lodash";
 
 describe("createSchemaFromLanguageTables", () => {
-
   it("can be put into Promise chain", () => {
     expect(
-      Promise
-        .resolve(resultFixture)
+      Promise.resolve(resultFixture)
         .then(createSchemaFromLanguageTables())
         .then(() => true)
     ).to.resolve.to.true();
@@ -37,7 +35,7 @@ describe("createSchemaFromLanguageTables", () => {
     expect(Object.keys(json.tables).sort()).to.eql([
       "anotherTestTable",
       "testTable",
-      "thirdTestTable"
+      "thirdTestTable",
     ]);
     expect(json.tables.testTable).to.exist();
     expect(json.tables.testTable).to.be("Test Tabelle");
@@ -45,13 +43,17 @@ describe("createSchemaFromLanguageTables", () => {
 
   it("results in {columns:{[internalTableName]:{[internalColumnName]:[name]}}} for columns", () => {
     const json = createSchemaFromLanguageTables()(resultFixture)["de"];
-    expect(Object.keys(json.columns).sort()).to.eql(["anotherTestTable", "testTable", "thirdTestTable"]);
+    expect(Object.keys(json.columns).sort()).to.eql([
+      "anotherTestTable",
+      "testTable",
+      "thirdTestTable",
+    ]);
     expect(json.columns.testTable).to.exist();
     expect(Object.keys(json.columns.testTable).sort()).to.eql([
       "mlShorttext",
       "slAttachment",
       "slShorttext",
-      "someLink"
+      "someLink",
     ]);
     expect(json.columns.testTable.slShorttext).to.be("Irgendein Text");
     expect(json.columns.testTable.mlShorttext).to.be("Irgendein mehrsprachiger Text");
@@ -68,6 +70,4 @@ describe("createSchemaFromLanguageTables", () => {
     expect(json.tables.anotherTestTable).to.be("Test table 2");
     expect(json.columns.anotherTestTable.testColumn).to.be("Some other text");
   });
-
 });
-

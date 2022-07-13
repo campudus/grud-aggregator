@@ -1,10 +1,9 @@
 export default function start(step, progress, options) {
   const howLong = options.howLong;
 
-  return Promise
-    .resolve(0)
+  return Promise.resolve(0)
     .then(step("started"))
-    .then(zero => zero + 1)
+    .then((zero) => zero + 1)
     .then(step("waiting 1"))
     .then(waitLonger)
     .then(step("waiting 2"))
@@ -14,7 +13,7 @@ export default function start(step, progress, options) {
     .then(step("waiting 4"))
     .then(waitLonger)
     .then(step("second"))
-    .then(one => one + 1);
+    .then((one) => one + 1);
 
   function waitLonger(message) {
     return new Promise<any>((resolve) => {
@@ -23,6 +22,4 @@ export default function start(step, progress, options) {
       }, howLong);
     });
   }
-
 }
-

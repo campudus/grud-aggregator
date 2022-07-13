@@ -11,14 +11,14 @@ if (imageWidth && imageHeight) {
     fromPath: fromPath,
     toPath: toPath,
     minify: minify,
-    imageWidth: (imageWidth === "auto") ? "auto" : JSON.parse(imageWidth),
-    imageHeight: (imageHeight === "auto") ? "auto" : JSON.parse(imageHeight)
+    imageWidth: imageWidth === "auto" ? "auto" : JSON.parse(imageWidth),
+    imageHeight: imageHeight === "auto" ? "auto" : JSON.parse(imageHeight),
   };
 
   imageResizer
     .generateThumb(resizeOptions)
     .then(() => process.exit(0))
-    .catch(err => {
+    .catch((err) => {
       console.log("Could not generate thumb", resizeOptions, err);
       process.exit(1);
     });
@@ -26,12 +26,12 @@ if (imageWidth && imageHeight) {
   const reduceOptions = {
     fromPath: fromPath,
     toPath: toPath,
-    minify: minify
+    minify: minify,
   };
   imageResizer
     .reduceImage(reduceOptions)
     .then(() => process.exit(0))
-    .catch(err => {
+    .catch((err) => {
       console.log("Could not reduce image", reduceOptions, err);
       process.exit(1);
     });

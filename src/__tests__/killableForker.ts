@@ -1,7 +1,7 @@
 const start = require("../../lib/aggregationProcess").start;
 
 const longRunningAggregator = `${__dirname}/killableForkerAggregator.js`;
-var aggregatorPid, parentPid;
+let aggregatorPid, parentPid;
 
 process.on("message", (message: string) => {
   if (/^\d+$/.test(message)) {
@@ -15,7 +15,7 @@ process.on("message", (message: string) => {
           process.kill(aggregatorPid, "SIGHUP");
         }
         process.send(p.message);
-      }
+      },
     });
   }
 });

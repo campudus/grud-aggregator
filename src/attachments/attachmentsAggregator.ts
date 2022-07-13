@@ -1,7 +1,7 @@
 import _ from "lodash";
 import fs from "fs";
-import {generateThumb, reduceImage} from "./imageResizer";
-import {download} from "./downloader";
+import { generateThumb, reduceImage } from "./imageResizer";
+import { download } from "./downloader";
 
 export function downloadAndResizeAttachments(
   {
@@ -12,9 +12,10 @@ export function downloadAndResizeAttachments(
     errorProgress,
     maxImageSize,
     errorImage,
-    headers = {}
-  }, attachments) {
-
+    headers = {},
+  },
+  attachments
+) {
   const chunkSize = 2;
   // split list up into partitions
   const chunks = _.chunk(attachments, chunkSize);
@@ -28,166 +29,175 @@ export function downloadAndResizeAttachments(
     .then(() => _mkdir(directoryReduced))
     .then(() => ({
       done: 0,
-      total: attachments.length
+      total: attachments.length,
     }));
 
-  return _.reduce(chunks, (promise, attachmentsInChunk) => promise.then(currentProgress => {
-    return Promise.all(_.map(attachmentsInChunk, item => {
+  return _.reduce(
+    chunks,
+    (promise, attachmentsInChunk) =>
+      promise.then((currentProgress) => {
+        return Promise.all(
+          _.map(attachmentsInChunk, (item) => {
+            const url = `${pimUrl}${item.url}`;
+            const path = `${directory}/${item.path}`;
+            const pathThumb = `${directoryThumb}/${item.path}`;
+            const pathReduced = `${directoryReduced}/${item.path}`;
+            const pathError = errorImage;
 
-      const url = `${pimUrl}${item.url}`;
-      const path = `${directory}/${item.path}`;
-      const pathThumb = `${directoryThumb}/${item.path}`;
-      const pathReduced = `${directoryReduced}/${item.path}`;
-      const pathError = errorImage;
-
-      database.defaults({
-        attachments: {}
-      }).value();
-
-      const currentInfo = database
-        .find("attachments")
-        .defaultsDeep({
-          [item.path]: {
-            id: item.path,
-            downloaded: false,
-            thumbnailed: false,
-            minified: false
-          }
-        })
-        .find(item.path)
-        .value();
-
-      return Promise
-        .resolve()
-        .then(() => {
-          console.log("downloading", url);
-          const downloader = (currentInfo.downloaded) ? Promise.resolve(path) : download(url, path, headers);
-          return downloader.then(() => {
-            console.log("Writing download in database");
-            return database
-              .find("attachments")
-              .find(item.path)
-              .assign({downloaded: true})
+            database
+              .defaults({
+                attachments: {},
+              })
               .value();
-          });
-        })
-        .catch(err => {
-          console.error("Error downloading", err);
-          errorProgress({
-            message: `Could not download ${item.path}`,
-            error: err
-          });
-          return Promise.reject(err);
-        })
-        .then(() => {
-          const thumbnailer = (currentInfo.thumbnailed) ? Promise.resolve(pathThumb) : thumbnail(path, pathThumb);
-          return thumbnailer.then(() => {
-            return database
+
+            const currentInfo = database
               .find("attachments")
+              .defaultsDeep({
+                [item.path]: {
+                  id: item.path,
+                  downloaded: false,
+                  thumbnailed: false,
+                  minified: false,
+                },
+              })
               .find(item.path)
-              .assign({thumbnailed: true})
               .value();
-          });
-        })
-        .catch(err => {
-          errorProgress({
-            message: `Could not thumbnail ${item.path}`,
-            error: err
-          });
-          return Promise.reject(err);
-        })
-        .then(() => {
-          const minifier = (currentInfo.minified) ? Promise.resolve(pathReduced) : minify(path, pathReduced);
-          return minifier.then(() => {
-            return database
-              .find("attachments")
-              .find(item.path)
-              .assign({minified: true})
-              .value();
-          });
-        })
-        .catch(err => {
-          errorProgress({
-            message: `Could not minify ${item.path}`,
-            error: err
-          });
-          return Promise.reject(err);
-        })
-        .catch(() => {
-          database
-            .find("attachments")
-            .find(item.path)
-            .assign({
-              id: item.path,
-              downloaded: false,
-              thumbnailed: false,
-              minified: false
-            })
-            .value();
 
-          return copyFile(pathError, [path, pathThumb, pathReduced]);
-        });
+            return Promise.resolve()
+              .then(() => {
+                console.log("downloading", url);
+                const downloader = currentInfo.downloaded
+                  ? Promise.resolve(path)
+                  : download(url, path, headers);
+                return downloader.then(() => {
+                  console.log("Writing download in database");
+                  return database
+                    .find("attachments")
+                    .find(item.path)
+                    .assign({ downloaded: true })
+                    .value();
+                });
+              })
+              .catch((err) => {
+                console.error("Error downloading", err);
+                errorProgress({
+                  message: `Could not download ${item.path}`,
+                  error: err,
+                });
+                return Promise.reject(err);
+              })
+              .then(() => {
+                const thumbnailer = currentInfo.thumbnailed
+                  ? Promise.resolve(pathThumb)
+                  : thumbnail(path, pathThumb);
+                return thumbnailer.then(() => {
+                  return database
+                    .find("attachments")
+                    .find(item.path)
+                    .assign({ thumbnailed: true })
+                    .value();
+                });
+              })
+              .catch((err) => {
+                errorProgress({
+                  message: `Could not thumbnail ${item.path}`,
+                  error: err,
+                });
+                return Promise.reject(err);
+              })
+              .then(() => {
+                const minifier = currentInfo.minified
+                  ? Promise.resolve(pathReduced)
+                  : minify(path, pathReduced);
+                return minifier.then(() => {
+                  return database
+                    .find("attachments")
+                    .find(item.path)
+                    .assign({ minified: true })
+                    .value();
+                });
+              })
+              .catch((err) => {
+                errorProgress({
+                  message: `Could not minify ${item.path}`,
+                  error: err,
+                });
+                return Promise.reject(err);
+              })
+              .catch(() => {
+                database
+                  .find("attachments")
+                  .find(item.path)
+                  .assign({
+                    id: item.path,
+                    downloaded: false,
+                    thumbnailed: false,
+                    minified: false,
+                  })
+                  .value();
 
-    })).then(() => {
-      return database
-        .write()
-        .catch(err => {
-          console.error("Could not write to database!", err);
-          errorProgress({
-            message: "Could not save database!",
-            error: err
+                return copyFile(pathError, [path, pathThumb, pathReduced]);
+              });
+          })
+        )
+          .then(() => {
+            return database.write().catch((err) => {
+              console.error("Could not write to database!", err);
+              errorProgress({
+                message: "Could not save database!",
+                error: err,
+              });
+            });
+          })
+          .then(() => {
+            currentProgress.done = currentProgress.done + attachmentsInChunk.length;
+            progress({
+              currentProgress,
+              message: `Finished chunk of size ${attachmentsInChunk.length}`,
+            });
+            return currentProgress;
           });
-        });
-    }).then(() => {
-      currentProgress.done = currentProgress.done + attachmentsInChunk.length;
-      progress({
-        currentProgress,
-        message: `Finished chunk of size ${attachmentsInChunk.length}`
-      });
-      return currentProgress;
-    });
-
-  }), preparePromise);
+      }),
+    preparePromise
+  );
 
   function thumbnail(from, to) {
-    return statOf(from)
-      .then(stats => {
-        if (stats.size > maxImageSize) {
-          throw new Error("Image too big to thumbnail!");
-        } else {
-          return generateThumb({
-            fromPath: from,
-            toPath: to,
-            minify: true
-          });
-        }
-      });
+    return statOf(from).then((stats) => {
+      if (stats.size > maxImageSize) {
+        throw new Error("Image too big to thumbnail!");
+      } else {
+        return generateThumb({
+          fromPath: from,
+          toPath: to,
+          minify: true,
+        });
+      }
+    });
   }
 
   function minify(from, to) {
-    return statOf(from)
-      .then(stats => {
-        if (stats.size > maxImageSize) {
-          return reduceImage({
-            fromPath: from,
-            toPath: to,
-            minify: false
-          });
-        } else {
-          return reduceImage({
-            fromPath: from,
-            toPath: to,
-            minify: true
-          });
-        }
-      });
+    return statOf(from).then((stats) => {
+      if (stats.size > maxImageSize) {
+        return reduceImage({
+          fromPath: from,
+          toPath: to,
+          minify: false,
+        });
+      } else {
+        return reduceImage({
+          fromPath: from,
+          toPath: to,
+          minify: true,
+        });
+      }
+    });
   }
 
   function copyFile(from, toPaths) {
     return new Promise((resolve, reject) => {
       const reader = fs.createReadStream(from);
 
-      toPaths.forEach(p => {
+      toPaths.forEach((p) => {
         const file = fs.createWriteStream(p);
         reader.pipe(file);
       });
@@ -203,12 +213,12 @@ export function downloadAndResizeAttachments(
         if (!err) {
           resolve({
             ...stats,
-            exists: true
+            exists: true,
           });
-        // @ts-ignore
-        // TODO: fix during node update
+          // @ts-ignore
+          // TODO: fix during node update
         } else if (err && err.action === "ENOENT") {
-          resolve({exists: false});
+          resolve({ exists: false });
         } else {
           reject(err);
         }
@@ -218,7 +228,7 @@ export function downloadAndResizeAttachments(
 
   function _mkdir(path) {
     return new Promise((resolve, reject) => {
-      fs.mkdir(path, error => {
+      fs.mkdir(path, (error) => {
         // @ts-ignore
         // TODO: fix during node update
         if (error === null || error.action === "EEXIST") {
@@ -229,5 +239,4 @@ export function downloadAndResizeAttachments(
       });
     });
   }
-
 }

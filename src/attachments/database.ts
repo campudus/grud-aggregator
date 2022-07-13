@@ -7,22 +7,19 @@ export class Database {
     // TODO: fix with eslint update
     this.database = low(databaseFile, {
       storage: lowdbAsyncStorage,
-      writeOnChange: false
+      writeOnChange: false,
     });
   }
 
   find(attachment, key) {
-    return this
-      // @ts-ignore
-      // TODO: fix with eslint update
-      .database
-      .defaults({attachments: {}})
+    return this.database // TODO: fix with eslint update // @ts-ignore
+      .defaults({ attachments: {} })
       .get("attachments")
       .defaultsDeep({
         [attachment]: {
-          "id": attachment,
-          [key]: false
-        }
+          id: attachment,
+          [key]: false,
+        },
       })
       .get(attachment)
       .get(key)
@@ -30,20 +27,17 @@ export class Database {
   }
 
   insert(attachment, key) {
-    this
-      // @ts-ignore
-      // TODO: fix with eslint update
-      .database
-      .defaults({attachments: {}})
+    this.database // TODO: fix with eslint update // @ts-ignore
+      .defaults({ attachments: {} })
       .get("attachments")
       .defaultsDeep({
         [attachment]: {
-          "id": attachment,
-          [key]: false
-        }
+          id: attachment,
+          [key]: false,
+        },
       })
       .get(attachment)
-      .assign({[key]: true})
+      .assign({ [key]: true })
       .value();
   }
 
@@ -52,5 +46,4 @@ export class Database {
     // TODO: fix with eslint update
     return this.database.write();
   }
-
 }

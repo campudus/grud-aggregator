@@ -2,13 +2,16 @@ import fs from "fs-extra";
 import expect from "must";
 
 export function cleanUpWhenDone(tmpDir) {
-  return promise => promise
-    .then(() => {
-      tmpDir.removeCallback();
-    }, err => {
-      tmpDir.removeCallback();
-      throw err;
-    });
+  return (promise) =>
+    promise.then(
+      () => {
+        tmpDir.removeCallback();
+      },
+      (err) => {
+        tmpDir.removeCallback();
+        throw err;
+      }
+    );
 }
 
 export function statOf(file) {
@@ -24,19 +27,15 @@ export function statOf(file) {
 }
 
 describe("statOf", () => {
-
   it("gives correct information", () => {
-    return statOf(__filename)
-      .then(stats => {
-        expect(stats.size).to.be.gt(0);
-      });
+    return statOf(__filename).then((stats) => {
+      expect(stats.size).to.be.gt(0);
+    });
   });
 
   it("can result in an error if file not exists", () => {
-    return statOf("non-existant")
-      .catch(err => {
-        expect(err).not.to.be.null();
-      });
+    return statOf("non-existant").catch((err) => {
+      expect(err).not.to.be.null();
+    });
   });
-
 });

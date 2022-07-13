@@ -1,9 +1,8 @@
 import cp from "child_process";
 import expect from "must";
-import {start} from "./aggregationProcess";
+import { start } from "./aggregationProcess";
 
 describe("aggregation-process", function () {
-
   this.timeout(5000);
 
   const aggregatorBreaking = `${__dirname}/__tests__/aggregatorBreaking.js`;
@@ -21,14 +20,16 @@ describe("aggregation-process", function () {
 
   it("does not need a progress function to work", () => {
     return start({
-      aggregatorFile: aggregatorDummy
+      aggregatorFile: aggregatorDummy,
     });
   });
 
   it("returns a promise", () => {
-    expect(start({
-      aggregatorFile: aggregatorDummy
-    }).then).to.be.a.function();
+    expect(
+      start({
+        aggregatorFile: aggregatorDummy,
+      }).then
+    ).to.be.a.function();
   });
 
   it("may get a progress function to show progress", () => {
@@ -38,23 +39,21 @@ describe("aggregation-process", function () {
       aggregatorFile,
       progress: () => {
         called = true;
-      }
-    })
-      .then(() => {
-        expect(called).to.be.true();
-      });
+      },
+    }).then(() => {
+      expect(called).to.be.true();
+    });
   });
 
   it("returns the aggregation result", () => {
-    const expected = {foo: "bar", qux: 42};
+    const expected = { foo: "bar", qux: 42 };
 
     return start({
       aggregatorFile: aggregatorFile,
-      expectedResult: expected
-    })
-      .then(({result}) => {
-        expect(result).to.eql(expected);
-      });
+      expectedResult: expected,
+    }).then(({ result }) => {
+      expect(result).to.eql(expected);
+    });
   });
 
   it("shows the correct amount steps and the currentStep", () => {
@@ -64,13 +63,13 @@ describe("aggregation-process", function () {
 
     return start({
       aggregatorFile: aggregatorDummy,
-      progress: ({message, currentStep, steps}) => {
+      progress: ({ message, currentStep, steps }) => {
         expect(message).to.startWith(messages[currentStep]);
         expect(lastStep).to.be.lt(currentStep);
         lastStep = currentStep;
         expect(currentStep).to.be.at.most(steps);
         expect(steps).to.be(numberOfSteps);
-      }
+      },
     }).then(() => {
       expect(lastStep).to.be(numberOfSteps);
     });
@@ -78,25 +77,27 @@ describe("aggregation-process", function () {
 
   it("should result in an error if the aggregator to fork is not found", () => {
     return start({
-      aggregatorFile: aggregatorNonExistent
-    }).then(result => {
-      // should not occur!
-      expect(result).to.be.null();
-      expect(true).to.be.false();
-    }).catch(err => {
-      expect(err).to.be.an.error(new RegExp(`could not start.*${aggregatorNonExistent}`, "i"));
-    });
+      aggregatorFile: aggregatorNonExistent,
+    })
+      .then((result) => {
+        // should not occur!
+        expect(result).to.be.null();
+        expect(true).to.be.false();
+      })
+      .catch((err) => {
+        expect(err).to.be.an.error(new RegExp(`could not start.*${aggregatorNonExistent}`, "i"));
+      });
   });
 
   it("can use the step function in sub-steps", () => {
     const messages = ["one", "two", "three", "four", "five", "six", "seven"];
     const lastProgress = {
       currentStep: -1,
-      steps: 8
+      steps: 8,
     };
     return start({
       aggregatorFile: aggregatorFileSubsteps,
-      progress: ({message, currentStep, steps}) => {
+      progress: ({ message, currentStep, steps }) => {
         if (currentStep > 0 && currentStep <= messages.length) {
           expect(message).to.be(messages[currentStep - 1]);
         }
@@ -106,7 +107,7 @@ describe("aggregation-process", function () {
         lastProgress.steps = steps;
         lastProgress.currentStep = currentStep;
         lastProgress.message = message;
-      }
+      },
     }).then(() => {
       expect(lastProgress.message);
       expect(lastProgress.currentStep).to.be(lastProgress.steps);
@@ -140,12 +141,12 @@ describe("aggregation-process", function () {
 
     return start({
       aggregatorFile: aggregatorLongRunningMultipleWaits,
-      progress: ({message, currentStep, steps}) => {
+      progress: ({ message, currentStep, steps }) => {
         expect(steps).to.be(allSteps);
         countedSteps.push(currentStep);
       },
       timeoutToResendStatus: 50,
-      howLong: 20
+      howLong: 20,
     }).then(() => {
       expect(countedSteps).to.eql([0, 1, 2, 3, 4, 5, 6, 7]);
     });
@@ -159,7 +160,7 @@ describe("aggregation-process", function () {
 
     return start({
       aggregatorFile: aggregatorLongRunning,
-      progress: ({message, currentStep, steps}) => {
+      progress: ({ message, currentStep, steps }) => {
         expect(steps).to.be(allSteps);
         countedSteps.push(currentStep);
         if (currentStep === 1) {
@@ -170,7 +171,7 @@ describe("aggregation-process", function () {
           expect(message).to.be("second");
         }
       },
-      howLong: 2500
+      howLong: 2500,
     }).then(() => {
       expect(countedSteps).to.eql([0, 1, 2, 2, 3, 4]);
     });
@@ -184,7 +185,7 @@ describe("aggregation-process", function () {
 
     return start({
       aggregatorFile: aggregatorLongRunning,
-      progress: ({message, currentStep, steps}) => {
+      progress: ({ message, currentStep, steps }) => {
         expect(steps).to.be(allSteps);
         countedSteps.push(currentStep);
         if (currentStep === 1) {
@@ -196,7 +197,7 @@ describe("aggregation-process", function () {
         }
       },
       timeoutToResendStatus: 100,
-      howLong: 150
+      howLong: 150,
     }).then(() => {
       expect(countedSteps).to.eql([0, 1, 2, 2, 3, 4]);
     });
@@ -211,7 +212,7 @@ describe("aggregation-process", function () {
     return new Promise((resolve, reject) => {
       start({
         aggregatorFile: aggregatorBreaking,
-        progress: ({message, currentStep, steps}) => {
+        progress: ({ message, currentStep, steps }) => {
           const step = `${currentStep}/${steps}`;
           if (brokeDown && seenMessage[message] && seenMessage[message] === step) {
             reject("saw a message multiple times");
@@ -219,9 +220,9 @@ describe("aggregation-process", function () {
           seenMessage[message] = step;
         },
         timeoutToResendStatus: 100,
-        howLong: 150
+        howLong: 150,
       })
-        .catch(err => {
+        .catch((err) => {
           expect(err).to.error(/aggregator broke/i);
           brokeDown = true;
         })
@@ -234,11 +235,11 @@ describe("aggregation-process", function () {
     const messages = ["one", "two", "three", "four", "five", "six", "seven"];
     const lastProgress = {
       currentStep: -1,
-      steps: 8
+      steps: 8,
     };
     return start({
       aggregatorFile: aggregatorFileSubsteps2,
-      progress: ({message, currentStep, steps}) => {
+      progress: ({ message, currentStep, steps }) => {
         if (currentStep > 0 && currentStep <= messages.length) {
           expect(message).to.be(messages[currentStep - 1]);
         }
@@ -248,11 +249,10 @@ describe("aggregation-process", function () {
         lastProgress.steps = steps;
         lastProgress.currentStep = currentStep;
         lastProgress.message = message;
-      }
+      },
     }).then(() => {
       expect(lastProgress.message);
       expect(lastProgress.currentStep).to.be(lastProgress.steps);
     });
   });
-
 });

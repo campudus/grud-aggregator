@@ -5,20 +5,22 @@ import pngquant from "imagemin-pngquant";
 import jpegopti from "imagemin-jpegoptim";
 
 export function generateThumb(options) {
-  const {fromPath, toPath, imageHeight, imageWidth, minify} = options;
+  const { fromPath, toPath, imageHeight, imageWidth, minify } = options;
   return readImage(fromPath)
-    .then(resizeImage({
-      imageHeight,
-      imageWidth
-    }))
+    .then(
+      resizeImage({
+        imageHeight,
+        imageWidth,
+      })
+    )
     .then(minifyImage(minify))
     .then(saveImage(toPath));
 }
 
 export function reduceImage(options) {
-  const {fromPath, toPath} = options;
+  const { fromPath, toPath } = options;
   return readImage(fromPath)
-    .then(image => {
+    .then((image) => {
       return new Promise((resolve, reject) => {
         image.getBuffer(image._originalMime, (err, buffer) => {
           if (err) {
@@ -47,43 +49,35 @@ function readImage(fromPath) {
   });
 }
 
-function resizeImage(
-  {
-    imageHeight = "auto",
-    imageWidth = "auto"
-  }) {
-
+function resizeImage({ imageHeight = "auto", imageWidth = "auto" }) {
   const height = imageHeight === "auto" ? jimp.AUTO : imageHeight;
   const width = imageWidth === "auto" ? jimp.AUTO : imageWidth;
   const isFittingToScale = imageHeight !== "auto" && imageWidth !== "auto";
-  return image => new Promise((resolve, reject) => {
-    // resize the width to <imageSize> and scale the height accordingly
-    try {
-      const bufferCb = (err, buffer) => {
-        if (err) {
-          console.log(`could not get buffer to resize with mime type ${image._originalMime}`);
-          reject(err);
+  return (image) =>
+    new Promise((resolve, reject) => {
+      // resize the width to <imageSize> and scale the height accordingly
+      try {
+        const bufferCb = (err, buffer) => {
+          if (err) {
+            console.log(`could not get buffer to resize with mime type ${image._originalMime}`);
+            reject(err);
+          } else {
+            resolve(buffer);
+          }
+        };
+        if (isFittingToScale) {
+          image.contain(width, height).getBuffer(image._originalMime, bufferCb);
         } else {
-          resolve(buffer);
+          image.resize(width, height).getBuffer(image._originalMime, bufferCb);
         }
-      };
-      if (isFittingToScale) {
-        image
-          .contain(width, height)
-          .getBuffer(image._originalMime, bufferCb);
-      } else {
-        image
-          .resize(width, height)
-          .getBuffer(image._originalMime, bufferCb);
+      } catch (e) {
+        reject(e);
       }
-    } catch (e) {
-      reject(e);
-    }
-  });
+    });
 }
 
 function minifyImage(minify) {
-  return buffer => {
+  return (buffer) => {
     if (minify) {
       return minifyImageBuffer(buffer);
     } else {
@@ -99,20 +93,21 @@ function minifyImageBuffer(buffer) {
       jpegopti({
         progressive: false,
         stripAll: true,
-        max: 80
-      })
-    ]
+        max: 80,
+      }),
+    ],
   });
 }
 
 function saveImage(toPath) {
-  return buffer => new Promise((resolve, reject) => {
-    fs.outputFile(toPath, buffer, err => {
-      if (err) {
-        return reject(err);
-      } else {
-        return resolve(toPath);
-      }
+  return (buffer) =>
+    new Promise((resolve, reject) => {
+      fs.outputFile(toPath, buffer, (err) => {
+        if (err) {
+          return reject(err);
+        } else {
+          return resolve(toPath);
+        }
+      });
     });
-  });
 }

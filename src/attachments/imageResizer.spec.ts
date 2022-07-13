@@ -1,33 +1,33 @@
 import fs from "fs";
 import tmp from "tmp";
 import expect from "must";
-import {statOf} from "./__tests__/fsHelpers";
-import {reduceImage, generateThumb} from "./imageResizer";
+import { statOf } from "./__tests__/fsHelpers";
+import { reduceImage, generateThumb } from "./imageResizer";
 
-const fixtureFile = extension => `${__dirname}/__tests__/duck.${extension}`;
-const thumbFile = extension => `${__dirname}/__tests__/duck_thumb.${extension}`;
-const scaleResizeFile = extension => `${__dirname}/__tests__/duck_500x400.${extension}`;
-const wrongImageFile = extension => `${__dirname}/__tests__/wrong-image.${extension}`;
-const nonExistentFile = extension => `${__dirname}/__tests__/non-existent.${extension}`;
+const fixtureFile = (extension) => `${__dirname}/__tests__/duck.${extension}`;
+const thumbFile = (extension) => `${__dirname}/__tests__/duck_thumb.${extension}`;
+const scaleResizeFile = (extension) => `${__dirname}/__tests__/duck_500x400.${extension}`;
+const wrongImageFile = (extension) => `${__dirname}/__tests__/wrong-image.${extension}`;
+const nonExistentFile = (extension) => `${__dirname}/__tests__/non-existent.${extension}`;
 
 describe("reduceImage", () => {
-
   it("results in error, if file is not an image", () => {
     const tempFile = tmp.fileSync();
-    return expect(reduceImage({
-      fromPath: __filename,
-      toPath: tempFile.name
-    })).to.reject.with.error(/unsupported mime/i);
+    return expect(
+      reduceImage({
+        fromPath: __filename,
+        toPath: tempFile.name,
+      })
+    ).to.reject.with.error(/unsupported mime/i);
   });
 
   it("fixture file has a size (png)", test001("png"));
   it("fixture file has a size (jpg)", test001("jpg"));
   function test001(extension) {
     return () => {
-      return statOf(fixtureFile(extension))
-        .then(stats => {
-          expect(stats.size).to.be.gt(0);
-        });
+      return statOf(fixtureFile(extension)).then((stats) => {
+        expect(stats.size).to.be.gt(0);
+      });
     };
   }
 
@@ -41,7 +41,7 @@ describe("reduceImage", () => {
 
       return reduceImage({
         fromPath: fixtureFile(extension),
-        toPath: tempFile.name
+        toPath: tempFile.name,
       })
         .then(() => Promise.all([statOf(fixtureFile(extension)), statOf(tempFile.name)]))
         .then(([statsOld, statsNew]) => {
@@ -55,10 +55,12 @@ describe("reduceImage", () => {
   function test003(extension) {
     return () => {
       const tempFile = tmp.fileSync();
-      return expect(reduceImage({
-        fromPath: nonExistentFile(extension),
-        toPath: tempFile.name
-      })).to.reject.with.error(/enoent/i);
+      return expect(
+        reduceImage({
+          fromPath: nonExistentFile(extension),
+          toPath: tempFile.name,
+        })
+      ).to.reject.with.error(/enoent/i);
     };
   }
 
@@ -67,10 +69,12 @@ describe("reduceImage", () => {
   function test004(extension) {
     return () => {
       const tempFile = tmp.fileSync();
-      return expect(reduceImage({
-        fromPath: wrongImageFile(extension),
-        toPath: tempFile.name
-      })).to.reject.with.error(/unsupported mime/i);
+      return expect(
+        reduceImage({
+          fromPath: wrongImageFile(extension),
+          toPath: tempFile.name,
+        })
+      ).to.reject.with.error(/unsupported mime/i);
     };
   }
 
@@ -84,10 +88,12 @@ describe("reduceImage", () => {
       const path = tmpDir.name;
       fs.chmodSync(path, 444);
 
-      return expect(reduceImage({
-        fromPath: fixtureFile(extension),
-        toPath: `${path}/file.txt`
-      }))
+      return expect(
+        reduceImage({
+          fromPath: fixtureFile(extension),
+          toPath: `${path}/file.txt`,
+        })
+      )
         .to.reject.with.error(/eacces/i)
         .then(() => tmpDir.removeCallback());
     };
@@ -103,25 +109,24 @@ describe("reduceImage", () => {
 
       return reduceImage({
         fromPath: scaleResizeFile(extension),
-        toPath: tempFile.name
+        toPath: tempFile.name,
       })
-        .then(() => Promise.all([
-          statOf(fixtureFile(extension)),
-          statOf(tempFile.name),
-          statOf(scaleResizeFile(extension))
-        ]))
+        .then(() =>
+          Promise.all([
+            statOf(fixtureFile(extension)),
+            statOf(tempFile.name),
+            statOf(scaleResizeFile(extension)),
+          ])
+        )
         .then(([fixture, output, scaleResize]) => {
           expect(output.size).to.be.lt(fixture.size);
           expect(output.size).to.be.lt(scaleResize.size);
         });
-
     };
   }
-
 });
 
 describe("generateThumb", () => {
-
   it("results in a smaller file (png)", test006("png"));
   it("results in a smaller file (jpg)", test006("jpg"));
   function test006(extension) {
@@ -133,14 +138,19 @@ describe("generateThumb", () => {
       return generateThumb({
         fromPath: fixtureFile(extension),
         toPath: tempFile.name,
-        imageWidth: 500
+        imageWidth: 500,
       })
-        .then(() => Promise.all([statOf(fixtureFile(extension)), statOf(tempFile.name), statOf(thumbFile(extension))]))
+        .then(() =>
+          Promise.all([
+            statOf(fixtureFile(extension)),
+            statOf(tempFile.name),
+            statOf(thumbFile(extension)),
+          ])
+        )
         .then(([fixture, output, thumb]) => {
           expect(output.size).to.be.lt(fixture.size);
           expect(output.size).to.be(thumb.size);
         });
-
     };
   }
 
@@ -156,14 +166,19 @@ describe("generateThumb", () => {
         fromPath: fixtureFile(extension),
         toPath: tempFile.name,
         imageWidth: 500,
-        minify: true
+        minify: true,
       })
-        .then(() => Promise.all([statOf(fixtureFile(extension)), statOf(tempFile.name), statOf(thumbFile(extension))]))
+        .then(() =>
+          Promise.all([
+            statOf(fixtureFile(extension)),
+            statOf(tempFile.name),
+            statOf(thumbFile(extension)),
+          ])
+        )
         .then(([fixture, output, thumb]) => {
           expect(output.size).to.be.lt(fixture.size);
           expect(output.size).to.be.lt(thumb.size);
         });
-
     };
   }
 
@@ -180,18 +195,19 @@ describe("generateThumb", () => {
         toPath: tempFile.name,
         imageWidth: 500,
         imageHeight: 400,
-        minify: true
+        minify: true,
       })
-        .then(() => Promise.all([
-          statOf(fixtureFile(extension)),
-          statOf(tempFile.name),
-          statOf(scaleResizeFile(extension))
-        ]))
+        .then(() =>
+          Promise.all([
+            statOf(fixtureFile(extension)),
+            statOf(tempFile.name),
+            statOf(scaleResizeFile(extension)),
+          ])
+        )
         .then(([fixture, output, scaleResize]) => {
           expect(output.size).to.be.lt(fixture.size);
           expect(output.size).to.be.lt(scaleResize.size);
         });
-
     };
   }
 
@@ -205,33 +221,30 @@ describe("generateThumb", () => {
       const tempFile2 = tmp.fileSync();
       const tempFile3 = tmp.fileSync();
 
-      return Promise
-        .all([
-          statOf(fixtureFile(extension)),
-          statOf(thumbFile(extension)),
-          generateThumb({
-            fromPath: fixtureFile(extension),
-            toPath: tempFile1.name,
-            imageWidth: 750
-          }).then(() => statOf(tempFile1.name)),
-          generateThumb({
-            fromPath: fixtureFile(extension),
-            toPath: tempFile2.name,
-            imageWidth: 500
-          }).then(() => statOf(tempFile2.name)),
-          generateThumb({
-            fromPath: fixtureFile(extension),
-            toPath: tempFile3.name,
-            imageWidth: 20
-          }).then(() => statOf(tempFile3.name))
-        ])
-        .then(([fixture, thumb, thumb750, thumb500, thumb20]) => {
-          expect(thumb750.size).to.be.lt(fixture.size);
-          expect(thumb500.size).to.be.lt(thumb750.size);
-          expect(thumb500.size).to.be(thumb.size);
-          expect(thumb20.size).to.be.lt(thumb500.size);
-        });
-
+      return Promise.all([
+        statOf(fixtureFile(extension)),
+        statOf(thumbFile(extension)),
+        generateThumb({
+          fromPath: fixtureFile(extension),
+          toPath: tempFile1.name,
+          imageWidth: 750,
+        }).then(() => statOf(tempFile1.name)),
+        generateThumb({
+          fromPath: fixtureFile(extension),
+          toPath: tempFile2.name,
+          imageWidth: 500,
+        }).then(() => statOf(tempFile2.name)),
+        generateThumb({
+          fromPath: fixtureFile(extension),
+          toPath: tempFile3.name,
+          imageWidth: 20,
+        }).then(() => statOf(tempFile3.name)),
+      ]).then(([fixture, thumb, thumb750, thumb500, thumb20]) => {
+        expect(thumb750.size).to.be.lt(fixture.size);
+        expect(thumb500.size).to.be.lt(thumb750.size);
+        expect(thumb500.size).to.be(thumb.size);
+        expect(thumb20.size).to.be.lt(thumb500.size);
+      });
     };
   }
 
@@ -240,11 +253,10 @@ describe("generateThumb", () => {
     return generateThumb({
       fromPath: __filename,
       toPath: tempFile.name,
-      imageWidth: 20
-    })
-      .catch(err => {
-        expect(err).not.to.be.null();
-      });
+      imageWidth: 20,
+    }).catch((err) => {
+      expect(err).not.to.be.null();
+    });
   });
 
   it("results in error, if file does not exist (png)", test011("png"));
@@ -252,21 +264,25 @@ describe("generateThumb", () => {
   function test011(extension) {
     return () => {
       const tempFile = tmp.fileSync();
-      return expect(generateThumb({
-        fromPath: nonExistentFile(extension),
-        toPath: tempFile.name,
-        imageWidth: 20
-      })).to.reject.with.error(/enoent/i);
+      return expect(
+        generateThumb({
+          fromPath: nonExistentFile(extension),
+          toPath: tempFile.name,
+          imageWidth: 20,
+        })
+      ).to.reject.with.error(/enoent/i);
     };
   }
 
   it("results in error, if file is not an image and options set", () => {
     const tempFile = tmp.fileSync();
-    return expect(generateThumb({
-      fromPath: __filename,
-      toPath: tempFile.name,
-      imageWidth: 20
-    })).to.reject.with.error(/unsupported mime/i);
+    return expect(
+      generateThumb({
+        fromPath: __filename,
+        toPath: tempFile.name,
+        imageWidth: 20,
+      })
+    ).to.reject.with.error(/unsupported mime/i);
   });
 
   it("results in error, if file is an incorrect image (png)", test012("png"));
@@ -275,11 +291,13 @@ describe("generateThumb", () => {
     return function () {
       this.timeout(10 * 1000);
       const tempFile = tmp.fileSync();
-      return expect(generateThumb({
-        fromPath: wrongImageFile(extension),
-        toPath: tempFile.name,
-        imageWidth: 20
-      })).to.reject.with.error(/unsupported mime/i);
+      return expect(
+        generateThumb({
+          fromPath: wrongImageFile(extension),
+          toPath: tempFile.name,
+          imageWidth: 20,
+        })
+      ).to.reject.with.error(/unsupported mime/i);
     };
   }
 
@@ -289,11 +307,13 @@ describe("generateThumb", () => {
     return function () {
       this.timeout(10 * 1000);
       const tempFile = tmp.fileSync();
-      return expect(generateThumb({
-        fromPath: fixtureFile(extension),
-        toPath: tempFile.name,
-        imageWidth: 0
-      })).to.reject.with.error(/invalid settings/i);
+      return expect(
+        generateThumb({
+          fromPath: fixtureFile(extension),
+          toPath: tempFile.name,
+          imageWidth: 0,
+        })
+      ).to.reject.with.error(/invalid settings/i);
     };
   }
 
@@ -307,11 +327,13 @@ describe("generateThumb", () => {
       const path = tmpDir.name;
       fs.chmodSync(path, 444);
 
-      return expect(generateThumb({
-        fromPath: fixtureFile(extension),
-        toPath: `${path}/file.txt`,
-        imageWidth: 500
-      }))
+      return expect(
+        generateThumb({
+          fromPath: fixtureFile(extension),
+          toPath: `${path}/file.txt`,
+          imageWidth: 500,
+        })
+      )
         .to.reject.with.error(/eacces/i)
         .then(() => {
           console.log(`removing tempdir ${path}`);
@@ -319,5 +341,4 @@ describe("generateThumb", () => {
         });
     };
   }
-
 });
