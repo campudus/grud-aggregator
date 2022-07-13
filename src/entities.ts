@@ -1,7 +1,7 @@
 import _ from "lodash";
 import {getCompleteTable, getTablesByNames} from "./pimApi";
 
-export function getEntitiesOfTable(tableName, options = {}) {
+export function getEntitiesOfTable(tableName, options: any = {}) {
   const {disableFollow = [], pimUrl, maxEntriesPerRequest = 500, headers = {}} = options;
 
   if (_.isNil(pimUrl)) {

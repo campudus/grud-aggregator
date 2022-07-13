@@ -40,7 +40,7 @@ export function referencer(options = {
       }, {});
     }
 
-    function orEmpty(denormalized, tableId, rowId) {
+    function orEmpty(denormalized, tableId, rowId?) {
       denormalized[tableId] = denormalized[tableId] || {};
       if (typeof rowId !== "undefined") {
         denormalized[tableId][rowId] = denormalized[tableId][rowId] || {};

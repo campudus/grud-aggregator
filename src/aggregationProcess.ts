@@ -7,7 +7,7 @@ export function start(
     progress,
     timeoutToResendStatus = 2000,
     ...rest
-  } = {}) {
+  }: any = {}) {
 
   if (_.isNil(aggregatorFile) || _.isEmpty(aggregatorFile)) {
     throw new Error("Need to supply the filename of the aggregator");
@@ -20,7 +20,7 @@ export function start(
   return Promise
     .resolve()
     .then(() => new Promise((resolve, reject) => {
-      const child = cp.fork(`${__dirname}/forker.js`, {silent: false});
+      const child = cp.fork(`${__dirname}/forker.js`);
       let initialized = false;
       let fulfilled = false;
       let allDone = false;
@@ -28,7 +28,7 @@ export function start(
       let resendProgressTimerId = null;
       let result;
 
-      child.on("message", ({action, payload, data}) => {
+      child.on("message", ({action, payload, data}: any) => {
         if (action === "INIT") {
           initialized = true;
           allSteps = payload.stepsInAggregator;

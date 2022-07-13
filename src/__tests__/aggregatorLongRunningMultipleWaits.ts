@@ -17,7 +17,7 @@ export default function start(step, progress, options) {
     .then(one => one + 1);
 
   function waitLonger(message) {
-    return new Promise((resolve) => {
+    return new Promise<any>((resolve) => {
       setTimeout(() => {
         resolve(message);
       }, howLong);

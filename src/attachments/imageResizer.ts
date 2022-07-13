@@ -35,7 +35,7 @@ export function reduceImage(options) {
 }
 
 function readImage(fromPath) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     jimp.read(fromPath, (err, image) => {
       if (err) {
         console.log(`Could not read ${fromPath}`);

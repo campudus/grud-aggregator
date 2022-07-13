@@ -14,7 +14,7 @@ export function modifyImages(
     onError = _.noop,
     progress = () => {
     }
-  } = {
+  }: any = {
     chunkSize: 1,
     imageWidth: "auto",
     imageHeight: "auto",
@@ -186,7 +186,7 @@ export function modifyImages(
 }
 
 function startImageModificationProcess(args) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const cp = fork(`${__dirname}/modifyImageProcess.js`, args);
 
     cp.on("close", code => {

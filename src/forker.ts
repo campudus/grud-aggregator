@@ -21,6 +21,8 @@ process.on("message", function (event) {
   }
 });
 
+// @ts-ignore
+// TODO: check if bug
 process.on("error", (error) => {
   if (error.message === "channel closed") {
     // handled.
@@ -31,7 +33,7 @@ process.on("error", (error) => {
 });
 
 function mkDirs(dataDirectory) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     if (dataDirectory) {
       fs.mkdirp(`${dataDirectory}/attachments`, err => {
         if (err) {

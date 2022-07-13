@@ -154,7 +154,7 @@ function addDependenciesOfTable(
 
 }
 
-function matches(allTables, [currentColumn, ...columnsToWalk], row, currentTable, predicate) {
+function matches(allTables, [, ...columnsToWalk], row, currentTable, predicate) {
   if (_.isEmpty(columnsToWalk)) {
     const element = toElement(row, currentTable);
     return predicate(element);

@@ -16,7 +16,7 @@ export function findAttachments(
           return _.flatMap(table.rows, row => {
             return _.flatMap(row.values[index], attachment => {
               return _.map(attachment.internalName, (path, lang) => {
-                const att = {
+                const att: any = {
                   url: attachment.url[lang],
                   path
                 };

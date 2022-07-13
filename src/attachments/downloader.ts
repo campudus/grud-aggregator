@@ -12,7 +12,7 @@ export function downloader({
   downloadPath,
   errorImage,
   headers = {}
-} = {}) {
+}: any = {}) {
 
   if (_.isEmpty(database)) {
     throw new Error("Missing database option");
@@ -111,7 +111,7 @@ export function downloader({
 }
 
 function copyFile(from, to) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     fs.copy(from, to, err => {
       if (err) {
         return reject(err);
@@ -123,7 +123,7 @@ function copyFile(from, to) {
 }
 
 export function download(url, path, headers) {
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     const parsedUrl = nodeUrl.parse(url);
     const client = parsedUrl.protocol === "https:" ? https : http;
     client

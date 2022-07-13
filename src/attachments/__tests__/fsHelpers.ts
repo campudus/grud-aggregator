@@ -12,7 +12,7 @@ export function cleanUpWhenDone(tmpDir) {
 }
 
 export function statOf(file) {
-  return new Promise((resolve, reject) => {
+  return new Promise<fs.Stats>((resolve, reject) => {
     fs.stat(file, (err, stats) => {
       if (err) {
         reject(err);

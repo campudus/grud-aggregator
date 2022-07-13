@@ -1,4 +1,4 @@
-const wait = () => new Promise(resolve => {
+const wait = () => new Promise<void>(resolve => {
   process.once("SIGHUP", () => {
     process.disconnect();
     resolve();

@@ -3,7 +3,7 @@ const start = require("../../lib/aggregationProcess").start;
 const longRunningAggregator = `${__dirname}/killableForkerAggregator.js`;
 var aggregatorPid, parentPid;
 
-process.on("message", message => {
+process.on("message", (message: string) => {
   if (/^\d+$/.test(message)) {
     parentPid = message;
     start({

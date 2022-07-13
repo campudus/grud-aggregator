@@ -3,7 +3,7 @@ import _ from "lodash";
 export function createSchemaFromLanguageTables(...fallbackLanguages) {
   // data is {"de":{...},"en":{...}, "en-US":{...}}
   return data => _.mapValues(data, (tables) => {
-    const json = {};
+    const json: any = {};
     json.tables = _.transform(tables, (result, table, tableId) => {
       result[table.name] = table.displayName || getFromFallback(data, [tableId, "displayName"]);
     }, {});
