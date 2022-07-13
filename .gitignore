@@ -102,3 +102,6 @@ crashlytics-build.properties
 
 coverage/
 .nyc_output/
+
+# build output
+lib
