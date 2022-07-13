@@ -1,3 +1,4 @@
+import _ from "lodash";
 import fs from "fs-extra";
 import errors from "./errorCodes";
 
@@ -52,9 +53,9 @@ function run(aggregatorFile, options) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const aggregator = require(aggregatorFile);
+    const aggregatorFn = _.isFunction(aggregator.default) ? aggregator.default : aggregator;
 
-    aggregator
-      .default(step, progress, options)
+    aggregatorFn(step, progress, options)
       .then((result) => {
         process.send({
           action: "DONE",
