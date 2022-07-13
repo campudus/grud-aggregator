@@ -1,11 +1,6 @@
 import _ from "lodash";
 
-export function findAttachments(
-  { withAttachment = false, withMapping = false } = {
-    withAttachment: false,
-    withMapping: false,
-  }
-) {
+export function findAttachments({ withAttachment = false, withMapping = false } = {}) {
   return (data) => {
     return _.uniqBy(
       _.reduce(

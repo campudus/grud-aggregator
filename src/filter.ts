@@ -9,7 +9,7 @@ export function filter(
     path = [],
     predicate = defaultPredicate,
     ignoreMissing = false,
-  } = {
+  }: any = {
     excludeBacklinks: false,
     filterBacklinks: false,
     path: [],

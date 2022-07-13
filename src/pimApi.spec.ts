@@ -10,7 +10,7 @@ describe("pimApi", () => {
   let headers;
 
   before(() => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const app = express();
       app.use((req, res) => {
         calledUrls.push(req.url);

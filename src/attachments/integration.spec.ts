@@ -15,7 +15,7 @@ describe("attachments integration", () => {
   let server;
 
   before(() => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const app = express();
       app.use("/files", express.static(SERVER_FIXTURES));
       server = app.listen(TEST_PORT, function (err) {
@@ -171,8 +171,25 @@ describe("attachments integration", () => {
         ]);
       })
       .then(
-        expected1, expected2a, expected2b, expected3a, expected3b, expected3c, expected3d, expected3e, expected3f,
-        actual1, actual2a, actual2b, actual3a, actual3b, actual3c, actual3d, actual3e, actual3f
+        ([
+          expected1,
+          expected2a,
+          expected2b,
+          expected3a,
+          expected3b,
+          expected3c,
+          expected3d,
+          expected3e,
+          expected3f,
+          actual1,
+          actual2a,
+          actual2b,
+          actual3a,
+          actual3b,
+          actual3c,
+          actual3d,
+          actual3e,
+          actual3f,
         ]) => {
           expect(actual1.size).to.be(expected1.size);
           expect(actual2a.size).to.be(expected2a.size);
@@ -197,7 +214,7 @@ function cleanUp(tmpDir) {
 }
 
 function statOf(file) {
-  return new Promise((resolve, reject) => {
+  return new Promise<fs.Stats>((resolve, reject) => {
     fs.stat(file, (err, stats) => {
       if (err) {
         reject(err);

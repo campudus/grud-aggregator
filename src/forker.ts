@@ -1,7 +1,5 @@
-"use strict";
-const fs = require("fs-extra");
-require("@babel/register");
-const errors = require("./errorCodes.js");
+import fs from "fs-extra";
+import errors from "./errorCodes";
 
 process.on("message", function (event) {
   switch (event.action) {
@@ -21,9 +19,8 @@ process.on("message", function (event) {
   }
 });
 
-// @ts-ignore
 // TODO: check if bug
-process.on("error", (error) => {
+process.on("error" as any, (error: any) => {
   if (error.message === "channel closed") {
     // handled.
     console.log("Channel closed in forked aggregator.", error);
@@ -53,8 +50,8 @@ function run(aggregatorFile, options) {
   let lastStep = 0;
 
   try {
-    const aggregator = require(aggregatorFile);
-    aggregator(step, progress, options)
+    import(aggregatorFile)
+      .then((aggregator) => aggregator(step, progress, options))
       .then((result) => {
         process.send({
           action: "DONE",

@@ -1,4 +1,4 @@
-const start = require("../../lib/aggregationProcess").start;
+import { start } from "../aggregationProcess";
 
 const longRunningAggregator = `${__dirname}/killableForkerAggregator.js`;
 let aggregatorPid, parentPid;

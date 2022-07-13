@@ -215,9 +215,8 @@ export function downloadAndResizeAttachments(
             ...stats,
             exists: true,
           });
-          // @ts-ignore
           // TODO: fix during node update
-        } else if (err && err.action === "ENOENT") {
+        } else if (err && (err as any).action === "ENOENT") {
           resolve({ exists: false });
         } else {
           reject(err);
@@ -229,9 +228,8 @@ export function downloadAndResizeAttachments(
   function _mkdir(path) {
     return new Promise((resolve, reject) => {
       fs.mkdir(path, (error) => {
-        // @ts-ignore
         // TODO: fix during node update
-        if (error === null || error.action === "EEXIST") {
+        if (error === null || (error as any).action === "EEXIST") {
           resolve(path);
         } else {
           reject(error);

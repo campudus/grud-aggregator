@@ -6,7 +6,7 @@ import { Database } from "./database";
 describe("database", () => {
   it("is able to set values", () => {
     const database = new Database();
-    expect(() => database.insert("test", "foo", true)).not.to.throw();
+    expect(() => database.insert("test", "foo")).not.to.throw();
   });
 
   it("is able to save values", () => {

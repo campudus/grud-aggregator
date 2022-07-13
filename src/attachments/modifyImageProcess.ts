@@ -1,5 +1,5 @@
-require("@babel/register");
-const imageResizer = require("./imageResizer");
+import * as imageResizer from "./imageResizer";
+
 const fromPath = process.argv[2];
 const toPath = process.argv[3];
 const minify = JSON.parse(process.argv[4]);

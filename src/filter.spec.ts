@@ -293,9 +293,9 @@ describe("filter", () => {
   it("will ignore missing tables as links but emit a warning", () => {
     const warn = console.warn;
     let warned = false;
-    console.warn = function () {
+    console.warn = function (...args) {
       warned = true;
-      warn.apply(this, arguments);
+      warn.apply(this, args);
     };
     return Promise.resolve(testTableDisableFollow2)
       .then(
@@ -312,9 +312,9 @@ describe("filter", () => {
   it("will ignore missing tables as links and can ignore the warning", () => {
     const warn = console.warn;
     let warned = false;
-    console.warn = function () {
+    console.warn = function (...args) {
       warned = true;
-      warn.apply(this, arguments);
+      warn.apply(this, args);
     };
     return Promise.resolve(testTableDisableFollow2)
       .then(
@@ -332,9 +332,9 @@ describe("filter", () => {
   it("will ignore missing entities but emit a warning", () => {
     const warn = console.warn;
     let warned = false;
-    console.warn = function () {
+    console.warn = function (...args) {
       warned = true;
-      warn.apply(this, arguments);
+      warn.apply(this, args);
     };
     return Promise.resolve(missingEntitiesFixture)
       .then(
@@ -351,9 +351,9 @@ describe("filter", () => {
   it("will ignore missing entities and can ignore the warning", () => {
     const warn = console.warn;
     let warned = false;
-    console.warn = function () {
+    console.warn = function (...args) {
       warned = true;
-      warn.apply(this, arguments);
+      warn.apply(this, args);
     };
     return Promise.resolve(missingEntitiesFixture)
       .then(

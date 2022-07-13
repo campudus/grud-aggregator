@@ -2,9 +2,9 @@ import low from "lowdb";
 import lowdbAsyncStorage from "lowdb/lib/file-async";
 
 export class Database {
-  constructor(databaseFile) {
-    // @ts-ignore
-    // TODO: fix with eslint update
+  database: any;
+
+  constructor(databaseFile?) {
     this.database = low(databaseFile, {
       storage: lowdbAsyncStorage,
       writeOnChange: false,
@@ -12,7 +12,7 @@ export class Database {
   }
 
   find(attachment, key) {
-    return this.database // TODO: fix with eslint update // @ts-ignore
+    return this.database
       .defaults({ attachments: {} })
       .get("attachments")
       .defaultsDeep({
@@ -27,7 +27,7 @@ export class Database {
   }
 
   insert(attachment, key) {
-    this.database // TODO: fix with eslint update // @ts-ignore
+    this.database
       .defaults({ attachments: {} })
       .get("attachments")
       .defaultsDeep({
@@ -42,8 +42,6 @@ export class Database {
   }
 
   save() {
-    // @ts-ignore
-    // TODO: fix with eslint update
     return this.database.write();
   }
 }

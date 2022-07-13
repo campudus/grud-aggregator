@@ -12,7 +12,7 @@ export function modifyImages(
     minify = false,
     outPath = "out",
     onError = _.noop,
-    progress = () => {},
+    progress = _.noop,
   }: any = {
     chunkSize: 1,
     imageWidth: "auto",
@@ -21,7 +21,7 @@ export function modifyImages(
     dataDirectory: "out",
     outPath: "out",
     onError: _.noop,
-    progress: () => {},
+    progress: _.noop,
   }
 ) {
   if (_.isEmpty(key)) {

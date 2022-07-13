@@ -91,7 +91,7 @@ describe("aggregation-process", function () {
 
   it("can use the step function in sub-steps", () => {
     const messages = ["one", "two", "three", "four", "five", "six", "seven"];
-    const lastProgress = {
+    const lastProgress: any = {
       currentStep: -1,
       steps: 8,
     };
@@ -117,7 +117,7 @@ describe("aggregation-process", function () {
   it("will not die when child process exits", function () {
     this.timeout(5000);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       const myPid = process.pid;
       const child = cp.fork(`${__dirname}/__tests__/killableForker.js`);
 
@@ -137,11 +137,11 @@ describe("aggregation-process", function () {
     this.timeout(6000);
 
     const allSteps = 7;
-    const countedSteps = [];
+    const countedSteps: number[] = [];
 
     return start({
       aggregatorFile: aggregatorLongRunningMultipleWaits,
-      progress: ({ message, currentStep, steps }) => {
+      progress: ({ currentStep, steps }) => {
         expect(steps).to.be(allSteps);
         countedSteps.push(currentStep);
       },
@@ -156,7 +156,7 @@ describe("aggregation-process", function () {
     this.timeout(6000);
 
     const allSteps = 4;
-    const countedSteps = [];
+    const countedSteps: number[] = [];
 
     return start({
       aggregatorFile: aggregatorLongRunning,
@@ -181,7 +181,7 @@ describe("aggregation-process", function () {
     this.timeout(5000);
 
     const allSteps = 4;
-    const countedSteps = [];
+    const countedSteps: number[] = [];
 
     return start({
       aggregatorFile: aggregatorLongRunning,
@@ -233,7 +233,7 @@ describe("aggregation-process", function () {
   // TODO maybe extend and overwrite function prototype for this...? :)
   it.skip("can use the step function in sub-steps with an easier way to type", () => {
     const messages = ["one", "two", "three", "four", "five", "six", "seven"];
-    const lastProgress = {
+    const lastProgress: any = {
       currentStep: -1,
       steps: 8,
     };

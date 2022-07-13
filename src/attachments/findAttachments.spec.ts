@@ -89,17 +89,17 @@ describe("findAttachments", () => {
   });
 
   // TODO filter attachments to only get from specific tables / columns
-  it.skip("can use an option to fetch only the wanted attachments", () => {
-    return Promise.resolve(data)
-      .then(
-        findAttachments({
-          filter: ["option", "imagesStraight"],
-        })
-      )
-      .then((attachments) => {
-        expect(attachments.length).to.be(9);
-      });
-  });
+  // it.skip("can use an option to fetch only the wanted attachments", () => {
+  //   return Promise.resolve(data)
+  //     .then(
+  //       findAttachments({
+  //         filter: ["option", "imagesStraight"],
+  //       })
+  //     )
+  //     .then((attachments) => {
+  //       expect(attachments.length).to.be(9);
+  //     });
+  // });
 
   it("can add mappings from externalName to internalName", () => {
     return Promise.resolve(data)

@@ -15,8 +15,8 @@ const tests = (protocol) => () => {
   const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
   const errorImage = `${__dirname}/__tests__/error.png`;
-  let requests = [];
-  let headers = {};
+  let requests: string[] = [];
+  let headers: Record<string, string> = {};
   let server;
 
   const isHttps = protocol === "https";
@@ -41,7 +41,7 @@ const tests = (protocol) => () => {
         cert: fs.readFileSync(`${__dirname}/__tests__/public.pem`),
       };
 
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         server = https.createServer(options, app).listen(TEST_PORT, (err) => {
           if (err) {
             return reject(err);
@@ -51,7 +51,7 @@ const tests = (protocol) => () => {
         });
       });
     } else {
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         server = http.createServer(app).listen(TEST_PORT, (err) => {
           if (err) {
             return reject(err);

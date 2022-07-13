@@ -17,7 +17,7 @@ export function start({
 
   return Promise.resolve().then(
     () =>
-      new Promise((resolve, reject) => {
+      new Promise<{ result; code?; signal? }>((resolve, reject) => {
         const child = cp.fork(`${__dirname}/forker.js`);
         let initialized = false;
         let fulfilled = false;
