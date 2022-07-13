@@ -196,7 +196,9 @@ export function modifyImages(
 
 function startImageModificationProcess(args) {
   return new Promise<void>((resolve, reject) => {
-    const cp = fork(`${__dirname}/modifyImageProcess.js`, args);
+    const cp = fork(`${__dirname}/modifyImageProcess.ts`, args, {
+      execArgv: ["-r", "ts-node/register"],
+    });
 
     cp.on("close", (code) => {
       if (code === 0) {
