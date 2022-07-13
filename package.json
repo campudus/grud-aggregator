@@ -11,7 +11,7 @@
     "coverage": "nyc npm run test",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "prepublish": "npm run build -s && npm run lint -s && npm run test -s",
+    "prepublish": "npm run build -s && npm run lint -s && npm run test:all -s",
     "test": "NODE_ENV=test ts-mocha",
     "test:all": "NODE_ENV=test ts-mocha 'src/**/*.spec.ts'",
     "test:watch": "NODE_ENV=test npm run test -- -w"
