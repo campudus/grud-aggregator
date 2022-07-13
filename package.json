@@ -7,7 +7,7 @@
     "lib/"
   ],
   "scripts": {
-    "compile": "babel -q --ignore '**/*.spec.js' -d lib/ src",
+    "compile": "tsc",
     "coverage": "nyc npm run test",
     "lint": "eslint src/",
     "lint:watch": "eslint src/ -w",
@@ -32,6 +32,7 @@
     "@babel/cli": "7.2.3",
     "@babel/preset-env": "7.3.1",
     "@babel/runtime": "7.3.1",
+    "@types/node": "^18.0.3",
     "babel-eslint": "10.0.1",
     "babel-plugin-add-module-exports": "1.0.0",
     "eslint": "3.19.0",
