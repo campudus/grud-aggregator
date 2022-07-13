@@ -104,4 +104,4 @@ coverage/
 .nyc_output/
 
 # build output
-lib
+lib/
