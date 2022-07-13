@@ -5,14 +5,14 @@ import { start } from "./aggregationProcess";
 describe("aggregation-process", function () {
   this.timeout(5000);
 
-  const aggregatorBreaking = `${__dirname}/__tests__/aggregatorBreaking.js`;
-  const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
-  const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
-  const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubsteps.js`;
-  const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubsteps2.js`;
-  const aggregatorLongRunning = `${__dirname}/__tests__/aggregatorLongRunning.js`;
-  const aggregatorLongRunningMultipleWaits = `${__dirname}/__tests__/aggregatorLongRunningMultipleWaits.js`;
-  const aggregatorNonExistent = "non-existant-file.js";
+  const aggregatorBreaking = `${__dirname}/__tests__/aggregatorBreaking.ts`;
+  const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.ts`;
+  const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.ts`;
+  const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubsteps.ts`;
+  const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubsteps2.ts`;
+  const aggregatorLongRunning = `${__dirname}/__tests__/aggregatorLongRunning.ts`;
+  const aggregatorLongRunningMultipleWaits = `${__dirname}/__tests__/aggregatorLongRunningMultipleWaits.ts`;
+  const aggregatorNonExistent = "non-existant-file.ts";
 
   it("needs a filename to the aggregator process script", () => {
     expect(start).to.throw(/Need to supply the filename of the aggregator/i);
@@ -119,7 +119,9 @@ describe("aggregation-process", function () {
 
     return new Promise<void>((resolve) => {
       const myPid = process.pid;
-      const child = cp.fork(`${__dirname}/__tests__/killableForker.js`);
+      const child = cp.fork(`${__dirname}/__tests__/killableForker.ts`, [], {
+        execArgv: ["-r", "ts-node/register"],
+      });
 
       child.on("message", (message) => {
         if (message === "INIT") {

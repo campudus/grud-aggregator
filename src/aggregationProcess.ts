@@ -18,7 +18,12 @@ export function start({
   return Promise.resolve().then(
     () =>
       new Promise<{ result; code?; signal? }>((resolve, reject) => {
-        const child = cp.fork(`${__dirname}/forker.js`);
+        const child =
+          process.env.NODE_ENV === "test"
+            ? cp.fork(`${__dirname}/forker.ts`, [], {
+                execArgv: ["-r", "ts-node/register"],
+              })
+            : cp.fork(`${__dirname}/forker.js`);
         let initialized = false;
         let fulfilled = false;
         let allDone = false;

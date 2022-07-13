@@ -12,8 +12,9 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "prepublish": "npm run build -s && npm run lint -s && npm run test -s",
-    "test": "ts-mocha src/**/*.spec.ts",
-    "test:watch": "npm run test -- -w"
+    "test": "NODE_ENV=test ts-mocha",
+    "test:all": "NODE_ENV=test ts-mocha 'src/**/*.spec.ts'",
+    "test:watch": "NODE_ENV=test npm run test -- -w"
   },
   "repository": {
     "type": "git",

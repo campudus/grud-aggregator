@@ -51,7 +51,7 @@ function run(aggregatorFile, options) {
 
   try {
     import(aggregatorFile)
-      .then((aggregator) => aggregator(step, progress, options))
+      .then((aggregator) => aggregator.default(step, progress, options))
       .then((result) => {
         process.send({
           action: "DONE",
