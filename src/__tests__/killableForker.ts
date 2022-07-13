@@ -1,6 +1,6 @@
 import { start } from "../aggregationProcess";
 
-const longRunningAggregator = `${__dirname}/killableForkerAggregator.js`;
+const longRunningAggregator = `${__dirname}/killableForkerAggregator.ts`;
 let aggregatorPid, parentPid;
 
 process.on("message", (message: string) => {

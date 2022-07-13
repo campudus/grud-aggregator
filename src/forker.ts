@@ -50,8 +50,11 @@ function run(aggregatorFile, options) {
   let lastStep = 0;
 
   try {
-    import(aggregatorFile)
-      .then((aggregator) => aggregator.default(step, progress, options))
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const aggregator = require(aggregatorFile);
+
+    aggregator
+      .default(step, progress, options)
       .then((result) => {
         process.send({
           action: "DONE",
