@@ -8,12 +8,12 @@
   ],
   "scripts": {
     "build": "tsc",
-    "coverage": "nyc npm run test:all",
+    "coverage": "nyc npm run test",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "prepublish": "npm run build -s && npm run lint -s && npm run test:all -s",
-    "test": "NODE_ENV=test ts-mocha",
-    "test:all": "NODE_ENV=test ts-mocha 'src/**/*.spec.ts'",
+    "prepublish": "npm run build && npm run lint && npm run test",
+    "test": "NODE_ENV=test ts-mocha 'src/**/*.spec.ts'",
+    "test:single": "NODE_ENV=test ts-mocha",
     "test:watch": "NODE_ENV=test npm run test -- -w"
   },
   "repository": {
