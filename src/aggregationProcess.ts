@@ -1,12 +1,14 @@
 import * as _ from "lodash";
 import cp from "child_process";
 
-export function start({
-  aggregatorFile,
-  progress,
+import { AggregationMessage, AggregationProcess } from "./types/aggregationProcess";
+
+export const start: AggregationProcess = ({
+  aggregatorFile = null,
+  progress = null,
   timeoutToResendStatus = 2000,
   ...rest
-}: any = {}) {
+}) => {
   if (_.isNil(aggregatorFile) || _.isEmpty(aggregatorFile)) {
     throw new Error("Need to supply the filename of the aggregator");
   }
@@ -17,7 +19,7 @@ export function start({
 
   return Promise.resolve().then(
     () =>
-      new Promise<{ result; code?; signal? }>((resolve, reject) => {
+      new Promise((resolve, reject) => {
         const child =
           process.env.NODE_ENV === "test"
             ? cp.fork(`${__dirname}/forker.ts`, [], {
@@ -31,7 +33,7 @@ export function start({
         let resendProgressTimerId = null;
         let result;
 
-        child.on("message", ({ action, payload, data }: any) => {
+        child.on("message", ({ action, payload, data }: AggregationMessage) => {
           if (action === "INIT") {
             initialized = true;
             allSteps = payload.stepsInAggregator;
@@ -74,7 +76,7 @@ export function start({
           },
         });
 
-        function sendProgress(payload) {
+        function sendProgress(payload: any) {
           if (resendProgressTimerId !== null) {
             clearTimeout(resendProgressTimerId);
           }
@@ -86,7 +88,7 @@ export function start({
           }, timeoutToResendStatus);
         }
 
-        function fulfill(code, signal) {
+        function fulfill(code: number, signal: string) {
           if (resendProgressTimerId !== null) {
             clearTimeout(resendProgressTimerId);
           }
@@ -111,4 +113,4 @@ export function start({
         }
       })
   );
-}
+};

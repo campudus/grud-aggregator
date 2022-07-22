@@ -15,5 +15,9 @@
     "document": false,
     "navigator": false,
     "window": false
+  },
+
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
