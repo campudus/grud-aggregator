@@ -2,7 +2,7 @@ export type AggregatorOptions = Record<string, any>;
 export type AggregatorResult = any;
 
 export type AggregationOptions<T> = {
-  aggregatorFile: string;
+  aggregatorFile?: string;
   progress?: (payload: any) => void;
   timeoutToResendStatus?: number;
 } & T;

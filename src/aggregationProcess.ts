@@ -4,11 +4,11 @@ import cp from "child_process";
 import { AggregationMessage, AggregationProcess } from "./types/aggregationProcess";
 
 export const start: AggregationProcess = ({
-  aggregatorFile = null,
-  progress = null,
+  aggregatorFile,
+  progress,
   timeoutToResendStatus = 2000,
   ...rest
-}) => {
+} = {}) => {
   if (_.isNil(aggregatorFile) || _.isEmpty(aggregatorFile)) {
     throw new Error("Need to supply the filename of the aggregator");
   }
