@@ -1,8 +1,10 @@
 import _ from "lodash";
 
-export function createSchemaFromLanguageTables(...fallbackLanguages) {
+import { ById, ByLangTag, Table } from "./types/createSchemaFromLanguageTables";
+
+export function createSchemaFromLanguageTables(...fallbackLanguages: string[]) {
   // data is {"de":{...},"en":{...}, "en-US":{...}}
-  return (data) =>
+  return (data: ByLangTag<ById<Table>>) =>
     _.mapValues(data, (tables) => {
       const json: any = {};
       json.tables = _.transform(
@@ -30,10 +32,10 @@ export function createSchemaFromLanguageTables(...fallbackLanguages) {
       return json;
     });
 
-  function getFromFallback(data, path) {
+  function getFromFallback(data: ByLangTag<ById<Table>>, path: (string | number)[]) {
     const firstPossibleFallback = _.find(fallbackLanguages, (lang) =>
-      _.has(data, [lang].concat(path))
+      _.has(data, _.concat([lang], path))
     );
-    return _.get(data, [firstPossibleFallback].concat(path));
+    return _.get(data, _.concat([firstPossibleFallback], path));
   }
 }
