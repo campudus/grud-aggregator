@@ -17,7 +17,7 @@ describe("reduceImage", () => {
     return expect(reduceImage({
       fromPath: __filename,
       toPath: tempFile.name
-    })).to.reject.with.error(/unsupported mime/i);
+    })).to.reject.with.error(/unsupported image format/i);
   });
 
   it("fixture file has a size (png)", test001("png"));
@@ -58,7 +58,7 @@ describe("reduceImage", () => {
       return expect(reduceImage({
         fromPath: nonExistentFile(extension),
         toPath: tempFile.name
-      })).to.reject.with.error(/enoent/i);
+      })).to.reject.with.error(/Input file is missing/i);
     };
   }
 
@@ -70,7 +70,7 @@ describe("reduceImage", () => {
       return expect(reduceImage({
         fromPath: wrongImageFile(extension),
         toPath: tempFile.name
-      })).to.reject.with.error(/unsupported mime/i);
+      })).to.reject.with.error(/unsupported image format/i);
     };
   }
 
@@ -88,7 +88,7 @@ describe("reduceImage", () => {
         fromPath: fixtureFile(extension),
         toPath: `${path}/file.txt`
       }))
-        .to.reject.with.error(/eacces/i)
+        .to.reject.with.error(/Permission denied/i)
         .then(() => tmpDir.removeCallback());
     };
   }
@@ -256,7 +256,7 @@ describe("generateThumb", () => {
         fromPath: nonExistentFile(extension),
         toPath: tempFile.name,
         imageWidth: 20
-      })).to.reject.with.error(/enoent/i);
+      })).to.reject.with.error(/Input file is missing/i);
     };
   }
 
@@ -266,7 +266,7 @@ describe("generateThumb", () => {
       fromPath: __filename,
       toPath: tempFile.name,
       imageWidth: 20
-    })).to.reject.with.error(/unsupported mime/i);
+    })).to.reject.with.error(/unsupported image format/i);
   });
 
   it("results in error, if file is an incorrect image (png)", test012("png"));
@@ -279,7 +279,7 @@ describe("generateThumb", () => {
         fromPath: wrongImageFile(extension),
         toPath: tempFile.name,
         imageWidth: 20
-      })).to.reject.with.error(/unsupported mime/i);
+      })).to.reject.with.error(/unsupported image format/i);
     };
   }
 
@@ -293,7 +293,7 @@ describe("generateThumb", () => {
         fromPath: fixtureFile(extension),
         toPath: tempFile.name,
         imageWidth: 0
-      })).to.reject.with.error(/invalid settings/i);
+      })).to.reject.with.error(/Expected positive integer for width but received 0/i);
     };
   }
 
@@ -312,7 +312,7 @@ describe("generateThumb", () => {
         toPath: `${path}/file.txt`,
         imageWidth: 500
       }))
-        .to.reject.with.error(/eacces/i)
+        .to.reject.with.error(/Permission denied/i)
         .then(() => {
           console.log(`removing tempdir ${path}`);
           tmpDir.removeCallback();

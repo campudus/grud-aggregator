@@ -13,7 +13,9 @@ describe("image modification", () => {
   const fixtureFile3 = `${__dirname}/__tests__/duck3.png`;
   const fixtureWithExifFile = `${__dirname}/__tests__/exif_test.jpg`;
   const thumbFile = `${__dirname}/__tests__/duck_thumb.png`;
+  const thumbFileByHeight = `${__dirname}/__tests__/duck_thumb_height.png`;
   const tinyFile = `${__dirname}/__tests__/duck_tiny.png`;
+  const tinyFileMinified = `${__dirname}/__tests__/duck_tiny_minified.png`;
   const scaleResizeFile = `${__dirname}/__tests__/duck_500x400.png`;
   const wrongImageFile1 = `${__dirname}/__tests__/wrong-image.png`;
   const wrongImageFile2 = `${__dirname}/__tests__/wrong-image.jpg`;
@@ -156,7 +158,7 @@ describe("image modification", () => {
       .then(results => {
         expect(results).to.be.an.array();
         expect(results[0]).to.be(`${outPath}/duck.png`);
-        return Promise.all([statOf(thumbFile), statOf(results[0])]);
+        return Promise.all([statOf(thumbFileByHeight), statOf(results[0])]);
       })
       .then(([thumb, minified]) => {
         expect(minified.size).to.be(thumb.size);
@@ -573,7 +575,7 @@ describe("image modification", () => {
           statOf(`${outPath}/${path.basename(fixtureFile)}`),
           statOf(`${outPath}/${path.basename(fixtureFile2)}`),
           statOf(`${outPath}/${path.basename(fixtureFile3)}`),
-          statOf(tinyFile)
+          statOf(tinyFileMinified)
         ]);
       })
       .then(([resultFile1, resultFile2, resultFile3, tinyFileStat]) => {

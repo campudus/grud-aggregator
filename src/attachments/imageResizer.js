@@ -1,118 +1,37 @@
-import fs from "fs-extra";
-import jimp from "jimp";
-import imagemin from "imagemin";
-import pngquant from "imagemin-pngquant";
-import jpegopti from "imagemin-jpegoptim";
+import sharp from "sharp";
 
 export function generateThumb(options) {
-  const {fromPath, toPath, imageHeight, imageWidth, minify} = options;
-  return readImage(fromPath)
-    .then(resizeImage({
-      imageHeight,
-      imageWidth
-    }))
-    .then(minifyImage(minify))
-    .then(saveImage(toPath));
+  const { fromPath, toPath, imageHeight, imageWidth, minify = false } = options;
+
+  return getTransformer({ fromPath, resize: true, imageHeight, imageWidth, minify }).then(sharp => sharp.toFile(toPath));
 }
 
 export function reduceImage(options) {
-  const {fromPath, toPath} = options;
-  return readImage(fromPath)
-    .then(image => {
-      return new Promise((resolve, reject) => {
-        image.getBuffer(image._originalMime, (err, buffer) => {
-          if (err) {
-            console.log(`could not get buffer to copy with mime type ${image._originalMime}`);
-            reject(err);
-          } else {
-            resolve(buffer);
-          }
-        });
-      });
-    })
-    .then(minifyImage(true))
-    .then(saveImage(toPath));
+  const { fromPath, toPath } = options;
+
+  return getTransformer({ fromPath, resize: false, minify: true }).then(sharp => sharp.toFile(toPath));
 }
 
-function readImage(fromPath) {
+function getTransformer({ fromPath, resize, imageHeight, imageWidth, minify }) {
   return new Promise((resolve, reject) => {
-    jimp.read(fromPath, (err, image) => {
-      if (err) {
-        console.log(`Could not read ${fromPath}`);
-        reject(err);
-      } else {
-        resolve(image);
-      }
-    });
-  });
-}
-
-function resizeImage(
-  {
-    imageHeight = "auto",
-    imageWidth = "auto"
-  }) {
-
-  const height = imageHeight === "auto" ? jimp.AUTO : imageHeight;
-  const width = imageWidth === "auto" ? jimp.AUTO : imageWidth;
-  const isFittingToScale = imageHeight !== "auto" && imageWidth !== "auto";
-  return image => new Promise((resolve, reject) => {
-    // resize the width to <imageSize> and scale the height accordingly
     try {
-      const bufferCb = (err, buffer) => {
-        if (err) {
-          console.log(`could not get buffer to resize with mime type ${image._originalMime}`);
-          reject(err);
-        } else {
-          resolve(buffer);
-        }
-      };
-      if (isFittingToScale) {
-        image
-          .contain(width, height)
-          .getBuffer(image._originalMime, bufferCb);
-      } else {
-        image
-          .resize(width, height)
-          .getBuffer(image._originalMime, bufferCb);
+      const transformer = sharp(fromPath);
+
+      if (resize) {
+        transformer.resize({
+          width: imageWidth,
+          height: imageHeight,
+          fit: "contain",
+          background: { r: 0, g: 0, b: 0, alpha: 0 }
+        });
       }
-    } catch (e) {
-      reject(e);
+
+      transformer.jpeg({ quality: minify ? 80 : 95, chromaSubsampling: minify ? "4:2:0" : "4:4:4", force: false })
+        .png({ force: false, palette: minify, compressionLevel: 9, adaptiveFiltering: true });
+
+      resolve(transformer);
+    } catch (err) {
+      reject(err);
     }
-  });
-}
-
-function minifyImage(minify) {
-  return buffer => {
-    if (minify) {
-      return minifyImageBuffer(buffer);
-    } else {
-      return buffer;
-    }
-  };
-}
-
-function minifyImageBuffer(buffer) {
-  return imagemin.buffer(buffer, {
-    plugins: [
-      pngquant(),
-      jpegopti({
-        progressive: false,
-        stripAll: true,
-        max: 80
-      })
-    ]
-  });
-}
-
-function saveImage(toPath) {
-  return buffer => new Promise((resolve, reject) => {
-    fs.outputFile(toPath, buffer, err => {
-      if (err) {
-        return reject(err);
-      } else {
-        return resolve(toPath);
-      }
-    });
   });
 }

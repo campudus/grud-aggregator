@@ -1,6 +1,6 @@
 {
   "name": "tableaux-aggregator",
-  "version": "7.0.3",
+  "version": "8.0.0",
   "description": "Core aggregator functions",
   "main": "lib/index.js",
   "files": [
@@ -50,12 +50,8 @@
     "@babel/register": "7.0.0",
     "axios": "0.20.0",
     "fs-extra": "0.30.0",
-    "imagemin": "5.3.1",
-    "imagemin-jpegoptim": "5.2.0",
-    "imagemin-pngquant": "5.0.0",
-    "jimp": "0.2.24",
     "lodash": "4.13.1",
     "lowdb": "0.13.1",
-    "mime": "1.3.4"
+    "sharp": "0.31.1"
   }
 }
