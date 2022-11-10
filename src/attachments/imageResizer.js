@@ -3,13 +3,13 @@ import sharp from "sharp";
 export function generateThumb(options) {
   const { fromPath, toPath, imageHeight, imageWidth, minify = false } = options;
 
-  return getTransformer({ fromPath, resize: true, imageHeight, imageWidth, minify }).then(sharp => sharp.toFile(toPath));
+  return getTransformer({ fromPath, resize: true, imageHeight, imageWidth, minify }).then(sharpObj => sharpObj.toFile(toPath));
 }
 
 export function reduceImage(options) {
   const { fromPath, toPath } = options;
 
-  return getTransformer({ fromPath, resize: false, minify: true }).then(sharp => sharp.toFile(toPath));
+  return getTransformer({ fromPath, resize: false, minify: true }).then(sharpObj => sharpObj.toFile(toPath));
 }
 
 function getTransformer({ fromPath, resize, imageHeight, imageWidth, minify }) {
