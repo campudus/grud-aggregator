@@ -4,7 +4,7 @@
 
 * Removed `jimp` with plugins `pngquant` and `jpegoptim`
 * Added `sharp` as a replacement for `jimp`
-* The API stays the same but `sharp` has other dependencies to native libraries which can break current deployments
+* The API stays the same but `sharp` has other dependencies on native libraries which can break current deployments
 
 ## 7.0.3 - Moved `@babel/core` from `devDependencies` to `dependencies`
 
