@@ -11,8 +11,8 @@ if (imageWidth && imageHeight) {
     fromPath: fromPath,
     toPath: toPath,
     minify: minify,
-    imageWidth: (imageWidth === "auto") ? "auto" : JSON.parse(imageWidth),
-    imageHeight: (imageHeight === "auto") ? "auto" : JSON.parse(imageHeight)
+    imageWidth: (imageWidth === "auto") ? null : JSON.parse(imageWidth),
+    imageHeight: (imageHeight === "auto") ? null : JSON.parse(imageHeight)
   };
 
   imageResizer
