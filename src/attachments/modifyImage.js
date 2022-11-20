@@ -79,13 +79,18 @@ export function modifyImages(
         return _.reduce(chunkedFiles, (promise, chunkFiles) => promise.then(stepAndFiles => {
           const { currentStep, files: previousFiles } = stepAndFiles;
 
-          const doing = resize && minify && trim ? "Resizing, trimming and minifying"
-                        : resize && minify ? "Resizing and minifying"
-                        : resize && trim ? "Resizing and trimming"
-                        : minify && trim ? "Minifying and trimming"
-                        : resize ? "Resizing"
-                        : minify ? "Minifying"
-                        : "Trimming";
+          const actions = [
+            ...(resize ? ["resizing"] : []),
+            ...(minify ? ["minifying"] : []),
+            ...(trim ? ["trimming"] : [])
+          ];
+
+          const formatter = new Intl.ListFormat("en", {
+            style: "long",
+            type: "conjunction"
+          });
+
+          const doing = _.upperFirst(formatter.format(actions));
 
           const multiple = chunkSize > 1;
 
