@@ -1,5 +1,5 @@
 import path from "path";
-import {fork} from "child_process";
+import { fork } from "child_process";
 import _ from "lodash";
 
 export function modifyImages(
@@ -10,6 +10,7 @@ export function modifyImages(
     database,
     key,
     minify = false,
+    trim = false,
     outPath = "out",
     onError = _.noop,
     progress = () => {
@@ -19,6 +20,7 @@ export function modifyImages(
     imageWidth: "auto",
     imageHeight: "auto",
     minify: false,
+    trim: false,
     dataDirectory: "out",
     outPath: "out",
     onError: _.noop,
@@ -63,8 +65,8 @@ export function modifyImages(
         return stepAndFiles;
       })
       .then(stepAndAllFiles => {
-        // resize can resize AND minify at the same time
-        if (!resize && !minify) {
+        // modifyImage can resize AND minify AND trim at the same time
+        if (!resize && !minify && !trim) {
           return stepAndAllFiles;
         }
 
@@ -75,9 +77,16 @@ export function modifyImages(
         });
 
         return _.reduce(chunkedFiles, (promise, chunkFiles) => promise.then(stepAndFiles => {
-          const {currentStep, files: previousFiles} = stepAndFiles;
+          const { currentStep, files: previousFiles } = stepAndFiles;
 
-          const doing = resize && minify ? "Resizing and minifying" : resize ? "Resizing" : "Minifying";
+          const doing = resize && minify && trim ? "Resizing, trimming and minifying"
+                        : resize && minify ? "Resizing and minifying"
+                        : resize && trim ? "Resizing and trimming"
+                        : minify && trim ? "Minifying and trimming"
+                        : resize ? "Resizing"
+                        : minify ? "Minifying"
+                        : "Trimming";
+
           const multiple = chunkSize > 1;
 
           progress({
@@ -115,8 +124,6 @@ export function modifyImages(
                 return Promise.resolve(file);
               }
 
-              /* resize (and maybe minify) */
-
               const handleError = (error) => {
                 progress({
                   error,
@@ -135,7 +142,7 @@ export function modifyImages(
                 };
               };
 
-              const modificationArguments = [fromPath, toPath, minify];
+              const modificationArguments = [fromPath, toPath, minify, trim];
 
               if (resize) {
                 modificationArguments.push(imageWidth, imageHeight);

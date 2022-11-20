@@ -19,6 +19,11 @@ describe("image modification", () => {
   const scaleResizeFile = `${__dirname}/__tests__/duck_500x400.png`;
   const wrongImageFile1 = `${__dirname}/__tests__/wrong-image.png`;
   const wrongImageFile2 = `${__dirname}/__tests__/wrong-image.jpg`;
+  const fixtureTrimmingFile = `${__dirname}/__tests__/duck_trim.png`;
+  const trimmedFile = `${__dirname}/__tests__/duck_trimmed.png`;
+  const trimmedAndMinifiedFile = `${__dirname}/__tests__/duck_trimmed_minified.png`;
+  const trimmedAndResizedFile = `${__dirname}/__tests__/duck_trimmed_resized.png`;
+  const trimmedAndResizedAndMinifiedFile = `${__dirname}/__tests__/duck_trimmed_resized_minified.png`;
 
   const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
@@ -210,6 +215,102 @@ describe("image modification", () => {
       })
       .then(([thumb, minified]) => {
         expect(minified.size).to.be.lt(thumb.size);
+      }));
+  });
+
+  it("can resize and trim an image in one step", function () {
+    this.timeout(30 * 1000);
+
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/database.json`);
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key: "test",
+      outPath,
+      imageWidth: 500,
+      trim: true
+    })([fixtureTrimmingFile])
+      .then(results => {
+        expect(results).to.be.an.array();
+        expect(results[0]).to.be(`${outPath}/duck_trim.png`);
+        return Promise.all([statOf(trimmedAndResizedFile), statOf(results[0])]);
+      })
+      .then(([fixture, minified]) => {
+        expect(minified.size).to.be(fixture.size);
+      }));
+  });
+
+  it("can minify and trim an image in one step", function () {
+    this.timeout(30 * 1000);
+
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/database.json`);
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key: "test",
+      outPath,
+      minify: true,
+      trim: true
+    })([fixtureTrimmingFile])
+      .then(results => {
+        expect(results).to.be.an.array();
+        expect(results[0]).to.be(`${outPath}/duck_trim.png`);
+        return Promise.all([statOf(trimmedAndMinifiedFile), statOf(results[0])]);
+      })
+      .then(([fixture, minified]) => {
+        expect(minified.size).to.be(fixture.size);
+      }));
+  });
+
+  it("can resize and minify and trim an image in one step", function () {
+    this.timeout(30 * 1000);
+
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/database.json`);
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key: "test",
+      outPath,
+      imageWidth: 500,
+      minify: true,
+      trim: true
+    })([fixtureTrimmingFile])
+      .then(results => {
+        expect(results).to.be.an.array();
+        expect(results[0]).to.be(`${outPath}/duck_trim.png`);
+        return Promise.all([statOf(trimmedAndResizedAndMinifiedFile), statOf(results[0])]);
+      })
+      .then(([fixture, minified]) => {
+        expect(minified.size).to.be(fixture.size);
+      }));
+  });
+
+  it("can only trim an image", function () {
+    this.timeout(30 * 1000);
+
+    const tmpDir = tmp.dirSync({unsafeCleanup: true});
+    const outPath = tmpDir.name;
+    const database = new Database(`${outPath}/database.json`);
+
+    return cleanUpWhenDone(tmpDir)(modifyImages({
+      database,
+      key: "test",
+      outPath,
+      trim: true
+    })([fixtureTrimmingFile])
+      .then(results => {
+        expect(results).to.be.an.array();
+        expect(results[0]).to.be(`${outPath}/duck_trim.png`);
+        return Promise.all([statOf(trimmedFile), statOf(results[0])]);
+      })
+      .then(([fixture, trimmed]) => {
+        expect(trimmed.size).to.be(fixture.size);
       }));
   });
 
