@@ -1,14 +1,19 @@
 import fs from "fs";
 import tmp from "tmp";
 import expect from "must";
-import {statOf} from "./__tests__/fsHelpers";
-import {reduceImage, generateThumb} from "./imageResizer";
+import { statOf } from "./__tests__/fsHelpers";
+import { reduceImage, generateThumb, trimImage } from "./imageResizer";
 
 const fixtureFile = extension => `${__dirname}/__tests__/duck.${extension}`;
 const thumbFile = extension => `${__dirname}/__tests__/duck_thumb.${extension}`;
 const scaleResizeFile = extension => `${__dirname}/__tests__/duck_500x400.${extension}`;
 const wrongImageFile = extension => `${__dirname}/__tests__/wrong-image.${extension}`;
 const nonExistentFile = extension => `${__dirname}/__tests__/non-existent.${extension}`;
+const trimmingFile = extension => `${__dirname}/__tests__/duck_trim.${extension}`;
+const trimmedFile = extension => `${__dirname}/__tests__/duck_trimmed.${extension}`;
+const trimmedAndMinifiedFile = extension => `${__dirname}/__tests__/duck_trimmed_minified.${extension}`;
+const trimmedAndResizedFile = extension => `${__dirname}/__tests__/duck_trimmed_resized.${extension}`;
+const trimmedAndResizedAndMinifiedFile = extension => `${__dirname}/__tests__/duck_trimmed_resized_minified.${extension}`;
 
 describe("reduceImage", () => {
 
@@ -118,6 +123,25 @@ describe("reduceImage", () => {
     };
   }
 
+  it("can minify and trim transparent pixels from all edges (png)", test009("png"));
+  it("can minify and trim pixels from all edges (jpg)", test009("jpg"));
+  function test009(extension) {
+    return function () {
+      this.timeout(30 * 1000);
+      const tempFile = tmp.fileSync();
+
+      return reduceImage({
+        fromPath: trimmingFile(extension),
+        toPath: tempFile.name,
+        trim: true
+      })
+        .then(() => Promise.all([statOf(trimmedAndMinifiedFile(extension)), statOf(tempFile.name)]))
+        .then(([fixture, output]) => {
+          expect(output.size).to.be(fixture.size);
+        });
+    };
+  }
+
 });
 
 describe("generateThumb", () => {
@@ -141,6 +165,45 @@ describe("generateThumb", () => {
           expect(output.size).to.be(thumb.size);
         });
 
+    };
+  }
+
+  it("can resize and trim transparent pixels from all edges (png)", test007a("png"));
+  it("can resize and trim pixels from all edges (jpg)", test007a("jpg"));
+  function test007a(extension) {
+    return function () {
+      const tempFile = tmp.fileSync();
+
+      return generateThumb({
+        fromPath: trimmingFile(extension),
+        toPath: tempFile.name,
+        imageWidth: 500,
+        trim: true
+      })
+        .then(() => Promise.all([statOf(trimmedAndResizedFile(extension)), statOf(tempFile.name)]))
+        .then(([fixture, output]) => {
+          expect(output.size).to.be(fixture.size);
+        });
+    };
+  }
+
+  it("can resize and minify and trim transparent pixels from all edges (png)", test007b("png"));
+  it("can resize and minify and trim pixels from all edges (jpg)", test007b("jpg"));
+  function test007b(extension) {
+    return function () {
+      const tempFile = tmp.fileSync();
+
+      return generateThumb({
+        fromPath: trimmingFile(extension),
+        toPath: tempFile.name,
+        imageWidth: 500,
+        minify: true,
+        trim: true
+      })
+        .then(() => Promise.all([statOf(trimmedAndResizedAndMinifiedFile(extension)), statOf(tempFile.name)]))
+        .then(([fixture, output]) => {
+          expect(output.size).to.be(fixture.size);
+        });
     };
   }
 
@@ -316,6 +379,27 @@ describe("generateThumb", () => {
         .then(() => {
           console.log(`removing tempdir ${path}`);
           tmpDir.removeCallback();
+        });
+    };
+  }
+
+});
+
+describe("trimImage", () => {
+  it("can trim transparent pixels from all edges (png)", test0015("png"));
+  it("can trim pixels from all edges (jpg)", test0015("jpg"));
+  function test0015(extension) {
+    return function () {
+      this.timeout(30 * 1000);
+      const tempFile = tmp.fileSync();
+
+      return trimImage({
+        fromPath: trimmingFile(extension),
+        toPath: tempFile.name
+      })
+        .then(() => Promise.all([statOf(trimmedFile(extension)), statOf(tempFile.name)]))
+        .then(([fixture, output]) => {
+          expect(output.size).to.be(fixture.size);
         });
     };
   }

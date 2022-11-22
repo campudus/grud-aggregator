@@ -1,18 +1,18 @@
 import sharp from "sharp";
 
 export function generateThumb(options) {
-  const { fromPath, toPath, imageHeight, imageWidth, minify = false } = options;
-
-  return getTransformer({ fromPath, resize: true, imageHeight, imageWidth, minify }).then(sharpObj => sharpObj.toFile(toPath));
+  return modifyImage({ ...options, resize: true });
 }
 
 export function reduceImage(options) {
-  const { fromPath, toPath } = options;
-
-  return getTransformer({ fromPath, resize: false, minify: true }).then(sharpObj => sharpObj.toFile(toPath));
+  return modifyImage({ ...options, resize: false, minify: true });
 }
 
-function getTransformer({ fromPath, resize, imageHeight, imageWidth, minify }) {
+export function trimImage(options) {
+  return modifyImage({ ...options, resize: false, minify: false, trim: true });
+}
+
+function modifyImage({ fromPath, toPath, resize, imageHeight, imageWidth, minify, trim }) {
   return new Promise((resolve, reject) => {
     try {
       const transformer = sharp(fromPath);
@@ -26,6 +26,10 @@ function getTransformer({ fromPath, resize, imageHeight, imageWidth, minify }) {
         });
       }
 
+      if (trim) {
+        transformer.trim();
+      }
+
       transformer.jpeg({ quality: minify ? 80 : 95, chromaSubsampling: minify ? "4:2:0" : "4:4:4", force: false })
         .png({ force: false, palette: minify, compressionLevel: 9, adaptiveFiltering: true });
 
@@ -33,5 +37,5 @@ function getTransformer({ fromPath, resize, imageHeight, imageWidth, minify }) {
     } catch (err) {
       reject(err);
     }
-  });
+  }).then(sharpObj => sharpObj.toFile(toPath));
 }
