@@ -2,7 +2,7 @@
 
 ## 8.1.0 - Added functionality to trim images
 
-* Added a `trim` option to `modifyImages`. If set to `true` it will trim pixels from all edges that contain values similar to the color of the top-left pixel. Default is `false`.
+* Added a `trim` option to `modifyImages`. If set to `true`, it will trim pixels from all edges that contain values similar to the color of the top-left pixel. Default is `false`.
 
 ## 8.0.0 - Breaking change - Replaced jimp with sharp
 
