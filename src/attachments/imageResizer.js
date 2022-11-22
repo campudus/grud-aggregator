@@ -1,24 +1,18 @@
 import sharp from "sharp";
 
 export function generateThumb(options) {
-  const { fromPath, toPath, imageHeight, imageWidth, minify = false, trim = false } = options;
-
-  return getTransformer({ fromPath, resize: true, imageHeight, imageWidth, minify, trim }).then(sharpObj => sharpObj.toFile(toPath));
+  return modifyImage({ ...options, resize: true });
 }
 
 export function reduceImage(options) {
-  const { fromPath, toPath, trim = false } = options;
-
-  return getTransformer({ fromPath, resize: false, minify: true, trim }).then(sharpObj => sharpObj.toFile(toPath));
+  return modifyImage({ ...options, resize: false, minify: true });
 }
 
 export function trimImage(options) {
-  const { fromPath, toPath } = options;
-
-  return getTransformer({ fromPath, resize: false, minify: false, trim: true }).then(sharpObj => sharpObj.toFile(toPath));
+  return modifyImage({ ...options, resize: false, minify: false, trim: true });
 }
 
-function getTransformer({ fromPath, resize, imageHeight, imageWidth, minify, trim }) {
+function modifyImage({ fromPath, toPath, resize, imageHeight, imageWidth, minify, trim }) {
   return new Promise((resolve, reject) => {
     try {
       const transformer = sharp(fromPath);
@@ -43,5 +37,5 @@ function getTransformer({ fromPath, resize, imageHeight, imageWidth, minify, tri
     } catch (err) {
       reject(err);
     }
-  });
+  }).then(sharpObj => sharpObj.toFile(toPath));
 }
