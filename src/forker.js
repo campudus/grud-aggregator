@@ -89,12 +89,15 @@ function run(aggregatorFile, options) {
   function step(message) {
     allSteps = allSteps + 1;
 
-    return data => {
+    return (data, options = {}) => {
+      const {message: newMessage} = options;
+
       lastStep = lastStep + 1;
+
       process.send({
         action: "PROGRESS",
         payload: {
-          message: message,
+          message: newMessage || message,
           currentStep: lastStep,
           steps: allSteps
         }
