@@ -39,12 +39,19 @@ export default function start(step, progress, options) {
 
 #### `start({ aggregatorFile, progress, timeoutToResendStatus[, ...other options] })`
 
-* `aggregatorFile` (`string`, required) is the file that should be spawn into a process. It consists of an exported 
-  default function `start(step, progress[, options])`, which will be called with these parameters: `step` is a function 
-  for promise chains that will count the current steps and sends a debug message as soon as the aggregator runs over 
-  this step. The `progress` function is used for longer running "inner" processes, like minification of images. This 
-  function can be passed to some of the helper functions used in the promise chains. `options` is a JSON object that was
-   passed to the `start` function. This can be used to provide variables from the outer process to the forked one. 
+* `aggregatorFile` (`string`, required) is the file that should be spawn into a process. It consists of an exported
+  default function `start(step, progress[, options])`, which will be called with these parameters:
+  * `step` - the factory function for promise chains that will count the current steps and sends a debug message as
+    soon as the aggregator runs over this step. The factory returns a function which can be called with following
+    parameters:
+    * `data: any` - the data which will be passed through within the chain.
+    * `options?: {message: string, suppress: boolean}` - additional options: `message` replaces the original message to
+      be sent to progress function; `suppress` flag prevents the progress function to be called (while still counting
+      the steps).
+  * `progress` - the function is used for longer running "inner" processes, like minification of images. This
+    function can be passed to some of the helper functions used in the promise chains.
+  * `options` - a JSON object that was passed to the `start` function. This can be used to provide variables from the
+    outer process to the forked one.
 * `progress` is a function that will be called with an object three properties:
   * `steps` - the number of all counted steps. 
   * `currentStep` - the current step. Use `steps` and `currentStep` to calculate the percentage of your progress.
