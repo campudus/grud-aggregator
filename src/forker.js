@@ -90,18 +90,21 @@ function run(aggregatorFile, options) {
     allSteps = allSteps + 1;
 
     return (data, options = {}) => {
-      const {message: newMessage} = options;
+      const {message: newMessage, suppress = false} = options;
 
       lastStep = lastStep + 1;
 
-      process.send({
-        action: "PROGRESS",
-        payload: {
-          message: newMessage || message,
-          currentStep: lastStep,
-          steps: allSteps
-        }
-      });
+      if (!suppress) {
+        process.send({
+          action: "PROGRESS",
+          payload: {
+            message: newMessage || message,
+            currentStep: lastStep,
+            steps: allSteps
+          }
+        });
+      }
+
       return data;
     };
   }
