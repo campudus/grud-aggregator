@@ -1,5 +1,11 @@
 # Release Notes
 
+## 8.2.0 - Extended `step()` function by additional options
+
+* Extended `step(data, options)` function passed to aggregator by `options` parameter:
+  * `options.message` - replaces the step message on call.
+  * `options.suppress` - suppresses the call of the `progress()` function while still counting the steps.
+
 ## 8.1.0 - Added functionality to trim images
 
 * Added a `trim` option to `modifyImages`. If set to `true`, it will trim pixels from all edges that contain values similar to the color of the top-left pixel. Default is `false`.

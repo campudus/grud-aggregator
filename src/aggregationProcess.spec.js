@@ -8,6 +8,7 @@ describe("aggregation-process", function () {
 
   const aggregatorBreaking = `${__dirname}/__tests__/aggregatorBreaking.js`;
   const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
+  const aggregatorDummyWithReplacedAndHiddenMessages = `${__dirname}/__tests__/aggregatorDummyWithReplacedAndHiddenMessages.js`;
   const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
   const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubsteps.js`;
   const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubsteps2.js`;
@@ -70,6 +71,29 @@ describe("aggregation-process", function () {
         lastStep = currentStep;
         expect(currentStep).to.be.at.most(steps);
         expect(steps).to.be(numberOfSteps);
+      }
+    }).then(() => {
+      expect(lastStep).to.be(numberOfSteps);
+    });
+  });
+
+  it("can replace or hide message in step", () => {
+    const messages = ["Starting aggregator", "step A", "step B - REPLACED!", "step C", "step D", "Done"];
+    const suppressedMessages = ["step C"];
+    const numberOfSteps = messages.length - 1;
+
+    let lastStep = -1;
+
+    return start({
+      aggregatorFile: aggregatorDummyWithReplacedAndHiddenMessages,
+      progress: ({message, currentStep, steps}) => {
+        expect(message).to.startWith(messages[currentStep]);
+        expect(suppressedMessages.indexOf(message)).to.be(-1);
+        expect(lastStep).to.be.lt(currentStep);
+        expect(currentStep).to.be.at.most(steps);
+        expect(steps).to.be(numberOfSteps);
+
+        lastStep = currentStep;
       }
     }).then(() => {
       expect(lastStep).to.be(numberOfSteps);
