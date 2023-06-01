@@ -2,7 +2,7 @@ import _ from "lodash";
 import {getCompleteTable, getTablesByNames} from "./pimApi";
 
 export function getEntitiesOfTable(tableName, options = {}) {
-  const {disableFollow = [], pimUrl, maxEntriesPerRequest = 500, headers = {}} = options;
+  const {disableFollow = [], includeColumns, pimUrl, maxEntriesPerRequest = 500, headers = {}} = options;
 
   if (_.isNil(pimUrl)) {
     throw new Error("Missing option pimUrl");
@@ -13,7 +13,11 @@ export function getEntitiesOfTable(tableName, options = {}) {
   }
 
   if (!_.isArray(disableFollow) || _.some(disableFollow, columns => !_.isArray(columns))) {
-    throw new Error("Expecting an array of columns as disableFollow");
+    throw new Error("Expecting an array of column lists as disableFollow");
+  }
+
+  if (includeColumns && (!_.isArray(includeColumns) || _.some(includeColumns, column => !_.isString(column)))) {
+    throw new Error("Expecting an array of columns as includeColumns");
   }
 
   if (!_.isInteger(maxEntriesPerRequest) || maxEntriesPerRequest <= 0) {
@@ -29,25 +33,35 @@ export function getEntitiesOfTable(tableName, options = {}) {
 
   return getTablesByNames({pimUrl, headers}, tableName)
     .then(tablesFromPim => Promise.all(
-      _.map(tablesFromPim, table => getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest))
+      _.map(tablesFromPim, table =>
+        getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest, includeColumns)
+      )
     ))
     .then(() => mapRowsOfTables(tables));
 
-  function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest) {
+  function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest, includeColumns) {
     if (!promises[tableId]) {
       const promiseOfLinkedTables = getCompleteTable({pimUrl, headers}, tableId, maxEntriesPerRequest)
         .then(table => {
           tables[tableId] = table;
-          return Promise.all(_.flatMap(table.columns, column => {
-            if (!promises[column.toTable] && column.kind === "link" && !isDisabled(column.name, disableFollow)) {
-              const filteredDisableFollow = _.filter(disableFollow, columns => {
-                return !_.isEmpty(columns) && _.head(columns) === column.name;
-              });
-              const nextDisableFollow = _.map(filteredDisableFollow, columns => _.tail(columns));
-              return [getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow, maxEntriesPerRequest)];
-            } else {
-              return [];
-            }
+
+          const columnsToFollow = _.filter(table.columns, ({kind, name, toTable}) => {
+            return (
+              !promises[toTable]
+              && kind === "link"
+              && !isColumnDisabled(name, disableFollow)
+              && isColumnIncluded(name, includeColumns)
+            );
+          });
+
+          return Promise.all(_.map(columnsToFollow, column => {
+            const filteredDisableFollow = _.filter(disableFollow, columns => {
+              return !_.isEmpty(columns) && _.head(columns) === column.name;
+            });
+
+            const nextDisableFollow = _.map(filteredDisableFollow, columns => _.tail(columns));
+
+            return getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow, maxEntriesPerRequest);
           }));
         });
 
@@ -59,9 +73,14 @@ export function getEntitiesOfTable(tableName, options = {}) {
     }
   }
 
-  function isDisabled(columnName, disableFollow) {
-    const disabledFollowInTable = _.filter(disableFollow, columns => _.size(columns) === 1);
-    return _.some(disabledFollowInTable, columns => _.head(columns) === columnName);
+  function isColumnIncluded(columnName, includeColumns) {
+    return _.isNil(includeColumns) || _.isArray(includeColumns) && includeColumns.includes(columnName);
+  }
+
+  function isColumnDisabled(columnName, disableFollow) {
+    const disabledColumns = _.filter(disableFollow, columns => _.size(columns) === 1).flat();
+
+    return disabledColumns.includes(columnName);
   }
 }
 
