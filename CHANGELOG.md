@@ -1,5 +1,10 @@
 # Release Notes
 
+## 8.3.0 - Extended `getEntitiesOfTable()` function by `includeColumns` option
+
+* `includeColumns: String[]` option has been added for `getEntitiesOfTable()`. Specified as an array of strings, it
+  defines columns that will be followed on the top level.
+
 ## 8.2.0 - Extended `step()` function by additional options
 
 * Extended `step(data, options)` function passed to aggregator by `options` parameter:
