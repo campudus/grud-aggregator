@@ -3,6 +3,8 @@ import express from "express";
 import {getEntitiesOfTable} from "./entities";
 import disableFollowTestTableOnly from "./__tests__/testTableDisableFollow1.json";
 import disableFollowTestTableAndThirdTableOnly from "./__tests__/testTableDisableFollow2.json";
+import includeColumnsTestTableOnly from "./__tests__/testTableIncludeColumns1.json";
+import includeColumnsAllTables from "./__tests__/testTableIncludeColumns2.json";
 
 describe("getEntitiesOfTable", () => {
 
@@ -171,12 +173,11 @@ describe("getEntitiesOfTable", () => {
   });
 
   describe("setting disableFollow", () => {
-
     it("requires an array", () => {
       expect(() => getEntitiesOfTable("testTable", {
         pimUrl: SERVER_URL,
         disableFollow: true
-      })).to.throw(/array of columns/i);
+      })).to.throw(/array of column lists/i);
     });
 
     it("requires an array of arrays", () => {
@@ -185,7 +186,7 @@ describe("getEntitiesOfTable", () => {
         disableFollow: [
           "abc", 2, true
         ]
-      })).to.throw(/array of columns/i);
+      })).to.throw(/array of column lists/i);
     });
 
     it("should not download the specified links", () => {
@@ -209,7 +210,52 @@ describe("getEntitiesOfTable", () => {
         expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
       });
     });
+  });
 
+  describe("setting includeColumns", () => {
+    it("requires an array", () => {
+      expect(() => getEntitiesOfTable("testTable", {
+        pimUrl: SERVER_URL,
+        includeColumns: true
+      })).to.throw(/array of columns/i);
+    });
+
+    it("requires an array of strings", () => {
+      expect(() => getEntitiesOfTable("testTable", {
+        pimUrl: SERVER_URL,
+        includeColumns: [
+          "abc", 2, true
+        ]
+      })).to.throw(/array of columns/i);
+    });
+
+    it("should not download any links", () => {
+      return getEntitiesOfTable("testTable", {
+        pimUrl: SERVER_URL,
+        includeColumns: []
+      }).then(result => {
+        expect(result).to.eql(includeColumnsTestTableOnly);
+      });
+    });
+
+    it("should download specified link", () => {
+      return getEntitiesOfTable("testTable", {
+        pimUrl: SERVER_URL,
+        includeColumns: ["someLink"]
+      }).then(result => {
+        expect(result).to.eql(includeColumnsAllTables);
+      });
+    });
+
+    it("should not download specified link if it is disabled", () => {
+      return getEntitiesOfTable("testTable", {
+        pimUrl: SERVER_URL,
+        includeColumns: ["someLink"],
+        disableFollow: [["someLink"]]
+      }).then(result => {
+        expect(result).to.eql(includeColumnsTestTableOnly);
+      });
+    });
   });
 
 });
