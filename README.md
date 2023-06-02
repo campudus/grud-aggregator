@@ -67,10 +67,14 @@ export default function start(step, progress, options) {
 
 * `tableName` is the entry point for downloading all entities that are (recursively) linked.
 * `options` is an object consisting of the following options:
-  * `pimUrl`, `String` (required) - The URL pointing to the GRUD instance.
-  * `disableFollow`, `Array[String]` (optional) - Defaults to empty array. An array of column names that will not be 
-    followed.
-  * `maxEntriesPerRequest`, `Integer` (optional) - Defaults to 500. An integer greater than 0 to limit the amount of 
+  * `pimUrl: String` (required) - The URL pointing to the GRUD instance.
+  * `disableFollow: String[][]` (optional) - Defaults to empty array. An array of nested column lists that will not be 
+    followed, i.e. `[["topLevelLinkColumn", "secondLevelLinkColumn"], ["anotherTopLevelLinkColumn]]`.
+  * `includeColumns: String[]` (optional) - If specified, defines a list of columns on the top level that will be
+    followed. This option can be combined with `disableFollow` option which may override the former. For example, if
+    there is a column `"foo"` within the `includeColumns` array, and there is an entry `["foo"]`
+    within `disableFollow`, then the column `"foo"` will not be followed.
+  * `maxEntriesPerRequest: number` (optional) - Defaults to 500. An integer greater than 0 to limit the amount of 
     work on each request done by the Grud instance. Higher values make less requests but may run into timeouts if the 
     Grud instance is not able to handle as much data.
   * `headers`, `Object` (optional) - Defaults to {}. An object with key values pairs for http headers to set on every request.
