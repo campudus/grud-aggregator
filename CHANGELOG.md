@@ -1,5 +1,9 @@
 # Release Notes
 
+## 8.4.0 - Added `getEntitiesOfTables()` function
+
+* Extension of `getEntitiesOfTable()` function for multiple tables at once.
+
 ## 8.3.0 - Extended `getEntitiesOfTable()` function by `includeColumns` option
 
 * `includeColumns: String[]` option has been added for `getEntitiesOfTable()`. Specified as an array of strings, it
