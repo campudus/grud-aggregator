@@ -1,0 +1,17 @@
+{
+  "id": 4,
+  "name": "fooTestTable",
+  "displayName": {
+    "de": "Test Tabelle FOO",
+    "en": "Test table FOO"
+  },
+  "description": {
+    "de": "Eine Tabelle FOO zum Testen",
+    "en": "A table FOO to test"
+  },
+  "langtags": [
+    "de",
+    "en"
+  ],
+  "status": "ok"
+}
