@@ -1,7 +1,11 @@
 import _ from "lodash";
 import {getCompleteTable, getTablesByNames} from "./pimApi";
 
-export function getEntitiesOfTable(tableName, options = {}) {
+export function getEntitiesOfTables(tableNames, options = {}) {
+  return getEntitiesOfTable(tableNames, options);
+}
+
+export function getEntitiesOfTable(tableNameOrNames, options = {}) {
   const {disableFollow = [], includeColumns, pimUrl, maxEntriesPerRequest = 500, headers = {}} = options;
 
   if (_.isNil(pimUrl)) {
@@ -30,13 +34,14 @@ export function getEntitiesOfTable(tableName, options = {}) {
 
   const promises = {};
   const tables = {};
+  const tableNames = _.concat(tableNameOrNames);
 
-  return getTablesByNames({pimUrl, headers}, tableName)
-    .then(tablesFromPim => Promise.all(
-      _.map(tablesFromPim, table =>
+  return getTablesByNames({pimUrl, headers}, ...tableNames)
+    .then(tablesFromPim => _.reduce(tablesFromPim, (accumulatorPromise, table) => {
+      return accumulatorPromise.then(() =>
         getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest, includeColumns)
-      )
-    ))
+      );
+    }, Promise.resolve([])))
     .then(() => mapRowsOfTables(tables));
 
   function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest, includeColumns) {

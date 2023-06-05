@@ -65,8 +65,8 @@ export default function start(step, progress, options) {
 
 #### `getEntitiesOfTable(tableName, options): Promise[GrudTables]`
 
-* `tableName` is the entry point for downloading all entities that are (recursively) linked.
-* `options` is an object consisting of the following options:
+* `tableName: String` is the entry point for downloading all entities that are (recursively) linked.
+* <span id="getentitiesoftable-options"></span>`options: Object` is an object consisting of the following options:
   * `pimUrl: String` (required) - The URL pointing to the GRUD instance.
   * `disableFollow: String[][]` (optional) - Defaults to empty array. An array of nested column lists that will not be 
     followed, i.e. `[["topLevelLinkColumn", "secondLevelLinkColumn"], ["anotherTopLevelLinkColumn]]`.
@@ -77,7 +77,16 @@ export default function start(step, progress, options) {
   * `maxEntriesPerRequest: number` (optional) - Defaults to 500. An integer greater than 0 to limit the amount of 
     work on each request done by the Grud instance. Higher values make less requests but may run into timeouts if the 
     Grud instance is not able to handle as much data.
-  * `headers`, `Object` (optional) - Defaults to {}. An object with key values pairs for http headers to set on every request.
+  * `headers: Object` (optional) - Defaults to {}. An object with key values pairs for http headers to set on every request.
+
+#### `getEntitiesOfTables(tableNames, options): Promise[GrudTables]`
+
+An extended version of [getEntitiesOfTable()](#getentitiesoftabletablename-options-promisegrudtables) for multiple
+tables at once. For a high amount of tables, this may result in a dramatic increase of performance as linked tables
+which are shared among initial tables will only be downloaded once.
+
+* `tableNames: String[]` - Table names for which all entities will be downloaded and recursively linked.
+* `options: Object` - See [options](#getentitiesoftable-options) of `getEntitiesOfTable()`.
 
 #### `filter(options): GrudTables => GrudTables`
 

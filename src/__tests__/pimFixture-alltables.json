@@ -45,6 +45,38 @@
         "de",
         "en"
       ]
+    },
+    {
+      "id": 4,
+      "name": "fooTestTable",
+      "displayName": {
+        "de": "Test Tabelle FOO",
+        "en": "Test table FOO"
+      },
+      "description": {
+        "de": "Eine Tabelle FOO zum Testen",
+        "en": "A table FOO to test"
+      },
+      "langtags": [
+        "de",
+        "en"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "quxTestTable",
+      "displayName": {
+        "de": "Test Tabelle QUX",
+        "en": "Test table QUX"
+      },
+      "description": {
+        "de": "Eine Tabelle QUX zum Testen",
+        "en": "A table QUX to test"
+      },
+      "langtags": [
+        "de",
+        "en"
+      ]
     }
   ],
   "status": "ok"

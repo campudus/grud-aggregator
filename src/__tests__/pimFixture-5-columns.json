@@ -1,0 +1,18 @@
+{
+  "columns": [
+    {
+      "id": 1,
+      "name": "testColumn",
+      "kind": "shorttext",
+      "identifier": true,
+      "multilanguage": false,
+      "displayName": {
+        "en": "Some other text"
+      },
+      "description": {
+        "en": "A description of the simple text column in table 5"
+      }
+    }
+  ],
+  "status": "ok"
+}

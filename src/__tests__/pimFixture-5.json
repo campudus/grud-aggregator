@@ -1,0 +1,39 @@
+{
+  "id": 5,
+  "name": "quxTestTable",
+  "displayName": {
+    "de": "Test Tabelle QUX",
+    "en": "Test table QUX"
+  },
+  "description": {
+    "de": "Eine Tabelle QUX zum Testen",
+    "en": "A table QUX to test"
+  },
+  "langtags": [
+    "de",
+    "en"
+  ],
+  "columns": [
+    {
+      "id": 1,
+      "name": "testColumn",
+      "kind": "shorttext",
+      "identifier": true,
+      "multilanguage": false,
+      "displayName": {
+        "en": "Some other text"
+      },
+      "description": {
+        "en": "A description of the simple text column in table 5"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "values": [
+        "first row in table 5"
+      ]
+    }
+  ]
+}

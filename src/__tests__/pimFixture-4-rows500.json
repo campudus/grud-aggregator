@@ -1,0 +1,16 @@
+{
+  "page": {
+    "offset": 0,
+    "limit": 500,
+    "totalSize": 1
+  },
+  "rows": [
+    {
+      "id": 1,
+      "values": [
+        "first row in table 4"
+      ]
+    }
+  ],
+  "status": "ok"
+}
