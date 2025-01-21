@@ -12,7 +12,7 @@ export function getTablesByNames(options, ...names) {
     .then(tables => _.filter(tables, t => _.some(names, name => t.name === name)));
 }
 
-export function getCompleteTable(options, tableId, maxEntries) {
+export function getCompleteTable(options, tableId, maxEntries, includeArchived = true) {
   const {pimUrl, headers = {}} = getOptionsFromParam(options, "getAllTables");
 
   if (!_.isInteger(tableId) || tableId < 0) {
@@ -21,6 +21,10 @@ export function getCompleteTable(options, tableId, maxEntries) {
 
   if (!_.isInteger(maxEntries) || maxEntries <= 0) {
     throw new Error("Expecting maxEntriesPerRequest to be a positive integer greater than 0");
+  }
+
+  if (!_.isBoolean(includeArchived)) {
+    throw new Error("Expecting includeArchived to be a boolean");
   }
 
   return request("GET", `${pimUrl}/tables/${tableId}`, {headers})
@@ -32,10 +36,13 @@ export function getCompleteTable(options, tableId, maxEntries) {
       }));
     })
     .then(tableAndColumns => {
-      return request("GET", `${pimUrl}/tables/${tableId}/rows?offset=0&limit=${maxEntries}`, {headers}).then(result => {
+      const archivedQuery = includeArchived ? "" : `&archived=${includeArchived}`;
+      const url = `${pimUrl}/tables/${tableId}/rows?offset=0&limit=${maxEntries}${archivedQuery}`;
+
+      return request("GET", url, {headers}).then(result => {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
-        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements);
+        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archivedQuery);
 
         return requests.reduce((promise, requestUrl) => {
           return promise
@@ -71,10 +78,10 @@ function getOptionsFromParam(options, fnName) {
   }
 }
 
-function createArrayOfRequests(pimUrl, tableId, maxEntries, elements) {
+function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archivedQuery) {
   const arr = [];
   for (let i = 0; i < elements - 1; i++) {
-    arr.push(`${pimUrl}/tables/${tableId}/rows?offset=${(i + 1) * maxEntries}&limit=${maxEntries}`);
+    arr.push(`${pimUrl}/tables/${tableId}/rows?offset=${(i + 1) * maxEntries}&limit=${maxEntries}${archivedQuery}`);
   }
   return arr;
 }
