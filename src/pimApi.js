@@ -36,13 +36,13 @@ export function getCompleteTable(options, tableId, maxEntries, includeArchived =
       }));
     })
     .then(tableAndColumns => {
-      const archivedQuery = includeArchived ? "" : `&archived=${includeArchived}`;
-      const url = `${pimUrl}/tables/${tableId}/rows?offset=0&limit=${maxEntries}${archivedQuery}`;
+      const queryString = generateQueryString({ maxEntries, includeArchived });
+      const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
       return request("GET", url, {headers}).then(result => {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
-        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archivedQuery);
+        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, includeArchived);
 
         return requests.reduce((promise, requestUrl) => {
           return promise
@@ -78,12 +78,27 @@ function getOptionsFromParam(options, fnName) {
   }
 }
 
-function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archivedQuery) {
+function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, includeArchived) {
   const arr = [];
   for (let i = 0; i < elements - 1; i++) {
-    arr.push(`${pimUrl}/tables/${tableId}/rows?offset=${(i + 1) * maxEntries}&limit=${maxEntries}${archivedQuery}`);
+    const queryString = generateQueryString({ offset: (i + 1) * maxEntries, maxEntries, includeArchived });
+    const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
+
+    arr.push(url);
   }
   return arr;
+}
+
+function generateQueryString({ offset = 0, maxEntries, includeArchived }) {
+  return _.chain({
+    offset: offset,
+    limit: maxEntries,
+    archived: includeArchived ? undefined : includeArchived
+  })
+    .pickBy(_.negate(_.isNil))
+    .map((value, key) => `${key}=${value}`)
+    .join("&")
+    .value();
 }
 
 function request(method, url, options) {
