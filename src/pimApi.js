@@ -95,7 +95,7 @@ function generateQueryString({ offset = 0, limit, archived }) {
       {
         offset: offset,
         limit: limit,
-        archived: _.isNil(archived) ? undefined : archived
+        archived: archived
       },
       _.isNil
     )
