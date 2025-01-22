@@ -36,7 +36,7 @@ export function getCompleteTable(options, tableId, maxEntries, includeArchived =
       }));
     })
     .then(tableAndColumns => {
-      const queryString = generateQueryString({ maxEntries, includeArchived });
+      const queryString = generateQueryString({ limit: maxEntries, archived: includeArchived });
       const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
       return request("GET", url, {headers}).then(result => {
@@ -81,7 +81,7 @@ function getOptionsFromParam(options, fnName) {
 function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, includeArchived) {
   const arr = [];
   for (let i = 0; i < elements - 1; i++) {
-    const queryString = generateQueryString({ offset: (i + 1) * maxEntries, maxEntries, includeArchived });
+    const queryString = generateQueryString({ offset: (i + 1) * maxEntries, limit: maxEntries, archived: includeArchived });
     const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
     arr.push(url);
@@ -89,16 +89,19 @@ function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, includeArc
   return arr;
 }
 
-function generateQueryString({ offset = 0, maxEntries, includeArchived }) {
-  return _.chain({
-    offset: offset,
-    limit: maxEntries,
-    archived: includeArchived ? undefined : includeArchived
-  })
-    .pickBy(_.negate(_.isNil))
-    .map((value, key) => `${key}=${value}`)
-    .join("&")
-    .value();
+function generateQueryString({ offset = 0, limit, archived }) {
+  return _.toPairs(
+    _.omitBy(
+      {
+        offset: offset,
+        limit: limit,
+        archived: archived ? undefined : false
+      },
+      _.isNil
+    )
+  )
+  .map(([key, value]) => `${key}=${value}`)
+  .join("&");
 }
 
 function request(method, url, options) {
