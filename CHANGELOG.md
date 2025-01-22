@@ -1,8 +1,9 @@
 # Release Notes
 
-## 8.5.0 - Extended `getEntitiesOfTable()` function by `includeArchived` option
+## 8.5.0 - Extended `getEntitiesOfTable()` function by `archived` option
 
-* `includeArchived: Boolean` option has been added for `getEntitiesOfTable()`. If set to `false`, it will filter out archived GRUD rows. Default is `true`.
+* `archived: Boolean` option has been added for `getEntitiesOfTable()`. If set to `false` archived GRUD rows will get omitted. If set to `true`, 
+  only archived GRUD rows will be returned.
 
 ## 8.4.0 - Added `getEntitiesOfTables()` function
 

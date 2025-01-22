@@ -33,6 +33,8 @@ describe("pimApi", () => {
           res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows2.json`);
         } else if (req.url === "/tables/3/rows?offset=4&limit=2") {
           res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
+        } else if (req.url === "/tables/3/rows?offset=0&limit=2&archived=true") {
+          res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
         } else if (req.url === "/tables/3/rows?offset=0&limit=2&archived=false") {
           res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
         } else {
@@ -178,7 +180,7 @@ describe("pimApi", () => {
       });
     });
 
-    it("should construct the correct URL for the rows API call without setting the includeArchived parameter", () => {
+    it("should construct the correct URL for the rows API call without setting the archived parameter", () => {
       return getCompleteTable({
         pimUrl: SERVER_URL
       }, 3, 2).then(result => {
@@ -191,11 +193,11 @@ describe("pimApi", () => {
       });
     });
 
-    it("should construct the correct URL for the rows API call with includeArchived parameter set to true", () => {
+    it("should construct the correct URL for the rows API call with archived parameter set to true", () => {
       return getCompleteTable({
         pimUrl: SERVER_URL
       }, 3, 2, true).then(result => {
-        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=2&archived=true/.test(elem))).to.be.true();
 
         expect(result).to.have.property("id");
         expect(result.name).to.equal("thirdTestTable");
@@ -204,11 +206,10 @@ describe("pimApi", () => {
       });
     });
 
-    it("should construct the correct URL for the rows API call with includeArchived parameter set to false", () => {
+    it("should construct the correct URL for the rows API call with archived parameter set to false", () => {
       return getCompleteTable({
         pimUrl: SERVER_URL
       }, 3, 2, false).then(result => {
-        // Check if the correct URL was called
         expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=2&archived=false/.test(elem))).to.be.true();
 
         expect(result).to.have.property("id");

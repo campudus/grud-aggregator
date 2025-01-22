@@ -12,7 +12,7 @@ export function getTablesByNames(options, ...names) {
     .then(tables => _.filter(tables, t => _.some(names, name => t.name === name)));
 }
 
-export function getCompleteTable(options, tableId, maxEntries, includeArchived = true) {
+export function getCompleteTable(options, tableId, maxEntries, archived) {
   const {pimUrl, headers = {}} = getOptionsFromParam(options, "getAllTables");
 
   if (!_.isInteger(tableId) || tableId < 0) {
@@ -23,8 +23,8 @@ export function getCompleteTable(options, tableId, maxEntries, includeArchived =
     throw new Error("Expecting maxEntriesPerRequest to be a positive integer greater than 0");
   }
 
-  if (!_.isBoolean(includeArchived)) {
-    throw new Error("Expecting includeArchived to be a boolean");
+  if (!_.isNil(archived) && !_.isBoolean(archived)) {
+    throw new Error("Expecting archived to be a boolean");
   }
 
   return request("GET", `${pimUrl}/tables/${tableId}`, {headers})
@@ -36,13 +36,13 @@ export function getCompleteTable(options, tableId, maxEntries, includeArchived =
       }));
     })
     .then(tableAndColumns => {
-      const queryString = generateQueryString({ limit: maxEntries, archived: includeArchived });
+      const queryString = generateQueryString({ limit: maxEntries, archived });
       const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
       return request("GET", url, {headers}).then(result => {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
-        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, includeArchived);
+        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived);
 
         return requests.reduce((promise, requestUrl) => {
           return promise
@@ -78,10 +78,10 @@ function getOptionsFromParam(options, fnName) {
   }
 }
 
-function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, includeArchived) {
+function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived) {
   const arr = [];
   for (let i = 0; i < elements - 1; i++) {
-    const queryString = generateQueryString({ offset: (i + 1) * maxEntries, limit: maxEntries, archived: includeArchived });
+    const queryString = generateQueryString({ offset: (i + 1) * maxEntries, limit: maxEntries, archived });
     const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
     arr.push(url);
@@ -95,7 +95,7 @@ function generateQueryString({ offset = 0, limit, archived }) {
       {
         offset: offset,
         limit: limit,
-        archived: archived ? undefined : false
+        archived: _.isNil(archived) ? undefined : archived
       },
       _.isNil
     )

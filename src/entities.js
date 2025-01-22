@@ -6,7 +6,7 @@ export function getEntitiesOfTables(tableNames, options = {}) {
 }
 
 export function getEntitiesOfTable(tableNameOrNames, options = {}) {
-  const {disableFollow = [], includeColumns, pimUrl, maxEntriesPerRequest = 500, includeArchived = true, headers = {}} = options;
+  const {disableFollow = [], includeColumns, pimUrl, maxEntriesPerRequest = 500, archived, headers = {}} = options;
 
   if (_.isNil(pimUrl)) {
     throw new Error("Missing option pimUrl");
@@ -28,8 +28,8 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting maxEntriesPerRequest to be a positive integer greater than 0");
   }
 
-  if (!_.isBoolean(includeArchived)) {
-    throw new Error("Expecting includeArchived to be a boolean");
+  if (!_.isNil(archived) && !_.isBoolean(archived)) {
+    throw new Error("Expecting archived to be a boolean");
   }
 
   if (!_.isPlainObject(headers) || _.some(headers, value => !_.isString(value))) {
@@ -43,14 +43,14 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
   return getTablesByNames({pimUrl, headers}, ...tableNames)
     .then(tablesFromPim => _.reduce(tablesFromPim, (accumulatorPromise, table) => {
       return accumulatorPromise.then(() =>
-        getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest, includeArchived, includeColumns)
+        getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest, archived, includeColumns)
       );
     }, Promise.resolve([])))
     .then(() => mapRowsOfTables(tables));
 
-  function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest, includeArchived, includeColumns) {
+  function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest, archived, includeColumns) {
     if (!promises[tableId]) {
-      const promiseOfLinkedTables = getCompleteTable({pimUrl, headers}, tableId, maxEntriesPerRequest, includeArchived)
+      const promiseOfLinkedTables = getCompleteTable({pimUrl, headers}, tableId, maxEntriesPerRequest, archived)
         .then(table => {
           tables[tableId] = table;
 
@@ -70,7 +70,7 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
 
             const nextDisableFollow = _.map(filteredDisableFollow, columns => _.tail(columns));
 
-            return getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow, maxEntriesPerRequest, includeArchived);
+            return getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow, maxEntriesPerRequest, archived);
           }));
         });
 
