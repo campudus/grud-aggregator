@@ -24,6 +24,8 @@ describe("entities.js", () => {
       [`/tables/${id}`]: `pimFixture-${id}-table.json`,
       [`/tables/${id}/columns`]: `pimFixture-${id}-columns.json`,
       [`/tables/${id}/rows?offset=0&limit=500`]: `pimFixture-${id}-rows500.json`,
+      [`/tables/${id}/rows?offset=0&limit=500&archived=true`]: `pimFixture-${id}-rows500.json`,
+      [`/tables/${id}/rows?offset=0&limit=500&archived=false`]: `pimFixture-${id}-rows500.json`,
       [`/tables/${id}/rows?offset=0&limit=2`]: `pimFixture-${id}-rows1.json`,
       [`/tables/${id}/rows?offset=2&limit=2`]: `pimFixture-${id}-rows2.json`,
       [`/tables/${id}/rows?offset=4&limit=2`]: `pimFixture-${id}-rows3.json`
@@ -269,6 +271,72 @@ describe("entities.js", () => {
         });
       });
     });
+
+    describe("setting archived", () => {
+      it("requires a boolean", () => {
+        expect(() => getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          archived: "false"
+        })).to.throw(/boolean/i);
+      });
+
+      it("should not include archived query in URL of rows API call - when not set as param of getEntitiesOfTable", () => {
+        return getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL
+        }).then(result => {
+          expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
+          expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
+
+          expect(result["1"].rows).not.to.be.an.array();
+          expect(result["1"].rows).to.be.an.object();
+          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
+        });
+      });
+
+      it("should include archived query equals true in URL of rows API call", () => {
+        return getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          archived: true
+        }).then(result => {
+          expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
+          expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
+
+          expect(result["1"].rows).not.to.be.an.array();
+          expect(result["1"].rows).to.be.an.object();
+          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
+        });
+      });
+
+      it("should include archived query equals false in URL of rows API call", () => {
+        return getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          archived: false
+        }).then(result => {
+          expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
+          expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
+          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
+
+          expect(result["1"].rows).not.to.be.an.array();
+          expect(result["1"].rows).to.be.an.object();
+          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
+        });
+      });
+    });
+
   });
 
 });
