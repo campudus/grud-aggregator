@@ -157,6 +157,17 @@ describe("pimApi", () => {
         expect(result[1].name).to.equal("anotherTestTable");
       });
     });
+
+    it("should timeout after number of milliseconds specified in options", () => {
+      const TIMEOUT_MS = 100;
+
+      process.env.FORCE_DELAY_MS = 1000;
+
+      return getTablesByNames({
+        pimUrl: SERVER_URL,
+        timeout: TIMEOUT_MS
+      }, "testTable", "anotherTestTable").must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
+    });
   });
 
   describe("getCompleteTable", () => {
