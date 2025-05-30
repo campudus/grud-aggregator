@@ -2,9 +2,9 @@ import _ from "lodash";
 import axios from "axios";
 
 export function getAllTables(options) {
-  const {pimUrl, headers = {}} = getOptionsFromParam(options, "getAllTables");
+  const {pimUrl, headers, timeout} = getOptionsFromParam(options, "getAllTables");
 
-  return request("GET", `${pimUrl}/tables`, {headers}).then(data => data.tables);
+  return request("GET", `${pimUrl}/tables`, {headers, timeout}).then(data => data.tables);
 }
 
 export function getTablesByNames(options, ...names) {
@@ -13,7 +13,7 @@ export function getTablesByNames(options, ...names) {
 }
 
 export function getCompleteTable(options, tableId, maxEntries, archived) {
-  const {pimUrl, headers = {}} = getOptionsFromParam(options, "getAllTables");
+  const {pimUrl, headers, timeout} = getOptionsFromParam(options, "getAllTables");
 
   if (!_.isInteger(tableId) || tableId < 0) {
     throw new Error("Expecting tableId to be a positive integer greater than or equal 0");
@@ -27,10 +27,10 @@ export function getCompleteTable(options, tableId, maxEntries, archived) {
     throw new Error("Expecting archived to be a boolean");
   }
 
-  return request("GET", `${pimUrl}/tables/${tableId}`, {headers})
+  return request("GET", `${pimUrl}/tables/${tableId}`, {headers, timeout})
     .then(table => {
       const tableWithoutMeta = _.omit(table, ["status"]);
-      return request("GET", `${pimUrl}/tables/${tableId}/columns`, {headers}).then(result => ({
+      return request("GET", `${pimUrl}/tables/${tableId}/columns`, {headers, timeout}).then(result => ({
         ...tableWithoutMeta,
         columns: result.columns
       }));
@@ -39,7 +39,7 @@ export function getCompleteTable(options, tableId, maxEntries, archived) {
       const queryString = generateQueryString({ limit: maxEntries, archived });
       const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
-      return request("GET", url, {headers}).then(result => {
+      return request("GET", url, {headers, timeout}).then(result => {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
         const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived);
@@ -47,7 +47,7 @@ export function getCompleteTable(options, tableId, maxEntries, archived) {
         return requests.reduce((promise, requestUrl) => {
           return promise
             .then(tableColumnsAndRows => {
-              return request("GET", requestUrl, {headers})
+              return request("GET", requestUrl, {headers, timeout})
                 .then(rowResult => ({
                   ...tableColumnsAndRows,
                   rows: tableColumnsAndRows.rows.concat(rowResult.rows)
@@ -104,15 +104,12 @@ function generateQueryString({ offset = 0, limit, archived }) {
   .join("&");
 }
 
-function request(method, url, options) {
-  const {
-    headers
-  } = options;
-
+function request(method, url, {headers, timeout}) {
   return axios({
     method,
     url,
-    headers
+    headers,
+    timeout: timeout || 120000
   })
     .then(res => res.data);
 }

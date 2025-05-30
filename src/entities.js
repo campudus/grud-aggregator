@@ -46,7 +46,13 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
         getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest, archived, includeColumns)
       );
     }, Promise.resolve([])))
-    .then(() => mapRowsOfTables(tables));
+    .then(() => {
+      _.each(tables, table => {
+        table.rows = _.keyBy(table.rows, "id");
+      });
+
+      return tables;
+    });
 
   function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest, archived, includeColumns) {
     if (!promises[tableId]) {
@@ -91,14 +97,4 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
 
     return disabledColumns.includes(columnName);
   }
-}
-
-function mapRowsOfTables(tables) {
-  return _.mapValues(tables, table => {
-    const mappedTable = table;
-    mappedTable.rows = _.transform(table.rows, (acc, row) => {
-      acc[row.id] = row;
-    }, {});
-    return mappedTable;
-  });
 }
