@@ -109,7 +109,7 @@ function request(method, url, {headers, timeout}) {
     method,
     url,
     headers,
-    timeout: timeout || 120000
+    timeout
   })
     .then(res => res.data);
 }

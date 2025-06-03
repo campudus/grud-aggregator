@@ -13,7 +13,7 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
     maxEntriesPerRequest = 500,
     archived,
     headers = {},
-    timeout
+    timeout = 120000 // 2 minutes
   } = options;
 
   if (_.isNil(pimUrl)) {
