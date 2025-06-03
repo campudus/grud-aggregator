@@ -42,7 +42,13 @@ describe("entities.js", () => {
         if (!data) {
           res.end("error");
         } else {
-          res.sendFile(`${__dirname}/__tests__/${data}`);
+          const sendFile = () => res.sendFile(`${__dirname}/__tests__/${data}`);
+
+          if (process.env.FORCE_DELAY_MS) {
+            setTimeout(() => sendFile(), process.env.FORCE_DELAY_MS);
+          } else {
+            sendFile();
+          }
         }
       });
 
@@ -57,6 +63,8 @@ describe("entities.js", () => {
   });
 
   beforeEach(() => {
+    process.env.FORCE_DELAY_MS = null;
+
     calledUrls = [];
   });
 
@@ -183,7 +191,6 @@ describe("entities.js", () => {
           maxEntriesPerRequest: Math.PI
         })).to.throw();
       });
-
     });
 
     describe("setting disableFollow", () => {
@@ -337,6 +344,25 @@ describe("entities.js", () => {
       });
     });
 
+    describe("setting timeout", () => {
+      it("should throw if not an integer", () => {
+        expect(() => getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          timeout: "1000"
+        })).to.throw(/integer/i);
+      });
+
+      it("should timeout after specified milliseconds", () => {
+        const TIMEOUT_MS = 100;
+
+        process.env.FORCE_DELAY_MS = 1000;
+
+        return getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          timeout: TIMEOUT_MS
+        }).must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
+      });
+    });
   });
 
 });

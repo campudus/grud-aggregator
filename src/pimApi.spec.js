@@ -7,6 +7,7 @@ describe("pimApi", () => {
 
   const TEST_PORT = 14432;
   const SERVER_URL = `http://localhost:${TEST_PORT}`;
+
   let server;
   let calledUrls;
   let headers;
@@ -17,26 +18,37 @@ describe("pimApi", () => {
       app.use((req, res) => {
         calledUrls.push(req.url);
         headers = req.headers;
+
+        const sendFile = (fileName) => {
+          if (process.env.FORCE_DELAY_MS) {
+            setTimeout(() => {
+              res.sendFile(fileName);
+            }, process.env.FORCE_DELAY_MS);
+          } else {
+            res.sendFile(fileName);
+          }
+        };
+
         if (req.url === "/tables") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-alltables.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-alltables.json`);
         } else if (req.url === "/tables/1") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-1-table.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-1-table.json`);
         } else if (req.url === "/tables/3") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-3-table.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-3-table.json`);
         } else if (req.url === "/tables/3/columns") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-3-columns.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-3-columns.json`);
         } else if (req.url === "/tables/1/rows?offset=0&limit=500") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-1-rows500.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-1-rows500.json`);
         } else if (req.url === "/tables/3/rows?offset=0&limit=2") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows1.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-3-rows1.json`);
         } else if (req.url === "/tables/3/rows?offset=2&limit=2") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows2.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-3-rows2.json`);
         } else if (req.url === "/tables/3/rows?offset=4&limit=2") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
         } else if (req.url === "/tables/3/rows?offset=0&limit=2&archived=true") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
         } else if (req.url === "/tables/3/rows?offset=0&limit=2&archived=false") {
-          res.sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
+          sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
         } else {
           res.end("error");
         }
@@ -52,6 +64,8 @@ describe("pimApi", () => {
   });
 
   beforeEach(() => {
+    process.env.FORCE_DELAY_MS = null;
+
     calledUrls = [];
     headers = {};
   });
@@ -86,6 +100,17 @@ describe("pimApi", () => {
         expect(headers).to.have.property("test");
         expect(headers.test).to.equal("test");
       });
+    });
+
+    it("should timeout after number of milliseconds specified in options", () => {
+      const TIMEOUT_MS = 100;
+
+      process.env.FORCE_DELAY_MS = 1000;
+
+      return getAllTables({
+        pimUrl: SERVER_URL,
+        timeout: TIMEOUT_MS
+      }).must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
     });
   });
 
@@ -131,6 +156,17 @@ describe("pimApi", () => {
         expect(result[1]).to.have.property("id");
         expect(result[1].name).to.equal("anotherTestTable");
       });
+    });
+
+    it("should timeout after number of milliseconds specified in options", () => {
+      const TIMEOUT_MS = 100;
+
+      process.env.FORCE_DELAY_MS = 1000;
+
+      return getTablesByNames({
+        pimUrl: SERVER_URL,
+        timeout: TIMEOUT_MS
+      }, "testTable", "anotherTestTable").must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
     });
   });
 
@@ -219,6 +255,16 @@ describe("pimApi", () => {
       });
     });
 
+    it("should timeout after number of milliseconds specified in options", () => {
+      const TIMEOUT_MS = 100;
+
+      process.env.FORCE_DELAY_MS = 1000;
+
+      return getCompleteTable({
+        pimUrl: SERVER_URL,
+        timeout: TIMEOUT_MS
+      }, 3, 2, false).must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
+    });
   });
 
 });

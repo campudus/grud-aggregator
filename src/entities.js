@@ -6,7 +6,15 @@ export function getEntitiesOfTables(tableNames, options = {}) {
 }
 
 export function getEntitiesOfTable(tableNameOrNames, options = {}) {
-  const {disableFollow = [], includeColumns, pimUrl, maxEntriesPerRequest = 500, archived, headers = {}} = options;
+  const {
+    disableFollow = [],
+    includeColumns,
+    pimUrl,
+    maxEntriesPerRequest = 500,
+    archived,
+    headers = {},
+    timeout = 120000 // 2 minutes
+  } = options;
 
   if (_.isNil(pimUrl)) {
     throw new Error("Missing option pimUrl");
@@ -36,21 +44,31 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting headers to be an object of key value pairs (string:string)");
   }
 
+  if (!_.isNil(timeout) && !_.isInteger(timeout)) {
+    throw new Error("Expecting timeout to be an integer representing milliseconds");
+  }
+
   const promises = {};
   const tables = {};
   const tableNames = _.concat(tableNameOrNames);
 
-  return getTablesByNames({pimUrl, headers}, ...tableNames)
+  return getTablesByNames({pimUrl, headers, timeout}, ...tableNames)
     .then(tablesFromPim => _.reduce(tablesFromPim, (accumulatorPromise, table) => {
       return accumulatorPromise.then(() =>
         getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest, archived, includeColumns)
       );
     }, Promise.resolve([])))
-    .then(() => mapRowsOfTables(tables));
+    .then(() => {
+      _.each(tables, table => {
+        table.rows = _.keyBy(table.rows, "id");
+      });
+
+      return tables;
+    });
 
   function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest, archived, includeColumns) {
     if (!promises[tableId]) {
-      const promiseOfLinkedTables = getCompleteTable({pimUrl, headers}, tableId, maxEntriesPerRequest, archived)
+      const promiseOfLinkedTables = getCompleteTable({pimUrl, headers, timeout}, tableId, maxEntriesPerRequest, archived)
         .then(table => {
           tables[tableId] = table;
 
@@ -91,14 +109,4 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
 
     return disabledColumns.includes(columnName);
   }
-}
-
-function mapRowsOfTables(tables) {
-  return _.mapValues(tables, table => {
-    const mappedTable = table;
-    mappedTable.rows = _.transform(table.rows, (acc, row) => {
-      acc[row.id] = row;
-    }, {});
-    return mappedTable;
-  });
 }

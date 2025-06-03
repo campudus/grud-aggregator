@@ -1,5 +1,13 @@
 # Release Notes
 
+## 8.6.0 - Extended `getEntitiesOfTable()` function by `timeout` option
+
+* `timeout: Number` option has been added for `getEntitiesOfTable()`. Default is 120000 milliseconds (2 minutes).
+  The timeout limits the time for the request to GRUD. If the request takes longer than this time,
+  it will be aborted and an error will be thrown.
+* `timeout: Number` option has also been added for the API functions `getAllTables()`, `getTablesByNames()`,
+  and `getCompleteTable()`. It works the same way as described above.
+
 ## 8.5.0 - Extended `getEntitiesOfTable()` function by `archived` option
 
 * `archived: Boolean` option has been added for `getEntitiesOfTable()`. If set to `false` archived GRUD rows will get omitted. If set to `true`, 
