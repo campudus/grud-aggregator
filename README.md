@@ -70,6 +70,20 @@ export default function start(step, progress, options) {
   * `pimUrl: String` (required) - The URL pointing to the GRUD instance.
   * `disableFollow: String[][]` (optional) - Defaults to empty array. An array of nested column lists that will not be 
     followed, i.e. `[["topLevelLinkColumn", "secondLevelLinkColumn"], ["anotherTopLevelLinkColumn]]`.
+
+    It is possible to use a placeholder `*` to match all columns on this level, e.g. `[["topLevelLinkColumn", "*"]]`
+    will follow the column `"topLevelLinkColumn"` but will not follow any links within the linked table.
+
+    Additionally, it is possible to use the placeholder `**` to match all columns on this and all following levels,
+    e.g. `[["**", "linkColumn"]]` will not follow any column named `"linkColumn"` on any level. Note: Only one link
+    column name can be specified after `**`, nested columns are not supported.
+
+    `*` and `**` can be combined within one path, e.g. `[["*", "**", "linkColumn"]]` will not follow any column named
+    `"linkColumn"` on any level below the first level while `[["topLevelLinkColumn", "**", "*"]]` will not follow any
+    column on any level below the column `"topLevelLinkColumn"`.
+
+    Note that `disableFollow` has precedence over `includeColumns`, meaning if a column is specified in both options,
+    it will not be followed.
   * `includeColumns: String[]` (optional) - If specified, defines a list of columns on the top level that will be
     followed. This option can be combined with `disableFollow` option which may override the former. For example, if
     there is a column `"foo"` within the `includeColumns` array, and there is an entry `["foo"]`

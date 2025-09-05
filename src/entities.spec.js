@@ -3,6 +3,7 @@ import express from "express";
 import {getEntitiesOfTable, getEntitiesOfTables} from "./entities";
 import disableFollowTestTableOnly from "./__tests__/testTableDisableFollow1.json";
 import disableFollowTestTableAndThirdTableOnly from "./__tests__/testTableDisableFollow2.json";
+import disableFollowTestTableAndLinkedTables from "./__tests__/testTableDisableFollow3.json";
 import includeColumnsTestTableOnly from "./__tests__/testTableIncludeColumns1.json";
 import includeColumnsAllTables from "./__tests__/testTableIncludeColumns2.json";
 
@@ -210,7 +211,37 @@ describe("entities.js", () => {
         })).to.throw(/array of column lists/i);
       });
 
-      it("should not download the specified links", () => {
+      it("requires exactly one column after '**'", () => {
+        expect(() => getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          disableFollow: [
+            ["**"]
+          ]
+        })).to.throw(/must contain exactly one column/i);
+
+        expect(() => getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          disableFollow: [
+            ["**", "col1", "col2"]
+          ]
+        })).to.throw(/must contain exactly one column/i);
+
+        expect(() => getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          disableFollow: [
+            ["col1", "**", "col2", "col3"]
+          ]
+        })).to.throw(/must contain exactly one column/i);
+
+        expect(() => getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          disableFollow: [
+            ["col1", "**"]
+          ]
+        })).to.throw(/must contain exactly one column/i);
+      });
+
+      it("should not download specified links on top level", () => {
         return getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
           disableFollow: [
@@ -230,6 +261,85 @@ describe("entities.js", () => {
         }).then(result => {
           expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
         });
+      });
+
+      it("should not download specified links in sub-tables if defined with '*'", () => {
+        return getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          disableFollow: [
+            ["*", "anotherLink"]
+          ]
+        })
+          .then(result => {
+            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+          });
+      });
+
+      it("should download top level links if erroneously defined with '*' as first entry", () => {
+        return getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          disableFollow: [
+            ["*", "someLink"]
+          ]
+        })
+          .then(result => {
+            expect(result).to.eql(disableFollowTestTableAndLinkedTables);
+          });
+      });
+
+      it("should not download specified links in all tables if defined with '**'", () => {
+        return Promise
+          .resolve()
+          .then(() => getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            disableFollow: [
+              ["**", "someLink"]
+            ]
+          }))
+          .then(result => {
+            expect(result).to.eql(disableFollowTestTableOnly);
+          })
+          .then(() => getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            disableFollow: [
+              ["**", "anotherLink"]
+            ]
+          }))
+          .then(result => {
+            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+          })
+          .then(() => getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            disableFollow: [
+              ["someLink", "**", "anotherLink"]
+            ]
+          }))
+          .then(result => {
+            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+          });
+      });
+
+      it("should not download specified links in all tables if defined with a combination of '*'' and '**'", () => {
+        return Promise
+          .resolve()
+          .then(() => getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            disableFollow: [
+              ["*", "**", "anotherLink"]
+            ]
+          }))
+          .then(result => {
+            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+          })
+          .then(() => getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            disableFollow: [
+              ["someLink", "**", "*"]
+            ]
+          }))
+          .then(result => {
+            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+          });
       });
     });
 
