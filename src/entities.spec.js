@@ -319,7 +319,7 @@ describe("entities.js", () => {
           });
       });
 
-      it("should not download specified links in all tables if defined with a combination of '*'' and '**'", () => {
+      it("should not download specified links in all tables if defined with a combination of '*' and '**'", () => {
         return Promise
           .resolve()
           .then(() => getEntitiesOfTable("testTable", {
