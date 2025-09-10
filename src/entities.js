@@ -29,6 +29,17 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
   }
 
   if (_.some(disableFollow, columns => {
+    if (columns.includes("*") || columns.includes("**")) {
+      const starColumns = _.filter(columns, column => column === "*");
+      const doubleStarColumns = _.filter(columns, column => column === "**");
+
+      return starColumns.length > 1 || doubleStarColumns.length > 1;
+    }
+  })) {
+    throw new Error("'*' / '**' can only appear once in each column list in disableFollow");
+  }
+
+  if (_.some(disableFollow, columns => {
     if (columns.includes("**")) {
       const pathAfterDoubleStar = _.takeRightWhile(columns, column => column !== "**");
 

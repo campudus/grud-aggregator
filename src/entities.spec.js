@@ -211,6 +211,22 @@ describe("entities.js", () => {
         })).to.throw(/array of column lists/i);
       });
 
+      it("does not allow '*' / '**' more than once in a column list", () => {
+        expect(() => getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          disableFollow: [
+            ["**", "col1", "**", "col2"]
+          ]
+        })).to.throw(/'\*\*' can only appear once/i);
+
+        expect(() => getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          disableFollow: [
+            ["*", "col1", "*", "col2"]
+          ]
+        })).to.throw(/'\*' \/ '\*\*' can only appear once/i);
+      });
+
       it("requires exactly one column after '**'", () => {
         expect(() => getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
