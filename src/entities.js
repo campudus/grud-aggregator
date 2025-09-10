@@ -130,19 +130,19 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
   }
 
   function isColumnDisabled(columnName, disableFollow) {
-    const disabledColumns = _.reduce(disableFollow, (disabledColumns, columns) => {
+    const disabledColumns = _.reduce(disableFollow, (acc, columns) => {
       const head = _.head(columns);
       const second = _.nth(columns, 1);
 
       if (columns.length === 1) {
-        return _.concat(disabledColumns, head);
+        return _.concat(acc, head);
       }
 
       if (columns.length === 2 && head === "**") {
-        return _.concat(disabledColumns, second);
+        return _.concat(acc, second);
       }
 
-      return disabledColumns;
+      return acc;
     }, []);
 
     return disabledColumns.includes(columnName) || disabledColumns.includes("*");
