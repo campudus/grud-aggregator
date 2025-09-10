@@ -1,5 +1,11 @@
 # Release Notes
 
+## 8.7.0 - Extended `disableFollow` option in `getEntitiesOfTable` and `getEntitiesOfTables` by placeholders
+
+* Added support for `*` and `**` in `disableFollow` option of `getEntitiesOfTable()` and `getEntitiesOfTables()` to be
+  able to exclude all columns on a specific level or all following levels. See the documentation of these functions for
+  more information.
+
 ## 8.6.0 - Extended `getEntitiesOfTable()` function by `timeout` option
 
 * `timeout: Number` option has been added for `getEntitiesOfTable()`. Default is 120000 milliseconds (2 minutes).

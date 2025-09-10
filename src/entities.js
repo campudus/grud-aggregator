@@ -28,6 +28,27 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting an array of column lists as disableFollow");
   }
 
+  if (_.some(disableFollow, columns => {
+    if (columns.includes("*") || columns.includes("**")) {
+      const starColumns = _.filter(columns, column => column === "*");
+      const doubleStarColumns = _.filter(columns, column => column === "**");
+
+      return starColumns.length > 1 || doubleStarColumns.length > 1;
+    }
+  })) {
+    throw new Error("'*' / '**' can only appear once in each column list in disableFollow");
+  }
+
+  if (_.some(disableFollow, columns => {
+    if (columns.includes("**")) {
+      const pathAfterDoubleStar = _.takeRightWhile(columns, column => column !== "**");
+
+      return pathAfterDoubleStar.length !== 1;
+    }
+  })) {
+    throw new Error("When using '**' in disableFollow, the column list must contain exactly one column after '**'");
+  }
+
   if (includeColumns && (!_.isArray(includeColumns) || _.some(includeColumns, column => !_.isString(column)))) {
     throw new Error("Expecting an array of columns as includeColumns");
   }
@@ -83,10 +104,14 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
 
           return Promise.all(_.map(columnsToFollow, column => {
             const filteredDisableFollow = _.filter(disableFollow, columns => {
-              return !_.isEmpty(columns) && _.head(columns) === column.name;
+              const head = _.head(columns);
+
+              return !_.isEmpty(columns) && (head === "**" || head === "*" || head === column.name);
             });
 
-            const nextDisableFollow = _.map(filteredDisableFollow, columns => _.tail(columns));
+            const nextDisableFollow = _.map(filteredDisableFollow, columns =>
+              _.head(columns) === "**" ? columns : _.tail(columns)
+            );
 
             return getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow, maxEntriesPerRequest, archived);
           }));
@@ -105,8 +130,21 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
   }
 
   function isColumnDisabled(columnName, disableFollow) {
-    const disabledColumns = _.filter(disableFollow, columns => _.size(columns) === 1).flat();
+    const disabledColumns = _.reduce(disableFollow, (acc, columns) => {
+      const head = _.head(columns);
+      const second = _.nth(columns, 1);
 
-    return disabledColumns.includes(columnName);
+      if (columns.length === 1) {
+        return _.concat(acc, head);
+      }
+
+      if (columns.length === 2 && head === "**") {
+        return _.concat(acc, second);
+      }
+
+      return acc;
+    }, []);
+
+    return disabledColumns.includes(columnName) || disabledColumns.includes("*");
   }
 }
