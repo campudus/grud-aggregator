@@ -1,10 +1,11 @@
+import AbortController from "abort-controller";
 import _ from "lodash";
-import axios from "axios";
+import fetch from "node-fetch";
 
 export function getAllTables(options) {
   const {pimUrl, headers, timeout} = getOptionsFromParam(options, "getAllTables");
 
-  return request("GET", `${pimUrl}/tables`, {headers, timeout}).then(data => data.tables);
+  return request(`${pimUrl}/tables`, {headers, timeout}).then(data => data.tables);
 }
 
 export function getTablesByNames(options, ...names) {
@@ -27,10 +28,11 @@ export function getCompleteTable(options, tableId, maxEntries, archived) {
     throw new Error("Expecting archived to be a boolean");
   }
 
-  return request("GET", `${pimUrl}/tables/${tableId}`, {headers, timeout})
+  return request(`${pimUrl}/tables/${tableId}`, {headers, timeout})
     .then(table => {
       const tableWithoutMeta = _.omit(table, ["status"]);
-      return request("GET", `${pimUrl}/tables/${tableId}/columns`, {headers, timeout}).then(result => ({
+
+      return request(`${pimUrl}/tables/${tableId}/columns`, {headers, timeout}).then(result => ({
         ...tableWithoutMeta,
         columns: result.columns
       }));
@@ -39,7 +41,7 @@ export function getCompleteTable(options, tableId, maxEntries, archived) {
       const queryString = generateQueryString({ limit: maxEntries, archived });
       const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
-      return request("GET", url, {headers, timeout}).then(result => {
+      return request(url, {headers, timeout}).then(result => {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
         const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived);
@@ -47,7 +49,7 @@ export function getCompleteTable(options, tableId, maxEntries, archived) {
         return requests.reduce((promise, requestUrl) => {
           return promise
             .then(tableColumnsAndRows => {
-              return request("GET", requestUrl, {headers, timeout})
+              return request(requestUrl, {headers, timeout})
                 .then(rowResult => ({
                   ...tableColumnsAndRows,
                   rows: tableColumnsAndRows.rows.concat(rowResult.rows)
@@ -104,12 +106,35 @@ function generateQueryString({ offset = 0, limit, archived }) {
   .join("&");
 }
 
-function request(method, url, {headers, timeout}) {
-  return axios({
-    method,
-    url,
-    headers,
-    timeout
-  })
-    .then(res => res.data);
+async function fetchWithTimeout(url, options = {}, timeoutMs) {
+  const controller = new AbortController();
+  const timeout = timeoutMs ? setTimeout(() => controller.abort(), timeoutMs) : null;
+
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+
+    clearTimeout(timeout);
+
+    let json;
+
+    try {
+      json = await response.json();
+    } catch (error) {
+      json = {};
+    }
+
+    return json;
+  } catch (error) {
+    clearTimeout(timeout);
+
+    if (error.type === "aborted") {
+      throw new Error(`Request timed out after ${timeoutMs}ms.`);
+    }
+
+    throw error;
+  }
+}
+
+function request(url, { headers, timeout }) {
+  return fetchWithTimeout(url, { method: "GET", headers }, timeout);
 }

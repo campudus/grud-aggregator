@@ -1,5 +1,11 @@
 # Release Notes
 
+## 8.8.0 - Replaced axios with node-fetch
+
+* Replaced outdated `axios` with `node-fetch` to reduce dependencies and avoid timeout issues.
+  See also GitHub issues [#6721](https://github.com/axios/axios/issues/5267)
+  and [#5267](https://github.com/axios/axios/issues/5267).
+
 ## 8.7.0 - Extended `disableFollow` option in `getEntitiesOfTable` and `getEntitiesOfTables` by placeholders
 
 * Added support for `*` and `**` in `disableFollow` option of `getEntitiesOfTable()` and `getEntitiesOfTables()` to be

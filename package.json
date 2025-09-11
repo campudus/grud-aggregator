@@ -1,6 +1,6 @@
 {
   "name": "tableaux-aggregator",
-  "version": "8.7.0",
+  "version": "8.8.0",
   "description": "Core aggregator functions",
   "main": "lib/index.js",
   "files": [
@@ -48,10 +48,11 @@
   "dependencies": {
     "@babel/core": "7.2.2",
     "@babel/register": "7.0.0",
-    "axios": "0.20.0",
+    "abort-controller": "^3.0.0",
     "fs-extra": "0.30.0",
     "lodash": "4.13.1",
     "lowdb": "0.13.1",
+    "node-fetch": "^2.7.0",
     "sharp": "0.31.1"
   }
 }
