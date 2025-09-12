@@ -48,7 +48,7 @@
   "dependencies": {
     "@babel/core": "7.2.2",
     "@babel/register": "7.0.0",
-    "axios": "0.20.0",
+    "axios": "0.21.2",
     "fs-extra": "0.30.0",
     "lodash": "4.13.1",
     "lowdb": "0.13.1",
