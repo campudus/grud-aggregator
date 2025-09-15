@@ -110,7 +110,7 @@ describe("pimApi", () => {
       return getAllTables({
         pimUrl: SERVER_URL,
         timeout: TIMEOUT_MS
-      }).must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
+      }).must.reject.with.error(new RegExp(`timed out.+${TIMEOUT_MS}ms`, "i"));
     });
   });
 
@@ -166,7 +166,7 @@ describe("pimApi", () => {
       return getTablesByNames({
         pimUrl: SERVER_URL,
         timeout: TIMEOUT_MS
-      }, "testTable", "anotherTestTable").must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
+      }, "testTable", "anotherTestTable").must.reject.with.error(new RegExp(`timed out.+${TIMEOUT_MS}ms`, "i"));
     });
   });
 
@@ -263,7 +263,7 @@ describe("pimApi", () => {
       return getCompleteTable({
         pimUrl: SERVER_URL,
         timeout: TIMEOUT_MS
-      }, 3, 2, false).must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
+      }, 3, 2, false).must.reject.with.error(new RegExp(`timed out.+${TIMEOUT_MS}ms`, "i"));
     });
   });
 

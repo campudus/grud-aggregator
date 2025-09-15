@@ -486,7 +486,7 @@ describe("entities.js", () => {
         return getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
           timeout: TIMEOUT_MS
-        }).must.reject.with.error(new RegExp(`timeout.+${TIMEOUT_MS}ms`, "i"));
+        }).must.reject.with.error(new RegExp(`timed out.+${TIMEOUT_MS}ms`, "i"));
       });
     });
   });
