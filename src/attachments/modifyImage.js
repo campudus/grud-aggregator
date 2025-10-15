@@ -199,7 +199,7 @@ export function modifyImages(
 
 function startImageModificationProcess(args) {
   return new Promise((resolve, reject) => {
-    const cp = fork(`${__dirname}/modifyImageProcess.js`, args);
+    const cp = fork(`${import.meta.dirname}/modifyImageProcess.js`, args);
 
     cp.on("close", code => {
       if (code === 0) {

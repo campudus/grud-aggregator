@@ -4,18 +4,18 @@ import fs from "fs-extra";
 import tmp from "tmp";
 import https from "https";
 import http from "http";
-import {Database} from "./database";
-import {downloader} from "./downloader";
-import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers";
+import {Database} from "./database.js";
+import {downloader} from "./downloader.js";
+import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers.js";
 
 const tests = (protocol) => () => {
 
   const TEST_PORT = 14432;
-  const SERVER_FIXTURES = `${__dirname}/__tests__/server`;
+  const SERVER_FIXTURES = `${import.meta.dirname}/__tests__/server`;
   const SERVER_URL = `${protocol}://localhost:${TEST_PORT}`;
-  const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
+  const dbFixturePath = `${import.meta.dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
-  const errorImage = `${__dirname}/__tests__/error.png`;
+  const errorImage = `${import.meta.dirname}/__tests__/error.png`;
   let requests = [];
   let headers = {};
   let server;
@@ -38,8 +38,8 @@ const tests = (protocol) => () => {
 
     if (isHttps) {
       const options = {
-        key: fs.readFileSync(`${__dirname}/__tests__/private.pem`),
-        cert: fs.readFileSync(`${__dirname}/__tests__/public.pem`)
+        key: fs.readFileSync(`${import.meta.dirname}/__tests__/private.pem`),
+        cert: fs.readFileSync(`${import.meta.dirname}/__tests__/public.pem`)
       };
 
       return new Promise((resolve, reject) => {
@@ -132,8 +132,8 @@ const tests = (protocol) => () => {
         expect(downloaded.length).to.be(1);
         expect(downloaded[0]).to.be(`${outPath}/11111111-1111-1111-0000-111111111111.png`);
         return Promise.all([
-          statOf(`${__dirname}/__tests__/server/11111111-1111-1111-1111-111111111111/en/1-english.png`),
-          statOf(`${__dirname}/__tests__/server/11111111-1111-1111-1111-111111111111/de/1-deutsch.png`),
+          statOf(`${import.meta.dirname}/__tests__/server/11111111-1111-1111-1111-111111111111/en/1-english.png`),
+          statOf(`${import.meta.dirname}/__tests__/server/11111111-1111-1111-1111-111111111111/de/1-deutsch.png`),
           statOf(`${outPath}/11111111-1111-1111-0000-111111111111.png`)
         ]);
       })
@@ -168,8 +168,8 @@ const tests = (protocol) => () => {
         expect(downloaded[0]).to.be(`${outPath}/22222222-2222-2222-0000-aaaaaaaaaaaa.png`);
         expect(downloaded[1]).to.be(`${outPath}/22222222-2222-2222-0000-bbbbbbbbbbbb.png`);
         return Promise.all([
-          statOf(`${__dirname}/__tests__/server/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png`),
-          statOf(`${__dirname}/__tests__/server/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png`),
+          statOf(`${import.meta.dirname}/__tests__/server/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png`),
+          statOf(`${import.meta.dirname}/__tests__/server/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png`),
           statOf(`${outPath}/22222222-2222-2222-0000-aaaaaaaaaaaa.png`),
           statOf(`${outPath}/22222222-2222-2222-0000-bbbbbbbbbbbb.png`)
         ]);
@@ -350,8 +350,8 @@ const tests = (protocol) => () => {
         expect(downloaded[0]).to.be(`${outPath}/22222222-2222-2222-0000-aaaaaaaaaaaa.png`);
         expect(downloaded[1]).to.be(`${outPath}/22222222-2222-2222-0000-bbbbbbbbbbbb.png`);
         return Promise.all([
-          statOf(`${__dirname}/__tests__/server/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png`),
-          statOf(`${__dirname}/__tests__/server/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png`),
+          statOf(`${import.meta.dirname}/__tests__/server/22222222-2222-2222-2222-aaaaaaaaaaaa/en/2a-english.png`),
+          statOf(`${import.meta.dirname}/__tests__/server/22222222-2222-2222-2222-bbbbbbbbbbbb/de/2b-deutsch.png`),
           statOf(`${outPath}/22222222-2222-2222-0000-aaaaaaaaaaaa.png`),
           statOf(`${outPath}/22222222-2222-2222-0000-bbbbbbbbbbbb.png`)
         ]);

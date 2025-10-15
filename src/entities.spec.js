@@ -1,11 +1,11 @@
 import expect from "must";
 import express from "express";
-import {getEntitiesOfTable, getEntitiesOfTables} from "./entities";
-import disableFollowTestTableOnly from "./__tests__/testTableDisableFollow1.json";
-import disableFollowTestTableAndThirdTableOnly from "./__tests__/testTableDisableFollow2.json";
-import disableFollowTestTableAndLinkedTables from "./__tests__/testTableDisableFollow3.json";
-import includeColumnsTestTableOnly from "./__tests__/testTableIncludeColumns1.json";
-import includeColumnsAllTables from "./__tests__/testTableIncludeColumns2.json";
+import {getEntitiesOfTable, getEntitiesOfTables} from "./entities.js";
+import disableFollowTestTableOnly from "./__tests__/testTableDisableFollow1.json" with { type: "json" };
+import disableFollowTestTableAndThirdTableOnly from "./__tests__/testTableDisableFollow2.json" with { type: "json" };
+import disableFollowTestTableAndLinkedTables from "./__tests__/testTableDisableFollow3.json" with { type: "json" };
+import includeColumnsTestTableOnly from "./__tests__/testTableIncludeColumns1.json" with { type: "json" };
+import includeColumnsAllTables from "./__tests__/testTableIncludeColumns2.json" with { type: "json" };
 
 describe("entities.js", () => {
   const TABLE_IDS = [1, 2, 3, 4, 5];
@@ -43,7 +43,7 @@ describe("entities.js", () => {
         if (!data) {
           res.end("error");
         } else {
-          const sendFile = () => res.sendFile(`${__dirname}/__tests__/${data}`);
+          const sendFile = () => res.sendFile(`${import.meta.dirname}/__tests__/${data}`);
 
           if (process.env.FORCE_DELAY_MS) {
             setTimeout(() => sendFile(), process.env.FORCE_DELAY_MS);

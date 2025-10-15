@@ -2,30 +2,30 @@ import path from "path";
 import expect from "must";
 import fs from "fs-extra";
 import tmp from "tmp";
-import {Database} from "./database";
-import {modifyImages} from "./modifyImage";
-import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers";
+import {Database} from "./database.js";
+import {modifyImages} from "./modifyImage.js";
+import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers.js";
 
 describe("image modification", () => {
 
-  const fixtureFile = `${__dirname}/__tests__/duck.png`;
-  const fixtureFile2 = `${__dirname}/__tests__/duck2.png`;
-  const fixtureFile3 = `${__dirname}/__tests__/duck3.png`;
-  const fixtureWithExifFile = `${__dirname}/__tests__/exif_test.jpg`;
-  const thumbFile = `${__dirname}/__tests__/duck_thumb.png`;
-  const thumbFileByHeight = `${__dirname}/__tests__/duck_thumb_height.png`;
-  const tinyFile = `${__dirname}/__tests__/duck_tiny.png`;
-  const tinyFileMinified = `${__dirname}/__tests__/duck_tiny_minified.png`;
-  const scaleResizeFile = `${__dirname}/__tests__/duck_500x400.png`;
-  const wrongImageFile1 = `${__dirname}/__tests__/wrong-image.png`;
-  const wrongImageFile2 = `${__dirname}/__tests__/wrong-image.jpg`;
-  const fixtureTrimmingFile = `${__dirname}/__tests__/duck_trim.png`;
-  const trimmedFile = `${__dirname}/__tests__/duck_trimmed.png`;
-  const trimmedAndMinifiedFile = `${__dirname}/__tests__/duck_trimmed_minified.png`;
-  const trimmedAndResizedFile = `${__dirname}/__tests__/duck_trimmed_resized.png`;
-  const trimmedAndResizedAndMinifiedFile = `${__dirname}/__tests__/duck_trimmed_resized_minified.png`;
+  const fixtureFile = `${import.meta.dirname}/__tests__/duck.png`;
+  const fixtureFile2 = `${import.meta.dirname}/__tests__/duck2.png`;
+  const fixtureFile3 = `${import.meta.dirname}/__tests__/duck3.png`;
+  const fixtureWithExifFile = `${import.meta.dirname}/__tests__/exif_test.jpg`;
+  const thumbFile = `${import.meta.dirname}/__tests__/duck_thumb.png`;
+  const thumbFileByHeight = `${import.meta.dirname}/__tests__/duck_thumb_height.png`;
+  const tinyFile = `${import.meta.dirname}/__tests__/duck_tiny.png`;
+  const tinyFileMinified = `${import.meta.dirname}/__tests__/duck_tiny_minified.png`;
+  const scaleResizeFile = `${import.meta.dirname}/__tests__/duck_500x400.png`;
+  const wrongImageFile1 = `${import.meta.dirname}/__tests__/wrong-image.png`;
+  const wrongImageFile2 = `${import.meta.dirname}/__tests__/wrong-image.jpg`;
+  const fixtureTrimmingFile = `${import.meta.dirname}/__tests__/duck_trim.png`;
+  const trimmedFile = `${import.meta.dirname}/__tests__/duck_trimmed.png`;
+  const trimmedAndMinifiedFile = `${import.meta.dirname}/__tests__/duck_trimmed_minified.png`;
+  const trimmedAndResizedFile = `${import.meta.dirname}/__tests__/duck_trimmed_resized.png`;
+  const trimmedAndResizedAndMinifiedFile = `${import.meta.dirname}/__tests__/duck_trimmed_resized_minified.png`;
 
-  const dbFixturePath = `${__dirname}/__tests__/test-db.json`;
+  const dbFixturePath = `${import.meta.dirname}/__tests__/test-db.json`;
   const dbFixture = new Database(dbFixturePath);
 
   it("returns a function to be able to pass it into promise chain", () => {
