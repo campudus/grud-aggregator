@@ -1,19 +1,19 @@
 import cp from "child_process";
 import expect from "must";
-import {start} from "./aggregationProcess";
+import {start} from "./aggregationProcess.js";
 
 describe("aggregation-process", function () {
 
   this.timeout(5000);
 
-  const aggregatorBreaking = `${__dirname}/__tests__/aggregatorBreaking.js`;
-  const aggregatorDummy = `${__dirname}/__tests__/aggregatorDummy.js`;
-  const aggregatorDummyWithReplacedAndHiddenMessages = `${__dirname}/__tests__/aggregatorDummyWithReplacedAndHiddenMessages.js`;
-  const aggregatorFile = `${__dirname}/__tests__/aggregatorWorking.js`;
-  const aggregatorFileSubsteps = `${__dirname}/__tests__/aggregatorSubsteps.js`;
-  const aggregatorFileSubsteps2 = `${__dirname}/__tests__/aggregatorSubsteps2.js`;
-  const aggregatorLongRunning = `${__dirname}/__tests__/aggregatorLongRunning.js`;
-  const aggregatorLongRunningMultipleWaits = `${__dirname}/__tests__/aggregatorLongRunningMultipleWaits.js`;
+  const aggregatorBreaking = `${import.meta.dirname}/__tests__/aggregatorBreaking.js`;
+  const aggregatorDummy = `${import.meta.dirname}/__tests__/aggregatorDummy.js`;
+  const aggregatorDummyWithReplacedAndHiddenMessages = `${import.meta.dirname}/__tests__/aggregatorDummyWithReplacedAndHiddenMessages.js`;
+  const aggregatorFile = `${import.meta.dirname}/__tests__/aggregatorWorking.js`;
+  const aggregatorFileSubsteps = `${import.meta.dirname}/__tests__/aggregatorSubsteps.js`;
+  const aggregatorFileSubsteps2 = `${import.meta.dirname}/__tests__/aggregatorSubsteps2.js`;
+  const aggregatorLongRunning = `${import.meta.dirname}/__tests__/aggregatorLongRunning.js`;
+  const aggregatorLongRunningMultipleWaits = `${import.meta.dirname}/__tests__/aggregatorLongRunningMultipleWaits.js`;
   const aggregatorNonExistent = "non-existant-file.js";
 
   it("needs a filename to the aggregator process script", () => {
@@ -142,7 +142,7 @@ describe("aggregation-process", function () {
 
     return new Promise((resolve, reject) => {
       const myPid = process.pid;
-      const child = cp.fork(`${__dirname}/__tests__/killableForker.js`);
+      const child = cp.fork(`${import.meta.dirname}/__tests__/killableForker.js`);
 
       child.on("message", (message) => {
         if (message === "INIT") {

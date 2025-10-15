@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   MODULE_NOT_FOUND: 10,
   UNKNOWN_ACTION: 11
 };

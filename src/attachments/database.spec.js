@@ -1,7 +1,7 @@
 import expect from "must";
 import tmp from "tmp";
-import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers";
-import {Database} from "./database";
+import {cleanUpWhenDone, statOf} from "./__tests__/fsHelpers.js";
+import {Database} from "./database.js";
 
 describe("database", () => {
 

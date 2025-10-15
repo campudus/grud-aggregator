@@ -1,7 +1,5 @@
-"use strict";
-const fs = require("fs-extra");
-require("@babel/register");
-const errors = require("./errorCodes.js");
+import fs from "fs-extra";
+import errors from "./errorCodes.js";
 
 process.on("message", function (event) {
   switch (event.action) {
@@ -46,14 +44,23 @@ function mkDirs(dataDirectory) {
   });
 }
 
-function run(aggregatorFile, options) {
+async function run(aggregatorFile, options) {
 
   let allSteps = 1;
   let lastStep = 0;
 
   try {
-    const aggregator = require(aggregatorFile);
-    aggregator(step, progress, options)
+    const aggegatorFn = await import(aggregatorFile)
+      .then((aggregatorModule) => {
+        const aggregator =
+          typeof aggregatorModule === "function"
+            ? aggregatorModule
+            : aggregatorModule.default;
+
+        return aggregator;
+      });
+
+    aggegatorFn(step, progress, options)
       .then(result => {
         process.send({
           action: "DONE",

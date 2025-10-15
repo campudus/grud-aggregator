@@ -1,7 +1,7 @@
 
 import expect from "must";
 import express from "express";
-import {getAllTables, getTablesByNames, getCompleteTable} from "./pimApi";
+import {getAllTables, getTablesByNames, getCompleteTable} from "./pimApi.js";
 
 describe("pimApi", () => {
 
@@ -30,25 +30,25 @@ describe("pimApi", () => {
         };
 
         if (req.url === "/tables") {
-          sendFile(`${__dirname}/__tests__/pimFixture-alltables.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-alltables.json`);
         } else if (req.url === "/tables/1") {
-          sendFile(`${__dirname}/__tests__/pimFixture-1-table.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-1-table.json`);
         } else if (req.url === "/tables/3") {
-          sendFile(`${__dirname}/__tests__/pimFixture-3-table.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-3-table.json`);
         } else if (req.url === "/tables/3/columns") {
-          sendFile(`${__dirname}/__tests__/pimFixture-3-columns.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-3-columns.json`);
         } else if (req.url === "/tables/1/rows?offset=0&limit=500") {
-          sendFile(`${__dirname}/__tests__/pimFixture-1-rows500.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-1-rows500.json`);
         } else if (req.url === "/tables/3/rows?offset=0&limit=2") {
-          sendFile(`${__dirname}/__tests__/pimFixture-3-rows1.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-3-rows1.json`);
         } else if (req.url === "/tables/3/rows?offset=2&limit=2") {
-          sendFile(`${__dirname}/__tests__/pimFixture-3-rows2.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-3-rows2.json`);
         } else if (req.url === "/tables/3/rows?offset=4&limit=2") {
-          sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-3-rows3.json`);
         } else if (req.url === "/tables/3/rows?offset=0&limit=2&archived=true") {
-          sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-3-rows3.json`);
         } else if (req.url === "/tables/3/rows?offset=0&limit=2&archived=false") {
-          sendFile(`${__dirname}/__tests__/pimFixture-3-rows3.json`);
+          sendFile(`${import.meta.dirname}/__tests__/pimFixture-3-rows3.json`);
         } else {
           res.end("error");
         }

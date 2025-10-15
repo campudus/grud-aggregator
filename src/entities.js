@@ -1,5 +1,5 @@
 import _ from "lodash";
-import {getCompleteTable, getTablesByNames} from "./pimApi";
+import {getCompleteTable, getTablesByNames} from "./pimApi.js";
 
 export function getEntitiesOfTables(tableNames, options = {}) {
   return getEntitiesOfTable(tableNames, options);

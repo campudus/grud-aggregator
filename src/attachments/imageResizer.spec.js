@@ -1,26 +1,26 @@
 import fs from "fs";
 import tmp from "tmp";
 import expect from "must";
-import { statOf } from "./__tests__/fsHelpers";
-import { reduceImage, generateThumb, trimImage } from "./imageResizer";
+import { statOf } from "./__tests__/fsHelpers.js";
+import { reduceImage, generateThumb, trimImage } from "./imageResizer.js";
 
-const fixtureFile = extension => `${__dirname}/__tests__/duck.${extension}`;
-const thumbFile = extension => `${__dirname}/__tests__/duck_thumb.${extension}`;
-const scaleResizeFile = extension => `${__dirname}/__tests__/duck_500x400.${extension}`;
-const wrongImageFile = extension => `${__dirname}/__tests__/wrong-image.${extension}`;
-const nonExistentFile = extension => `${__dirname}/__tests__/non-existent.${extension}`;
-const trimmingFile = extension => `${__dirname}/__tests__/duck_trim.${extension}`;
-const trimmedFile = extension => `${__dirname}/__tests__/duck_trimmed.${extension}`;
-const trimmedAndMinifiedFile = extension => `${__dirname}/__tests__/duck_trimmed_minified.${extension}`;
-const trimmedAndResizedFile = extension => `${__dirname}/__tests__/duck_trimmed_resized.${extension}`;
-const trimmedAndResizedAndMinifiedFile = extension => `${__dirname}/__tests__/duck_trimmed_resized_minified.${extension}`;
+const fixtureFile = extension => `${import.meta.dirname}/__tests__/duck.${extension}`;
+const thumbFile = extension => `${import.meta.dirname}/__tests__/duck_thumb.${extension}`;
+const scaleResizeFile = extension => `${import.meta.dirname}/__tests__/duck_500x400.${extension}`;
+const wrongImageFile = extension => `${import.meta.dirname}/__tests__/wrong-image.${extension}`;
+const nonExistentFile = extension => `${import.meta.dirname}/__tests__/non-existent.${extension}`;
+const trimmingFile = extension => `${import.meta.dirname}/__tests__/duck_trim.${extension}`;
+const trimmedFile = extension => `${import.meta.dirname}/__tests__/duck_trimmed.${extension}`;
+const trimmedAndMinifiedFile = extension => `${import.meta.dirname}/__tests__/duck_trimmed_minified.${extension}`;
+const trimmedAndResizedFile = extension => `${import.meta.dirname}/__tests__/duck_trimmed_resized.${extension}`;
+const trimmedAndResizedAndMinifiedFile = extension => `${import.meta.dirname}/__tests__/duck_trimmed_resized_minified.${extension}`;
 
 describe("reduceImage", () => {
 
   it("results in error, if file is not an image", () => {
     const tempFile = tmp.fileSync();
     return expect(reduceImage({
-      fromPath: __filename,
+      fromPath: import.meta.filename,
       toPath: tempFile.name
     })).to.reject.with.error(/unsupported image format/i);
   });
@@ -301,7 +301,7 @@ describe("generateThumb", () => {
   it("results in error, if file is not an image", () => {
     const tempFile = tmp.fileSync();
     return generateThumb({
-      fromPath: __filename,
+      fromPath: import.meta.filename,
       toPath: tempFile.name,
       imageWidth: 20
     })
@@ -326,7 +326,7 @@ describe("generateThumb", () => {
   it("results in error, if file is not an image and options set", () => {
     const tempFile = tmp.fileSync();
     return expect(generateThumb({
-      fromPath: __filename,
+      fromPath: import.meta.filename,
       toPath: tempFile.name,
       imageWidth: 20
     })).to.reject.with.error(/unsupported image format/i);

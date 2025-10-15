@@ -1,13 +1,13 @@
-import tablesFixture from "./__tests__/tablesFixture.json";
-import fixtureDeletedTable from "./__tests__/excludeFixture-deletedTableAndLinks.json";
-import fixtureNoConcats from "./__tests__/excludeFixture-noConcats.json";
-import fixtureDeletedColumn from "./__tests__/excludeFixture-deletedColumn.json";
-import fixtureDeletedLinkColumn from "./__tests__/excludeFixture-deletedLinkColumn.json";
-import fixtureDeletedMultipleColumns from "./__tests__/excludeFixture-deletedMultipleColumns.json";
-import fixtureDeletedMultipleColumnsInTables from "./__tests__/excludeFixture-deletedMultipleColumnsInTables.json";
-import fixtureDeletedColumnsAndConcats from "./__tests__/excludeFixture-deletedColumnsAndConcats.json";
-import fixtureDeletedByFunction from "./__tests__/excludeFixture-deletedByFunction.json";
-import {exclude} from "./exclude";
+import tablesFixture from "./__tests__/tablesFixture.json" with { type: "json" };
+import fixtureDeletedTable from "./__tests__/excludeFixture-deletedTableAndLinks.json" with { type: "json" };
+import fixtureNoConcats from "./__tests__/excludeFixture-noConcats.json" with { type: "json" };
+import fixtureDeletedColumn from "./__tests__/excludeFixture-deletedColumn.json" with { type: "json" };
+import fixtureDeletedLinkColumn from "./__tests__/excludeFixture-deletedLinkColumn.json" with { type: "json" };
+import fixtureDeletedMultipleColumns from "./__tests__/excludeFixture-deletedMultipleColumns.json" with { type: "json" };
+import fixtureDeletedMultipleColumnsInTables from "./__tests__/excludeFixture-deletedMultipleColumnsInTables.json" with { type: "json" };
+import fixtureDeletedColumnsAndConcats from "./__tests__/excludeFixture-deletedColumnsAndConcats.json" with { type: "json" };
+import fixtureDeletedByFunction from "./__tests__/excludeFixture-deletedByFunction.json" with { type: "json" };
+import {exclude} from "./exclude.js";
 import expect from "must";
 
 describe("exclude", () => {

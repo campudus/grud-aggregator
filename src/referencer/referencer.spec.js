@@ -1,10 +1,10 @@
 import expect from "must";
-import {referencer} from "./referencer";
-import allTables from "./__tests__/allTables.json";
-import singleTable from "./__tests__/singleTable.json";
-import allTablesWithLanguages from "./__tests__/allTablesWithLanguages.json";
-import singleTableWithLanguages from "./__tests__/singleTableWithLanguages.json";
-import selfReferencingTable from "./__tests__/selfReferencingTable.json";
+import {referencer} from "./referencer.js";
+import allTables from "./__tests__/allTables.json" with { type: "json" };
+import singleTable from "./__tests__/singleTable.json" with { type: "json" };
+import allTablesWithLanguages from "./__tests__/allTablesWithLanguages.json" with { type: "json" };
+import singleTableWithLanguages from "./__tests__/singleTableWithLanguages.json" with { type: "json" };
+import selfReferencingTable from "./__tests__/selfReferencingTable.json" with { type: "json" };
 
 describe("referencer", () => {
 

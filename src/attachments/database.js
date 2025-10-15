@@ -1,5 +1,5 @@
 import low from "lowdb";
-import lowdbAsyncStorage from "lowdb/lib/file-async";
+import lowdbAsyncStorage from "lowdb/lib/file-async.js";
 
 export class Database {
 

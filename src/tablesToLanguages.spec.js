@@ -1,14 +1,14 @@
 import expect from "must";
-import simpleTable from "./__tests__/simpleTable.json";
-import simpleTableExpected from "./__tests__/simpleTableTTLExpected.json";
-import selfReferencingTable from "./__tests__/selfReferencingTable.json";
-import selfReferencingTableExpected from "./__tests__/selfReferencingTableTTLExpected.json";
-import tablesFixture from "./__tests__/tablesFixture.json";
-import missingFixture from "./__tests__/missingFixture.json";
-import missingResultFixture from "./__tests__/missingResultFixture.json";
-import missingStayEmptyFixture from "./__tests__/missingStayEmptyFixture.json";
-import resultFixture from "./__tests__/resultFixture.json";
-import {tablesToLanguages} from "./tablesToLanguages";
+import simpleTable from "./__tests__/simpleTable.json" with { type: "json" };
+import simpleTableExpected from "./__tests__/simpleTableTTLExpected.json" with { type: "json" };
+import selfReferencingTable from "./__tests__/selfReferencingTable.json" with { type: "json" };
+import selfReferencingTableExpected from "./__tests__/selfReferencingTableTTLExpected.json" with { type: "json" };
+import tablesFixture from "./__tests__/tablesFixture.json" with { type: "json" };
+import missingFixture from "./__tests__/missingFixture.json" with { type: "json" };
+import missingResultFixture from "./__tests__/missingResultFixture.json" with { type: "json" };
+import missingStayEmptyFixture from "./__tests__/missingStayEmptyFixture.json" with { type: "json" };
+import resultFixture from "./__tests__/resultFixture.json" with { type: "json" };
+import {tablesToLanguages} from "./tablesToLanguages.js";
 
 describe("tablesToLanguages", () => {
 

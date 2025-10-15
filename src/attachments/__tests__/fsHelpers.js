@@ -26,7 +26,7 @@ export function statOf(file) {
 describe("statOf", () => {
 
   it("gives correct information", () => {
-    return statOf(__filename)
+    return statOf(import.meta.filename)
       .then(stats => {
         expect(stats.size).to.be.gt(0);
       });

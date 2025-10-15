@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import _ from "lodash";
 import cp from "child_process";
 
 export function start(
@@ -20,7 +20,7 @@ export function start(
   return Promise
     .resolve()
     .then(() => new Promise((resolve, reject) => {
-      const child = cp.fork(`${__dirname}/forker.js`, {silent: false});
+      const child = cp.fork(`${import.meta.dirname}/forker.js`, {silent: false});
       let initialized = false;
       let fulfilled = false;
       let allDone = false;
