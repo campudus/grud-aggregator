@@ -139,9 +139,9 @@ describe("attachments integration", () => {
         ]);
       })
       .then(([
-               expected1, expected2a, expected2b, expected3a, expected3b, expected3c, expected3d, expected3e, expected3f,
-               actual1, actual2a, actual2b, actual3a, actual3b, actual3c, actual3d, actual3e, actual3f
-             ]) => {
+        expected1, expected2a, expected2b, expected3a, expected3b, expected3c, expected3d, expected3e, expected3f,
+        actual1, actual2a, actual2b, actual3a, actual3b, actual3c, actual3d, actual3e, actual3f
+      ]) => {
         expect(actual1.size).to.be(expected1.size);
         expect(actual2a.size).to.be(expected2a.size);
         expect(actual2b.size).to.be(expected2b.size);

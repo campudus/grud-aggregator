@@ -102,8 +102,8 @@ function generateQueryString({ offset = 0, limit, archived }) {
       _.isNil
     )
   )
-  .map(([key, value]) => `${key}=${value}`)
-  .join("&");
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
 }
 
 async function fetchWithTimeout(url, options = {}, timeoutMs) {
