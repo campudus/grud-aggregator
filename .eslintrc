@@ -1,10 +1,13 @@
 {
-  "parser": "@babel/eslint-parser",
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+
+  "ignorePatterns": ["dist/"],
 
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "requireConfigFile": false
+    "sourceType": "module"
   },
 
   "env": {
@@ -150,6 +153,8 @@
     "valid-typeof": "error",
     "wrap-iife": ["error", "any", { "functionPrototypeMethods": true }],
     "yield-star-spacing": ["error", "both"],
-    "yoda": ["error", "never"]
+    "yoda": ["error", "never"],
+
+    "@typescript-eslint/no-unused-vars": "warn"
   }
 }
