@@ -5,7 +5,6 @@
   "files": [
     "dist"
   ],
-  "type": "module",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -17,9 +16,7 @@
     }
   },
   "scripts": {
-    "build:cjs": "tsdown --format cjs -d dist/cjs --unbundle",
-    "build:esm": "tsdown --format esm -d dist/esm --unbundle --dts",
-    "build": "npm run build:cjs && npm run build:esm",
+    "build": "tsdown",
     "prepublish": "npm run build && npm run lint && npm run test",
     "coverage": "nyc npm run test",
     "lint": "eslint src/",
