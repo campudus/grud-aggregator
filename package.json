@@ -2,12 +2,25 @@
   "name": "grud-aggregator",
   "version": "9.0.0",
   "description": "Core aggregator functions",
-  "type": "module",
-  "main": "src/index.js",
   "files": [
-    "src/"
+    "dist"
   ],
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/esm/index.d.ts"
+    }
+  },
   "scripts": {
+    "build:cjs": "tsdown --format cjs -d dist/cjs --unbundle",
+    "build:esm": "tsdown --format esm -d dist/esm --unbundle --dts",
+    "build": "npm run build:cjs && npm run build:esm",
+    "prepublish": "npm run build && npm run lint && npm run test",
     "coverage": "nyc npm run test",
     "lint": "eslint src/",
     "lint:watch": "eslint src/ -w",
@@ -28,15 +41,18 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/campudus/grud-aggregator#readme",
   "devDependencies": {
-    "@babel/core": "7.28.4",
-    "@babel/eslint-parser": "7.28.4",
+    "@typescript-eslint/parser": "8.46.1",
+    "@typescript-eslint/eslint-plugin": "8.46.1",
+    "@types/node": "24.7.2",
     "eslint": "8.57.1",
     "express": "4.14.0",
     "mocha": "11.7.4",
     "must": "0.13.1",
     "nyc": "17.1.0",
     "prettier": "3.6.2",
-    "tmp": "0.0.28"
+    "tmp": "0.0.28",
+    "tsdown": "^0.15.7",
+    "typescript": "5.9.3"
   },
   "dependencies": {
     "fs-extra": "0.30.0",
