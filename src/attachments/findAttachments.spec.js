@@ -1,8 +1,8 @@
 import expect from "must";
-import data from "./__tests__/entitiesWithAttachments.json";
-import resultWithAttachments from "./__tests__/resultWithAttachments.json";
-import {filter} from "../filter";
-import {findAttachments} from "./findAttachments";
+import data from "./__tests__/entitiesWithAttachments.json" with { type: "json" };
+import resultWithAttachments from "./__tests__/resultWithAttachments.json" with { type: "json" };
+import {filter} from "../filter.js";
+import {findAttachments} from "./findAttachments.js";
 import _ from "lodash";
 
 describe("findAttachments", () => {

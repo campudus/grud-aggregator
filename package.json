@@ -1,18 +1,28 @@
 {
-  "name": "tableaux-aggregator",
-  "version": "8.8.0",
+  "name": "grud-aggregator",
+  "version": "9.0.0",
   "description": "Core aggregator functions",
-  "main": "lib/index.js",
   "files": [
-    "lib/"
+    "dist"
   ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "compile": "babel -q --ignore '**/*.spec.js' -d lib/ src",
+    "build": "tsdown",
+    "prepublish": "npm run build && npm run lint && npm run test",
     "coverage": "nyc npm run test",
     "lint": "eslint src/",
     "lint:watch": "eslint src/ -w",
-    "prepublish": "npm run compile -s && npm run lint -s && npm run test -s",
-    "test": "mocha --require source-map-support --compilers js:@babel/register --colors $(find . -type d -name node_modules -prune -o -name '*.spec.js')",
+    "test": "mocha --colors $(find . -type d -name node_modules -prune -o -name '*.spec.js')",
     "test:watch": "npm run test -- -w"
   },
   "repository": {
@@ -29,30 +39,23 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/campudus/grud-aggregator#readme",
   "devDependencies": {
-    "@babel/cli": "7.2.3",
-    "@babel/preset-env": "7.3.1",
-    "@babel/runtime": "7.3.1",
-    "babel-eslint": "10.0.1",
-    "babel-plugin-add-module-exports": "1.0.0",
-    "eslint": "3.19.0",
-    "eslint-plugin-promise": "3.5.0",
-    "eslint-plugin-react": "7.0.1",
-    "eslint-plugin-standard": "3.0.1",
+    "@typescript-eslint/parser": "8.46.1",
+    "@typescript-eslint/eslint-plugin": "8.46.1",
+    "@types/node": "24.7.2",
+    "eslint": "8.57.1",
     "express": "4.14.0",
-    "mocha": "2.5.3",
+    "mocha": "11.7.4",
     "must": "0.13.1",
-    "nyc": "7.0.0",
-    "source-map-support": "0.4.2",
-    "tmp": "0.0.28"
+    "nyc": "17.1.0",
+    "prettier": "3.6.2",
+    "tmp": "0.0.28",
+    "tsdown": "^0.15.7",
+    "typescript": "5.9.3"
   },
   "dependencies": {
-    "@babel/core": "7.2.2",
-    "@babel/register": "7.0.0",
-    "abort-controller": "^3.0.0",
     "fs-extra": "0.30.0",
     "lodash": "4.13.1",
     "lowdb": "0.13.1",
-    "node-fetch": "^2.7.0",
     "sharp": "0.31.1"
   }
 }

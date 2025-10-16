@@ -1,27 +1,20 @@
 {
-  "parser": "babel-eslint",
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+
+  "ignorePatterns": ["dist/"],
 
   "parserOptions": {
-    "ecmaVersion": 7,
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
-      "jsx": true
-    },
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
 
   "env": {
-    "browser": true,
     "es6": true,
     "mocha": true,
     "node": true
   },
-
-  "plugins": [
-    "standard",
-    "promise",
-    "react"
-  ],
 
   "globals": {
     "document": false,
@@ -44,7 +37,7 @@
     "eol-last": "error",
     "eqeqeq": ["error", "allow-null"],
     "func-call-spacing": ["error", "never"],
-    "handle-callback-err": ["error", "^(err|error)$" ],
+    "handle-callback-err": ["error", "^(err|error)$"],
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
     "keyword-spacing": ["error", { "before": true, "after": true }],
@@ -132,17 +125,28 @@
     "no-with": "error",
     "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
     "one-var": ["error", { "initialized": "never" }],
-    "operator-linebreak": ["error", "after", { "overrides": { "?": "before", ":": "before", "||": "before", "&&": "before" } }],
+    "operator-linebreak": [
+      "error",
+      "after",
+      { "overrides": { "?": "before", ":": "before", "||": "before", "&&": "before" } }
+    ],
     "quotes": ["error", "double", { "avoidEscape": true, "allowTemplateLiterals": true }],
     "rest-spread-spacing": ["error", "never"],
     "semi": ["error", "always"],
     "semi-spacing": ["error", { "before": false, "after": true }],
     "space-before-blocks": ["error", "always"],
-    "space-before-function-paren": ["warn", {"anonymous": "always", "named": "never"}],
+    "space-before-function-paren": ["warn", { "anonymous": "always", "named": "never" }],
     "space-in-parens": ["error", "never"],
     "space-infix-ops": "error",
     "space-unary-ops": ["error", { "words": true, "nonwords": false }],
-    "spaced-comment": ["warn", "always", { "line": { "markers": ["*package", "!", ","] }, "block": { "balanced": true, "markers": ["*package", "!", ","], "exceptions": ["*"] } }],
+    "spaced-comment": [
+      "warn",
+      "always",
+      {
+        "line": { "markers": ["*package", "!", ","] },
+        "block": { "balanced": true, "markers": ["*package", "!", ","], "exceptions": ["*"] }
+      }
+    ],
     "template-curly-spacing": ["error", "never"],
     "unicode-bom": ["error", "never"],
     "use-isnan": "error",
@@ -151,13 +155,6 @@
     "yield-star-spacing": ["error", "both"],
     "yoda": ["error", "never"],
 
-    "standard/object-curly-even-spacing": ["error", "either"],
-    "standard/array-bracket-even-spacing": ["error", "either"],
-    "standard/computed-property-even-spacing": ["error", "even"],
-
-    "promise/param-names": "error",
-
-    "react/jsx-uses-react": "warn",
-    "react/jsx-uses-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn"
   }
 }

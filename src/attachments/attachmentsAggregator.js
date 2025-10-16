@@ -1,7 +1,7 @@
 import _ from "lodash";
 import fs from "fs";
-import {generateThumb, reduceImage} from "./imageResizer";
-import {download} from "./downloader";
+import {generateThumb, reduceImage} from "./imageResizer.js";
+import {download} from "./downloader.js";
 
 export function downloadAndResizeAttachments(
   {
