@@ -10,15 +10,12 @@ export default defineConfig([
       "src/attachments/modifyImageProcess.js"
     ],
     format: "esm",
-    outDir: "dist/esm",
+    outDir: "dist",
     // we dont want bundling, because forked processes rely on folder structure
     unbundle: true,
     // https://tsdown.dev/options/dts#enabling-dts-generation
     // we build cjs and esm separately, so we only generate dts once for esm
-    dts: true,
-    // use same extension (.js) for esm and cjs
-    // because we use separate output directories "dist/cjs/"" and "dist/esm/"
-    outExtensions: () => ({ js: ".js", dts: ".d.ts" })
+    dts: true
   },
   {
     entry: [
@@ -29,14 +26,11 @@ export default defineConfig([
       "src/attachments/modifyImageProcess.js"
     ],
     format: "cjs",
-    outDir: "dist/cjs",
+    outDir: "dist",
     // we dont want bundling, because forked processes rely on folder structure
     unbundle: true,
     // https://tsdown.dev/options/dts#enabling-dts-generation
     // we build cjs and esm separately, so we only generate dts once for esm
-    dts: false,
-    // use same extension (.js) for esm and cjs
-    // because we use separate output directories "dist/cjs/"" and "dist/esm/"
-    outExtensions: () => ({ js: ".js", dts: ".d.ts" })
+    dts: false
   }
 ]);
