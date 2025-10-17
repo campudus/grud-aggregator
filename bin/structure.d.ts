@@ -1,4 +1,4 @@
-declare module "grud-aggregator/structure" {
+declare module "grud-aggregator" {
   /* eslint-disable no-undef */
   export const TABLES = tables;
 
@@ -65,6 +65,10 @@ declare module "grud-aggregator/structure" {
     updatedAt: string; // ISO
   }>;
 
+  type RowValueTuple<TName extends TableName = TableName, Col = Column<TName>> = Tuple<{
+    [Index in Col["index"]]: RowValue<TName, Extract<Col, { index: Index }>["name"]>;
+  }>;
+
   type RowValue<
     TName extends TableName = TableName,
     CName extends ColumnName<TName> = ColumnName<TName>,
@@ -84,12 +88,7 @@ declare module "grud-aggregator/structure" {
     date: string;
     datetime: string;
     attachment: Attachment[];
-    concat: Tuple<{
-      [ColIndex in ConcatCols["index"]]: RowValue<
-        TName,
-        Extract<ConcatCols, { index: ColIndex }>["name"]
-      >;
-    }>;
+    concat: RowValueTuple<TName, ConcatCols>;
     link: { id: number; value: RowValue<TNameLink, CNameLink> }[];
     group: unknown[];
   }[Kind];
@@ -97,15 +96,12 @@ declare module "grud-aggregator/structure" {
   export type Row<
     TName extends TableName = TableName,
     CName extends ColumnName<TName> = ColumnName<TName>,
-    Col = Column<TName, CName>,
-    ColIndizes = Col["index"]
+    Col = Column<TName, CName>
   > =
     ColumnName<TName> extends CName
       ? {
           id: number;
-          values: Tuple<{
-            [ColIndex in ColIndizes]: RowValue<TName, Extract<Col, { index: ColIndex }>["name"]>;
-          }>;
+          values: RowValueTuple<TName, Col>;
         }
       : {
           id: number;
