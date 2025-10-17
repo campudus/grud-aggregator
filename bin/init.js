@@ -29,7 +29,6 @@ const cleanColumn = (col, columnIndex) => {
   delete col.identifier;
   delete col.description;
   delete col.attributes;
-  delete col.constraint;
   delete col.separator;
   delete col.hidden;
 

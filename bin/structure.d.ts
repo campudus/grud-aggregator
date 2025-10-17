@@ -1,4 +1,4 @@
-declare module "grud-aggregator" {
+declare module "grud-aggregator/structure" {
   /* eslint-disable no-undef */
   export const TABLES = tables;
 
@@ -77,7 +77,9 @@ declare module "grud-aggregator" {
     IsMultiLang = Col["multilanguage"],
     TNameLink = Extract<Table, { id: Col["toTable"] }>["name"],
     CNameLink = Col["toColumn"]["name"],
-    ConcatCols = Col["concats"][number]
+    ConcatCols = Col["concats"][number],
+    ConstraintFrom = Col["constraint"]["cardinality"]["from"],
+    ConstraintTo = Col["constraint"]["cardinality"]["to"]
   > = {
     boolean: IsMultiLang extends true ? MultilangValue<Langtag, boolean> : boolean | null;
     shorttext: IsMultiLang extends true ? MultilangValue<Langtag, string> : string | null;
@@ -89,7 +91,9 @@ declare module "grud-aggregator" {
     datetime: string;
     attachment: Attachment[];
     concat: RowValueTuple<TName, ConcatCols>;
-    link: { id: number; value: RowValue<TNameLink, CNameLink> }[];
+    link: [ConstraintFrom, ConstraintTo] extends [0, 1]
+      ? [{ id: number; value: RowValue<TNameLink, CNameLink> }]
+      : { id: number; value: RowValue<TNameLink, CNameLink> }[];
     group: unknown[];
   }[Kind];
 
