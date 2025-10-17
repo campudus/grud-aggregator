@@ -103,3 +103,4 @@ crashlytics-build.properties
 coverage/
 .nyc_output/
 dist/
+.grud-aggregator/

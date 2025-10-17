@@ -1,5 +1,5 @@
 {
-  "include": ["src"],
+  "include": ["src", "bin", ".grud-aggregator/structure.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.spec.js"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
@@ -41,6 +41,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "allowJs": true
+    "allowJs": true,
+    "resolveJsonModule": true
   }
 }
