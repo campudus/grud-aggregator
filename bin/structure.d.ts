@@ -110,35 +110,31 @@ declare module "grud-aggregator" {
     values: ColumnName<TName> extends CName ? RowValueTuple<TName, Col> : [RowValue<TName, CName>];
   };
 
-  type LinkedTableName<
-    TName extends TableName = TableName,
-    TLinks = TName,
-    CName = ColumnName<TName>,
-    Col = Column<TName, CName>,
-    LinkCol = Extract<Col, { kind: "link" }>,
-    LinkTab = Extract<Table, { id: LinkCol["toTable"] }>
+  type LinkedTableId<
+    TId = Table["id"],
+    TLinks = never,
+    TCols = Values<Extract<Table, { id: TId }>["columns"]>,
+    TLinkIds = Extract<TCols, { kind: "link" }>["toTable"]
   > = Prettify<
     {
-      [TLink in LinkTab["name"]]: TLink extends TLinks
-        ? TLinks
-        : TLink | LinkedTableName<TLink, TName>;
-    }[LinkTab["name"]]
+      [Id in TLinkIds]: Id extends TLinks ? never : Id | LinkedTableId<Id, TLinks | Id>;
+    }[TLinkIds]
   >;
 
-  type TableEntities<
+  export type TableEntities<
     TName extends TableName = TableName,
-    LTName = LinkedTableName<TName>,
-    Tables = Table<TName | LTName>
+    TId = Table<TName>["id"],
+    LIds = LinkedTableId<TId>
   > = Prettify<{
-    [TId in Tables["id"]]: Omit<Extract<Table, { id: TId }>, "columns"> & {
+    [Id in TId | LIds]: Omit<Extract<Table, { id: Id }>, "columns"> & {
       columns: Tuple<{
-        [Index in Values<Extract<Table, { id: TId }>["columns"]>["index"]]: Extract<
-          Values<Extract<Table, { id: TId }>["columns"]>,
+        [Index in Values<Extract<Table, { id: Id }>["columns"]>["index"]]: Extract<
+          Values<Extract<Table, { id: Id }>["columns"]>,
           { index: Index }
         >;
       }>;
       rows: {
-        [rowId: number]: Row<Extract<Table, { id: TId }>["name"]>;
+        [rowId: number]: Row<Extract<Table, { id: Id }>["name"]>;
       };
     };
   }>;
