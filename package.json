@@ -19,12 +19,12 @@
   },
   "scripts": {
     "build": "tsdown",
-    "prepublish": "npm run build && npm run lint && npm run test",
+    "prepublish": "npm run build && npm run lint && npm run test && npm run test:dts",
     "coverage": "nyc npm run test",
     "lint": "eslint src/",
     "lint:watch": "eslint src/ -w",
     "test": "mocha --colors $(find . -type d -name node_modules -prune -o -name '*.spec.js')",
-    "test:dts": "vitest run **/*.d-spec.ts",
+    "test:dts": "vitest run ./src/index.spec.ts",
     "test:watch": "npm run test -- -w"
   },
   "repository": {

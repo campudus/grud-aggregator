@@ -39,17 +39,17 @@ export type Column<
       }[CName];
     }[TName];
 
-type ColumnKind = Column["kind"];
-type LanguageType = Extract<Column, { languageType: string }>["languageType"];
-type LanguageTypeKey<LType extends LanguageType> = {
+export type ColumnKind = Column["kind"];
+export type LanguageType = Extract<Column, { languageType: string }>["languageType"];
+export type LanguageTypeKey<LType extends LanguageType> = {
   language: Langtag;
   country: CountryCode;
 }[LType];
-type CountryCode = Extract<
+export type CountryCode = Extract<
   Column,
   { kind: "currency" }
 >["countryCodes"][number];
-type Langtag = Table["langtags"][number];
+export type Langtag = Table["langtags"][number];
 type MultilangValue<Key extends Langtag | CountryCode, Value> = Prettify<
   Partial<Record<Key, Value>>
 >;
@@ -85,7 +85,7 @@ type RowValueTuple<
   >;
 }>;
 
-type RowValue<
+export type RowValue<
   TName extends TableName = TableName,
   CName extends ColumnName<TName> = ColumnName<TName>,
   Col = Column<TName, CName>,
@@ -93,6 +93,7 @@ type RowValue<
   IsMultiLang = Col["multilanguage"],
   TNameLink = Extract<Table, { id: Col["toTable"] }>["name"],
   CNameLink = Col["toColumn"]["name"],
+  GroupCols = Col["groups"][number],
   ConcatCols = Col["concats"][number],
   ConstraintFrom = Col["constraint"]["cardinality"]["from"],
   ConstraintTo = Col["constraint"]["cardinality"]["to"]
@@ -106,7 +107,7 @@ type RowValue<
   text: IsMultiLang extends true
     ? MultilangValue<Langtag, string>
     : string | null;
-  richText: IsMultiLang extends true
+  richtext: IsMultiLang extends true
     ? MultilangValue<Langtag, string>
     : string | null;
   numeric: IsMultiLang extends true
@@ -115,14 +116,15 @@ type RowValue<
   currency: IsMultiLang extends true
     ? MultilangValue<CountryCode, number>
     : number | null;
-  date: string;
-  datetime: string;
+  date: string | null;
+  datetime: string | null;
+  status: boolean[];
   attachment: Attachment[];
+  group: RowValueTuple<TName, GroupCols>;
   concat: RowValueTuple<TName, ConcatCols>;
   link: [ConstraintFrom, ConstraintTo] extends [0, 1]
     ? [{ id: number; value: RowValue<TNameLink, CNameLink> }]
     : { id: number; value: RowValue<TNameLink, CNameLink> }[];
-  group: unknown[];
 }[Kind];
 
 export type Row<
@@ -136,8 +138,8 @@ export type Row<
     : [RowValue<TName, CName>];
 };
 
-type LinkedTableId<
-  TId = Table["id"],
+export type LinkedTableId<
+  TId extends Table["id"] = Table["id"],
   TLinks = never,
   TCols = Values<Extract<Table, { id: TId }>["columns"]>,
   TLinkIds = Extract<TCols, { kind: "link" }>["toTable"]
