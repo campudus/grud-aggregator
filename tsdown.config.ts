@@ -3,23 +3,24 @@ import { defineConfig } from "tsdown";
 export default defineConfig([
   {
     entry: [
-      "src/index.ts",
+      "src/index.js",
       // forker and modifyImageProcess need separate entries,
       // because they are called as forked processes and are not imported directly
       "src/forker.js",
       "src/attachments/modifyImageProcess.js"
     ],
+    copy: [{ from: "src/index.d.ts", to: "dist/index.d.ts" }],
     format: "esm",
     outDir: "dist",
     // we dont want bundling, because forked processes rely on folder structure
     unbundle: true,
     // https://tsdown.dev/options/dts#enabling-dts-generation
-    // we build cjs and esm separately, so we only generate dts once for esm
-    dts: true
+    // we write our own types, so we dont need dts generation
+    dts: false
   },
   {
     entry: [
-      "src/index.ts",
+      "src/index.js",
       // forker and modifyImageProcess need separate entries,
       // because they are called as forked processes and are not imported directly
       "src/forker.js",
@@ -30,7 +31,7 @@ export default defineConfig([
     // we dont want bundling, because forked processes rely on folder structure
     unbundle: true,
     // https://tsdown.dev/options/dts#enabling-dts-generation
-    // we build cjs and esm separately, so we only generate dts once for esm
+    // we write our own types, so we dont need dts generation
     dts: false
   }
 ]);

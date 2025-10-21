@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import fs from "node:fs/promises";
 import { parseArgs } from "node:util";
 import path from "node:path";
@@ -55,17 +56,15 @@ for (const table of tables) {
   table.columns = _.keyBy(table.columns, "name");
 }
 
-const formatTS = (content) => prettier.format(content, { tabWidth: 2, parser: "typescript" });
+const formatTS = (content) =>
+  prettier.format(content, { tabWidth: 2, parser: "typescript" });
 
-const tablesContent = await formatTS(
-  `const tables = ${JSON.stringify(_.keyBy(tables, "name"), null, 2)} as const;`
+const structureContent = await formatTS(
+  `declare module "grud-aggregator/structure" {
+    export type Structure = ${JSON.stringify(_.keyBy(tables, "name"), null, 2)};
+  }`
 );
 
-const dirPath = path.join(dir, ".grud-aggregator");
-const structurePathSource = path.join(import.meta.dirname, "structure.d.ts");
-const structurePathTarget = path.join(dirPath, "structure.d.ts");
-const structureTemplate = await fs.readFile(structurePathSource, "utf8");
-const structureContent = await formatTS(`\n${tablesContent}\n\n${structureTemplate}`);
+const structurePath = path.join(dir, "structure.d.ts");
 
-await fs.mkdir(dirPath, { recursive: true });
-await fs.writeFile(structurePathTarget, structureContent);
+await fs.writeFile(structurePath, structureContent);

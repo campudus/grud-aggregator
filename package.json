@@ -5,6 +5,7 @@
   "files": [
     "dist"
   ],
+  "bin": "./src/structure/init.js",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

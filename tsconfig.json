@@ -1,5 +1,5 @@
 {
-  "include": ["src", "bin", ".grud-aggregator/structure.d.ts"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.spec.js"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
@@ -36,7 +36,7 @@
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
