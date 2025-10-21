@@ -202,13 +202,13 @@ declare module "grud-aggregator" {
   > = WithLanguages extends false
     ? Prettify<{
         [T in Tab["name"] | LinkTab["name"]]: {
-          [rowId: number]: Omit<ReferencedRow<TName>, "ID">;
+          [rowId: number]: Omit<ReferencedRow<T>, "ID">;
         };
       }>
     : Prettify<{
         [Lang in Langtag]: {
           [T in Tab["name"] | LinkTab["name"]]: {
-            [rowId: number]: Omit<ReferencedRow<TName, ColumnName<TName>, false>, "ID">;
+            [rowId: number]: Omit<ReferencedRow<T, ColumnName<T>, false>, "ID">;
           };
         };
       }>;
