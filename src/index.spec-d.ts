@@ -372,6 +372,61 @@ describe("Row", () => {
 });
 
 describe("getEntitiesOfTable", () => {
+  it("should handle multiple tables", () => {
+    expectTypeOf<
+      Awaited<
+        ReturnType<typeof getEntitiesOfTable<["material", "manufacturer"]>>
+      >
+    >().toEqualTypeOf<{
+      1: {
+        id: 1;
+        name: "material";
+        langtags: ["de-DE", "en-GB"];
+        columns: [
+          {
+            id: 1;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: true;
+            languageType: "language";
+            index: 0;
+          }
+        ];
+        rows: {
+          [x: number]: {
+            id: number;
+            values: [
+              {
+                "de-DE"?: string;
+                "en-GB"?: string;
+              }
+            ];
+          };
+        };
+      };
+      5: {
+        id: 5;
+        name: "manufacturer";
+        langtags: ["de-DE", "en-GB"];
+        columns: [
+          {
+            id: 1;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: false;
+            index: 0;
+          }
+        ];
+        rows: {
+          [x: number]: {
+            id: number;
+            values: [string | null];
+          };
+        };
+      };
+    }>();
+  });
+
   it("should have correct return type", () => {
     expectTypeOf<
       Awaited<ReturnType<typeof getEntitiesOfTable<"steerTube">>>

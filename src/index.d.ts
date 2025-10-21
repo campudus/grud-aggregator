@@ -227,7 +227,10 @@ type ReferencedRowValue<
   attachment: Attachment<UseMultiLang>[];
   concat: RowValueTuple<TName, ConcatCols>;
   link: [ConstraintFrom, ConstraintTo] extends [0, 1]
-    ? [ReferencedRow<TNameLink, ColumnName<TNameLink, UseMultiLang>> | undefined]
+    ? [
+        | ReferencedRow<TNameLink, ColumnName<TNameLink, UseMultiLang>>
+        | undefined
+      ]
     : ReferencedRow<TNameLink, ColumnName<TNameLink>, UseMultiLang>[];
   group: unknown[];
 }[Kind];
@@ -254,7 +257,7 @@ export type TableEntitiesReferenced<
       };
     }>;
 
-export function getEntitiesOfTable<TName extends TableName>(
+export function getEntitiesOfTable<TName extends TableName | TableName[]>(
   tableNameOrNames: TName,
   options: {
     disableFollow?: string[][];
@@ -265,8 +268,10 @@ export function getEntitiesOfTable<TName extends TableName>(
     headers?: Record<string, string>;
     timeout?: number;
   }
-): Promise<TableEntities<TName>>;
+): Promise<TableEntities<TName extends TableName[] ? TName[number] : TName>>;
 
 export function referencer<WithLanguages extends boolean = false>({
   withLanguages: WithLanguages
-}): (data: TableEntities) => Promise<TableEntitiesReferenced<TableName, WithLanguages>>;
+}): (
+  data: TableEntities
+) => Promise<TableEntitiesReferenced<TableName, WithLanguages>>;
