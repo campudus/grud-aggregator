@@ -230,10 +230,11 @@ describe("RowValue", () => {
     expectTypeOf<RowValue<"engine", "ID">>().toEqualTypeOf<
       [
         [
-          {
-            id: number;
-            value: string | null;
-          }
+          | {
+              id: number;
+              value: string | null;
+            }
+          | undefined
         ],
         {
           "de-DE"?: string | undefined;
@@ -247,10 +248,11 @@ describe("RowValue", () => {
   it("should match correct value for link with constraint", () => {
     expectTypeOf<RowValue<"engine", "manufacturer">>().toEqualTypeOf<
       [
-        {
-          id: number;
-          value: string | null;
-        }
+        | {
+            id: number;
+            value: string | null;
+          }
+        | undefined
       ]
     >();
   });
@@ -274,23 +276,25 @@ describe("RowValue", () => {
     expectTypeOf<RowValue<"handlebar", "ID">>().toEqualTypeOf<
       [
         [
-          {
-            id: number;
-            value: string | null;
-          }
+          | {
+              id: number;
+              value: string | null;
+            }
+          | undefined
         ],
         {
           "de-DE"?: string | undefined;
           "en-GB"?: string | undefined;
         },
         [
-          {
-            id: number;
-            value: {
-              "de-DE"?: string | undefined;
-              "en-GB"?: string | undefined;
-            };
-          }
+          | {
+              id: number;
+              value: {
+                "de-DE"?: string | undefined;
+                "en-GB"?: string | undefined;
+              };
+            }
+          | undefined
         ]
       ]
     >();
@@ -304,10 +308,11 @@ describe("Row", () => {
       values: [
         [
           [
-            {
-              id: number;
-              value: string | null;
-            }
+            | {
+                id: number;
+                value: string | null;
+              }
+            | undefined
           ],
           {
             "de-DE"?: string | undefined;
@@ -315,23 +320,25 @@ describe("Row", () => {
           }
         ],
         [
-          {
-            id: number;
-            value: string | null;
-          }
+          | {
+              id: number;
+              value: string | null;
+            }
+          | undefined
         ],
         {
           "de-DE"?: string | undefined;
           "en-GB"?: string | undefined;
         },
         [
-          {
-            id: number;
-            value: {
-              "de-DE"?: string | undefined;
-              "en-GB"?: string | undefined;
-            };
-          }
+          | {
+              id: number;
+              value: {
+                "de-DE"?: string | undefined;
+                "en-GB"?: string | undefined;
+              };
+            }
+          | undefined
         ]
       ];
     }>();
@@ -347,16 +354,17 @@ describe("Row", () => {
       id: number;
       values: [
         [
-          {
-            id: number;
-            value: [
-              {
-                "de-DE"?: string | undefined;
-                "en-GB"?: string | undefined;
-              },
-              string | null
-            ];
-          }
+          | {
+              id: number;
+              value: [
+                {
+                  "de-DE"?: string | undefined;
+                  "en-GB"?: string | undefined;
+                },
+                string | null
+              ];
+            }
+          | undefined
         ]
       ];
     }>();
@@ -442,13 +450,14 @@ describe("getEntitiesOfTable", () => {
                 "en-GB"?: string | undefined;
               },
               [
-                {
-                  id: number;
-                  value: {
-                    "de-DE"?: string | undefined;
-                    "en-GB"?: string | undefined;
-                  };
-                }
+                | {
+                    id: number;
+                    value: {
+                      "de-DE"?: string | undefined;
+                      "en-GB"?: string | undefined;
+                    };
+                  }
+                | undefined
               ]
             ];
           };

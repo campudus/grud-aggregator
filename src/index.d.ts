@@ -19,8 +19,12 @@ type Tuple<Obj, Index = 0, T = []> = Index extends keyof Obj
 
 // Definitions
 export type TableName = Prettify<keyof Structure>;
-export type Table<TName extends TableName = TableName> = Prettify<Structure[TName]>;
-export type ColumnName<TName extends TableName = TableName> = Prettify<keyof Table<TName>["columns"]>;
+export type Table<TName extends TableName = TableName> = Prettify<
+  Structure[TName]
+>;
+export type ColumnName<TName extends TableName = TableName> = Prettify<
+  keyof Table<TName>["columns"]
+>;
 
 type AllColumns = {
   [TName in TableName]: {
@@ -40,7 +44,10 @@ export type Column<
     }[TName];
 
 export type ColumnKind = Column["kind"];
-export type LanguageType = Extract<Column, { languageType: string }>["languageType"];
+export type LanguageType = Extract<
+  Column,
+  { languageType: string }
+>["languageType"];
 export type LanguageTypeKey<LType extends LanguageType> = {
   language: Langtag;
   country: CountryCode;
@@ -123,7 +130,7 @@ export type RowValue<
   group: RowValueTuple<TName, GroupCols>;
   concat: RowValueTuple<TName, ConcatCols>;
   link: [ConstraintFrom, ConstraintTo] extends [0, 1]
-    ? [{ id: number; value: RowValue<TNameLink, CNameLink> }]
+    ? [{ id: number; value: RowValue<TNameLink, CNameLink> } | undefined]
     : { id: number; value: RowValue<TNameLink, CNameLink> }[];
 }[Kind];
 
@@ -220,7 +227,7 @@ type ReferencedRowValue<
   attachment: Attachment<UseMultiLang>[];
   concat: RowValueTuple<TName, ConcatCols>;
   link: [ConstraintFrom, ConstraintTo] extends [0, 1]
-    ? [ReferencedRow<TNameLink, ColumnName<TNameLink, UseMultiLang>>]
+    ? [ReferencedRow<TNameLink, ColumnName<TNameLink, UseMultiLang>> | undefined]
     : ReferencedRow<TNameLink, ColumnName<TNameLink>, UseMultiLang>[];
   group: unknown[];
 }[Kind];
@@ -259,3 +266,7 @@ export function getEntitiesOfTable<TName extends TableName>(
     timeout?: number;
   }
 ): Promise<TableEntities<TName>>;
+
+export function referencer<WithLanguages extends boolean = false>({
+  withLanguages: WithLanguages
+}): (data: TableEntities) => Promise<TableEntitiesReferenced<TableName, WithLanguages>>;

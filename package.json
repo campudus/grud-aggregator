@@ -14,9 +14,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   },
   "scripts": {
@@ -26,7 +26,7 @@
     "lint": "eslint src/",
     "lint:watch": "eslint src/ -w",
     "test": "mocha --colors $(find . -type d -name node_modules -prune -o -name '*.spec.js')",
-    "test:dts": "vitest run ./src/index.spec.ts",
+    "test:dts": "vitest run ./src/index.spec-d.ts",
     "test:watch": "npm run test -- -w"
   },
   "repository": {
@@ -55,7 +55,7 @@
     "tmp": "0.0.28",
     "tsdown": "^0.15.7",
     "typescript": "5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "3.2.4"
   },
   "dependencies": {
     "fs-extra": "0.30.0",
