@@ -24,6 +24,7 @@
     "lint": "eslint src/",
     "lint:watch": "eslint src/ -w",
     "test": "mocha --colors $(find . -type d -name node_modules -prune -o -name '*.spec.js')",
+    "test:dts": "vitest run **/*.d-spec.ts",
     "test:watch": "npm run test -- -w"
   },
   "repository": {
@@ -40,9 +41,9 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/campudus/grud-aggregator#readme",
   "devDependencies": {
-    "@typescript-eslint/parser": "8.46.1",
-    "@typescript-eslint/eslint-plugin": "8.46.1",
     "@types/node": "24.7.2",
+    "@typescript-eslint/eslint-plugin": "8.46.1",
+    "@typescript-eslint/parser": "8.46.1",
     "eslint": "8.57.1",
     "express": "4.14.0",
     "mocha": "11.7.4",
@@ -51,7 +52,8 @@
     "prettier": "3.6.2",
     "tmp": "0.0.28",
     "tsdown": "^0.15.7",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "fs-extra": "0.30.0",
