@@ -6,65 +6,74 @@ import prettier from "prettier";
 import _ from "lodash";
 
 const options = {
+  plain: { type: "boolean" },
   url: { type: "string" },
   dir: { type: "string" }
 };
 const { values } = parseArgs({ options });
-const { url, dir = "./" } = values;
+const { plain = false, url, dir = "./" } = values;
 
-if (!url) {
-  throw new Error("argument 'url' is missing");
-}
-
-const structureResponse = await fetch(`${url}/structure`);
-const { tables } = await structureResponse.json();
-
-// cleanup structure
-const cleanColumn = (col, columnIndex) => {
-  if (_.isNumber(columnIndex)) {
-    col.index = columnIndex;
+if (plain) {
+  const structureDefaultSource = path.join(import.meta.dirname, "structure.default.d.ts");
+  const structureDefaultTarget = path.join(dir, "structure.default.d.ts");
+  
+  await fs.copyFile(structureDefaultSource, structureDefaultTarget);
+} else {
+  if (!url) {
+    throw new Error("argument 'url' is missing");
   }
 
-  delete col.displayName;
-  delete col.ordering;
-  delete col.identifier;
-  delete col.description;
-  delete col.attributes;
-  delete col.separator;
-  delete col.hidden;
-
-  if (col.toColumn) {
-    cleanColumn(col.toColumn);
+  const structureResponse = await fetch(`${url}/structure`);
+  const { tables } = await structureResponse.json();
+  
+  // cleanup structure
+  const cleanColumn = (col, columnIndex) => {
+    if (_.isNumber(columnIndex)) {
+      col.index = columnIndex;
+    }
+  
+    delete col.displayName;
+    delete col.ordering;
+    delete col.identifier;
+    delete col.description;
+    delete col.attributes;
+    delete col.separator;
+    delete col.hidden;
+  
+    if (col.toColumn) {
+      cleanColumn(col.toColumn);
+    }
+  
+    col.concats?.forEach(cleanColumn);
+    col.groups?.forEach(cleanColumn);
+  };
+  
+  for (const table of tables) {
+    delete table.displayName;
+    delete table.description;
+    delete table.attributes;
+    delete table.group;
+    delete table.hidden;
+  
+    table.columns?.forEach(cleanColumn);
   }
-
-  col.concats?.forEach(cleanColumn);
-  col.groups?.forEach(cleanColumn);
-};
-
-for (const table of tables) {
-  delete table.displayName;
-  delete table.description;
-  delete table.attributes;
-  delete table.group;
-  delete table.hidden;
-
-  table.columns?.forEach(cleanColumn);
+  
+  // format
+  for (const table of tables) {
+    table.columns = _.keyBy(table.columns, "name");
+  }
+  
+  const formatTS = (content) =>
+    prettier.format(content, { tabWidth: 2, parser: "typescript" });
+  
+  const structureContent = await formatTS(
+    `declare module "grud-aggregator/structure" {
+      export type Structure = ${JSON.stringify(_.keyBy(tables, "name"), null, 2)};
+    }`
+  );
+  
+  const structurePath = path.join(dir, "structure.d.ts");
+  
+  await fs.writeFile(structurePath, structureContent);
 }
 
-// format
-for (const table of tables) {
-  table.columns = _.keyBy(table.columns, "name");
-}
-
-const formatTS = (content) =>
-  prettier.format(content, { tabWidth: 2, parser: "typescript" });
-
-const structureContent = await formatTS(
-  `declare module "grud-aggregator/structure" {
-    export type Structure = ${JSON.stringify(_.keyBy(tables, "name"), null, 2)};
-  }`
-);
-
-const structurePath = path.join(dir, "structure.d.ts");
-
-await fs.writeFile(structurePath, structureContent);

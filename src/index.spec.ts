@@ -1,7 +1,7 @@
 import { describe, it, expectTypeOf } from "vitest";
 
 // initialize structure of demo grud
-import "./structure/structure.d.ts";
+import "./structure/structure.demo.d.ts";
 import type {
   TableName,
   ColumnName,
