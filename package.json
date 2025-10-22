@@ -17,6 +17,16 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./entities": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/entities.js",
+      "require": "./dist/entities.cjs"
+    },
+    "./referencer": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/referencer/referencer.js",
+      "require": "./dist/referencer/referencer.cjs"
     }
   },
   "scripts": {
