@@ -41,10 +41,10 @@ describe("ColumnName", () => {
 
 describe("Column", () => {
   it("should contain all Columns of Table if only given TableName", () => {
-    expectTypeOf<Column<"brakeKind">>().toEqualTypeOf<
+    expectTypeOf<Column<"color">>().toEqualTypeOf<
       | {
           id: 1;
-          name: "identifier";
+          name: "name";
           kind: "shorttext";
           multilanguage: true;
           languageType: "language";
@@ -52,7 +52,7 @@ describe("Column", () => {
         }
       | {
           id: 2;
-          name: "bidexCode";
+          name: "hexcode";
           kind: "shorttext";
           multilanguage: false;
           index: 1;
@@ -75,7 +75,9 @@ describe("Column", () => {
 describe("Langtag", () => {
   it("should match all Langtags", () => {
     expectTypeOf<Langtag>().toBeString();
-    expectTypeOf<Langtag>().toEqualTypeOf<"de-DE" | "en-GB">();
+    expectTypeOf<Langtag>().toEqualTypeOf<
+      "de" | "en" | "fr" | "es" | "it" | "hr"
+    >();
   });
 });
 
@@ -99,7 +101,7 @@ describe("LanguageTypeKey", () => {
   it("should match Langtag for key 'language'", () => {
     expectTypeOf<LanguageTypeKey<"language">>().toBeString();
     expectTypeOf<LanguageTypeKey<"language">>().toEqualTypeOf<
-      "de-DE" | "en-GB"
+      "de" | "en" | "fr" | "es" | "it" | "hr"
     >();
   });
   it("should match CountryCode for key 'country'", () => {
@@ -112,10 +114,10 @@ describe("LanguageTypeKey", () => {
 
 describe("LinkedTableId", () => {
   it("should find all ids of recursively linked tables", () => {
-    // id of frame table is 91
-    type FrameTableId = 91;
+    // id of frame table is 93
+    type FrameTableId = 93;
     expectTypeOf<LinkedTableId<FrameTableId>>().toEqualTypeOf<
-      1 | 5 | 15 | 46 | 84 | 85 | 86 | 87 | 88 | 89
+      1 | 5 | 15 | 47 | 86 | 87 | 88 | 89 | 90 | 91
     >();
   });
 });
@@ -131,12 +133,20 @@ describe("RowValue", () => {
 
   it("should match correct value for text, shorttext, richtext with multilanguage", () => {
     expectTypeOf<RowValue<"material", "identifier">>().toEqualTypeOf<{
-      "de-DE"?: string | undefined;
-      "en-GB"?: string | undefined;
+      de?: string;
+      en?: string;
+      fr?: string;
+      es?: string;
+      it?: string;
+      hr?: string;
     }>();
     expectTypeOf<RowValue<"bikeModel", "description">>().toEqualTypeOf<{
-      "de-DE"?: string | undefined;
-      "en-GB"?: string | undefined;
+      de?: string;
+      en?: string;
+      fr?: string;
+      es?: string;
+      it?: string;
+      hr?: string;
     }>();
     // TODO: add kind "richtext" to demo structure
   });
@@ -179,9 +189,6 @@ describe("RowValue", () => {
   });
 
   it("should match correct value for date and datetime", () => {
-    expectTypeOf<RowValue<"bikeModel", "publishDate">>().toEqualTypeOf<
-      string | null
-    >();
     // TODO: add kind "date" to demo structure
   });
 
@@ -194,31 +201,55 @@ describe("RowValue", () => {
       {
         ordering: number;
         url: {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         };
         uuid: string;
         folder: number | null;
         folders: number[];
         title: {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         };
         description: {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         };
         internalName: {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         };
         externalName: {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         };
         mimeType: {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         };
         createdAt: string;
         updatedAt: string;
@@ -237,8 +268,12 @@ describe("RowValue", () => {
           | undefined
         ],
         {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         },
         number | null
       ]
@@ -262,8 +297,12 @@ describe("RowValue", () => {
       {
         id: number;
         value: {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         };
       }[]
     >();
@@ -272,31 +311,6 @@ describe("RowValue", () => {
   it("should match correct value for group", () => {
     expectTypeOf<RowValue<"frame", "packSize">>().toEqualTypeOf<
       [number | null, number | null, number | null]
-    >();
-    expectTypeOf<RowValue<"handlebar", "ID">>().toEqualTypeOf<
-      [
-        [
-          | {
-              id: number;
-              value: string | null;
-            }
-          | undefined
-        ],
-        {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
-        },
-        [
-          | {
-              id: number;
-              value: {
-                "de-DE"?: string | undefined;
-                "en-GB"?: string | undefined;
-              };
-            }
-          | undefined
-        ]
-      ]
     >();
   });
 });
@@ -315,8 +329,12 @@ describe("Row", () => {
             | undefined
           ],
           {
-            "de-DE"?: string | undefined;
-            "en-GB"?: string | undefined;
+            de?: string;
+            en?: string;
+            fr?: string;
+            es?: string;
+            it?: string;
+            hr?: string;
           }
         ],
         [
@@ -327,15 +345,23 @@ describe("Row", () => {
           | undefined
         ],
         {
-          "de-DE"?: string | undefined;
-          "en-GB"?: string | undefined;
+          de?: string;
+          en?: string;
+          fr?: string;
+          es?: string;
+          it?: string;
+          hr?: string;
         },
         [
           | {
               id: number;
               value: {
-                "de-DE"?: string | undefined;
-                "en-GB"?: string | undefined;
+                de?: string;
+                en?: string;
+                fr?: string;
+                es?: string;
+                it?: string;
+                hr?: string;
               };
             }
           | undefined
@@ -356,13 +382,14 @@ describe("Row", () => {
         [
           | {
               id: number;
-              value: [
-                {
-                  "de-DE"?: string | undefined;
-                  "en-GB"?: string | undefined;
-                },
-                string | null
-              ];
+              value: {
+                de?: string;
+                en?: string;
+                fr?: string;
+                es?: string;
+                it?: string;
+                hr?: string;
+              };
             }
           | undefined
         ]
@@ -381,7 +408,7 @@ describe("getEntitiesOfTable", () => {
       1: {
         id: 1;
         name: "material";
-        langtags: ["de-DE", "en-GB"];
+        langtags: ["de", "en", "fr", "es", "it", "hr"];
         columns: [
           {
             id: 1;
@@ -397,8 +424,12 @@ describe("getEntitiesOfTable", () => {
             id: number;
             values: [
               {
-                "de-DE"?: string;
-                "en-GB"?: string;
+                de?: string;
+                en?: string;
+                fr?: string;
+                es?: string;
+                it?: string;
+                hr?: string;
               }
             ];
           };
@@ -407,7 +438,7 @@ describe("getEntitiesOfTable", () => {
       5: {
         id: 5;
         name: "manufacturer";
-        langtags: ["de-DE", "en-GB"];
+        langtags: ["de", "en", "fr", "es", "it", "hr"];
         columns: [
           {
             id: 1;
@@ -434,7 +465,7 @@ describe("getEntitiesOfTable", () => {
       1: {
         id: 1;
         name: "material";
-        langtags: ["de-DE", "en-GB"];
+        langtags: ["de", "en", "fr", "es", "it", "hr"];
         columns: [
           {
             id: 1;
@@ -450,8 +481,12 @@ describe("getEntitiesOfTable", () => {
             id: number;
             values: [
               {
-                "de-DE"?: string | undefined;
-                "en-GB"?: string | undefined;
+                de?: string;
+                en?: string;
+                fr?: string;
+                es?: string;
+                it?: string;
+                hr?: string;
               }
             ];
           };
@@ -460,7 +495,7 @@ describe("getEntitiesOfTable", () => {
       14: {
         id: 14;
         name: "steerTube";
-        langtags: ["de-DE", "en-GB"];
+        langtags: ["de", "en", "fr", "es", "it", "hr"];
         columns: [
           {
             id: 1;
@@ -501,15 +536,23 @@ describe("getEntitiesOfTable", () => {
             id: number;
             values: [
               {
-                "de-DE"?: string | undefined;
-                "en-GB"?: string | undefined;
+                de?: string;
+                en?: string;
+                fr?: string;
+                es?: string;
+                it?: string;
+                hr?: string;
               },
               [
                 | {
                     id: number;
                     value: {
-                      "de-DE"?: string | undefined;
-                      "en-GB"?: string | undefined;
+                      de?: string;
+                      en?: string;
+                      fr?: string;
+                      es?: string;
+                      it?: string;
+                      hr?: string;
                     };
                   }
                 | undefined

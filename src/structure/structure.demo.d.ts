@@ -1,10 +1,9 @@
-// override with init.js
 declare module "grud-aggregator/structure" {
   export type Structure = {
     material: {
       id: 1;
       name: "material";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -19,56 +18,29 @@ declare module "grud-aggregator/structure" {
     color: {
       id: 2;
       name: "color";
-      langtags: ["de-DE", "en-GB"];
-      concatFormatPattern: "{{1}} | {{2}}";
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
-        ID: {
-          id: 0;
-          name: "ID";
-          kind: "concat";
-          multilanguage: true;
-          languageType: "language";
-          concats: [
-            {
-              id: 1;
-              name: "name";
-              kind: "shorttext";
-              multilanguage: true;
-              languageType: "language";
-              index: 0;
-            },
-            {
-              id: 2;
-              name: "hexcode";
-              kind: "shorttext";
-              multilanguage: false;
-              index: 1;
-            },
-          ];
-          formatPattern: "{{1}} | {{2}}";
-          index: 0;
-        };
         name: {
           id: 1;
           name: "name";
           kind: "shorttext";
           multilanguage: true;
           languageType: "language";
-          index: 1;
+          index: 0;
         };
         hexcode: {
           id: 2;
           name: "hexcode";
           kind: "shorttext";
           multilanguage: false;
-          index: 2;
+          index: 1;
         };
       };
     };
     glossGrade: {
       id: 3;
       name: "glossGrade";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -83,7 +55,7 @@ declare module "grud-aggregator/structure" {
     marketingColor: {
       id: 4;
       name: "marketingColor";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -144,29 +116,11 @@ declare module "grud-aggregator/structure" {
           languageType: "language";
           toTable: 2;
           toColumn: {
-            id: 0;
-            name: "ID";
-            kind: "concat";
+            id: 1;
+            name: "name";
+            kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            concats: [
-              {
-                id: 1;
-                name: "name";
-                kind: "shorttext";
-                multilanguage: true;
-                languageType: "language";
-                index: 0;
-              },
-              {
-                id: 2;
-                name: "hexcode";
-                kind: "shorttext";
-                multilanguage: false;
-                index: 1;
-              },
-            ];
-            formatPattern: "{{1}} | {{2}}";
           };
           constraint: {
             cardinality: {
@@ -187,29 +141,11 @@ declare module "grud-aggregator/structure" {
           languageType: "language";
           toTable: 2;
           toColumn: {
-            id: 0;
-            name: "ID";
-            kind: "concat";
+            id: 1;
+            name: "name";
+            kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            concats: [
-              {
-                id: 1;
-                name: "name";
-                kind: "shorttext";
-                multilanguage: true;
-                languageType: "language";
-                index: 0;
-              },
-              {
-                id: 2;
-                name: "hexcode";
-                kind: "shorttext";
-                multilanguage: false;
-                index: 1;
-              },
-            ];
-            formatPattern: "{{1}} | {{2}}";
           };
           constraint: {
             cardinality: {
@@ -230,29 +166,11 @@ declare module "grud-aggregator/structure" {
           languageType: "language";
           toTable: 2;
           toColumn: {
-            id: 0;
-            name: "ID";
-            kind: "concat";
+            id: 1;
+            name: "name";
+            kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            concats: [
-              {
-                id: 1;
-                name: "name";
-                kind: "shorttext";
-                multilanguage: true;
-                languageType: "language";
-                index: 0;
-              },
-              {
-                id: 2;
-                name: "hexcode";
-                kind: "shorttext";
-                multilanguage: false;
-                index: 1;
-              },
-            ];
-            formatPattern: "{{1}} | {{2}}";
           };
           constraint: {
             cardinality: {
@@ -295,7 +213,7 @@ declare module "grud-aggregator/structure" {
     manufacturer: {
       id: 5;
       name: "manufacturer";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -309,7 +227,7 @@ declare module "grud-aggregator/structure" {
     engine: {
       id: 6;
       name: "engine";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -423,7 +341,7 @@ declare module "grud-aggregator/structure" {
     headSet: {
       id: 7;
       name: "headSet";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -527,7 +445,7 @@ declare module "grud-aggregator/structure" {
     connectivity: {
       id: 8;
       name: "connectivity";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -542,7 +460,7 @@ declare module "grud-aggregator/structure" {
     displayColor: {
       id: 9;
       name: "displayColor";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -557,7 +475,7 @@ declare module "grud-aggregator/structure" {
     display: {
       id: 10;
       name: "display";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -725,7 +643,7 @@ declare module "grud-aggregator/structure" {
     lockout: {
       id: 11;
       name: "lockout";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -739,7 +657,7 @@ declare module "grud-aggregator/structure" {
     springMedium: {
       id: 12;
       name: "springMedium";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -754,7 +672,7 @@ declare module "grud-aggregator/structure" {
     axle: {
       id: 13;
       name: "axle";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -769,7 +687,7 @@ declare module "grud-aggregator/structure" {
     steerTube: {
       id: 14;
       name: "steerTube";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -809,7 +727,7 @@ declare module "grud-aggregator/structure" {
     wheelSize: {
       id: 15;
       name: "wheelSize";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -853,7 +771,7 @@ declare module "grud-aggregator/structure" {
     fork: {
       id: 16;
       name: "fork";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -1069,7 +987,7 @@ declare module "grud-aggregator/structure" {
     damper: {
       id: 17;
       name: "damper";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -1221,7 +1139,7 @@ declare module "grud-aggregator/structure" {
     chainGuide: {
       id: 18;
       name: "chainGuide";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -1300,7 +1218,7 @@ declare module "grud-aggregator/structure" {
     chainGuard: {
       id: 19;
       name: "chainGuard";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -1387,7 +1305,7 @@ declare module "grud-aggregator/structure" {
     chain: {
       id: 20;
       name: "chain";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -1466,7 +1384,7 @@ declare module "grud-aggregator/structure" {
     assemblySide: {
       id: 21;
       name: "assemblySide";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -1481,7 +1399,7 @@ declare module "grud-aggregator/structure" {
     gripWidth: {
       id: 22;
       name: "gripWidth";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -1496,7 +1414,7 @@ declare module "grud-aggregator/structure" {
     brakeLever: {
       id: 23;
       name: "brakeLever";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -1774,7 +1692,7 @@ declare module "grud-aggregator/structure" {
     brakeKind: {
       id: 24;
       name: "brakeKind";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -1784,19 +1702,12 @@ declare module "grud-aggregator/structure" {
           languageType: "language";
           index: 0;
         };
-        bidexCode: {
-          id: 2;
-          name: "bidexCode";
-          kind: "shorttext";
-          multilanguage: false;
-          index: 1;
-        };
       };
     };
     brake: {
       id: 25;
       name: "brake";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -1884,6 +1795,15 @@ declare module "grud-aggregator/structure" {
             multilanguage: true;
             languageType: "language";
           };
+          constraint: {
+            cardinality: {
+              from: 0;
+              to: 1;
+            };
+            deleteCascade: false;
+            archiveCascade: false;
+            finalCascade: false;
+          };
           index: 3;
         };
       };
@@ -1891,7 +1811,7 @@ declare module "grud-aggregator/structure" {
     discBrakeSystem: {
       id: 26;
       name: "discBrakeSystem";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -1906,7 +1826,7 @@ declare module "grud-aggregator/structure" {
     coolingMechanism: {
       id: 27;
       name: "coolingMechanism";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -1921,7 +1841,7 @@ declare module "grud-aggregator/structure" {
     brakeDisc: {
       id: 28;
       name: "brakeDisc";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -2082,7 +2002,7 @@ declare module "grud-aggregator/structure" {
     gearLeverType: {
       id: 29;
       name: "gearLeverType";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -2097,7 +2017,7 @@ declare module "grud-aggregator/structure" {
     gearLever: {
       id: 30;
       name: "gearLever";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -2208,7 +2128,7 @@ declare module "grud-aggregator/structure" {
     derailleurType: {
       id: 31;
       name: "derailleurType";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -2223,7 +2143,7 @@ declare module "grud-aggregator/structure" {
     derailleur: {
       id: 32;
       name: "derailleur";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -2359,7 +2279,7 @@ declare module "grud-aggregator/structure" {
     rearDerailleur: {
       id: 33;
       name: "rearDerailleur";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -2445,7 +2365,7 @@ declare module "grud-aggregator/structure" {
     gearHub: {
       id: 34;
       name: "gearHub";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -2531,7 +2451,7 @@ declare module "grud-aggregator/structure" {
     cassette: {
       id: 35;
       name: "cassette";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -2698,7 +2618,7 @@ declare module "grud-aggregator/structure" {
     sprocket: {
       id: 36;
       name: "sprocket";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -2851,7 +2771,7 @@ declare module "grud-aggregator/structure" {
     crankset: {
       id: 37;
       name: "crankset";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -3062,10 +2982,223 @@ declare module "grud-aggregator/structure" {
         };
       };
     };
-    chainRing: {
+    spider: {
       id: 38;
+      name: "spider";
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
+      columns: {
+        ID: {
+          id: 0;
+          name: "ID";
+          kind: "concat";
+          multilanguage: true;
+          languageType: "language";
+          concats: [
+            {
+              id: 1;
+              name: "manufacturer";
+              kind: "link";
+              multilanguage: false;
+              toTable: 5;
+              toColumn: {
+                id: 1;
+                name: "identifier";
+                kind: "shorttext";
+                multilanguage: false;
+              };
+              constraint: {
+                cardinality: {
+                  from: 0;
+                  to: 1;
+                };
+                deleteCascade: false;
+                archiveCascade: false;
+                finalCascade: false;
+              };
+              index: 0;
+            },
+            {
+              id: 2;
+              name: "identifier";
+              kind: "shorttext";
+              multilanguage: true;
+              languageType: "language";
+              index: 1;
+            },
+            {
+              id: 3;
+              name: "offset";
+              kind: "numeric";
+              multilanguage: false;
+              index: 2;
+            },
+            {
+              id: 4;
+              name: "marketingColor";
+              kind: "link";
+              multilanguage: true;
+              languageType: "language";
+              toTable: 4;
+              toColumn: {
+                id: 0;
+                name: "ID";
+                kind: "concat";
+                multilanguage: true;
+                languageType: "language";
+                concats: [
+                  {
+                    id: 1;
+                    name: "identifier";
+                    kind: "shorttext";
+                    multilanguage: true;
+                    languageType: "language";
+                    index: 0;
+                  },
+                  {
+                    id: 5;
+                    name: "glossGrade";
+                    kind: "link";
+                    multilanguage: true;
+                    languageType: "language";
+                    toTable: 3;
+                    toColumn: {
+                      id: 1;
+                      name: "identifier";
+                      kind: "shorttext";
+                      multilanguage: true;
+                      languageType: "language";
+                    };
+                    constraint: {
+                      cardinality: {
+                        from: 0;
+                        to: 1;
+                      };
+                      deleteCascade: false;
+                      archiveCascade: false;
+                      finalCascade: false;
+                    };
+                    index: 1;
+                  },
+                ];
+              };
+              constraint: {
+                cardinality: {
+                  from: 0;
+                  to: 1;
+                };
+                deleteCascade: false;
+                archiveCascade: false;
+                finalCascade: false;
+              };
+              index: 3;
+            },
+          ];
+          index: 0;
+        };
+        manufacturer: {
+          id: 1;
+          name: "manufacturer";
+          kind: "link";
+          multilanguage: false;
+          toTable: 5;
+          toColumn: {
+            id: 1;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: false;
+          };
+          constraint: {
+            cardinality: {
+              from: 0;
+              to: 1;
+            };
+            deleteCascade: false;
+            archiveCascade: false;
+            finalCascade: false;
+          };
+          index: 1;
+        };
+        identifier: {
+          id: 2;
+          name: "identifier";
+          kind: "shorttext";
+          multilanguage: true;
+          languageType: "language";
+          index: 2;
+        };
+        offset: {
+          id: 3;
+          name: "offset";
+          kind: "numeric";
+          multilanguage: false;
+          index: 3;
+        };
+        marketingColor: {
+          id: 4;
+          name: "marketingColor";
+          kind: "link";
+          multilanguage: true;
+          languageType: "language";
+          toTable: 4;
+          toColumn: {
+            id: 0;
+            name: "ID";
+            kind: "concat";
+            multilanguage: true;
+            languageType: "language";
+            concats: [
+              {
+                id: 1;
+                name: "identifier";
+                kind: "shorttext";
+                multilanguage: true;
+                languageType: "language";
+                index: 0;
+              },
+              {
+                id: 5;
+                name: "glossGrade";
+                kind: "link";
+                multilanguage: true;
+                languageType: "language";
+                toTable: 3;
+                toColumn: {
+                  id: 1;
+                  name: "identifier";
+                  kind: "shorttext";
+                  multilanguage: true;
+                  languageType: "language";
+                };
+                constraint: {
+                  cardinality: {
+                    from: 0;
+                    to: 1;
+                  };
+                  deleteCascade: false;
+                  archiveCascade: false;
+                  finalCascade: false;
+                };
+                index: 1;
+              },
+            ];
+          };
+          constraint: {
+            cardinality: {
+              from: 0;
+              to: 1;
+            };
+            deleteCascade: false;
+            archiveCascade: false;
+            finalCascade: false;
+          };
+          index: 4;
+        };
+      };
+    };
+    chainRing: {
+      id: 39;
       name: "chainRing";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -3153,19 +3286,119 @@ declare module "grud-aggregator/structure" {
           multilanguage: false;
           index: 4;
         };
-        material: {
+        spider: {
           id: 5;
-          name: "material";
+          name: "spider";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 1;
+          toTable: 38;
           toColumn: {
-            id: 1;
-            name: "identifier";
-            kind: "shorttext";
+            id: 0;
+            name: "ID";
+            kind: "concat";
             multilanguage: true;
             languageType: "language";
+            concats: [
+              {
+                id: 1;
+                name: "manufacturer";
+                kind: "link";
+                multilanguage: false;
+                toTable: 5;
+                toColumn: {
+                  id: 1;
+                  name: "identifier";
+                  kind: "shorttext";
+                  multilanguage: false;
+                };
+                constraint: {
+                  cardinality: {
+                    from: 0;
+                    to: 1;
+                  };
+                  deleteCascade: false;
+                  archiveCascade: false;
+                  finalCascade: false;
+                };
+                index: 0;
+              },
+              {
+                id: 2;
+                name: "identifier";
+                kind: "shorttext";
+                multilanguage: true;
+                languageType: "language";
+                index: 1;
+              },
+              {
+                id: 3;
+                name: "offset";
+                kind: "numeric";
+                multilanguage: false;
+                index: 2;
+              },
+              {
+                id: 4;
+                name: "marketingColor";
+                kind: "link";
+                multilanguage: true;
+                languageType: "language";
+                toTable: 4;
+                toColumn: {
+                  id: 0;
+                  name: "ID";
+                  kind: "concat";
+                  multilanguage: true;
+                  languageType: "language";
+                  concats: [
+                    {
+                      id: 1;
+                      name: "identifier";
+                      kind: "shorttext";
+                      multilanguage: true;
+                      languageType: "language";
+                      index: 0;
+                    },
+                    {
+                      id: 5;
+                      name: "glossGrade";
+                      kind: "link";
+                      multilanguage: true;
+                      languageType: "language";
+                      toTable: 3;
+                      toColumn: {
+                        id: 1;
+                        name: "identifier";
+                        kind: "shorttext";
+                        multilanguage: true;
+                        languageType: "language";
+                      };
+                      constraint: {
+                        cardinality: {
+                          from: 0;
+                          to: 1;
+                        };
+                        deleteCascade: false;
+                        archiveCascade: false;
+                        finalCascade: false;
+                      };
+                      index: 1;
+                    },
+                  ];
+                };
+                constraint: {
+                  cardinality: {
+                    from: 0;
+                    to: 1;
+                  };
+                  deleteCascade: false;
+                  archiveCascade: false;
+                  finalCascade: false;
+                };
+                index: 3;
+              },
+            ];
           };
           constraint: {
             cardinality: {
@@ -3241,9 +3474,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     crankAdmission: {
-      id: 39;
+      id: 40;
       name: "crankAdmission";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -3256,9 +3489,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     crankArms: {
-      id: 40;
+      id: 41;
       name: "crankArms";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -3371,7 +3604,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 39;
+          toTable: 40;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -3453,9 +3686,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     bottomBracketSystem: {
-      id: 41;
+      id: 42;
       name: "bottomBracketSystem";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -3467,9 +3700,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     bottomBracket: {
-      id: 42;
+      id: 43;
       name: "bottomBracket";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -3514,7 +3747,7 @@ declare module "grud-aggregator/structure" {
               name: "bottomBracketSystem";
               kind: "link";
               multilanguage: false;
-              toTable: 41;
+              toTable: 42;
               toColumn: {
                 id: 1;
                 name: "identifier";
@@ -3578,7 +3811,7 @@ declare module "grud-aggregator/structure" {
           name: "bottomBracketSystem";
           kind: "link";
           multilanguage: false;
-          toTable: 41;
+          toTable: 42;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -3609,7 +3842,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 39;
+          toTable: 40;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -3631,9 +3864,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     systemWheelSet: {
-      id: 43;
+      id: 44;
       name: "systemWheelSet";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -3791,9 +4024,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     frontWheelHub: {
-      id: 44;
+      id: 45;
       name: "frontWheelHub";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -3962,9 +4195,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     freeWheel: {
-      id: 45;
+      id: 46;
       name: "freeWheel";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -4041,9 +4274,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     axleStandard: {
-      id: 46;
+      id: 47;
       name: "axleStandard";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -4056,9 +4289,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     rearWheelHub: {
-      id: 47;
+      id: 48;
       name: "rearWheelHub";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -4163,7 +4396,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 46;
+          toTable: 47;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -4188,7 +4421,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 45;
+          toTable: 46;
           toColumn: {
             id: 0;
             name: "ID";
@@ -4310,9 +4543,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     rim: {
-      id: 48;
+      id: 49;
       name: "rim";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -4435,9 +4668,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     spokes: {
-      id: 49;
+      id: 50;
       name: "spokes";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -4574,16 +4807,15 @@ declare module "grud-aggregator/structure" {
       };
     };
     wheelSet: {
-      id: 50;
+      id: 51;
       name: "wheelSet";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
-        identifier: {
+        internalName: {
           id: 1;
-          name: "identifier";
+          name: "internalName";
           kind: "shorttext";
-          multilanguage: true;
-          languageType: "language";
+          multilanguage: false;
           index: 0;
         };
         frontWheelHub: {
@@ -4592,7 +4824,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 44;
+          toTable: 45;
           toColumn: {
             id: 0;
             name: "ID";
@@ -4650,7 +4882,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 47;
+          toTable: 48;
           toColumn: {
             id: 0;
             name: "ID";
@@ -4708,7 +4940,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 48;
+          toTable: 49;
           toColumn: {
             id: 0;
             name: "ID";
@@ -4766,7 +4998,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 48;
+          toTable: 49;
           toColumn: {
             id: 0;
             name: "ID";
@@ -4824,7 +5056,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 49;
+          toTable: 50;
           toColumn: {
             id: 0;
             name: "ID";
@@ -4914,9 +5146,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     tire: {
-      id: 51;
+      id: 52;
       name: "tire";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -5074,9 +5306,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     valve: {
-      id: 52;
+      id: 53;
       name: "valve";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -5089,9 +5321,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     tube: {
-      id: 53;
+      id: 54;
       name: "tube";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -5171,7 +5403,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 52;
+          toTable: 53;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -5193,9 +5425,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     grips: {
-      id: 54;
+      id: 55;
       name: "grips";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -5354,17 +5586,17 @@ declare module "grud-aggregator/structure" {
       };
     };
     handlebar: {
-      id: 55;
+      id: 56;
       name: "handlebar";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
-          id: 10;
+          id: 0;
           name: "ID";
-          kind: "group";
+          kind: "concat";
           multilanguage: true;
           languageType: "language";
-          groups: [
+          concats: [
             {
               id: 1;
               name: "manufacturer";
@@ -5396,33 +5628,7 @@ declare module "grud-aggregator/structure" {
               languageType: "language";
               index: 1;
             },
-            {
-              id: 4;
-              name: "material";
-              kind: "link";
-              multilanguage: true;
-              languageType: "language";
-              toTable: 1;
-              toColumn: {
-                id: 1;
-                name: "identifier";
-                kind: "shorttext";
-                multilanguage: true;
-                languageType: "language";
-              };
-              constraint: {
-                cardinality: {
-                  from: 0;
-                  to: 1;
-                };
-                deleteCascade: false;
-                archiveCascade: false;
-                finalCascade: false;
-              };
-              index: 2;
-            },
           ];
-          formatPattern: "{{1}} | {{2}} |  {{4}}";
           index: 0;
         };
         manufacturer: {
@@ -5580,9 +5786,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     saddle: {
-      id: 56;
+      id: 57;
       name: "saddle";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -5727,9 +5933,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     stemSystem: {
-      id: 57;
+      id: 58;
       name: "stemSystem";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -5741,9 +5947,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     stem: {
-      id: 58;
+      id: 59;
       name: "stem";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -5788,7 +5994,7 @@ declare module "grud-aggregator/structure" {
               name: "stemSystem";
               kind: "link";
               multilanguage: false;
-              toTable: 57;
+              toTable: 58;
               toColumn: {
                 id: 1;
                 name: "identifier";
@@ -5853,7 +6059,7 @@ declare module "grud-aggregator/structure" {
           name: "stemSystem";
           kind: "link";
           multilanguage: false;
-          toTable: 57;
+          toTable: 58;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -5962,9 +6168,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     spacer: {
-      id: 59;
+      id: 60;
       name: "spacer";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -6140,9 +6346,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     saddleClampSystem: {
-      id: 60;
+      id: 61;
       name: "saddleClampSystem";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -6155,9 +6361,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     saddleClamp: {
-      id: 61;
+      id: 62;
       name: "saddleClamp";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -6245,7 +6451,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 60;
+          toTable: 61;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -6334,9 +6540,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     seatPostType: {
-      id: 62;
+      id: 63;
       name: "seatPostType";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -6409,9 +6615,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     seatPost: {
-      id: 63;
+      id: 64;
       name: "seatPost";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -6524,7 +6730,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 62;
+          toTable: 63;
           toColumn: {
             id: 0;
             name: "ID";
@@ -6584,10 +6790,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     dynamo: {
-      id: 64;
+      id: 65;
       name: "dynamo";
-      langtags: ["de-DE", "en-GB"];
-      concatFormatPattern: "{{1}} | {{2}} | {{3}}";
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -6635,7 +6840,6 @@ declare module "grud-aggregator/structure" {
               index: 2;
             },
           ];
-          formatPattern: "{{1}} | {{2}} | {{3}}";
           index: 0;
         };
         manufacturer: {
@@ -6679,9 +6883,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     rearlight: {
-      id: 65;
+      id: 66;
       name: "rearlight";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -6772,9 +6976,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     headlight: {
-      id: 66;
+      id: 67;
       name: "headlight";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -6939,9 +7143,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     lockType: {
-      id: 67;
+      id: 68;
       name: "lockType";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -6954,9 +7158,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     lock: {
-      id: 68;
+      id: 69;
       name: "lock";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -7036,7 +7240,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 67;
+          toTable: 68;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -7065,9 +7269,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     controlUnit: {
-      id: 69;
+      id: 70;
       name: "controlUnit";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -7144,9 +7348,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     accessory: {
-      id: 70;
+      id: 71;
       name: "accessory";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -7159,10 +7363,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     pedals: {
-      id: 71;
+      id: 72;
       name: "pedals";
-      langtags: ["de-DE", "en-GB"];
-      concatFormatPattern: "{{2}} | {{1}}";
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -7203,7 +7406,6 @@ declare module "grud-aggregator/structure" {
               index: 1;
             },
           ];
-          formatPattern: "{{2}} | {{1}}";
           index: 0;
         };
         manufacturer: {
@@ -7333,9 +7535,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     standType: {
-      id: 72;
+      id: 73;
       name: "standType";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -7348,9 +7550,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     kickstand: {
-      id: 73;
+      id: 74;
       name: "kickstand";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -7396,7 +7598,7 @@ declare module "grud-aggregator/structure" {
               kind: "link";
               multilanguage: true;
               languageType: "language";
-              toTable: 72;
+              toTable: 73;
               toColumn: {
                 id: 1;
                 name: "identifier";
@@ -7455,7 +7657,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 72;
+          toTable: 73;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -7544,9 +7746,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     mudguard: {
-      id: 74;
+      id: 75;
       name: "mudguard";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -7723,9 +7925,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     carrierSystem: {
-      id: 75;
+      id: 76;
       name: "carrierSystem";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -7737,9 +7939,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     carrier: {
-      id: 76;
+      id: 77;
       name: "carrier";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -7784,7 +7986,7 @@ declare module "grud-aggregator/structure" {
               name: "carrierSystem";
               kind: "link";
               multilanguage: false;
-              toTable: 75;
+              toTable: 76;
               toColumn: {
                 id: 1;
                 name: "identifier";
@@ -7866,7 +8068,7 @@ declare module "grud-aggregator/structure" {
           name: "carrierSystem";
           kind: "link";
           multilanguage: false;
-          toTable: 75;
+          toTable: 76;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -7954,46 +8156,69 @@ declare module "grud-aggregator/structure" {
       };
     };
     marketingCategory: {
-      id: 77;
+      id: 78;
       name: "marketingCategory";
-      langtags: ["de-DE", "en-GB"];
-      type: "taxonomy";
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
-        name: {
-          id: 1;
-          name: "name";
-          kind: "shorttext";
+        ID: {
+          id: 0;
+          name: "ID";
+          kind: "concat";
           multilanguage: true;
           languageType: "language";
+          concats: [
+            {
+              id: 1;
+              name: "manufacturer";
+              kind: "link";
+              multilanguage: false;
+              toTable: 5;
+              toColumn: {
+                id: 1;
+                name: "identifier";
+                kind: "shorttext";
+                multilanguage: false;
+              };
+              constraint: {
+                cardinality: {
+                  from: 0;
+                  to: 1;
+                };
+                deleteCascade: false;
+                archiveCascade: false;
+                finalCascade: false;
+              };
+              index: 0;
+            },
+            {
+              id: 2;
+              name: "identifier";
+              kind: "shorttext";
+              multilanguage: true;
+              languageType: "language";
+              index: 1;
+            },
+            {
+              id: 6;
+              name: "sorting";
+              kind: "numeric";
+              multilanguage: false;
+              index: 2;
+            },
+          ];
           index: 0;
         };
-        ordering: {
-          id: 2;
-          name: "ordering";
-          kind: "numeric";
-          multilanguage: false;
-          index: 1;
-        };
-        code: {
-          id: 3;
-          name: "code";
-          kind: "shorttext";
-          multilanguage: false;
-          index: 2;
-        };
-        parent: {
-          id: 4;
-          name: "parent";
+        manufacturer: {
+          id: 1;
+          name: "manufacturer";
           kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 77;
+          multilanguage: false;
+          toTable: 5;
           toColumn: {
             id: 1;
-            name: "name";
+            name: "identifier";
             kind: "shorttext";
-            multilanguage: true;
-            languageType: "language";
+            multilanguage: false;
           };
           constraint: {
             cardinality: {
@@ -8004,69 +8229,82 @@ declare module "grud-aggregator/structure" {
             archiveCascade: false;
             finalCascade: false;
           };
+          index: 1;
+        };
+        identifier: {
+          id: 2;
+          name: "identifier";
+          kind: "shorttext";
+          multilanguage: true;
+          languageType: "language";
+          index: 2;
+        };
+        slug: {
+          id: 3;
+          name: "slug";
+          kind: "shorttext";
+          multilanguage: true;
+          languageType: "language";
           index: 3;
+        };
+        description: {
+          id: 4;
+          name: "description";
+          kind: "text";
+          multilanguage: true;
+          languageType: "language";
+          index: 4;
+        };
+        image: {
+          id: 5;
+          name: "image";
+          kind: "attachment";
+          multilanguage: false;
+          index: 5;
+        };
+        sorting: {
+          id: 6;
+          name: "sorting";
+          kind: "numeric";
+          multilanguage: false;
+          index: 6;
+        };
+      };
+    };
+    b2bShopCategory: {
+      id: 79;
+      name: "b2bShopCategory";
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
+      columns: {
+        identifier: {
+          id: 1;
+          name: "identifier";
+          kind: "shorttext";
+          multilanguage: true;
+          languageType: "language";
+          index: 0;
         };
       };
     };
     bikeType: {
-      id: 78;
+      id: 80;
       name: "bikeType";
-      langtags: ["de-DE", "en-GB"];
-      type: "taxonomy";
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
-        name: {
+        identifier: {
           id: 1;
-          name: "name";
+          name: "identifier";
           kind: "shorttext";
           multilanguage: true;
           languageType: "language";
           index: 0;
         };
-        ordering: {
-          id: 2;
-          name: "ordering";
-          kind: "numeric";
-          multilanguage: false;
-          index: 1;
-        };
-        code: {
-          id: 3;
-          name: "code";
-          kind: "shorttext";
-          multilanguage: false;
-          index: 2;
-        };
-        parent: {
-          id: 4;
-          name: "parent";
-          kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 78;
-          toColumn: {
-            id: 1;
-            name: "name";
-            kind: "shorttext";
-            multilanguage: true;
-            languageType: "language";
-          };
-          constraint: {
-            cardinality: {
-              from: 0;
-              to: 1;
-            };
-            deleteCascade: false;
-            archiveCascade: false;
-            finalCascade: false;
-          };
-          index: 3;
-        };
       };
     };
     batteryPackType: {
-      id: 79;
+      id: 81;
       name: "batteryPackType";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8079,9 +8317,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     chargingVoltage: {
-      id: 80;
+      id: 82;
       name: "chargingVoltage";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8093,9 +8331,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     batteryPack: {
-      id: 81;
+      id: 83;
       name: "batteryPack";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -8148,7 +8386,7 @@ declare module "grud-aggregator/structure" {
               kind: "link";
               multilanguage: true;
               languageType: "language";
-              toTable: 79;
+              toTable: 81;
               toColumn: {
                 id: 1;
                 name: "identifier";
@@ -8214,7 +8452,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 79;
+          toTable: 81;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -8238,7 +8476,7 @@ declare module "grud-aggregator/structure" {
           name: "chargingVoltage";
           kind: "link";
           multilanguage: false;
-          toTable: 80;
+          toTable: 82;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -8259,9 +8497,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     modelYear: {
-      id: 82;
+      id: 84;
       name: "modelYear";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8273,9 +8511,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     award: {
-      id: 83;
+      id: 85;
       name: "award";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8302,9 +8540,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     baseFrameShape: {
-      id: 84;
+      id: 86;
       name: "baseFrameShape";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8331,9 +8569,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     frameShape: {
-      id: 85;
+      id: 87;
       name: "frameShape";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8349,7 +8587,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 84;
+          toTable: 86;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -8371,9 +8609,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     frameSize: {
-      id: 86;
+      id: 88;
       name: "frameSize";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8385,9 +8623,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     bearingSet: {
-      id: 87;
+      id: 89;
       name: "bearingSet";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -8464,9 +8702,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     suspensionSystem: {
-      id: 88;
+      id: 90;
       name: "suspensionSystem";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8479,9 +8717,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     brakeStandard: {
-      id: 89;
+      id: 91;
       name: "brakeStandard";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         identifier: {
           id: 1;
@@ -8494,9 +8732,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     charger: {
-      id: 90;
+      id: 92;
       name: "charger";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -8573,10 +8811,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     frame: {
-      id: 91;
+      id: 93;
       name: "frame";
-      langtags: ["de-DE", "en-GB"];
-      concatFormatPattern: "{{33}} | {{37}}";
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -8622,7 +8859,7 @@ declare module "grud-aggregator/structure" {
               kind: "link";
               multilanguage: true;
               languageType: "language";
-              toTable: 85;
+              toTable: 87;
               toColumn: {
                 id: 1;
                 name: "identifier";
@@ -8648,97 +8885,7 @@ declare module "grud-aggregator/structure" {
               multilanguage: false;
               index: 3;
             },
-            {
-              id: 33;
-              name: "bearingSet";
-              kind: "link";
-              multilanguage: true;
-              languageType: "language";
-              toTable: 87;
-              toColumn: {
-                id: 0;
-                name: "ID";
-                kind: "concat";
-                multilanguage: true;
-                languageType: "language";
-                concats: [
-                  {
-                    id: 1;
-                    name: "manufacturer";
-                    kind: "link";
-                    multilanguage: false;
-                    toTable: 5;
-                    toColumn: {
-                      id: 1;
-                      name: "identifier";
-                      kind: "shorttext";
-                      multilanguage: false;
-                    };
-                    constraint: {
-                      cardinality: {
-                        from: 0;
-                        to: 1;
-                      };
-                      deleteCascade: false;
-                      archiveCascade: false;
-                      finalCascade: false;
-                    };
-                    index: 0;
-                  },
-                  {
-                    id: 2;
-                    name: "identifier";
-                    kind: "shorttext";
-                    multilanguage: true;
-                    languageType: "language";
-                    index: 1;
-                  },
-                ];
-              };
-              constraint: {
-                cardinality: {
-                  from: 0;
-                  to: 1;
-                };
-                deleteCascade: false;
-                archiveCascade: false;
-                finalCascade: false;
-              };
-              index: 4;
-            },
-            {
-              id: 37;
-              name: "packSize";
-              kind: "group";
-              multilanguage: false;
-              groups: [
-                {
-                  id: 34;
-                  name: "length";
-                  kind: "numeric";
-                  multilanguage: false;
-                  index: 0;
-                },
-                {
-                  id: 35;
-                  name: "width";
-                  kind: "numeric";
-                  multilanguage: false;
-                  index: 1;
-                },
-                {
-                  id: 36;
-                  name: "height";
-                  kind: "numeric";
-                  multilanguage: false;
-                  index: 2;
-                },
-              ];
-              formatPattern: "{{34}} mm × {{35}} mm × {{36}} mm";
-              index: 5;
-            },
           ];
-          formatPattern: "{{33}} | {{37}}";
           index: 0;
         };
         manufacturer: {
@@ -8778,7 +8925,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 85;
+          toTable: 87;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -8803,7 +8950,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 88;
+          toTable: 90;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -8835,7 +8982,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 46;
+          toTable: 47;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -8860,7 +9007,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 89;
+          toTable: 91;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -8909,7 +9056,7 @@ declare module "grud-aggregator/structure" {
           name: "frameSize";
           kind: "link";
           multilanguage: false;
-          toTable: 86;
+          toTable: 88;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -9126,7 +9273,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 87;
+          toTable: 89;
           toColumn: {
             id: 0;
             name: "ID";
@@ -9233,9 +9380,9 @@ declare module "grud-aggregator/structure" {
       };
     };
     variant: {
-      id: 92;
+      id: 94;
       name: "variant";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -9293,17 +9440,8 @@ declare module "grud-aggregator/structure" {
           countryCodes: ["DE", "US", "GB", "FR", "ES", "AT", "CH"];
           index: 4;
         };
-        specialPrice: {
-          id: 5;
-          name: "specialPrice";
-          kind: "currency";
-          multilanguage: true;
-          languageType: "country";
-          countryCodes: ["DE", "US", "GB", "FR", "ES", "AT", "CH"];
-          index: 5;
-        };
         marketingColor: {
-          id: 6;
+          id: 5;
           name: "marketingColor";
           kind: "link";
           multilanguage: true;
@@ -9360,15 +9498,15 @@ declare module "grud-aggregator/structure" {
             archiveCascade: false;
             finalCascade: false;
           };
-          index: 6;
+          index: 5;
         };
         frame: {
-          id: 7;
+          id: 6;
           name: "frame";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 91;
+          toTable: 93;
           toColumn: {
             id: 0;
             name: "ID";
@@ -9413,7 +9551,7 @@ declare module "grud-aggregator/structure" {
                 kind: "link";
                 multilanguage: true;
                 languageType: "language";
-                toTable: 85;
+                toTable: 87;
                 toColumn: {
                   id: 1;
                   name: "identifier";
@@ -9439,97 +9577,7 @@ declare module "grud-aggregator/structure" {
                 multilanguage: false;
                 index: 3;
               },
-              {
-                id: 33;
-                name: "bearingSet";
-                kind: "link";
-                multilanguage: true;
-                languageType: "language";
-                toTable: 87;
-                toColumn: {
-                  id: 0;
-                  name: "ID";
-                  kind: "concat";
-                  multilanguage: true;
-                  languageType: "language";
-                  concats: [
-                    {
-                      id: 1;
-                      name: "manufacturer";
-                      kind: "link";
-                      multilanguage: false;
-                      toTable: 5;
-                      toColumn: {
-                        id: 1;
-                        name: "identifier";
-                        kind: "shorttext";
-                        multilanguage: false;
-                      };
-                      constraint: {
-                        cardinality: {
-                          from: 0;
-                          to: 1;
-                        };
-                        deleteCascade: false;
-                        archiveCascade: false;
-                        finalCascade: false;
-                      };
-                      index: 0;
-                    },
-                    {
-                      id: 2;
-                      name: "identifier";
-                      kind: "shorttext";
-                      multilanguage: true;
-                      languageType: "language";
-                      index: 1;
-                    },
-                  ];
-                };
-                constraint: {
-                  cardinality: {
-                    from: 0;
-                    to: 1;
-                  };
-                  deleteCascade: false;
-                  archiveCascade: false;
-                  finalCascade: false;
-                };
-                index: 4;
-              },
-              {
-                id: 37;
-                name: "packSize";
-                kind: "group";
-                multilanguage: false;
-                groups: [
-                  {
-                    id: 34;
-                    name: "length";
-                    kind: "numeric";
-                    multilanguage: false;
-                    index: 0;
-                  },
-                  {
-                    id: 35;
-                    name: "width";
-                    kind: "numeric";
-                    multilanguage: false;
-                    index: 1;
-                  },
-                  {
-                    id: 36;
-                    name: "height";
-                    kind: "numeric";
-                    multilanguage: false;
-                    index: 2;
-                  },
-                ];
-                formatPattern: "{{34}} mm × {{35}} mm × {{36}} mm";
-                index: 5;
-              },
             ];
-            formatPattern: "{{33}} | {{37}}";
           };
           constraint: {
             cardinality: {
@@ -9540,57 +9588,57 @@ declare module "grud-aggregator/structure" {
             archiveCascade: false;
             finalCascade: false;
           };
-          index: 7;
+          index: 6;
         };
         stemLength: {
-          id: 8;
+          id: 7;
           name: "stemLength";
+          kind: "numeric";
+          multilanguage: false;
+          index: 7;
+        };
+        handlebarWidth: {
+          id: 8;
+          name: "handlebarWidth";
           kind: "numeric";
           multilanguage: false;
           index: 8;
         };
-        handlebarWidth: {
+        seatPostLength: {
           id: 9;
-          name: "handlebarWidth";
+          name: "seatPostLength";
           kind: "numeric";
           multilanguage: false;
           index: 9;
         };
-        seatPostLength: {
+        seatPostStroke: {
           id: 10;
-          name: "seatPostLength";
+          name: "seatPostStroke";
           kind: "numeric";
           multilanguage: false;
           index: 10;
         };
-        seatPostStroke: {
+        crankArmLength: {
           id: 11;
-          name: "seatPostStroke";
+          name: "crankArmLength";
           kind: "numeric";
           multilanguage: false;
           index: 11;
         };
-        crankArmLength: {
+        cranksetLength: {
           id: 12;
-          name: "crankArmLength";
+          name: "cranksetLength";
           kind: "numeric";
           multilanguage: false;
           index: 12;
         };
-        cranksetLength: {
-          id: 13;
-          name: "cranksetLength";
-          kind: "numeric";
-          multilanguage: false;
-          index: 13;
-        };
         batteryPack: {
-          id: 14;
+          id: 13;
           name: "batteryPack";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 81;
+          toTable: 83;
           toColumn: {
             id: 0;
             name: "ID";
@@ -9642,7 +9690,7 @@ declare module "grud-aggregator/structure" {
                 kind: "link";
                 multilanguage: true;
                 languageType: "language";
-                toTable: 79;
+                toTable: 81;
                 toColumn: {
                   id: 1;
                   name: "identifier";
@@ -9672,10 +9720,10 @@ declare module "grud-aggregator/structure" {
             archiveCascade: false;
             finalCascade: false;
           };
-          index: 14;
+          index: 13;
         };
         fork: {
-          id: 15;
+          id: 14;
           name: "fork";
           kind: "link";
           multilanguage: true;
@@ -9762,15 +9810,80 @@ declare module "grud-aggregator/structure" {
             archiveCascade: false;
             finalCascade: false;
           };
-          index: 15;
+          index: 14;
         };
         tire: {
-          id: 16;
+          id: 15;
           name: "tire";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 51;
+          toTable: 52;
+          toColumn: {
+            id: 0;
+            name: "ID";
+            kind: "concat";
+            multilanguage: true;
+            languageType: "language";
+            concats: [
+              {
+                id: 1;
+                name: "manufacturer";
+                kind: "link";
+                multilanguage: false;
+                toTable: 5;
+                toColumn: {
+                  id: 1;
+                  name: "identifier";
+                  kind: "shorttext";
+                  multilanguage: false;
+                };
+                constraint: {
+                  cardinality: {
+                    from: 0;
+                    to: 1;
+                  };
+                  deleteCascade: false;
+                  archiveCascade: false;
+                  finalCascade: false;
+                };
+                index: 0;
+              },
+              {
+                id: 2;
+                name: "identifier";
+                kind: "shorttext";
+                multilanguage: true;
+                languageType: "language";
+                index: 1;
+              },
+              {
+                id: 3;
+                name: "sizeEtrto";
+                kind: "shorttext";
+                multilanguage: false;
+                index: 2;
+              },
+            ];
+          };
+          constraint: {
+            cardinality: {
+              from: 0;
+              to: 1;
+            };
+            deleteCascade: false;
+            archiveCascade: false;
+            finalCascade: false;
+          };
+          index: 15;
+        };
+        rearTire: {
+          id: 16;
+          name: "rearTire";
+          kind: "link";
+          multilanguage: true;
+          languageType: "language";
+          toTable: 52;
           toColumn: {
             id: 0;
             name: "ID";
@@ -9829,112 +9942,47 @@ declare module "grud-aggregator/structure" {
           };
           index: 16;
         };
-        rearTire: {
-          id: 17;
-          name: "rearTire";
-          kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 51;
-          toColumn: {
-            id: 0;
-            name: "ID";
-            kind: "concat";
-            multilanguage: true;
-            languageType: "language";
-            concats: [
-              {
-                id: 1;
-                name: "manufacturer";
-                kind: "link";
-                multilanguage: false;
-                toTable: 5;
-                toColumn: {
-                  id: 1;
-                  name: "identifier";
-                  kind: "shorttext";
-                  multilanguage: false;
-                };
-                constraint: {
-                  cardinality: {
-                    from: 0;
-                    to: 1;
-                  };
-                  deleteCascade: false;
-                  archiveCascade: false;
-                  finalCascade: false;
-                };
-                index: 0;
-              },
-              {
-                id: 2;
-                name: "identifier";
-                kind: "shorttext";
-                multilanguage: true;
-                languageType: "language";
-                index: 1;
-              },
-              {
-                id: 3;
-                name: "sizeEtrto";
-                kind: "shorttext";
-                multilanguage: false;
-                index: 2;
-              },
-            ];
-          };
-          constraint: {
-            cardinality: {
-              from: 0;
-              to: 1;
-            };
-            deleteCascade: false;
-            archiveCascade: false;
-            finalCascade: false;
-          };
-          index: 17;
-        };
         isRoadTrafficApproved: {
-          id: 18;
+          id: 17;
           name: "isRoadTrafficApproved";
           kind: "boolean";
           multilanguage: false;
-          index: 18;
+          index: 17;
         };
         imagesStraight: {
-          id: 19;
+          id: 18;
           name: "imagesStraight";
+          kind: "attachment";
+          multilanguage: false;
+          index: 18;
+        };
+        imagesDiagonal: {
+          id: 19;
+          name: "imagesDiagonal";
           kind: "attachment";
           multilanguage: false;
           index: 19;
         };
-        imagesDiagonal: {
+        imagesDetail: {
           id: 20;
-          name: "imagesDiagonal";
+          name: "imagesDetail";
           kind: "attachment";
           multilanguage: false;
           index: 20;
         };
-        imagesDetail: {
-          id: 21;
-          name: "imagesDetail";
-          kind: "attachment";
-          multilanguage: false;
-          index: 21;
-        };
         modelName: {
-          id: 22;
+          id: 21;
           name: "modelName";
           kind: "shorttext";
           multilanguage: false;
-          index: 22;
+          index: 21;
         };
         bikeModel: {
-          id: 23;
+          id: 22;
           name: "bikeModel";
           kind: "link";
           multilanguage: false;
-          toTable: 94;
+          toTable: 95;
           toColumn: {
             id: 0;
             name: "ID";
@@ -9982,69 +10030,14 @@ declare module "grud-aggregator/structure" {
             archiveCascade: false;
             finalCascade: false;
           };
-          index: 23;
-        };
-      };
-    };
-    bidexCategory: {
-      id: 93;
-      name: "bidexCategory";
-      langtags: ["de-DE", "en-GB"];
-      type: "taxonomy";
-      columns: {
-        name: {
-          id: 1;
-          name: "name";
-          kind: "shorttext";
-          multilanguage: true;
-          languageType: "language";
-          index: 0;
-        };
-        ordering: {
-          id: 2;
-          name: "ordering";
-          kind: "numeric";
-          multilanguage: false;
-          index: 1;
-        };
-        code: {
-          id: 3;
-          name: "code";
-          kind: "shorttext";
-          multilanguage: false;
-          index: 2;
-        };
-        parent: {
-          id: 4;
-          name: "parent";
-          kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 93;
-          toColumn: {
-            id: 1;
-            name: "name";
-            kind: "shorttext";
-            multilanguage: true;
-            languageType: "language";
-          };
-          constraint: {
-            cardinality: {
-              from: 0;
-              to: 1;
-            };
-            deleteCascade: false;
-            archiveCascade: false;
-            finalCascade: false;
-          };
-          index: 3;
+          index: 22;
         };
       };
     };
     bikeModel: {
-      id: 94;
+      id: 95;
       name: "bikeModel";
-      langtags: ["de-DE", "en-GB"];
+      langtags: ["de", "en", "fr", "es", "it", "hr"];
       columns: {
         ID: {
           id: 0;
@@ -10120,7 +10113,7 @@ declare module "grud-aggregator/structure" {
           name: "modelYear";
           kind: "link";
           multilanguage: false;
-          toTable: 82;
+          toTable: 84;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -10135,7 +10128,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 92;
+          toTable: 94;
           toColumn: {
             id: 0;
             name: "ID";
@@ -10180,25 +10173,81 @@ declare module "grud-aggregator/structure" {
           countryCodes: ["DE", "US", "GB", "FR", "ES", "AT", "CH"];
           index: 5;
         };
-        specialPrice: {
+        marketingCategory: {
           id: 6;
-          name: "specialPrice";
-          kind: "currency";
-          multilanguage: true;
-          languageType: "country";
-          countryCodes: ["DE", "US", "GB", "FR", "ES", "AT", "CH"];
-          index: 6;
-        };
-        bidexCategory: {
-          id: 7;
-          name: "bidexCategory";
+          name: "marketingCategory";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 93;
+          toTable: 78;
+          toColumn: {
+            id: 0;
+            name: "ID";
+            kind: "concat";
+            multilanguage: true;
+            languageType: "language";
+            concats: [
+              {
+                id: 1;
+                name: "manufacturer";
+                kind: "link";
+                multilanguage: false;
+                toTable: 5;
+                toColumn: {
+                  id: 1;
+                  name: "identifier";
+                  kind: "shorttext";
+                  multilanguage: false;
+                };
+                constraint: {
+                  cardinality: {
+                    from: 0;
+                    to: 1;
+                  };
+                  deleteCascade: false;
+                  archiveCascade: false;
+                  finalCascade: false;
+                };
+                index: 0;
+              },
+              {
+                id: 2;
+                name: "identifier";
+                kind: "shorttext";
+                multilanguage: true;
+                languageType: "language";
+                index: 1;
+              },
+              {
+                id: 6;
+                name: "sorting";
+                kind: "numeric";
+                multilanguage: false;
+                index: 2;
+              },
+            ];
+          };
+          constraint: {
+            cardinality: {
+              from: 0;
+              to: 1;
+            };
+            deleteCascade: false;
+            archiveCascade: false;
+            finalCascade: false;
+          };
+          index: 6;
+        };
+        b2bShopCategory: {
+          id: 7;
+          name: "b2bShopCategory";
+          kind: "link";
+          multilanguage: true;
+          languageType: "language";
+          toTable: 79;
           toColumn: {
             id: 1;
-            name: "name";
+            name: "identifier";
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
@@ -10214,16 +10263,16 @@ declare module "grud-aggregator/structure" {
           };
           index: 7;
         };
-        marketingCategory: {
+        bikeType: {
           id: 8;
-          name: "marketingCategory";
+          name: "bikeType";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 77;
+          toTable: 80;
           toColumn: {
             id: 1;
-            name: "name";
+            name: "identifier";
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
@@ -10239,29 +10288,11 @@ declare module "grud-aggregator/structure" {
           };
           index: 8;
         };
-        bikeType: {
+        bidexProductCode: {
           id: 9;
-          name: "bikeType";
-          kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 78;
-          toColumn: {
-            id: 1;
-            name: "name";
-            kind: "shorttext";
-            multilanguage: true;
-            languageType: "language";
-          };
-          constraint: {
-            cardinality: {
-              from: 0;
-              to: 1;
-            };
-            deleteCascade: false;
-            archiveCascade: false;
-            finalCascade: false;
-          };
+          name: "bidexProductCode";
+          kind: "shorttext";
+          multilanguage: false;
           index: 9;
         };
         description: {
@@ -10982,7 +11013,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 38;
+          toTable: 39;
           toColumn: {
             id: 0;
             name: "ID";
@@ -11235,7 +11266,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 40;
+          toTable: 41;
           toColumn: {
             id: 0;
             name: "ID";
@@ -11293,7 +11324,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 42;
+          toTable: 43;
           toColumn: {
             id: 0;
             name: "ID";
@@ -11337,7 +11368,7 @@ declare module "grud-aggregator/structure" {
                 name: "bottomBracketSystem";
                 kind: "link";
                 multilanguage: false;
-                toTable: 41;
+                toTable: 42;
                 toColumn: {
                   id: 1;
                   name: "identifier";
@@ -11587,7 +11618,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 69;
+          toTable: 70;
           toColumn: {
             id: 0;
             name: "ID";
@@ -11645,7 +11676,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 90;
+          toTable: 92;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12050,7 +12081,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 43;
+          toTable: 44;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12106,15 +12137,13 @@ declare module "grud-aggregator/structure" {
           id: 42;
           name: "wheelSet";
           kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 50;
+          multilanguage: false;
+          toTable: 51;
           toColumn: {
             id: 1;
-            name: "identifier";
+            name: "internalName";
             kind: "shorttext";
-            multilanguage: true;
-            languageType: "language";
+            multilanguage: false;
           };
           constraint: {
             cardinality: {
@@ -12133,7 +12162,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 51;
+          toTable: 52;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12198,7 +12227,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 51;
+          toTable: 52;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12263,7 +12292,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 53;
+          toTable: 54;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12321,14 +12350,14 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 55;
+          toTable: 56;
           toColumn: {
-            id: 10;
+            id: 0;
             name: "ID";
-            kind: "group";
+            kind: "concat";
             multilanguage: true;
             languageType: "language";
-            groups: [
+            concats: [
               {
                 id: 1;
                 name: "manufacturer";
@@ -12360,33 +12389,7 @@ declare module "grud-aggregator/structure" {
                 languageType: "language";
                 index: 1;
               },
-              {
-                id: 4;
-                name: "material";
-                kind: "link";
-                multilanguage: true;
-                languageType: "language";
-                toTable: 1;
-                toColumn: {
-                  id: 1;
-                  name: "identifier";
-                  kind: "shorttext";
-                  multilanguage: true;
-                  languageType: "language";
-                };
-                constraint: {
-                  cardinality: {
-                    from: 0;
-                    to: 1;
-                  };
-                  deleteCascade: false;
-                  archiveCascade: false;
-                  finalCascade: false;
-                };
-                index: 2;
-              },
             ];
-            formatPattern: "{{1}} | {{2}} |  {{4}}";
           };
           constraint: {
             cardinality: {
@@ -12405,7 +12408,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 54;
+          toTable: 55;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12463,7 +12466,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 58;
+          toTable: 59;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12507,7 +12510,7 @@ declare module "grud-aggregator/structure" {
                 name: "stemSystem";
                 kind: "link";
                 multilanguage: false;
-                toTable: 57;
+                toTable: 58;
                 toColumn: {
                   id: 1;
                   name: "identifier";
@@ -12544,7 +12547,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 59;
+          toTable: 60;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12602,7 +12605,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 56;
+          toTable: 57;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12660,7 +12663,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 63;
+          toTable: 64;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12718,7 +12721,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 61;
+          toTable: 62;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12776,7 +12779,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 66;
+          toTable: 67;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12834,7 +12837,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 65;
+          toTable: 66;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12892,7 +12895,7 @@ declare module "grud-aggregator/structure" {
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 64;
+          toTable: 65;
           toColumn: {
             id: 0;
             name: "ID";
@@ -12939,7 +12942,6 @@ declare module "grud-aggregator/structure" {
                 index: 2;
               },
             ];
-            formatPattern: "{{1}} | {{2}} | {{3}}";
           };
           constraint: {
             cardinality: {
@@ -12952,13 +12954,13 @@ declare module "grud-aggregator/structure" {
           };
           index: 55;
         };
-        frontCarrier: {
+        carrier: {
           id: 56;
-          name: "frontCarrier";
+          name: "carrier";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 76;
+          toTable: 77;
           toColumn: {
             id: 0;
             name: "ID";
@@ -13002,7 +13004,7 @@ declare module "grud-aggregator/structure" {
                 name: "carrierSystem";
                 kind: "link";
                 multilanguage: false;
-                toTable: 75;
+                toTable: 76;
                 toColumn: {
                   id: 1;
                   name: "identifier";
@@ -13033,13 +13035,13 @@ declare module "grud-aggregator/structure" {
           };
           index: 56;
         };
-        carrier: {
+        mudguard: {
           id: 57;
-          name: "carrier";
+          name: "mudguard";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 76;
+          toTable: 75;
           toColumn: {
             id: 0;
             name: "ID";
@@ -13077,29 +13079,6 @@ declare module "grud-aggregator/structure" {
                 multilanguage: true;
                 languageType: "language";
                 index: 1;
-              },
-              {
-                id: 4;
-                name: "carrierSystem";
-                kind: "link";
-                multilanguage: false;
-                toTable: 75;
-                toColumn: {
-                  id: 1;
-                  name: "identifier";
-                  kind: "shorttext";
-                  multilanguage: false;
-                };
-                constraint: {
-                  cardinality: {
-                    from: 0;
-                    to: 1;
-                  };
-                  deleteCascade: false;
-                  archiveCascade: false;
-                  finalCascade: false;
-                };
-                index: 2;
               },
             ];
           };
@@ -13114,71 +13093,13 @@ declare module "grud-aggregator/structure" {
           };
           index: 57;
         };
-        mudguard: {
-          id: 58;
-          name: "mudguard";
-          kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 74;
-          toColumn: {
-            id: 0;
-            name: "ID";
-            kind: "concat";
-            multilanguage: true;
-            languageType: "language";
-            concats: [
-              {
-                id: 1;
-                name: "manufacturer";
-                kind: "link";
-                multilanguage: false;
-                toTable: 5;
-                toColumn: {
-                  id: 1;
-                  name: "identifier";
-                  kind: "shorttext";
-                  multilanguage: false;
-                };
-                constraint: {
-                  cardinality: {
-                    from: 0;
-                    to: 1;
-                  };
-                  deleteCascade: false;
-                  archiveCascade: false;
-                  finalCascade: false;
-                };
-                index: 0;
-              },
-              {
-                id: 2;
-                name: "identifier";
-                kind: "shorttext";
-                multilanguage: true;
-                languageType: "language";
-                index: 1;
-              },
-            ];
-          };
-          constraint: {
-            cardinality: {
-              from: 0;
-              to: 1;
-            };
-            deleteCascade: false;
-            archiveCascade: false;
-            finalCascade: false;
-          };
-          index: 58;
-        };
         kickstand: {
-          id: 59;
+          id: 58;
           name: "kickstand";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 73;
+          toTable: 74;
           toColumn: {
             id: 0;
             name: "ID";
@@ -13223,7 +13144,7 @@ declare module "grud-aggregator/structure" {
                 kind: "link";
                 multilanguage: true;
                 languageType: "language";
-                toTable: 72;
+                toTable: 73;
                 toColumn: {
                   id: 1;
                   name: "identifier";
@@ -13253,15 +13174,15 @@ declare module "grud-aggregator/structure" {
             archiveCascade: false;
             finalCascade: false;
           };
-          index: 59;
+          index: 58;
         };
         pedals: {
-          id: 60;
+          id: 59;
           name: "pedals";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 71;
+          toTable: 72;
           toColumn: {
             id: 0;
             name: "ID";
@@ -13301,7 +13222,64 @@ declare module "grud-aggregator/structure" {
                 index: 1;
               },
             ];
-            formatPattern: "{{2}} | {{1}}";
+          };
+          constraint: {
+            cardinality: {
+              from: 0;
+              to: 1;
+            };
+            deleteCascade: false;
+            archiveCascade: false;
+            finalCascade: false;
+          };
+          index: 59;
+        };
+        lock: {
+          id: 60;
+          name: "lock";
+          kind: "link";
+          multilanguage: true;
+          languageType: "language";
+          toTable: 69;
+          toColumn: {
+            id: 0;
+            name: "ID";
+            kind: "concat";
+            multilanguage: true;
+            languageType: "language";
+            concats: [
+              {
+                id: 1;
+                name: "manufacturer";
+                kind: "link";
+                multilanguage: false;
+                toTable: 5;
+                toColumn: {
+                  id: 1;
+                  name: "identifier";
+                  kind: "shorttext";
+                  multilanguage: false;
+                };
+                constraint: {
+                  cardinality: {
+                    from: 0;
+                    to: 1;
+                  };
+                  deleteCascade: false;
+                  archiveCascade: false;
+                  finalCascade: false;
+                };
+                index: 0;
+              },
+              {
+                id: 2;
+                name: "identifier";
+                kind: "shorttext";
+                multilanguage: true;
+                languageType: "language";
+                index: 1;
+              },
+            ];
           };
           constraint: {
             cardinality: {
@@ -13314,71 +13292,29 @@ declare module "grud-aggregator/structure" {
           };
           index: 60;
         };
-        lock: {
-          id: 61;
-          name: "lock";
-          kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 68;
-          toColumn: {
-            id: 0;
-            name: "ID";
-            kind: "concat";
-            multilanguage: true;
-            languageType: "language";
-            concats: [
-              {
-                id: 1;
-                name: "manufacturer";
-                kind: "link";
-                multilanguage: false;
-                toTable: 5;
-                toColumn: {
-                  id: 1;
-                  name: "identifier";
-                  kind: "shorttext";
-                  multilanguage: false;
-                };
-                constraint: {
-                  cardinality: {
-                    from: 0;
-                    to: 1;
-                  };
-                  deleteCascade: false;
-                  archiveCascade: false;
-                  finalCascade: false;
-                };
-                index: 0;
-              },
-              {
-                id: 2;
-                name: "identifier";
-                kind: "shorttext";
-                multilanguage: true;
-                languageType: "language";
-                index: 1;
-              },
-            ];
-          };
-          constraint: {
-            cardinality: {
-              from: 0;
-              to: 1;
-            };
-            deleteCascade: false;
-            archiveCascade: false;
-            finalCascade: false;
-          };
-          index: 61;
-        };
         accessory: {
-          id: 62;
+          id: 61;
           name: "accessory";
           kind: "link";
           multilanguage: true;
           languageType: "language";
-          toTable: 70;
+          toTable: 71;
+          toColumn: {
+            id: 1;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: true;
+            languageType: "language";
+          };
+          index: 61;
+        };
+        award: {
+          id: 62;
+          name: "award";
+          kind: "link";
+          multilanguage: true;
+          languageType: "language";
+          toTable: 85;
           toColumn: {
             id: 1;
             name: "identifier";
@@ -13387,36 +13323,6 @@ declare module "grud-aggregator/structure" {
             languageType: "language";
           };
           index: 62;
-        };
-        award: {
-          id: 63;
-          name: "award";
-          kind: "link";
-          multilanguage: true;
-          languageType: "language";
-          toTable: 83;
-          toColumn: {
-            id: 1;
-            name: "identifier";
-            kind: "shorttext";
-            multilanguage: true;
-            languageType: "language";
-          };
-          index: 63;
-        };
-        published: {
-          id: 64;
-          name: "published";
-          kind: "boolean";
-          multilanguage: false;
-          index: 64;
-        };
-        publishDate: {
-          id: 65;
-          name: "publishDate";
-          kind: "datetime";
-          multilanguage: false;
-          index: 65;
         };
       };
     };
