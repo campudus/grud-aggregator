@@ -19,7 +19,7 @@
       "require": "./dist/index.cjs"
     },
     "./entities": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/entities.d.ts",
       "import": "./dist/entities.js",
       "require": "./dist/entities.cjs"
     },
