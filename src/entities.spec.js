@@ -1,11 +1,10 @@
 import expect from "must";
 import express from "express";
 import {getEntitiesOfTable, getEntitiesOfTables} from "./entities.js";
-import disableFollowTestTableOnly from "./__tests__/testTableDisableFollow1.json" with { type: "json" };
-import disableFollowTestTableAndThirdTableOnly from "./__tests__/testTableDisableFollow2.json" with { type: "json" };
-import disableFollowTestTableAndLinkedTables from "./__tests__/testTableDisableFollow3.json" with { type: "json" };
-import includeColumnsTestTableOnly from "./__tests__/testTableIncludeColumns1.json" with { type: "json" };
-import includeColumnsAllTables from "./__tests__/testTableIncludeColumns2.json" with { type: "json" };
+
+import testTableOnly from "./__tests__/entitiesFixture-testTableOnly.json" with { type: "json" };
+import testTableAndThirdTableOnly from "./__tests__/entitiesFixture-testTableAndThirdTableOnly.json" with { type: "json" };
+import testTableAndLinkedTables from "./__tests__/entitiesFixture-testTableAndLinkedTables.json" with { type: "json" };
 
 describe("entities.js", () => {
   const TABLE_IDS = [1, 2, 3, 4, 5];
@@ -17,7 +16,8 @@ describe("entities.js", () => {
 
   before(() => {
     const DATA_BY_URL = {
-      "/tables": "pimFixture-alltables.json"
+      "/tables": "pimFixture-alltables.json",
+      "/structure": "pimFixture-structure.json"
     };
 
     TABLE_IDS.forEach(id => Object.assign(DATA_BY_URL, {
@@ -44,9 +44,10 @@ describe("entities.js", () => {
           res.end("error");
         } else {
           const sendFile = () => res.sendFile(`${import.meta.dirname}/__tests__/${data}`);
+          const forceDelay = parseInt(process.env.FORCE_DELAY_MS);
 
-          if (process.env.FORCE_DELAY_MS) {
-            setTimeout(() => sendFile(), process.env.FORCE_DELAY_MS);
+          if (Number.isFinite(forceDelay)) {
+            setTimeout(() => sendFile(), forceDelay);
           } else {
             sendFile();
           }
@@ -74,419 +75,563 @@ describe("entities.js", () => {
   });
 
   describe("getEntitiesOfTables", () => {
-    it("retrieves entities of multiple tables", () => {
-      return getEntitiesOfTables(["testTable", "fooTestTable", "quxTestTable"], {pimUrl: SERVER_URL})
-        .then(result => {
-          expect(Object.keys(result)).to.eql(TABLE_IDS.map(String));
+    it("retrieves entities of multiple tables", async () => {
+      const result = await getEntitiesOfTables(["testTable", "fooTestTable", "quxTestTable"], {pimUrl: SERVER_URL});
+      
+      expect(Object.keys(result)).to.eql(TABLE_IDS.map(String));
 
-          TABLE_IDS.forEach(id => {
-            expect(result[id].rows).not.to.be.empty();
-            expect(result[id].columns).not.to.be.empty();
-          });
-        });
+      TABLE_IDS.forEach(id => {
+        expect(result[id].rows).not.to.be.empty();
+        expect(result[id].columns).not.to.be.empty();
+      });
     });
 
-    it("maps the rows to their object ids for multiple tables", () => {
-      return getEntitiesOfTables(["testTable", "fooTestTable", "quxTestTable"], {pimUrl: SERVER_URL})
-        .then(result => {
-          TABLE_IDS.forEach(id => {
-            expect(result[id].rows).to.be.an.object();
-          });
+    it("maps the rows to their object ids for multiple tables", async () => {
+      const result = await getEntitiesOfTables(["testTable", "fooTestTable", "quxTestTable"], {pimUrl: SERVER_URL});
+        
+      TABLE_IDS.forEach(id => {
+        expect(result[id].rows).to.be.an.object();
+      });
 
-          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
-          expect(Object.keys(result["2"].rows)).to.eql(["1", "2", "3"]);
-          expect(Object.keys(result["3"].rows)).to.eql(["1", "2", "3", "4", "5"]);
-          expect(Object.keys(result["4"].rows)).to.eql(["1"]);
-          expect(Object.keys(result["5"].rows)).to.eql(["1"]);
-        });
+      expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
+      expect(Object.keys(result["2"].rows)).to.eql(["1", "2", "3"]);
+      expect(Object.keys(result["3"].rows)).to.eql(["1", "2", "3", "4", "5"]);
+      expect(Object.keys(result["4"].rows)).to.eql(["1"]);
+      expect(Object.keys(result["5"].rows)).to.eql(["1"]);
     });
   });
 
   describe("getEntitiesOfTable", () => {
-    it("retrieves entities of a test table", () => {
-      return getEntitiesOfTable("testTable", {pimUrl: SERVER_URL})
-        .then(result => {
-          expect(Object.keys(result)).to.eql(["1", "2", "3"]);
-        });
+    it("retrieves entities of a test table", async () => {
+      const result = await getEntitiesOfTable("testTable", {pimUrl: SERVER_URL});
+      
+      expect(Object.keys(result)).to.eql(["1", "2", "3"]);
     });
 
-    it("maps the rows to their object ids", () => {
-      return getEntitiesOfTable("testTable", {pimUrl: SERVER_URL})
-        .then(result => {
-          expect(result["1"].rows).not.to.be.an.array();
-          expect(result["1"].rows).to.be.an.object();
-          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
-        });
+    it("maps the rows to their object ids", async () => {
+      const result = await getEntitiesOfTable("testTable", {pimUrl: SERVER_URL});
+        
+      expect(result["1"].rows).not.to.be.an.array();
+      expect(result["1"].rows).to.be.an.object();
+      expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
     });
 
-    it("requires a pimUrl", () => {
-      expect(() => getEntitiesOfTable("someTable")).to.throw(/missing option pimUrl/i);
+    it("requires a pimUrl", async () => {
+      await expect(getEntitiesOfTable("someTable")).to.reject.with.error(/missing option pimUrl/i);
     });
 
-    it("requires a pimUrl as string", () => {
-      expect(() => getEntitiesOfTable("testTable", {pimUrl: true})).to.throw(/pimUrl.*string/i);
-      expect(() => getEntitiesOfTable("testTable", {pimUrl: false})).to.throw(/pimUrl.*string/i);
-      expect(() => getEntitiesOfTable("testTable", {pimUrl: []})).to.throw(/pimUrl.*string/i);
-      expect(() => getEntitiesOfTable("testTable", {pimUrl: 123})).to.throw(/pimUrl.*string/i);
-      return expect(getEntitiesOfTable("testTable", {pimUrl: SERVER_URL})).to.resolve.not.to.null();
+    it("requires a pimUrl as string", async () => {
+      await expect(getEntitiesOfTable("testTable", {pimUrl: true})).to.reject.with.error(/pimUrl.*string/i);
+      await expect(getEntitiesOfTable("testTable", {pimUrl: false})).to.reject.with.error(/pimUrl.*string/i);
+      await expect(getEntitiesOfTable("testTable", {pimUrl: []})).to.reject.with.error(/pimUrl.*string/i);
+      await expect(getEntitiesOfTable("testTable", {pimUrl: 123})).to.reject.with.error(/pimUrl.*string/i);
+      await expect(getEntitiesOfTable("testTable", {pimUrl: SERVER_URL})).to.resolve.not.to.null();
     });
 
     describe("maxEntriesPerRequest setting", () => {
 
-      it("may download in a paged fashion", () => {
-        return getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          maxEntriesPerRequest: 2
-        }).then(result => {
-          expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
-          expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=4&limit=2/.test(elem))).to.be.true();
+      it("may download in a paged fashion", async () => {
+        const result = await getEntitiesOfTable("testTable", { pimUrl: SERVER_URL, maxEntriesPerRequest: 2 });
+        
+        expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
+        expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=2&limit=2/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=4&limit=2/.test(elem))).to.be.true();
 
-          expect(result["1"].rows).not.to.be.an.array();
-          expect(result["1"].rows).to.be.an.object();
-          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
-        });
+        expect(result["1"].rows).not.to.be.an.array();
+        expect(result["1"].rows).to.be.an.object();
+        expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
       });
 
-      it("will throw on a negative number", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          maxEntriesPerRequest: -1
-        })).to.throw();
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          maxEntriesPerRequest: -5143
-        })).to.throw();
+      it("will reject on a negative number", async () => {
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            maxEntriesPerRequest: -1
+          })
+        ).to.reject.with.error();
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            maxEntriesPerRequest: -5143
+          })
+        ).to.reject.with.error();
       });
 
-      it("will throw on NaN", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          maxEntriesPerRequest: NaN
-        })).to.throw();
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          maxEntriesPerRequest: "hello"
-        })).to.throw();
+      it("will reject on NaN", async () => {
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            maxEntriesPerRequest: NaN
+          })
+        ).to.reject.with.error();
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            maxEntriesPerRequest: "hello"
+          })
+        ).to.reject.with.error();
       });
 
-      it("will throw on non-integer values", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          maxEntriesPerRequest: 0.5
-        })).to.throw();
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          maxEntriesPerRequest: -6.5
-        })).to.throw();
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          maxEntriesPerRequest: Math.PI
-        })).to.throw();
+      it("will reject on non-integer values", async () => {
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            maxEntriesPerRequest: 0.5
+          })
+        ).to.reject.with.error();
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            maxEntriesPerRequest: -6.5
+          })
+        ).to.reject.with.error();
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            maxEntriesPerRequest: Math.PI
+          })
+        ).to.reject.with.error();
       });
     });
 
-    describe("setting disableFollow", () => {
-      it("requires an array", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: true
-        })).to.throw(/array of column lists/i);
+    // describe("setting disableFollow", () => {
+    //   it.only("requires an array", async () => {
+    //     await expect(getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: true
+    //     })).to.reject.with.error(/array of column lists/i);
+    //   });
+
+    //   it("requires an array of arrays", () => {
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         "abc", 2, true
+    //       ]
+    //     })).to.throw(/array of column lists/i);
+    //   });
+
+    //   it("does not allow '*' / '**' more than once in a column list", () => {
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["**", "col1", "**", "col2"]
+    //       ]
+    //     })).to.throw(/'\*\*' can only appear once/i);
+
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["*", "col1", "*", "col2"]
+    //       ]
+    //     })).to.throw(/'\*' \/ '\*\*' can only appear once/i);
+    //   });
+
+    //   it("requires exactly one column after '**'", () => {
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["**"]
+    //       ]
+    //     })).to.throw(/must contain exactly one column/i);
+
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["**", "col1", "col2"]
+    //       ]
+    //     })).to.throw(/must contain exactly one column/i);
+
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["col1", "**", "col2", "col3"]
+    //       ]
+    //     })).to.throw(/must contain exactly one column/i);
+
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["col1", "**"]
+    //       ]
+    //     })).to.throw(/must contain exactly one column/i);
+    //   });
+
+    //   it("should not download specified links on top level", () => {
+    //     return getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["someLink"]
+    //       ]
+    //     }).then(result => {
+    //       expect(result).to.eql(disableFollowTestTableOnly);
+    //     });
+    //   });
+
+    //   it("should not download specified links in sub-tables if defined", () => {
+    //     return getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["someLink", "anotherLink"]
+    //       ]
+    //     }).then(result => {
+    //       expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+    //     });
+    //   });
+
+    //   it("should not download specified links in sub-tables if defined with '*'", () => {
+    //     return getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["*", "anotherLink"]
+    //       ]
+    //     })
+    //       .then(result => {
+    //         expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+    //       });
+    //   });
+
+    //   it("should download top level links if erroneously defined with '*' as first entry", () => {
+    //     return getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       disableFollow: [
+    //         ["*", "someLink"]
+    //       ]
+    //     })
+    //       .then(result => {
+    //         expect(result).to.eql(disableFollowTestTableAndLinkedTables);
+    //       });
+    //   });
+
+    //   it("should not download specified links in all tables if defined with '**'", () => {
+    //     return Promise
+    //       .resolve()
+    //       .then(() => getEntitiesOfTable("testTable", {
+    //         pimUrl: SERVER_URL,
+    //         disableFollow: [
+    //           ["**", "someLink"]
+    //         ]
+    //       }))
+    //       .then(result => {
+    //         expect(result).to.eql(disableFollowTestTableOnly);
+    //       })
+    //       .then(() => getEntitiesOfTable("testTable", {
+    //         pimUrl: SERVER_URL,
+    //         disableFollow: [
+    //           ["**", "anotherLink"]
+    //         ]
+    //       }))
+    //       .then(result => {
+    //         expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+    //       })
+    //       .then(() => getEntitiesOfTable("testTable", {
+    //         pimUrl: SERVER_URL,
+    //         disableFollow: [
+    //           ["someLink", "**", "anotherLink"]
+    //         ]
+    //       }))
+    //       .then(result => {
+    //         expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+    //       });
+    //   });
+
+    //   it("should not download specified links in all tables if defined with a combination of '*' and '**'", () => {
+    //     return Promise
+    //       .resolve()
+    //       .then(() => getEntitiesOfTable("testTable", {
+    //         pimUrl: SERVER_URL,
+    //         disableFollow: [
+    //           ["*", "**", "anotherLink"]
+    //         ]
+    //       }))
+    //       .then(result => {
+    //         expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+    //       })
+    //       .then(() => getEntitiesOfTable("testTable", {
+    //         pimUrl: SERVER_URL,
+    //         disableFollow: [
+    //           ["someLink", "**", "*"]
+    //         ]
+    //       }))
+    //       .then(result => {
+    //         expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+    //       });
+    //   });
+    // });
+
+    // describe("setting includeColumns", () => {
+    //   it("requires an array", () => {
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       includeColumns: true
+    //     })).to.throw(/array of columns/i);
+    //   });
+
+    //   it("requires an array of strings", () => {
+    //     expect(() => getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       includeColumns: [
+    //         "abc", 2, true
+    //       ]
+    //     })).to.throw(/array of columns/i);
+    //   });
+
+    //   it("should not download any links", () => {
+    //     return getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       includeColumns: []
+    //     }).then(result => {
+    //       expect(result).to.eql(includeColumnsTestTableOnly);
+    //     });
+    //   });
+
+    //   it("should download specified link", () => {
+    //     return getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       includeColumns: ["someLink"]
+    //     }).then(result => {
+    //       expect(result).to.eql(includeColumnsAllTables);
+    //     });
+    //   });
+
+    //   it("should not download specified link if it is disabled", () => {
+    //     return getEntitiesOfTable("testTable", {
+    //       pimUrl: SERVER_URL,
+    //       includeColumns: ["someLink"],
+    //       disableFollow: [["someLink"]]
+    //     }).then(result => {
+    //       expect(result).to.eql(includeColumnsTestTableOnly);
+    //     });
+    //   });
+    // });
+
+    describe("setting includeTables", () => {
+      it("should require string array", async () => {
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            includeTables: true
+          })
+        ).to.reject.with.error(/list of tableNames/i);
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            includeTables: [1, true]
+          })
+        ).to.reject.with.error(/list of tableNames/i);
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            includeTables: []
+          })
+        ).to.resolve.not.to.null();
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            includeTables: ["test"]
+          })
+        ).to.resolve.not.to.null();
       });
 
-      it("requires an array of arrays", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: [
-            "abc", 2, true
-          ]
-        })).to.throw(/array of column lists/i);
-      });
-
-      it("does not allow '*' / '**' more than once in a column list", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: [
-            ["**", "col1", "**", "col2"]
-          ]
-        })).to.throw(/'\*\*' can only appear once/i);
-
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: [
-            ["*", "col1", "*", "col2"]
-          ]
-        })).to.throw(/'\*' \/ '\*\*' can only appear once/i);
-      });
-
-      it("requires exactly one column after '**'", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: [
-            ["**"]
-          ]
-        })).to.throw(/must contain exactly one column/i);
-
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: [
-            ["**", "col1", "col2"]
-          ]
-        })).to.throw(/must contain exactly one column/i);
-
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: [
-            ["col1", "**", "col2", "col3"]
-          ]
-        })).to.throw(/must contain exactly one column/i);
-
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: [
-            ["col1", "**"]
-          ]
-        })).to.throw(/must contain exactly one column/i);
-      });
-
-      it("should not download specified links on top level", () => {
-        return getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          disableFollow: [
-            ["someLink"]
-          ]
-        }).then(result => {
-          expect(result).to.eql(disableFollowTestTableOnly);
+      it("should return all links if not set", async () => {
+        const result = await getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL
         });
+
+        expect(result).to.eql(testTableAndLinkedTables);
       });
 
-      it("should not download specified links in sub-tables if defined", () => {
-        return getEntitiesOfTable("testTable", {
+      it("should return no links on empty array", async () => {
+        const result = await getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
-          disableFollow: [
-            ["someLink", "anotherLink"]
-          ]
-        }).then(result => {
-          expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
+          includeTables: []
         });
+
+        expect(result).to.eql(testTableOnly);
       });
 
-      it("should not download specified links in sub-tables if defined with '*'", () => {
-        return getEntitiesOfTable("testTable", {
+      it("should only include linked tables", async () => {
+        const result = await getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
-          disableFollow: [
-            ["*", "anotherLink"]
-          ]
-        })
-          .then(result => {
-            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
-          });
+          includeTables: ["thirdTestTable"]
+        });
+
+        expect(result).to.eql(testTableAndThirdTableOnly);
       });
 
-      it("should download top level links if erroneously defined with '*' as first entry", () => {
-        return getEntitiesOfTable("testTable", {
+      it("should only include linked tables", async () => {
+        const result = await getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
-          disableFollow: [
-            ["*", "someLink"]
-          ]
-        })
-          .then(result => {
-            expect(result).to.eql(disableFollowTestTableAndLinkedTables);
-          });
-      });
+          includeTables: ["thirdTestTable", "anotherTestTable"]
+        });
 
-      it("should not download specified links in all tables if defined with '**'", () => {
-        return Promise
-          .resolve()
-          .then(() => getEntitiesOfTable("testTable", {
-            pimUrl: SERVER_URL,
-            disableFollow: [
-              ["**", "someLink"]
-            ]
-          }))
-          .then(result => {
-            expect(result).to.eql(disableFollowTestTableOnly);
-          })
-          .then(() => getEntitiesOfTable("testTable", {
-            pimUrl: SERVER_URL,
-            disableFollow: [
-              ["**", "anotherLink"]
-            ]
-          }))
-          .then(result => {
-            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
-          })
-          .then(() => getEntitiesOfTable("testTable", {
-            pimUrl: SERVER_URL,
-            disableFollow: [
-              ["someLink", "**", "anotherLink"]
-            ]
-          }))
-          .then(result => {
-            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
-          });
-      });
-
-      it("should not download specified links in all tables if defined with a combination of '*' and '**'", () => {
-        return Promise
-          .resolve()
-          .then(() => getEntitiesOfTable("testTable", {
-            pimUrl: SERVER_URL,
-            disableFollow: [
-              ["*", "**", "anotherLink"]
-            ]
-          }))
-          .then(result => {
-            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
-          })
-          .then(() => getEntitiesOfTable("testTable", {
-            pimUrl: SERVER_URL,
-            disableFollow: [
-              ["someLink", "**", "*"]
-            ]
-          }))
-          .then(result => {
-            expect(result).to.eql(disableFollowTestTableAndThirdTableOnly);
-          });
+        expect(result).to.eql(testTableAndLinkedTables);
       });
     });
 
-    describe("setting includeColumns", () => {
-      it("requires an array", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          includeColumns: true
-        })).to.throw(/array of columns/i);
+    describe("setting excludeTables", () => {
+      it("should require string array", async () => {
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            excludeTables: true
+          })
+        ).to.reject.with.error(/list of tableNames/i);
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            excludeTables: [1, true]
+          })
+        ).to.reject.with.error(/list of tableNames/i);
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            excludeTables: []
+          })
+        ).to.resolve.not.to.null();
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            excludeTables: ["test"]
+          })
+        ).to.resolve.not.to.null();
       });
 
-      it("requires an array of strings", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          includeColumns: [
-            "abc", 2, true
-          ]
-        })).to.throw(/array of columns/i);
-      });
-
-      it("should not download any links", () => {
-        return getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          includeColumns: []
-        }).then(result => {
-          expect(result).to.eql(includeColumnsTestTableOnly);
+      it("should return all links if not set", async () => {
+        const result = await getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL
         });
+
+        expect(result).to.eql(testTableAndLinkedTables);
       });
 
-      it("should download specified link", () => {
-        return getEntitiesOfTable("testTable", {
+      it("should return all links if empty", async () => {
+        const result = await getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
-          includeColumns: ["someLink"]
-        }).then(result => {
-          expect(result).to.eql(includeColumnsAllTables);
+          excludeTables: []
         });
+
+        expect(result).to.eql(testTableAndLinkedTables);
       });
 
-      it("should not download specified link if it is disabled", () => {
-        return getEntitiesOfTable("testTable", {
+      it("should exclude linked table", async () => {
+        const result = await getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
-          includeColumns: ["someLink"],
-          disableFollow: [["someLink"]]
-        }).then(result => {
-          expect(result).to.eql(includeColumnsTestTableOnly);
+          excludeTables: ["anotherTestTable"]
         });
+
+        expect(result).to.eql(testTableAndThirdTableOnly);
+      });
+
+      it("should exclude linked table and subsequent links", async () => {
+        const result = await getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          excludeTables: ["thirdTestTable"]
+        });
+
+        expect(result).to.eql(testTableOnly);
+      });
+    });
+
+    describe("setting includeTables with excludeTables", () => {
+      it("should give priority to excludeTables", async () => {
+        const result = await getEntitiesOfTable("testTable", {
+          pimUrl: SERVER_URL,
+          includeTables: ["thirdTestTable"],
+          excludeTables: ["thirdTestTable"]
+        });
+
+        expect(result).to.eql(testTableOnly);
       });
     });
 
     describe("setting archived", () => {
-      it("requires a boolean", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          archived: "false"
-        })).to.throw(/boolean/i);
+      it("requires a boolean", async () => {
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            archived: "false"
+          })
+        ).to.reject.with.error(/boolean/i);
       });
 
-      it("should not include archived query in URL of rows API call - when not set as param of getEntitiesOfTable", () => {
-        return getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL
-        }).then(result => {
-          expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
-          expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
+      it("should not include archived query in URL of rows API call - when not set as param of getEntitiesOfTable", async () => {
+        const result = await getEntitiesOfTable("testTable", { pimUrl: SERVER_URL });
 
-          expect(result["1"].rows).not.to.be.an.array();
-          expect(result["1"].rows).to.be.an.object();
-          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
-        });
+        expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
+        expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500/.test(elem))).to.be.true();
+
+        expect(result["1"].rows).not.to.be.an.array();
+        expect(result["1"].rows).to.be.an.object();
+        expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
+        
       });
 
-      it("should include archived query equals true in URL of rows API call", () => {
-        return getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          archived: true
-        }).then(result => {
-          expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
-          expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
+      it("should include archived query equals true in URL of rows API call", async () => {
+        const result = await getEntitiesOfTable("testTable", { pimUrl: SERVER_URL, archived: true });
 
-          expect(result["1"].rows).not.to.be.an.array();
-          expect(result["1"].rows).to.be.an.object();
-          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
-        });
+        expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
+        expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500&archived=true/.test(elem))).to.be.true();
+
+        expect(result["1"].rows).not.to.be.an.array();
+        expect(result["1"].rows).to.be.an.object();
+        expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
       });
 
-      it("should include archived query equals false in URL of rows API call", () => {
-        return getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          archived: false
-        }).then(result => {
-          expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
-          expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
-          expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
+      it("should include archived query equals false in URL of rows API call", async () => {
+        const result = await getEntitiesOfTable("testTable", { pimUrl: SERVER_URL, archived: false });
 
-          expect(result["1"].rows).not.to.be.an.array();
-          expect(result["1"].rows).to.be.an.object();
-          expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
-        });
+        expect(calledUrls.some(elem => /\/completetable\//.test(elem))).to.be.false();
+        expect(calledUrls.some(elem => /\/tables\/1\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/1\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/2\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/columns/.test(elem))).to.be.true();
+        expect(calledUrls.some(elem => /\/tables\/3\/rows\?offset=0&limit=500&archived=false/.test(elem))).to.be.true();
+
+        expect(result["1"].rows).not.to.be.an.array();
+        expect(result["1"].rows).to.be.an.object();
+        expect(Object.keys(result["1"].rows)).to.eql(["1", "2", "3", "4"]);
       });
     });
 
-    describe("setting timeout", () => {
-      it("should throw if not an integer", () => {
-        expect(() => getEntitiesOfTable("testTable", {
-          pimUrl: SERVER_URL,
-          timeout: "1000"
-        })).to.throw(/integer/i);
+    describe("setting timeout", async () => {
+      it("should reject if not an integer", async () => {
+        await expect(
+          getEntitiesOfTable("testTable", {
+            pimUrl: SERVER_URL,
+            timeout: "1000"
+          })
+        ).to.reject.with.error(/integer/i);
       });
 
-      it("should timeout after specified milliseconds", () => {
+      it("should timeout after specified milliseconds", async () => {
         const TIMEOUT_MS = 100;
 
-        process.env.FORCE_DELAY_MS = 1000;
+        process.env.FORCE_DELAY_MS = 200;
 
-        return getEntitiesOfTable("testTable", {
+        await expect(getEntitiesOfTable("testTable", {
           pimUrl: SERVER_URL,
           timeout: TIMEOUT_MS
-        }).must.reject.with.error(new RegExp(`timed out.+${TIMEOUT_MS}ms`, "i"));
+        })).to.reject.with.error(new RegExp(`timed out.+${TIMEOUT_MS}ms`, "i"));
       });
     });
   });

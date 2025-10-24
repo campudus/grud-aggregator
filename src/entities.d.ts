@@ -5,7 +5,8 @@ import type {
   ColumnName,
   LinkedTableId,
   Row,
-  Tables
+  Tables,
+  LinkedTableName
 } from "./common.d.ts";
 
 export type TableEntities<
@@ -27,16 +28,20 @@ export type TableEntities<
 export function getEntitiesOfTable<
   TNameOrNames extends TableName | TableName[],
   TName extends TableName = TNameOrNames extends TableName[] ? TNameOrNames[number] : TNameOrNames,
-  CName extends ColumnName<TName> = ColumnName<TName>
+  LName extends LinkedTableName<TName> = LinkedTableName<TName>,
+  IncludeTableName extends LName = LName,
+  ExcludeTableName extends LName = LName,
+  IncludeColumnName extends ColumnName<TName> = ColumnName<TName>
 >(
   tableNameOrNames: TNameOrNames,
   options: {
-    disableFollow?: string[][];
-    includeColumns?: CName[];
     pimUrl: string;
     maxEntriesPerRequest?: number;
     archived?: boolean;
     headers?: Record<string, string>;
     timeout?: number;
+    includeColumns?: IncludeColumnName[];
+    includeTables?: IncludeTableName[],
+    excludeTables?: ExcludeTableName[],
   }
 ): Promise<TableEntities<TName>>;

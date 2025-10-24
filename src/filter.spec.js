@@ -16,7 +16,6 @@ import filterFixture11 from "./__tests__/filterFixture11.json" with { type: "jso
 import filterFixture12 from "./__tests__/filterFixture12.json" with { type: "json" };
 import filterFixture13 from "./__tests__/filterFixture13.json" with { type: "json" };
 import filterFixtureA3AndA4 from "./__tests__/filterFixtureA3AndA4.json" with { type: "json" };
-import testTableDisableFollow2 from "./__tests__/testTableDisableFollow2.json" with { type: "json" };
 import missingEntitiesFixture from "./__tests__/missingEntitiesFixture.json" with { type: "json" };
 import {filter} from "./filter.js";
 import expect from "must";
@@ -277,7 +276,7 @@ describe("filter", () => {
       warn.apply(this, arguments);
     };
     return Promise
-      .resolve(testTableDisableFollow2)
+      .resolve(filterFixture12)
       .then(filter({
         path: ["testTable"]
       }))
@@ -295,7 +294,7 @@ describe("filter", () => {
       warn.apply(this, arguments);
     };
     return Promise
-      .resolve(testTableDisableFollow2)
+      .resolve(filterFixture12)
       .then(filter({
         path: ["testTable"],
         ignoreMissing: true

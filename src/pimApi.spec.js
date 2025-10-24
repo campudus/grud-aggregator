@@ -20,10 +20,12 @@ describe("pimApi", () => {
         headers = req.headers;
 
         const sendFile = (fileName) => {
-          if (process.env.FORCE_DELAY_MS) {
+          const forceDelay = parseInt(process.env.FORCE_DELAY_MS);
+
+          if (Number.isFinite(forceDelay)) {
             setTimeout(() => {
               res.sendFile(fileName);
-            }, process.env.FORCE_DELAY_MS);
+            }, forceDelay);
           } else {
             res.sendFile(fileName);
           }

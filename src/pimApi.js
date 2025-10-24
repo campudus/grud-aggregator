@@ -1,5 +1,11 @@
 import _ from "lodash";
 
+export function getStructure(options) {
+  const {pimUrl, headers, timeout} = getOptionsFromParam(options, "getStructure");
+
+  return request(`${pimUrl}/structure`, {headers, timeout}).then(data => data.tables);
+}
+
 export function getAllTables(options) {
   const {pimUrl, headers, timeout} = getOptionsFromParam(options, "getAllTables");
 

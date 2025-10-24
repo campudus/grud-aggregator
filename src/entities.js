@@ -1,19 +1,19 @@
 import _ from "lodash";
-import {getCompleteTable, getTablesByNames} from "./pimApi.js";
+import { getCompleteTable, getStructure } from "./pimApi.js";
 
 export function getEntitiesOfTables(tableNames, options = {}) {
   return getEntitiesOfTable(tableNames, options);
 }
 
-export function getEntitiesOfTable(tableNameOrNames, options = {}) {
+export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
   const {
-    disableFollow = [],
-    includeColumns,
     pimUrl,
     maxEntriesPerRequest = 500,
     archived,
     headers = {},
-    timeout = 120000 // 2 minutes
+    timeout = 120000, // 2 minutes
+    includeTables,
+    excludeTables
   } = options;
 
   if (_.isNil(pimUrl)) {
@@ -24,35 +24,6 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting pimUrl to be a string");
   }
 
-  if (!_.isArray(disableFollow) || _.some(disableFollow, columns => !_.isArray(columns))) {
-    throw new Error("Expecting an array of column lists as disableFollow");
-  }
-
-  if (_.some(disableFollow, columns => {
-    if (columns.includes("*") || columns.includes("**")) {
-      const starColumns = _.filter(columns, column => column === "*");
-      const doubleStarColumns = _.filter(columns, column => column === "**");
-
-      return starColumns.length > 1 || doubleStarColumns.length > 1;
-    }
-  })) {
-    throw new Error("'*' / '**' can only appear once in each column list in disableFollow");
-  }
-
-  if (_.some(disableFollow, columns => {
-    if (columns.includes("**")) {
-      const pathAfterDoubleStar = _.takeRightWhile(columns, column => column !== "**");
-
-      return pathAfterDoubleStar.length !== 1;
-    }
-  })) {
-    throw new Error("When using '**' in disableFollow, the column list must contain exactly one column after '**'");
-  }
-
-  if (includeColumns && (!_.isArray(includeColumns) || _.some(includeColumns, column => !_.isString(column)))) {
-    throw new Error("Expecting an array of columns as includeColumns");
-  }
-
   if (!_.isInteger(maxEntriesPerRequest) || maxEntriesPerRequest <= 0) {
     throw new Error("Expecting maxEntriesPerRequest to be a positive integer greater than 0");
   }
@@ -61,7 +32,7 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting archived to be a boolean");
   }
 
-  if (!_.isPlainObject(headers) || _.some(headers, value => !_.isString(value))) {
+  if (!_.isPlainObject(headers) || _.some(headers, (value) => !_.isString(value))) {
     throw new Error("Expecting headers to be an object of key value pairs (string:string)");
   }
 
@@ -69,82 +40,56 @@ export function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting timeout to be an integer representing milliseconds");
   }
 
-  const promises = {};
-  const tables = {};
-  const tableNames = _.concat(tableNameOrNames);
+  if (!_.isNil(includeTables) && (!_.isArray(includeTables) || _.some(includeTables, (value) => !_.isString(value)))) {
+    throw new Error("Expecting includeTables to be a list of tableNames");
+  }
 
-  return getTablesByNames({pimUrl, headers, timeout}, ...tableNames)
-    .then(tablesFromPim => _.reduce(tablesFromPim, (accumulatorPromise, table) => {
-      return accumulatorPromise.then(() =>
-        getTableAndLinkedTablesAsPromise(table.id, disableFollow, maxEntriesPerRequest, archived, includeColumns)
-      );
-    }, Promise.resolve([])))
-    .then(() => {
-      _.each(tables, table => {
-        table.rows = _.keyBy(table.rows, "id");
-      });
+  if (!_.isNil(excludeTables) && (!_.isArray(excludeTables) || _.some(excludeTables, (value) => !_.isString(value)))) {
+    throw new Error("Expecting excludeTables to be a list of tableNames");
+  }
 
-      return tables;
-    });
+  const tablesAndColumns = await getStructure({ pimUrl, headers, timeout });
+  const linkIdsByTableId = {};
 
-  function getTableAndLinkedTablesAsPromise(tableId, disableFollow, maxEntriesPerRequest, archived, includeColumns) {
-    if (!promises[tableId]) {
-      const promiseOfLinkedTables = getCompleteTable({pimUrl, headers, timeout}, tableId, maxEntriesPerRequest, archived)
-        .then(table => {
-          tables[tableId] = table;
+  for (const table of tablesAndColumns) {
+    linkIdsByTableId[table.id] = [];
 
-          const columnsToFollow = _.filter(table.columns, ({kind, name, toTable}) => {
-            return (
-              !promises[toTable]
-              && kind === "link"
-              && !isColumnDisabled(name, disableFollow)
-              && isColumnIncluded(name, includeColumns)
-            );
-          });
+    for (const column of table.columns) {
+      if (column.toTable) {
+        const linkTable = _.find(tablesAndColumns, (table) => table.id === column.toTable);
+        const isIncluded = _.isNil(includeTables) || _.includes(includeTables, linkTable.name);
+        const isExcluded = _.includes(excludeTables, linkTable.name);
 
-          return Promise.all(_.map(columnsToFollow, column => {
-            const filteredDisableFollow = _.filter(disableFollow, columns => {
-              const head = _.head(columns);
-
-              return !_.isEmpty(columns) && (head === "**" || head === "*" || head === column.name);
-            });
-
-            const nextDisableFollow = _.map(filteredDisableFollow, columns =>
-              _.head(columns) === "**" ? columns : _.tail(columns)
-            );
-
-            return getTableAndLinkedTablesAsPromise(column.toTable, nextDisableFollow, maxEntriesPerRequest, archived);
-          }));
-        });
-
-      promises[tableId] = promiseOfLinkedTables;
-
-      return promiseOfLinkedTables;
-    } else {
-      return promises[tableId];
+        if (isIncluded && !isExcluded) {
+          linkIdsByTableId[table.id].push(linkTable.id);
+        }
+      }
     }
   }
 
-  function isColumnIncluded(columnName, includeColumns) {
-    return _.isNil(includeColumns) || _.isArray(includeColumns) && includeColumns.includes(columnName);
-  }
+  const aggregateTableIds = (tableIds) => {
+    const linkIds = _.flatMap(tableIds, (id) => linkIdsByTableId[id]);
+    const tableAndLinkedIds = _.uniq([...tableIds, ...linkIds]);
+    const diffIds = _.difference(tableAndLinkedIds, tableIds);
 
-  function isColumnDisabled(columnName, disableFollow) {
-    const disabledColumns = _.reduce(disableFollow, (acc, columns) => {
-      const head = _.head(columns);
-      const second = _.nth(columns, 1);
+    return diffIds.length === 0 ? tableAndLinkedIds : aggregateTableIds(tableAndLinkedIds);
+  };
 
-      if (columns.length === 1) {
-        return _.concat(acc, head);
-      }
+  const tableIds = _.chain(tableNameOrNames)
+    .concat()
+    .map((tableName) => _.find(tablesAndColumns, (table) => table.name === tableName)?.id)
+    .compact()
+    .thru(aggregateTableIds)
+    .value();
 
-      if (columns.length === 2 && head === "**") {
-        return _.concat(acc, second);
-      }
+  const tablesPromises = _.map(tableIds, (tableId) => {
+    return getCompleteTable({ pimUrl, headers, timeout }, tableId, maxEntriesPerRequest, archived);
+  });
 
-      return acc;
-    }, []);
+  const tables = await Promise.all(tablesPromises);
 
-    return disabledColumns.includes(columnName) || disabledColumns.includes("*");
-  }
+  return _.chain(tables)
+    .map((table) => ({ ...table, rows: _.keyBy(table.rows, "id") }))
+    .keyBy("id")
+    .value();
 }
