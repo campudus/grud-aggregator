@@ -12,6 +12,7 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     archived,
     headers = {},
     timeout = 120000, // 2 minutes
+    includeColumns,
     includeTables,
     excludeTables
   } = options;
@@ -40,6 +41,10 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting timeout to be an integer representing milliseconds");
   }
 
+  if (!_.isNil(includeColumns) && (!_.isArray(includeColumns) || _.some(includeColumns, (value) => !_.isString(value)))) {
+    throw new Error("Expecting includeColumns to be a list of columnNames");
+  }
+
   if (!_.isNil(includeTables) && (!_.isArray(includeTables) || _.some(includeTables, (value) => !_.isString(value)))) {
     throw new Error("Expecting includeTables to be a list of tableNames");
   }
@@ -48,19 +53,22 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting excludeTables to be a list of tableNames");
   }
 
+  const tableNames = _.concat(tableNameOrNames);
   const tablesAndColumns = await getStructure({ pimUrl, headers, timeout });
   const linkIdsByTableId = {};
 
   for (const table of tablesAndColumns) {
     linkIdsByTableId[table.id] = [];
-
+    const isTopLevelTable = _.includes(tableNames, table.name);
+    
     for (const column of table.columns) {
       if (column.toTable) {
         const linkTable = _.find(tablesAndColumns, (table) => table.id === column.toTable);
-        const isIncluded = _.isNil(includeTables) || _.includes(includeTables, linkTable.name);
-        const isExcluded = _.includes(excludeTables, linkTable.name);
+        const isColumnIncluded = !isTopLevelTable || _.isNil(includeColumns) || _.includes(includeColumns, column.name);
+        const isTableIncluded = _.isNil(includeTables) || _.includes(includeTables, linkTable.name);
+        const isTableExcluded = _.includes(excludeTables, linkTable.name);
 
-        if (isIncluded && !isExcluded) {
+        if (isColumnIncluded && isTableIncluded && !isTableExcluded) {
           linkIdsByTableId[table.id].push(linkTable.id);
         }
       }
@@ -75,8 +83,7 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     return diffIds.length === 0 ? tableAndLinkedIds : aggregateTableIds(tableAndLinkedIds);
   };
 
-  const tableIds = _.chain(tableNameOrNames)
-    .concat()
+  const tableIds = _.chain(tableNames)
     .map((tableName) => _.find(tablesAndColumns, (table) => table.name === tableName)?.id)
     .compact()
     .thru(aggregateTableIds)
