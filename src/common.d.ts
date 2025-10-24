@@ -9,6 +9,9 @@ export type PropValue<T, K extends PropertyKey> = Extract<T, Record<K, unknown>>
 
 export type Prettify<T> = T extends object ? { [K in keyof T]: Prettify<T[K]> } : T;
 
+// helper to split array type into union type
+export type Flat<T> = T extends unknown[] ? T[number] : T;
+
 // fixed
 export type ColumnKind =
   | "boolean"
@@ -141,23 +144,36 @@ export type Row<
     : [RowValue<Column<TName, CName>>];
 };
 
-export type LinkedTableId<Id extends number, Visited extends number = never> = Id extends Visited
-  ? never
-  : PropValue<Extract<Tables, { id: Id }>["columns"][number], "toTable"> extends infer Direct
-    ? Direct extends number
-      ? Direct | LinkedTableId<Direct, Id | Visited>
-      : never
-    : never;
-
 export type LinkedTableName<
   TName extends TableName,
+  IncludeColumns extends ColumnName<TName> | undefined = undefined,
+  IncludeTables extends LinkedTableName<TName> | undefined = undefined,
+  ExcludeTables extends LinkedTableName<TName> | undefined = undefined,
   Visited extends TableName = never
 > = TName extends Visited
   ? never
-  : PropValue<Table<TName>["columns"][number], "toTable"> extends infer Id
-    ? Extract<Tables, { id: Id }>["name"] extends infer LinkName
-      ? LinkName extends TableName
-        ? LinkName | LinkedTableName<LinkName, TName | Visited>
+  : Table<TName>["columns"][number] extends infer Cols
+    ? (IncludeColumns extends string ? IncludeColumns : string) extends infer ColName
+      ? Extract<Cols, { name: ColName }> extends infer Col
+        ? PropValue<Col, "toTable"> extends infer LinkId
+          ? Extract<Tables, { id: LinkId }>["name"] extends infer LinkName
+            ? LinkName extends TableName
+              ? LinkName extends ExcludeTables
+                ? never
+                : LinkName extends (IncludeTables extends string ? IncludeTables : string)
+                  ?
+                      | LinkName
+                      | LinkedTableName<
+                          LinkName,
+                          undefined,
+                          IncludeTables,
+                          ExcludeTables,
+                          TName | Visited
+                        >
+                  : never
+              : never
+            : never
+          : never
         : never
       : never
     : never;

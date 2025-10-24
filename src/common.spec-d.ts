@@ -15,9 +15,7 @@ import type {
   LanguageTypeKey,
   Row,
   RowValue,
-  LinkedTableId,
-  LinkedTableName,
-  Table
+  LinkedTableName
 } from "./common.d.ts";
 
 describe("TableName", () => {
@@ -109,16 +107,6 @@ describe("LanguageTypeKey", () => {
   });
 });
 
-describe("LinkedTableId", () => {
-  it("should find all ids of recursively linked tables", () => {
-    const frameTableId: Table<"frame">["id"] = 93;
-
-    expectTypeOf<LinkedTableId<typeof frameTableId>>().toEqualTypeOf<
-      1 | 5 | 15 | 47 | 86 | 87 | 88 | 89 | 90 | 91
-    >();
-  });
-});
-
 describe("LinkedTableName", () => {
   it("should find all names of recursively linked tables", () => {
     expectTypeOf<LinkedTableName<"frame">>().toEqualTypeOf<
@@ -133,6 +121,60 @@ describe("LinkedTableName", () => {
       | "suspensionSystem"
       | "brakeStandard"
     >();
+  });
+
+  it("should handle includeColumns", () => {
+    expectTypeOf<LinkedTableName<"frame", "frameShape">>().toEqualTypeOf<
+      "frameShape" | "baseFrameShape"
+    >();
+
+    expectTypeOf<LinkedTableName<"variant", "frame" | "fork">>().toEqualTypeOf<
+      | "frame"
+      | "material"
+      | "manufacturer"
+      | "lockout"
+      | "springMedium"
+      | "axle"
+      | "steerTube"
+      | "wheelSize"
+      | "fork"
+      | "axleStandard"
+      | "baseFrameShape"
+      | "frameShape"
+      | "frameSize"
+      | "bearingSet"
+      | "suspensionSystem"
+      | "brakeStandard"
+    >();
+  });
+
+  it("should handle includeTables", () => {
+    expectTypeOf<LinkedTableName<"frame", undefined, "frameShape">>().toEqualTypeOf<"frameShape">();
+    expectTypeOf<LinkedTableName<"bikeModel", undefined, "variant" | "fork">>().toEqualTypeOf<
+      "variant" | "fork"
+    >();
+  });
+
+  it("should handle excludeTables", () => {
+    expectTypeOf<
+      LinkedTableName<"frame", undefined, undefined, "frameShape" | "wheelSize">
+    >().toEqualTypeOf<
+      | "material"
+      | "manufacturer"
+      | "axleStandard"
+      | "frameSize"
+      | "bearingSet"
+      | "suspensionSystem"
+      | "brakeStandard"
+    >();
+
+    expectTypeOf<LinkedTableName<"bikeModel", undefined, undefined, "material" | "manufacturer">>()
+      .extract<"material" | "manufacturer">()
+      .toEqualTypeOf<never>();
+
+    expectTypeOf<LinkedTableName<"bikeModel", undefined, undefined, "variant">>()
+      .extract<"frame" | "frameShape">()
+      .toEqualTypeOf<never>();
   });
 });
 

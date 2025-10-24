@@ -3,22 +3,21 @@ import type {
   Table,
   TableName,
   ColumnName,
-  LinkedTableId,
   Row,
   Tables,
-  LinkedTableName
+  LinkedTableName,
+  Flat
 } from "./common.d.ts";
 
 export type TableEntities<
   TName extends TableName,
-  TId extends number = Table<TName>["id"],
-  LinkIds extends number = LinkedTableId<TId>
+  TId extends number = Table<TName>["id"]
 > = Prettify<{
-  [Id in TId | LinkIds]: Extract<Tables, { id: Id }> extends infer LinkTable
-    ? LinkTable extends Tables
-      ? LinkTable & {
+  [Id in TId]: Extract<Tables, { id: Id }> extends infer Table
+    ? Table extends Tables
+      ? Table & {
           rows: {
-            [rowId: number]: Row<LinkTable["name"]>;
+            [rowId: number]: Row<Table["name"]>;
           };
         }
       : never
@@ -27,11 +26,9 @@ export type TableEntities<
 
 export function getEntitiesOfTable<
   TNameOrNames extends TableName | TableName[],
-  TName extends TableName = TNameOrNames extends TableName[] ? TNameOrNames[number] : TNameOrNames,
-  LName extends LinkedTableName<TName> = LinkedTableName<TName>,
-  IncludeTableName extends LName = LName,
-  ExcludeTableName extends LName = LName,
-  IncludeColumnName extends ColumnName<TName> = ColumnName<TName>
+  IncludeColumns extends ColumnName<Flat<TNameOrNames>>[] | undefined = undefined,
+  IncludeTables extends LinkedTableName<Flat<TNameOrNames>>[] | undefined = undefined,
+  ExcludeTables extends LinkedTableName<Flat<TNameOrNames>>[] | undefined = undefined
 >(
   tableNameOrNames: TNameOrNames,
   options: {
@@ -40,8 +37,18 @@ export function getEntitiesOfTable<
     archived?: boolean;
     headers?: Record<string, string>;
     timeout?: number;
-    includeColumns?: IncludeColumnName[];
-    includeTables?: IncludeTableName[],
-    excludeTables?: ExcludeTableName[],
+    includeColumns?: IncludeColumns;
+    includeTables?: IncludeTables;
+    excludeTables?: ExcludeTables;
   }
-): Promise<TableEntities<TName>>;
+): Promise<
+  TableEntities<
+    | Flat<TNameOrNames>
+    | LinkedTableName<
+        Flat<TNameOrNames>,
+        Flat<IncludeColumns>,
+        Flat<IncludeTables>,
+        Flat<ExcludeTables>
+      >
+  >
+>;

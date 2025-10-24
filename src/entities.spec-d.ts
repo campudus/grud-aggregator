@@ -165,4 +165,95 @@ describe("getEntitiesOfTable", () => {
       };
     }>();
   });
+
+  it("should handle include columns", () => {
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"brake", ["brakeKind"]>>>
+    >().not.toExtend<{
+      5: { name: "manufacturer" };
+    }>();
+
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"brake", ["brakeKind"]>>>
+    >().toExtend<{
+      24: { name: "brakeKind" };
+      25: { name: "brake" };
+    }>();
+
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"frame", ["frameShape"]>>>
+    >().not.toExtend<{
+      5: { name: "manufacturer" };
+    }>();
+
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"frame", ["frameShape"]>>>
+    >().toExtend<{
+      86: { name: "baseFrameShape" };
+      87: { name: "frameShape" };
+      93: { name: "frame" };
+    }>();
+  });
+
+  it("should handle include tables", () => {
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"brake", undefined, ["brakeKind"]>>>
+    >().not.toExtend<{
+      5: { name: "manufacturer" };
+    }>();
+
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"brake", undefined, ["brakeKind"]>>>
+    >().toExtend<{
+      24: { name: "brakeKind" };
+      25: { name: "brake" };
+    }>();
+
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"frame", undefined, ["frameShape"]>>>
+    >().not.toExtend<{
+      86: { name: "baseFrameShape" };
+    }>();
+
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"frame", undefined, ["frameShape"]>>>
+    >().toExtend<{
+      87: { name: "frameShape" };
+      93: { name: "frame" };
+    }>();
+  });
+
+  it("should handle exclude tables", () => {
+    expectTypeOf<
+      Awaited<
+        ReturnType<typeof getEntitiesOfTable<"frame", undefined, undefined, ["baseFrameShape"]>>
+      >
+    >().not.toExtend<{
+      86: { name: "baseFrameShape" };
+    }>();
+
+    expectTypeOf<
+      Awaited<
+        ReturnType<typeof getEntitiesOfTable<"frame", undefined, undefined, ["baseFrameShape"]>>
+      >
+    >().toExtend<{
+      87: { name: "frameShape" };
+      93: { name: "frame" };
+    }>();
+
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"bikeModel", undefined, undefined, ["variant"]>>>
+    >().not.toExtend<{
+      94: { name: "variant" };
+      93: { name: "frame" };
+    }>();
+    
+    expectTypeOf<
+      Awaited<ReturnType<typeof getEntitiesOfTable<"bikeModel", undefined, undefined, ["variant"]>>>
+    >().toExtend<{
+      1: { name: "material" };
+      5: { name: "manufacturer" };
+      // ...and many more
+    }>();
+  });
 });
