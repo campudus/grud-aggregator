@@ -1,53 +1,40 @@
-import _ from "lodash";
+export function referencer() {
+  return (entitiesOfPim) => {
+    const withLanguages = !/^[0-9]+$/.test(Object.keys(entitiesOfPim).at(0));
+    const tablesByLangtag = withLanguages ? entitiesOfPim : { default: entitiesOfPim };
+    const output = {};
 
-export function referencer(options = {
-  withLanguages: false
-}) {
-  return entitiesOfPim => {
-    const {withLanguages} = options;
+    for (const [lt, tablesById] of Object.entries(tablesByLangtag)) {
+      output[lt] = {};
 
-    if (withLanguages) {
-      return _.transform(entitiesOfPim, (allLanguages, tables, languageTag) => {
-        allLanguages[languageTag] = transformTables(tables);
-      }, {});
-    } else {
-      return transformTables(entitiesOfPim);
-    }
+      for (const table of Object.values(tablesById)) {
+        output[lt][table.name] ||= {};
 
-    function transformTables(tables) {
-      const denormalized = {};
-      return _.transform(tables, (result, table) => {
-        orEmpty(denormalized, table.id);
-        result[table.name] = _.mapValues(table.rows, (row, rowId) => {
-          denormalized[table.id][rowId] = orEmpty(denormalized, table.id, rowId);
-          denormalized[table.id][rowId]["id"] = rowId;
+        for (const [rowId, row] of Object.entries(table.rows)) {
+          output[lt][table.name][rowId] ||= { id: row.id };
 
-          return _.transform(table.columns, (cells, column, index) => {
-            const cellValue = row.values[index];
+          for (const [columnIndex, column] of Object.entries(table.columns)) {
+            const cellValue = row.values[columnIndex];
+
             if (column.kind === "link") {
-              denormalized[table.id][rowId][column.name] = _.map(cellValue, idInOtherTableValue => {
-                const idInOtherTable = idInOtherTableValue.id || idInOtherTableValue;
-                const res = orEmpty(denormalized, column.toTable, idInOtherTable);
-                res.linkRowId = idInOtherTable;
-                return res;
+              const linkTableName = tablesById[column.toTable].name;
+
+              output[lt][table.name][rowId][column.name] = cellValue.map((link) => {
+                const linkRowId = link.id || link;
+
+                output[lt][linkTableName] ||= {};
+                output[lt][linkTableName][linkRowId] ||= { id: linkRowId };
+
+                return output[lt][linkTableName][linkRowId];
               });
             } else {
-              denormalized[table.id][rowId][column.name] = cellValue;
+              output[lt][table.name][rowId][column.name] = cellValue;
             }
-            cells[column.name] = denormalized[table.id][rowId][column.name];
-          }, {id: rowId});
-        });
-      }, {});
-    }
-
-    function orEmpty(denormalized, tableId, rowId) {
-      denormalized[tableId] = denormalized[tableId] || {};
-      if (typeof rowId !== "undefined") {
-        denormalized[tableId][rowId] = denormalized[tableId][rowId] || {};
-        return denormalized[tableId][rowId];
-      } else {
-        return denormalized[tableId];
+          }
+        }
       }
     }
+
+    return withLanguages ? output : output.default;
   };
 }
