@@ -15,7 +15,10 @@ import type {
   LanguageTypeKey,
   Row,
   RowValue,
-  LinkedTableName
+  LinkedTableName,
+  Localize,
+  Attachment,
+  MultilangValue
 } from "./common.d.ts";
 
 describe("TableName", () => {
@@ -577,6 +580,92 @@ describe("Row", () => {
           | undefined
         ]
       ];
+    }>();
+  });
+});
+
+describe("Localize", () => {
+  it("should keep primitive value types", () => {
+    expectTypeOf<Localize<string>>().toEqualTypeOf<string>();
+    expectTypeOf<Localize<number>>().toEqualTypeOf<number>();
+    expectTypeOf<Localize<boolean>>().toEqualTypeOf<boolean>();
+    expectTypeOf<Localize<undefined>>().toEqualTypeOf<undefined>();
+    expectTypeOf<Localize<null>>().toEqualTypeOf<null>();
+  });
+
+  it("should localize Attachment type", () => {
+    expectTypeOf<Localize<Attachment>>().toEqualTypeOf<{
+      ordering: number;
+      url: string;
+      uuid: string;
+      folder: number | null;
+      folders: number[];
+      title: string;
+      description: string;
+      internalName: string;
+      externalName: string;
+      mimeType: string;
+      createdAt: string;
+      updatedAt: string;
+    }>();
+  });
+
+  it("should localize multilanguage values", () => {
+    expectTypeOf<
+      Localize<{
+        de: string | null;
+        en: string | null;
+      }>
+    >().toEqualTypeOf<string | null>();
+    expectTypeOf<
+      Localize<{
+        de: number | null;
+        en: number | null;
+      }>
+    >().toEqualTypeOf<number | null>();
+    expectTypeOf<
+      Localize<{
+        de: boolean | null;
+        en: boolean | null;
+      }>
+    >().toEqualTypeOf<boolean | null>();
+  });
+
+  it("should keep non multilanguage value ", () => {
+    expectTypeOf<Localize<string | null>>().toEqualTypeOf<string | null>();
+    expectTypeOf<Localize<number | null>>().toEqualTypeOf<number | null>();
+    expectTypeOf<Localize<boolean | null>>().toEqualTypeOf<boolean | null>();
+  });
+
+  it("should localize deeply nested values", () => {
+    expectTypeOf<
+      Localize<{
+        some: {
+          very: [
+            {
+              id: number;
+              deep: {
+                de: string | null;
+                en: string | null;
+              };
+            }
+          ];
+          anotherValue: {
+            de: number | null;
+            en: number | null;
+          };
+        };
+      }>
+    >().toEqualTypeOf<{
+      some: {
+        very: [
+          {
+            id: number;
+            deep: string | null;
+          }
+        ];
+        anotherValue: number | null;
+      };
     }>();
   });
 });

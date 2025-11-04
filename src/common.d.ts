@@ -185,3 +185,13 @@ export type LinkedTableName<
         : never
       : never
     : never;
+
+export type Localize<Value> = Value extends Attachment
+  ? Attachment<false>
+  : Value extends unknown[]
+    ? { [key in keyof Value]: Localize<Value[key]> }
+    : Value extends Record<string | number | symbol, infer ObjectValue>
+      ? keyof Value extends Langtag
+        ? ObjectValue
+        : { [key in keyof Value]: Localize<Value[key]> }
+      : Value;

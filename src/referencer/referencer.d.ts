@@ -1,6 +1,7 @@
 import type {
   Column,
   Langtag,
+  Localize,
   Prettify,
   RowValue,
   TableName,
@@ -9,34 +10,40 @@ import type {
 } from "../common.d.ts";
 import type { TableEntities } from "../entities.d.ts";
 
-export type ReferencedEntities<
-  Entities extends
-    | Partial<TableEntities<TableName>>
-    | Partial<Record<Langtag, Partial<TableEntities<TableName>>>>
+type ReferencedEntities<
+  Entities extends Partial<TableEntities<TableName>> | Localize<Partial<TableEntities<TableName>>>
 > = Prettify<
   UnionToIntersection<
-    Entities extends Partial<TableEntities<TableName>>
-      ? Values<Entities> extends infer Entity
-        ? Entity extends Values<TableEntities<TableName>>
-          ? {
-              [TName in Entity["name"]]: {
-                [rowId: number]: Prettify<
-                  { id: number } & {
-                    [CName in Exclude<Entity["columns"][number]["name"], "ID">]: RowValue<
-                      Column<TName, CName>
-                    >;
-                  }
-                >;
-              };
-            }
-          : never
+    Values<Entities> extends infer Entity
+      ? Entity extends Values<TableEntities<TableName>> | Localize<Values<TableEntities<TableName>>>
+        ? {
+            [TName in Entity["name"]]: {
+              [rowId: number]: Prettify<
+                { id: number } & {
+                  [CName in Exclude<Entity["columns"][number]["name"], "ID">]: RowValue<
+                    Column<TName, CName>
+                  >;
+                }
+              >;
+            };
+          }
         : never
-      : unknown // TODO: add types for multilanguage: true
+      : never
   >
 >;
 
 export function referencer<
   Entities extends
     | Partial<TableEntities<TableName>>
-    | Partial<Record<Langtag, Partial<TableEntities<TableName>>>>
->(): (entities: Entities) => ReferencedEntities<Entities>;
+    | Partial<Record<Langtag, Localize<Partial<TableEntities<TableName>>>>>
+>(): (
+  entities: Entities
+) => Prettify<
+  Entities extends Partial<TableEntities<TableName>>
+    ? ReferencedEntities<Entities>
+    : NonNullable<Values<Entities>> extends Localize<Partial<TableEntities<TableName>>>
+      ? Partial<
+          Record<Langtag, Localize<Partial<ReferencedEntities<NonNullable<Values<Entities>>>>>>
+        >
+      : never
+>;
