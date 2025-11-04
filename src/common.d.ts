@@ -9,6 +9,14 @@ export type PropValue<T, K extends PropertyKey> = Extract<T, Record<K, unknown>>
 
 export type Prettify<T> = T extends object ? { [K in keyof T]: Prettify<T[K]> } : T;
 
+export type Values<T> = T[keyof T];
+
+export type UnionToIntersection<Union> = (
+  Union extends unknown ? (x: Union) => void : never
+) extends (x: infer Intersection) => void
+  ? Intersection
+  : never;
+
 // helper to split array type into union type
 export type Flat<T> = T extends unknown[] ? T[number] : T;
 

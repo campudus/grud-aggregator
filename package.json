@@ -24,7 +24,7 @@
       "require": "./dist/entities.cjs"
     },
     "./referencer": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/referencer/referencer.d.ts",
       "import": "./dist/referencer/referencer.js",
       "require": "./dist/referencer/referencer.cjs"
     }
