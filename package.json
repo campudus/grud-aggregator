@@ -27,6 +27,11 @@
       "types": "./dist/referencer/referencer.d.ts",
       "import": "./dist/referencer/referencer.js",
       "require": "./dist/referencer/referencer.cjs"
+    },
+    "./tablesToLanguages": {
+      "types": "./dist/tablesToLanguages.d.ts",
+      "import": "./dist/tablesToLanguages.js",
+      "require": "./dist/tablesToLanguages.cjs"
     }
   },
   "scripts": {

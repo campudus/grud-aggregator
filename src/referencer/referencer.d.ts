@@ -32,11 +32,13 @@ type ReferencedEntities<
   >
 >;
 
-export function referencer<
+export function referencer(options?: {
+  withLanguages?: boolean;
+}): <
   Entities extends
     | Partial<TableEntities<TableName>>
     | Partial<Record<Langtag, Localize<Partial<TableEntities<TableName>>>>>
->(): (
+>(
   entities: Entities
 ) => Prettify<
   Entities extends Partial<TableEntities<TableName>>

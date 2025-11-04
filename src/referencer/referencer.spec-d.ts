@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, it, expectTypeOf } from "vitest";
 
 // initialize structure of demo grud
 import "../structure/structure.d.ts";
-import type { referencer } from "./referencer.d.ts";
+import { referencer as buildReferencer } from "./referencer.d.js";
 import { TableEntities } from "../entities.js";
 import { Langtag, Localize } from "../common.js";
 
 describe("referencer", () => {
+  const referencer = buildReferencer();
+
   describe("without tablesToLanguages", () => {
     it("should handle simple table entities", () => {
       expectTypeOf<
-        ReturnType<
-          ReturnType<typeof referencer<TableEntities<"material" | "manufacturer" | "color">>>
-        >
+        ReturnType<typeof referencer<TableEntities<"material" | "manufacturer" | "color">>>
       >().toEqualTypeOf<{
         material: {
           [x: number]: {
@@ -52,7 +53,7 @@ describe("referencer", () => {
 
     it("should handle more complex (with links) table entities", () => {
       expectTypeOf<
-        ReturnType<ReturnType<typeof referencer<TableEntities<"engine" | "batteryPack">>>>
+        ReturnType<typeof referencer<TableEntities<"engine" | "batteryPack">>>
       >().toEqualTypeOf<{
         engine: {
           [x: number]: {
@@ -128,11 +129,7 @@ describe("referencer", () => {
     it("should handle simple table entities", () => {
       expectTypeOf<
         ReturnType<
-          ReturnType<
-            typeof referencer<
-              Partial<Record<Langtag, Localize<TableEntities<"material" | "color">>>>
-            >
-          >
+          typeof referencer<Partial<Record<Langtag, Localize<TableEntities<"material" | "color">>>>>
         >
       >().toEqualTypeOf<
         Partial<
@@ -161,10 +158,8 @@ describe("referencer", () => {
     it("should handle more complex (with links) table entities", () => {
       expectTypeOf<
         ReturnType<
-          ReturnType<
-            typeof referencer<
-              Partial<Record<Langtag, Localize<TableEntities<"engine" | "batteryPack">>>>
-            >
+          typeof referencer<
+            Partial<Record<Langtag, Localize<TableEntities<"engine" | "batteryPack">>>>
           >
         >
       >().toEqualTypeOf<
