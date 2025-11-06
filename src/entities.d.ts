@@ -9,19 +9,18 @@ import type {
   Flat
 } from "./common.d.ts";
 
-export type TableEntities<
-  TName extends TableName,
-  TId extends number = Table<TName>["id"]
-> = Prettify<{
-  [Id in TId]: Extract<Tables, { id: Id }> extends infer Table
-    ? Table extends Tables
-      ? Table & {
-          rows: {
-            [rowId: number]: Row<Table["name"]>;
-          };
-        }
-      : never
-    : never;
+export type TableEntity<T extends Tables> = Prettify<
+  {
+    [TName in T["name"]]: Table<TName> & {
+      rows: {
+        [rowId: number]: Row<TName>;
+      };
+    };
+  }[T["name"]]
+>;
+
+export type TableEntities<T extends Tables> = Prettify<{
+  [TId in T["id"]]: TableEntity<Extract<T, { id: TId }>>;
 }>;
 
 export function getEntitiesOfTable<
@@ -43,12 +42,14 @@ export function getEntitiesOfTable<
   }
 ): Promise<
   TableEntities<
-    | Flat<TNameOrNames>
-    | LinkedTableName<
-        Flat<TNameOrNames>,
-        Flat<IncludeColumns>,
-        Flat<IncludeTables>,
-        Flat<ExcludeTables>
-      >
+    Table<
+      | Flat<TNameOrNames>
+      | LinkedTableName<
+          Flat<TNameOrNames>,
+          Flat<IncludeColumns>,
+          Flat<IncludeTables>,
+          Flat<ExcludeTables>
+        >
+    >
   >
 >;
