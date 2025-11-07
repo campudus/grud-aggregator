@@ -41,7 +41,7 @@
     "lint": "eslint src/",
     "lint:watch": "eslint src/ -w",
     "test": "mocha --colors $(find . -type d -name node_modules -prune -o -name '*.spec.js')",
-    "test:dts": "vitest run ./src/index.spec-d.ts",
+    "test:dts": "vitest run ./src/**/*.spec-d.ts",
     "test:watch": "npm run test -- -w"
   },
   "repository": {
