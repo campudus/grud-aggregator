@@ -158,33 +158,35 @@ export type LinkedTableName<
   IncludeTables extends LinkedTableName<TName> | undefined = undefined,
   ExcludeTables extends LinkedTableName<TName> | undefined = undefined,
   Visited extends TableName = never
-> = TName extends Visited
+> = TableName extends TName
   ? never
-  : Table<TName>["columns"][number] extends infer Cols
-    ? (IncludeColumns extends string ? IncludeColumns : string) extends infer ColName
-      ? Extract<Cols, { name: ColName }> extends infer Col
-        ? PropValue<Col, "toTable"> extends infer LinkId
-          ? Extract<Tables, { id: LinkId }>["name"] extends infer LinkName
-            ? LinkName extends TableName
-              ? LinkName extends ExcludeTables
-                ? never
-                : LinkName extends (IncludeTables extends string ? IncludeTables : string)
-                  ?
-                      | LinkName
-                      | LinkedTableName<
-                          LinkName,
-                          undefined,
-                          IncludeTables,
-                          ExcludeTables,
-                          TName | Visited
-                        >
-                  : never
+  : TName extends Visited
+    ? never
+    : Extract<Table<TName>["columns"][number], { kind: "link" }> extends infer Cols
+      ? (IncludeColumns extends string ? IncludeColumns : string) extends infer ColName
+        ? Extract<Cols, { name: ColName }> extends infer Col
+          ? PropValue<Col, "toTable"> extends infer LinkId
+            ? Extract<Tables, { id: LinkId }>["name"] extends infer LinkName
+              ? LinkName extends TableName
+                ? LinkName extends ExcludeTables | Visited
+                  ? never
+                  : LinkName extends (IncludeTables extends string ? IncludeTables : string)
+                    ?
+                        | LinkName
+                        | LinkedTableName<
+                            LinkName,
+                            undefined,
+                            IncludeTables,
+                            ExcludeTables,
+                            TName | Visited
+                          >
+                    : never
+                : never
               : never
             : never
           : never
         : never
-      : never
-    : never;
+      : never;
 
 export type Localize<Value> = Value extends Attachment
   ? Attachment<false>
