@@ -1,4 +1,5 @@
 import type {
+  Structure,
   Prettify,
   Table,
   TableName,
@@ -9,25 +10,32 @@ import type {
   Flat
 } from "./common.d.ts";
 
-export type TableEntity<T extends Tables> = Prettify<
+export type TableEntity<
+  S extends Structure, //
+  T extends Tables<S>
+> = Prettify<
   {
-    [TName in T["name"]]: Table<TName> & {
+    [TName in T["name"]]: Table<S, TName> & {
       rows: {
-        [rowId: number]: Row<TName>;
+        [rowId: number]: Row<S, TName>;
       };
     };
   }[T["name"]]
 >;
 
-export type TableEntities<T extends Tables> = Prettify<{
-  [TId in T["id"]]: TableEntity<Extract<T, { id: TId }>>;
+export type TableEntities<
+  S extends Structure, //
+  T extends Tables<S>
+> = Prettify<{
+  [TId in T["id"]]: TableEntity<S, Extract<T, { id: TId }>>;
 }>;
 
 export function getEntitiesOfTable<
-  TNameOrNames extends TableName | TableName[],
-  IncludeColumns extends ColumnName<Flat<TNameOrNames>>[] | undefined = undefined,
-  IncludeTables extends LinkedTableName<Flat<TNameOrNames>>[] | undefined = undefined,
-  ExcludeTables extends LinkedTableName<Flat<TNameOrNames>>[] | undefined = undefined
+  S extends Structure, //
+  TNameOrNames extends TableName<S> | TableName<S>[],
+  IncludeColumns extends ColumnName<S, Flat<TNameOrNames>>[] | undefined = undefined,
+  IncludeTables extends LinkedTableName<S, Flat<TNameOrNames>>[] | undefined = undefined,
+  ExcludeTables extends LinkedTableName<S, Flat<TNameOrNames>>[] | undefined = undefined
 >(
   tableNameOrNames: TNameOrNames,
   options: {
@@ -42,9 +50,12 @@ export function getEntitiesOfTable<
   }
 ): Promise<
   TableEntities<
+    S,
     Table<
+      S,
       | Flat<TNameOrNames>
       | LinkedTableName<
+          S,
           Flat<TNameOrNames>,
           Flat<IncludeColumns>,
           Flat<IncludeTables>,

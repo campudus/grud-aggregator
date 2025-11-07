@@ -2,7 +2,8 @@
 import { describe, it, expectTypeOf } from "vitest";
 
 // initialize structure of demo grud
-import "./structure/structure.d.ts";
+import type { Structure as S } from "./structure/structure.d.ts";
+
 import type {
   TableName,
   ColumnInfo,
@@ -17,23 +18,22 @@ import type {
   RowValue,
   LinkedTableName,
   Localize,
-  Attachment,
-  MultilangValue
+  Attachment
 } from "./common.d.ts";
 
 describe("TableName", () => {
   it("should (roughly) match keys from Structure", () => {
-    expectTypeOf<TableName>().toBeString();
+    expectTypeOf<TableName<S>>().toBeString();
     expectTypeOf<
       "material" | "color" | "glossGrade" | "marketingColor" | "manufacturer"
-    >().toExtend<TableName>();
+    >().toExtend<TableName<S>>();
   });
 });
 
 describe("ColumnName", () => {
   it("should contain all ColumnNames of a given Table", () => {
-    expectTypeOf<ColumnName<"marketingColor">>().toBeString();
-    expectTypeOf<ColumnName<"marketingColor">>().toEqualTypeOf<
+    expectTypeOf<ColumnName<S, "marketingColor">>().toBeString();
+    expectTypeOf<ColumnName<S, "marketingColor">>().toEqualTypeOf<
       "glossGrade" | "identifier" | "ID" | "mainColor" | "partialColor1" | "partialColor2"
     >();
   });
@@ -41,7 +41,7 @@ describe("ColumnName", () => {
 
 describe("Columns", () => {
   it("should contain all Columns of Table", () => {
-    expectTypeOf<Columns<"color">>().toEqualTypeOf<
+    expectTypeOf<Columns<S, "color">>().toEqualTypeOf<
       | {
           id: 1;
           name: "name";
@@ -63,7 +63,7 @@ describe("Columns", () => {
 
 describe("Column", () => {
   it("should contain specific Column of Table", () => {
-    expectTypeOf<Column<"chain", "identifier">>().toEqualTypeOf<{
+    expectTypeOf<Column<S, "chain", "identifier">>().toEqualTypeOf<{
       id: 2;
       name: "identifier";
       kind: "shorttext";
@@ -76,15 +76,15 @@ describe("Column", () => {
 
 describe("Langtag", () => {
   it("should match all Langtags", () => {
-    expectTypeOf<Langtag>().toBeString();
-    expectTypeOf<Langtag>().toEqualTypeOf<"de" | "en" | "fr" | "es" | "it" | "hr">();
+    expectTypeOf<Langtag<S>>().toBeString();
+    expectTypeOf<Langtag<S>>().toEqualTypeOf<"de" | "en" | "fr" | "es" | "it" | "hr">();
   });
 });
 
 describe("CountryCode", () => {
   it("should match all CountryCodes", () => {
-    expectTypeOf<CountryCode>().toBeString();
-    expectTypeOf<CountryCode>().toEqualTypeOf<"DE" | "US" | "GB" | "FR" | "ES" | "AT" | "CH">();
+    expectTypeOf<CountryCode<S>>().toBeString();
+    expectTypeOf<CountryCode<S>>().toEqualTypeOf<"DE" | "US" | "GB" | "FR" | "ES" | "AT" | "CH">();
   });
 });
 
@@ -97,14 +97,14 @@ describe("LanguageType", () => {
 
 describe("LanguageTypeKey", () => {
   it("should match Langtag for key 'language'", () => {
-    expectTypeOf<LanguageTypeKey<"language">>().toBeString();
-    expectTypeOf<LanguageTypeKey<"language">>().toEqualTypeOf<
+    expectTypeOf<LanguageTypeKey<S, "language">>().toBeString();
+    expectTypeOf<LanguageTypeKey<S, "language">>().toEqualTypeOf<
       "de" | "en" | "fr" | "es" | "it" | "hr"
     >();
   });
   it("should match CountryCode for key 'country'", () => {
-    expectTypeOf<LanguageTypeKey<"country">>().toBeString();
-    expectTypeOf<LanguageTypeKey<"country">>().toEqualTypeOf<
+    expectTypeOf<LanguageTypeKey<S, "country">>().toBeString();
+    expectTypeOf<LanguageTypeKey<S, "country">>().toEqualTypeOf<
       "DE" | "US" | "GB" | "FR" | "ES" | "AT" | "CH"
     >();
   });
@@ -112,7 +112,7 @@ describe("LanguageTypeKey", () => {
 
 describe("LinkedTableName", () => {
   it("should find all names of recursively linked tables", () => {
-    expectTypeOf<LinkedTableName<"frame">>().toEqualTypeOf<
+    expectTypeOf<LinkedTableName<S, "frame">>().toEqualTypeOf<
       | "material"
       | "manufacturer"
       | "wheelSize"
@@ -127,11 +127,11 @@ describe("LinkedTableName", () => {
   });
 
   it("should handle includeColumns", () => {
-    expectTypeOf<LinkedTableName<"frame", "frameShape">>().toEqualTypeOf<
+    expectTypeOf<LinkedTableName<S, "frame", "frameShape">>().toEqualTypeOf<
       "frameShape" | "baseFrameShape"
     >();
 
-    expectTypeOf<LinkedTableName<"variant", "frame" | "fork">>().toEqualTypeOf<
+    expectTypeOf<LinkedTableName<S, "variant", "frame" | "fork">>().toEqualTypeOf<
       | "frame"
       | "material"
       | "manufacturer"
@@ -152,15 +152,17 @@ describe("LinkedTableName", () => {
   });
 
   it("should handle includeTables", () => {
-    expectTypeOf<LinkedTableName<"frame", undefined, "frameShape">>().toEqualTypeOf<"frameShape">();
-    expectTypeOf<LinkedTableName<"bikeModel", undefined, "variant" | "fork">>().toEqualTypeOf<
+    expectTypeOf<
+      LinkedTableName<S, "frame", undefined, "frameShape">
+    >().toEqualTypeOf<"frameShape">();
+    expectTypeOf<LinkedTableName<S, "bikeModel", undefined, "variant" | "fork">>().toEqualTypeOf<
       "variant" | "fork"
     >();
   });
 
   it("should handle excludeTables", () => {
     expectTypeOf<
-      LinkedTableName<"frame", undefined, undefined, "frameShape" | "wheelSize">
+      LinkedTableName<S, "frame", undefined, undefined, "frameShape" | "wheelSize">
     >().toEqualTypeOf<
       | "material"
       | "manufacturer"
@@ -171,11 +173,13 @@ describe("LinkedTableName", () => {
       | "brakeStandard"
     >();
 
-    expectTypeOf<LinkedTableName<"bikeModel", undefined, undefined, "material" | "manufacturer">>()
+    expectTypeOf<
+      LinkedTableName<S, "bikeModel", undefined, undefined, "material" | "manufacturer">
+    >()
       .extract<"material" | "manufacturer">()
       .toEqualTypeOf<never>();
 
-    expectTypeOf<LinkedTableName<"bikeModel", undefined, undefined, "variant">>()
+    expectTypeOf<LinkedTableName<S, "bikeModel", undefined, undefined, "variant">>()
       .extract<"frame" | "frameShape">()
       .toEqualTypeOf<never>();
   });
@@ -196,9 +200,9 @@ describe("RowValue", () => {
       multilanguage: false
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof textColumn>>().toEqualTypeOf<string | null>();
-    expectTypeOf<RowValue<typeof shorttextColumn>>().toEqualTypeOf<string | null>();
-    expectTypeOf<RowValue<typeof richtextColumn>>().toEqualTypeOf<string | null>();
+    expectTypeOf<RowValue<S, typeof textColumn>>().toEqualTypeOf<string | null>();
+    expectTypeOf<RowValue<S, typeof shorttextColumn>>().toEqualTypeOf<string | null>();
+    expectTypeOf<RowValue<S, typeof richtextColumn>>().toEqualTypeOf<string | null>();
   });
 
   it("should match correct value for text, shorttext, richtext with multilanguage", () => {
@@ -215,7 +219,7 @@ describe("RowValue", () => {
       multilanguage: true
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof textColumn>>().toEqualTypeOf<{
+    expectTypeOf<RowValue<S, typeof textColumn>>().toEqualTypeOf<{
       de?: string | null;
       en?: string | null;
       fr?: string | null;
@@ -223,7 +227,7 @@ describe("RowValue", () => {
       it?: string | null;
       hr?: string | null;
     }>();
-    expectTypeOf<RowValue<typeof shorttextColumn>>().toEqualTypeOf<{
+    expectTypeOf<RowValue<S, typeof shorttextColumn>>().toEqualTypeOf<{
       de?: string | null;
       en?: string | null;
       fr?: string | null;
@@ -231,7 +235,7 @@ describe("RowValue", () => {
       it?: string | null;
       hr?: string | null;
     }>();
-    expectTypeOf<RowValue<typeof richtextColumn>>().toEqualTypeOf<{
+    expectTypeOf<RowValue<S, typeof richtextColumn>>().toEqualTypeOf<{
       de?: string | null;
       en?: string | null;
       fr?: string | null;
@@ -244,13 +248,13 @@ describe("RowValue", () => {
   it("should match correct value for boolean without multilanguage", () => {
     const booleanColumn = { kind: "boolean", multilanguage: false } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof booleanColumn>>().toEqualTypeOf<boolean | null>();
+    expectTypeOf<RowValue<S, typeof booleanColumn>>().toEqualTypeOf<boolean | null>();
   });
 
   it("should match correct value for boolean with multilanguage", () => {
     const booleanColumn = { kind: "boolean", multilanguage: true } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof booleanColumn>>().toEqualTypeOf<{
+    expectTypeOf<RowValue<S, typeof booleanColumn>>().toEqualTypeOf<{
       de?: boolean | null;
       en?: boolean | null;
       fr?: boolean | null;
@@ -266,7 +270,7 @@ describe("RowValue", () => {
       multilanguage: false
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof numericColumn>>().toEqualTypeOf<number | null>();
+    expectTypeOf<RowValue<S, typeof numericColumn>>().toEqualTypeOf<number | null>();
   });
 
   it("should match correct value for numeric with multilanguage", () => {
@@ -275,7 +279,7 @@ describe("RowValue", () => {
       multilanguage: true
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof numericColumn>>().toEqualTypeOf<{
+    expectTypeOf<RowValue<S, typeof numericColumn>>().toEqualTypeOf<{
       de?: number | null;
       en?: number | null;
       fr?: number | null;
@@ -291,7 +295,7 @@ describe("RowValue", () => {
       multilanguage: false
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof currencyColumn>>().toEqualTypeOf<number | null>();
+    expectTypeOf<RowValue<S, typeof currencyColumn>>().toEqualTypeOf<number | null>();
   });
 
   it("should match correct value for currency with multilanguage", () => {
@@ -300,7 +304,7 @@ describe("RowValue", () => {
       multilanguage: true
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof currencyColumn>>().toEqualTypeOf<{
+    expectTypeOf<RowValue<S, typeof currencyColumn>>().toEqualTypeOf<{
       DE?: number | null;
       US?: number | null;
       GB?: number | null;
@@ -321,8 +325,8 @@ describe("RowValue", () => {
       multilanguage: false
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof dateColumn>>().toEqualTypeOf<string | null>();
-    expectTypeOf<RowValue<typeof datetimeColumn>>().toEqualTypeOf<string | null>();
+    expectTypeOf<RowValue<S, typeof dateColumn>>().toEqualTypeOf<string | null>();
+    expectTypeOf<RowValue<S, typeof datetimeColumn>>().toEqualTypeOf<string | null>();
   });
 
   it("should match correct value for status", () => {
@@ -331,7 +335,7 @@ describe("RowValue", () => {
       multilanguage: false
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof statusColumn>>().toEqualTypeOf<boolean[]>();
+    expectTypeOf<RowValue<S, typeof statusColumn>>().toEqualTypeOf<boolean[]>();
   });
 
   it("should match correct value for attachment", () => {
@@ -340,7 +344,7 @@ describe("RowValue", () => {
       multilanguage: false
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof attachmentColumn>>().toEqualTypeOf<
+    expectTypeOf<RowValue<S, typeof attachmentColumn>>().toEqualTypeOf<
       {
         ordering: number;
         url: {
@@ -411,7 +415,7 @@ describe("RowValue", () => {
       ]
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof concatColumn>>().toEqualTypeOf<
+    expectTypeOf<RowValue<S, typeof concatColumn>>().toEqualTypeOf<
       [
         {
           de?: string | null;
@@ -453,7 +457,7 @@ describe("RowValue", () => {
       }
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof linkColumn>>().toEqualTypeOf<
+    expectTypeOf<RowValue<S, typeof linkColumn>>().toEqualTypeOf<
       [
         | {
             id: number;
@@ -476,7 +480,7 @@ describe("RowValue", () => {
       }
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof linkColumn>>().toEqualTypeOf<
+    expectTypeOf<RowValue<S, typeof linkColumn>>().toEqualTypeOf<
       {
         id: number;
         value: string | null;
@@ -495,7 +499,7 @@ describe("RowValue", () => {
       ]
     } as const satisfies ColumnInfo;
 
-    expectTypeOf<RowValue<typeof groupColumn>>().toEqualTypeOf<
+    expectTypeOf<RowValue<S, typeof groupColumn>>().toEqualTypeOf<
       [number | null, string | null, boolean | null]
     >();
   });
@@ -503,7 +507,7 @@ describe("RowValue", () => {
 
 describe("Row", () => {
   it("should match complete Row if only given TableName", () => {
-    expectTypeOf<Row<"headSet">>().toEqualTypeOf<{
+    expectTypeOf<Row<S, "headSet">>().toEqualTypeOf<{
       id: number;
       values: [
         [
@@ -557,12 +561,12 @@ describe("Row", () => {
   });
 
   it("should match Row of single Column if given TableName and ColumnName", () => {
-    expectTypeOf<Row<"engine", "power">>().toEqualTypeOf<{
+    expectTypeOf<Row<S, "engine", "power">>().toEqualTypeOf<{
       id: number;
       values: [number | null];
     }>();
 
-    expectTypeOf<Row<"marketingColor", "mainColor">>().toEqualTypeOf<{
+    expectTypeOf<Row<S, "marketingColor", "mainColor">>().toEqualTypeOf<{
       id: number;
       values: [
         [
@@ -586,15 +590,15 @@ describe("Row", () => {
 
 describe("Localize", () => {
   it("should keep primitive value types", () => {
-    expectTypeOf<Localize<string>>().toEqualTypeOf<string>();
-    expectTypeOf<Localize<number>>().toEqualTypeOf<number>();
-    expectTypeOf<Localize<boolean>>().toEqualTypeOf<boolean>();
-    expectTypeOf<Localize<undefined>>().toEqualTypeOf<undefined>();
-    expectTypeOf<Localize<null>>().toEqualTypeOf<null>();
+    expectTypeOf<Localize<S, string>>().toEqualTypeOf<string>();
+    expectTypeOf<Localize<S, number>>().toEqualTypeOf<number>();
+    expectTypeOf<Localize<S, boolean>>().toEqualTypeOf<boolean>();
+    expectTypeOf<Localize<S, undefined>>().toEqualTypeOf<undefined>();
+    expectTypeOf<Localize<S, null>>().toEqualTypeOf<null>();
   });
 
   it("should localize Attachment type", () => {
-    expectTypeOf<Localize<Attachment>>().toEqualTypeOf<{
+    expectTypeOf<Localize<S, Attachment<S>>>().toEqualTypeOf<{
       ordering: number;
       url: string;
       uuid: string;
@@ -612,50 +616,62 @@ describe("Localize", () => {
 
   it("should localize multilanguage values", () => {
     expectTypeOf<
-      Localize<{
-        de: string | null;
-        en: string | null;
-      }>
+      Localize<
+        S,
+        {
+          de: string | null;
+          en: string | null;
+        }
+      >
     >().toEqualTypeOf<string | null>();
     expectTypeOf<
-      Localize<{
-        de: number | null;
-        en: number | null;
-      }>
+      Localize<
+        S,
+        {
+          de: number | null;
+          en: number | null;
+        }
+      >
     >().toEqualTypeOf<number | null>();
     expectTypeOf<
-      Localize<{
-        de: boolean | null;
-        en: boolean | null;
-      }>
+      Localize<
+        S,
+        {
+          de: boolean | null;
+          en: boolean | null;
+        }
+      >
     >().toEqualTypeOf<boolean | null>();
   });
 
   it("should keep non multilanguage value ", () => {
-    expectTypeOf<Localize<string | null>>().toEqualTypeOf<string | null>();
-    expectTypeOf<Localize<number | null>>().toEqualTypeOf<number | null>();
-    expectTypeOf<Localize<boolean | null>>().toEqualTypeOf<boolean | null>();
+    expectTypeOf<Localize<S, string | null>>().toEqualTypeOf<string | null>();
+    expectTypeOf<Localize<S, number | null>>().toEqualTypeOf<number | null>();
+    expectTypeOf<Localize<S, boolean | null>>().toEqualTypeOf<boolean | null>();
   });
 
   it("should localize deeply nested values", () => {
     expectTypeOf<
-      Localize<{
-        some: {
-          very: [
-            {
-              id: number;
-              deep: {
-                de: string | null;
-                en: string | null;
-              };
-            }
-          ];
-          anotherValue: {
-            de: number | null;
-            en: number | null;
+      Localize<
+        S,
+        {
+          some: {
+            very: [
+              {
+                id: number;
+                deep: {
+                  de: string | null;
+                  en: string | null;
+                };
+              }
+            ];
+            anotherValue: {
+              de: number | null;
+              en: number | null;
+            };
           };
-        };
-      }>
+        }
+      >
     >().toEqualTypeOf<{
       some: {
         very: [

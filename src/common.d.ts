@@ -1,7 +1,3 @@
-import type { Structure } from "grud-aggregator/structure";
-
-export type { Structure };
-
 // utils
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
@@ -56,62 +52,106 @@ export type ColumnInfo = {
   };
 };
 
+export type Structure = {
+  id: number;
+  name: string;
+  langtags: string[];
+  columns: ColumnInfo[];
+}[];
+
 // dynamic
-export type Tables = Structure[number];
-export type TableName = Tables["name"];
-export type Table<T extends TableName | (string & {})> = Extract<Tables, { name: T }>;
-export type Columns<T extends TableName | (string & {})> = Table<T>["columns"][number];
-export type ColumnName<T extends TableName | (string & {})> = Columns<T>["name"];
+export type Tables<
+  S extends Structure //
+> = S[number];
+
+export type TableName<
+  S extends Structure //
+> = Tables<S>["name"];
+
+export type Table<
+  S extends Structure, //
+  T extends TableName<S> | (string & {})
+> = Extract<Tables<S>, { name: T }>;
+
+export type Columns<
+  S extends Structure, //
+  T extends TableName<S> | (string & {})
+> = Table<S, T>["columns"][number];
+
+export type ColumnName<
+  S extends Structure, //
+  T extends TableName<S> | (string & {})
+> = NonNullable<Columns<S, T>["name"]>;
+
 export type Column<
-  T extends TableName | (string & {}),
-  C extends ColumnName<T> | (string & {})
-> = Extract<Columns<T>, { name: C }>;
-export type Langtag = Tables["langtags"][number];
-export type CountryCode = PropValue<Columns<TableName>, "countryCodes">[number];
-export type LanguageTypeKey<LType extends LanguageType> = {
-  language: Langtag;
-  country: CountryCode;
+  S extends Structure,
+  T extends TableName<S> | (string & {}),
+  C extends ColumnName<S, T> | (string & {})
+> = Extract<Columns<S, T>, { name: C }>;
+
+export type Langtag<
+  S extends Structure //
+> = Tables<S>["langtags"][number];
+
+export type CountryCode<
+  S extends Structure //
+> = Extract<Columns<S, TableName<S>>, { countryCodes: string[] }>["countryCodes"][number];
+
+export type LanguageTypeKey<
+  S extends Structure, //
+  LType extends LanguageType
+> = {
+  language: Langtag<S>;
+  country: CountryCode<S>;
 }[LType];
 
 export type MultilangValue<
+  S extends Structure,
   Value,
-  Key extends Langtag | CountryCode,
+  Key extends Langtag<S> | CountryCode<S>,
   IsMultilang extends boolean = true
 > = IsMultilang extends true ? Prettify<Partial<Record<Key, Value>>> : Value;
 
-export type Attachment<IsMultiLang extends boolean = true> = {
+export type Attachment<
+  S extends Structure, //
+  IsMultiLang extends boolean = true
+> = {
   ordering: number;
-  url: MultilangValue<string, Langtag, IsMultiLang>;
+  url: MultilangValue<S, string, Langtag<S>, IsMultiLang>;
   uuid: string;
   folder: number | null;
   folders: number[];
-  title: MultilangValue<string, Langtag, IsMultiLang>;
-  description: MultilangValue<string, Langtag, IsMultiLang>;
-  internalName: MultilangValue<string, Langtag, IsMultiLang>;
-  externalName: MultilangValue<string, Langtag, IsMultiLang>;
-  mimeType: MultilangValue<string, Langtag, IsMultiLang>;
+  title: MultilangValue<S, string, Langtag<S>, IsMultiLang>;
+  description: MultilangValue<S, string, Langtag<S>, IsMultiLang>;
+  internalName: MultilangValue<S, string, Langtag<S>, IsMultiLang>;
+  externalName: MultilangValue<S, string, Langtag<S>, IsMultiLang>;
+  mimeType: MultilangValue<S, string, Langtag<S>, IsMultiLang>;
   createdAt: string; // ISO
   updatedAt: string; // ISO
 };
 
-type RowValueTuple<Cols extends readonly ColumnInfo[]> = {
-  [K in keyof Cols]: Cols[K] extends ColumnInfo ? RowValue<Cols[K]> : never;
+type RowValueTuple<
+  S extends Structure, //
+  Cols extends readonly ColumnInfo[]
+> = {
+  [K in keyof Cols]: Cols[K] extends ColumnInfo ? RowValue<S, Cols[K]> : never;
 };
 
 export type RowValue<
+  S extends Structure,
   Col extends ColumnInfo,
   Kind extends ColumnKind = Col["kind"],
   IsMultiLang extends boolean = Col["multilanguage"],
   LinkTableId extends number | undefined = Col["toTable"],
   LinkTableName extends string | undefined = Kind extends "link"
-    ? Extract<Tables, { id: LinkTableId }>["name"]
+    ? Extract<Tables<S>, { id: LinkTableId }>["name"]
     : undefined,
   LinkColumnName extends string | undefined = Kind extends "link"
     ? NonNullable<Col["toColumn"]>["name"]
     : undefined,
   LinkColumn extends ColumnInfo | undefined = LinkTableName extends string
     ? LinkColumnName extends string
-      ? Column<LinkTableName, LinkColumnName>
+      ? Column<S, LinkTableName, LinkColumnName>
       : undefined
     : undefined,
   GroupColumns extends ColumnInfo[] = NonNullable<Col["groups"]>,
@@ -123,77 +163,85 @@ export type RowValue<
     NonNullable<Col["constraint"]>["cardinality"]
   >["to"]
 > = {
-  boolean: MultilangValue<boolean | null, Langtag, IsMultiLang>;
-  shorttext: MultilangValue<string | null, Langtag, IsMultiLang>;
-  text: MultilangValue<string | null, Langtag, IsMultiLang>;
-  richtext: MultilangValue<string | null, Langtag, IsMultiLang>;
-  numeric: MultilangValue<number | null, Langtag, IsMultiLang>;
-  currency: MultilangValue<number | null, CountryCode, IsMultiLang>;
+  boolean: MultilangValue<S, boolean | null, Langtag<S>, IsMultiLang>;
+  shorttext: MultilangValue<S, string | null, Langtag<S>, IsMultiLang>;
+  text: MultilangValue<S, string | null, Langtag<S>, IsMultiLang>;
+  richtext: MultilangValue<S, string | null, Langtag<S>, IsMultiLang>;
+  numeric: MultilangValue<S, number | null, Langtag<S>, IsMultiLang>;
+  currency: MultilangValue<S, number | null, CountryCode<S>, IsMultiLang>;
   date: string | null;
   datetime: string | null;
   status: boolean[];
-  attachment: Attachment[];
-  group: RowValueTuple<GroupColumns>;
-  concat: RowValueTuple<ConcatColumns>;
+  attachment: Attachment<S>[];
+  group: RowValueTuple<S, GroupColumns>;
+  concat: RowValueTuple<S, ConcatColumns>;
   link: LinkColumn extends ColumnInfo
     ? [ConstraintFrom, ConstraintTo] extends [0, 1]
-      ? [{ id: number; value: RowValue<LinkColumn> } | undefined]
-      : { id: number; value: RowValue<LinkColumn> }[]
+      ? [{ id: number; value: RowValue<S, LinkColumn> } | undefined]
+      : { id: number; value: RowValue<S, LinkColumn> }[]
     : undefined;
 }[Kind];
 
 export type Row<
-  TName extends TableName = TableName,
-  CName extends ColumnName<TName> = ColumnName<TName>
+  S extends Structure,
+  TName extends TableName<S> = TableName<S>,
+  CName extends ColumnName<S, TName> = ColumnName<S, TName>
 > = {
   id: number;
-  values: ColumnName<TName> extends CName
-    ? RowValueTuple<Table<TName>["columns"]>
-    : [RowValue<Column<TName, CName>>];
+  values: ColumnName<S, TName> extends CName
+    ? RowValueTuple<S, Table<S, TName>["columns"]>
+    : [RowValue<S, Column<S, TName, CName>>];
 };
 
 export type LinkedTableName<
-  TName extends TableName,
-  IncludeColumns extends ColumnName<TName> | undefined = undefined,
-  IncludeTables extends LinkedTableName<TName> | undefined = undefined,
-  ExcludeTables extends LinkedTableName<TName> | undefined = undefined,
-  Visited extends TableName = never
-> = TableName extends TName
-  ? never
-  : TName extends Visited
+  S extends Structure,
+  TName extends TableName<S>,
+  IncludeColumns extends ColumnName<S, TName> | undefined = undefined,
+  IncludeTables extends LinkedTableName<S, TName> | undefined = undefined,
+  ExcludeTables extends LinkedTableName<S, TName> | undefined = undefined,
+  Visited extends TableName<S> = never
+> =
+  TableName<S> extends TName
     ? never
-    : Extract<Table<TName>["columns"][number], { kind: "link" }> extends infer Cols
-      ? (IncludeColumns extends string ? IncludeColumns : string) extends infer ColName
-        ? Extract<Cols, { name: ColName }> extends infer Col
-          ? PropValue<Col, "toTable"> extends infer LinkId
-            ? Extract<Tables, { id: LinkId }>["name"] extends infer LinkName
-              ? LinkName extends TableName
-                ? LinkName extends ExcludeTables | Visited
-                  ? never
-                  : LinkName extends (IncludeTables extends string ? IncludeTables : string)
-                    ?
-                        | LinkName
-                        | LinkedTableName<
-                            LinkName,
-                            undefined,
-                            IncludeTables,
-                            ExcludeTables,
-                            TName | Visited
-                          >
-                    : never
+    : TName extends Visited
+      ? never
+      : Extract<Table<S, TName>["columns"][number], { kind: "link" }> extends infer Cols
+        ? (IncludeColumns extends string ? IncludeColumns : string) extends infer ColName
+          ? Extract<Cols, { name: ColName }> extends infer Col
+            ? PropValue<Col, "toTable"> extends infer LinkId
+              ? Extract<Tables<S>, { id: LinkId }>["name"] extends infer LinkName
+                ? LinkName extends TableName<S>
+                  ? LinkName extends ExcludeTables | Visited
+                    ? never
+                    : LinkName extends (IncludeTables extends string ? IncludeTables : string)
+                      ?
+                          | LinkName
+                          | LinkedTableName<
+                              S,
+                              LinkName,
+                              undefined,
+                              IncludeTables,
+                              ExcludeTables,
+                              TName | Visited
+                            >
+                      : never
+                  : never
                 : never
               : never
             : never
           : never
-        : never
-      : never;
+        : never;
 
-export type Localize<Value> = Value extends Attachment
-  ? Attachment<false>
-  : Value extends unknown[]
-    ? { [key in keyof Value]: Localize<Value[key]> }
-    : Value extends Record<string | number | symbol, infer ObjectValue>
-      ? keyof Value extends Langtag
-        ? ObjectValue
-        : { [key in keyof Value]: Localize<Value[key]> }
-      : Value;
+export type Localize<
+  S extends Structure, //
+  Value
+> =
+  Value extends Attachment<S>
+    ? Attachment<S, false>
+    : Value extends unknown[]
+      ? { [key in keyof Value]: Localize<S, Value[key]> }
+      : Value extends Record<string | number | symbol, infer ObjectValue>
+        ? keyof Value extends Langtag<S>
+          ? ObjectValue
+          : { [key in keyof Value]: Localize<S, Value[key]> }
+        : Value;
