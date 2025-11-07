@@ -1,14 +1,16 @@
-import { describe, it, expectTypeOf } from "vitest";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { describe, it, expectTypeOf, vi } from "vitest";
 
-// initialize structure of demo grud
-import type { Structure as S } from "./structure/structure.d.ts";
-import type { getEntitiesOfTable } from "./entities.d.ts";
+import type { Structure as S } from "./structure.demo.d.ts";
+import type { GetEntitiesOfTable } from "../../entities.d.ts";
+
+const getEntitiesOfTable = vi.fn() as GetEntitiesOfTable<S>;
 
 describe("getEntitiesOfTable", () => {
-  it("should handle multiple tables", () => {
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, ["material", "manufacturer"]>>>
-    >().toEqualTypeOf<{
+  it("should handle multiple tables", async () => {
+    const entities = await getEntitiesOfTable(["material", "manufacturer"]);
+
+    expectTypeOf<typeof entities>().toEqualTypeOf<{
       1: {
         id: 1;
         name: "material";
@@ -62,8 +64,10 @@ describe("getEntitiesOfTable", () => {
     }>();
   });
 
-  it("should have correct return type", () => {
-    expectTypeOf<Awaited<ReturnType<typeof getEntitiesOfTable<S, "steerTube">>>>().toEqualTypeOf<{
+  it("should have correct return type", async () => {
+    const entities = await getEntitiesOfTable("steerTube");
+
+    expectTypeOf<typeof entities>().toEqualTypeOf<{
       1: {
         id: 1;
         name: "material";
@@ -166,95 +170,75 @@ describe("getEntitiesOfTable", () => {
     }>();
   });
 
-  it("should handle include columns", () => {
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, "brake", ["brakeKind"]>>>
-    >().not.toExtend<{
+  it("should handle include columns", async () => {
+    const entitiesBrake = await getEntitiesOfTable("brake", { includeColumns: ["brakeKind"] });
+
+    expectTypeOf<typeof entitiesBrake>().not.toExtend<{
       5: { name: "manufacturer" };
     }>();
 
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, "brake", ["brakeKind"]>>>
-    >().toExtend<{
+    expectTypeOf<typeof entitiesBrake>().toExtend<{
       24: { name: "brakeKind" };
       25: { name: "brake" };
     }>();
 
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, "frame", ["frameShape"]>>>
-    >().not.toExtend<{
+    const entitiesFrame = await getEntitiesOfTable("frame", { includeColumns: ["frameShape"] });
+
+    expectTypeOf<typeof entitiesFrame>().not.toExtend<{
       5: { name: "manufacturer" };
     }>();
 
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, "frame", ["frameShape"]>>>
-    >().toExtend<{
+    expectTypeOf<typeof entitiesFrame>().toExtend<{
       86: { name: "baseFrameShape" };
       87: { name: "frameShape" };
       93: { name: "frame" };
     }>();
   });
 
-  it("should handle include tables", () => {
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, "brake", undefined, ["brakeKind"]>>>
-    >().not.toExtend<{
+  it("should handle include tables", async () => {
+    const entitiesBrake = await getEntitiesOfTable("brake", { includeTables: ["brakeKind"] });
+
+    expectTypeOf<typeof entitiesBrake>().not.toExtend<{
       5: { name: "manufacturer" };
     }>();
 
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, "brake", undefined, ["brakeKind"]>>>
-    >().toExtend<{
+    expectTypeOf<typeof entitiesBrake>().toExtend<{
       24: { name: "brakeKind" };
       25: { name: "brake" };
     }>();
 
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, "frame", undefined, ["frameShape"]>>>
-    >().not.toExtend<{
+    const entitiesFrame = await getEntitiesOfTable("frame", { includeTables: ["frameShape"] });
+
+    expectTypeOf<typeof entitiesFrame>().not.toExtend<{
       86: { name: "baseFrameShape" };
     }>();
 
-    expectTypeOf<
-      Awaited<ReturnType<typeof getEntitiesOfTable<S, "frame", undefined, ["frameShape"]>>>
-    >().toExtend<{
+    expectTypeOf<typeof entitiesFrame>().toExtend<{
       87: { name: "frameShape" };
       93: { name: "frame" };
     }>();
   });
 
-  it("should handle exclude tables", () => {
-    expectTypeOf<
-      Awaited<
-        ReturnType<typeof getEntitiesOfTable<S, "frame", undefined, undefined, ["baseFrameShape"]>>
-      >
-    >().not.toExtend<{
+  it("should handle exclude tables", async () => {
+    const entitiesFrame = await getEntitiesOfTable("frame", { excludeTables: ["baseFrameShape"] });
+
+    expectTypeOf<typeof entitiesFrame>().not.toExtend<{
       86: { name: "baseFrameShape" };
     }>();
 
-    expectTypeOf<
-      Awaited<
-        ReturnType<typeof getEntitiesOfTable<S, "frame", undefined, undefined, ["baseFrameShape"]>>
-      >
-    >().toExtend<{
+    expectTypeOf<typeof entitiesFrame>().toExtend<{
       87: { name: "frameShape" };
       93: { name: "frame" };
     }>();
 
-    expectTypeOf<
-      Awaited<
-        ReturnType<typeof getEntitiesOfTable<S, "bikeModel", undefined, undefined, ["variant"]>>
-      >
-    >().not.toExtend<{
+    const entitiesBikeModel = await getEntitiesOfTable("bikeModel", { excludeTables: ["variant"] });
+
+    expectTypeOf<typeof entitiesBikeModel>().not.toExtend<{
       94: { name: "variant" };
       93: { name: "frame" };
     }>();
 
-    expectTypeOf<
-      Awaited<
-        ReturnType<typeof getEntitiesOfTable<S, "bikeModel", undefined, undefined, ["variant"]>>
-      >
-    >().toExtend<{
+    expectTypeOf<typeof entitiesBikeModel>().toExtend<{
       1: { name: "material" };
       5: { name: "manufacturer" };
       // ...and many more

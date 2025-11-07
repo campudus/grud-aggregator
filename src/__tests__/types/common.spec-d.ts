@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, it, expectTypeOf } from "vitest";
 
-// initialize structure of demo grud
-import type { Structure as S } from "./structure/structure.d.ts";
-
+import type { Structure as S } from "./structure.demo.d.ts";
 import type {
   TableName,
   ColumnInfo,
@@ -19,7 +17,7 @@ import type {
   LinkedTableName,
   Localize,
   Attachment
-} from "./common.d.ts";
+} from "../../common.d.ts";
 
 describe("TableName", () => {
   it("should (roughly) match keys from Structure", () => {

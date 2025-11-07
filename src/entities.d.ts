@@ -30,16 +30,15 @@ export type TableEntities<
   [TId in T["id"]]: TableEntity<S, Extract<T, { id: TId }>>;
 }>;
 
-export function getEntitiesOfTable<
-  S extends Structure, //
+export type GetEntitiesOfTable<S extends Structure> = <
   TNameOrNames extends TableName<S> | TableName<S>[],
   IncludeColumns extends ColumnName<S, Flat<TNameOrNames>>[] | undefined = undefined,
   IncludeTables extends LinkedTableName<S, Flat<TNameOrNames>>[] | undefined = undefined,
   ExcludeTables extends LinkedTableName<S, Flat<TNameOrNames>>[] | undefined = undefined
 >(
   tableNameOrNames: TNameOrNames,
-  options: {
-    pimUrl: string;
+  options?: {
+    pimUrl?: string;
     maxEntriesPerRequest?: number;
     archived?: boolean;
     headers?: Record<string, string>;
@@ -48,7 +47,7 @@ export function getEntitiesOfTable<
     includeTables?: IncludeTables;
     excludeTables?: ExcludeTables;
   }
-): Promise<
+) => Promise<
   TableEntities<
     S,
     Table<
