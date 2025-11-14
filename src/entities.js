@@ -47,25 +47,34 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
   if (!_.isNil(exclude) && (!_.isArray(exclude) || _.some(exclude, (value) => !_.isString(value)))) {
     throw new Error("Expecting include to be a list of table names, or concatenated table and column names");
   }
+ 
+  const isIncluded = (tableName, columnName) => {
+    let hasTableMatch = false;
+    let hasColumnMatch = false;
 
-  const isIncluded = (tableName, columnName) =>
-    _.isEmpty(include) ||
-    _.some(include, (tableAndColumnName) => {
+    for (const tableAndColumnName of include ?? []) {
       const [includedTableName, includedColumnName] = _.split(tableAndColumnName, ".");
-      return (
-        tableName === includedTableName &&
-        (_.isNil(includedColumnName) || _.isNil(columnName) || columnName === includedColumnName)
-      );
-    });
-  const isExcluded = (tableName, columnName) =>
-    !_.isEmpty(exclude) &&
-    _.some(exclude, (tableAndColumnName) => {
+
+      hasTableMatch = includedTableName === tableName;
+      hasColumnMatch = !includedColumnName || !columnName || includedColumnName === columnName;
+    }
+
+    return !hasTableMatch || hasColumnMatch;
+  };
+
+  const isExcluded = (tableName, columnName) => {
+    let hasTableMatch = false;
+    let hasColumnMatch = false;
+
+    for (const tableAndColumnName of exclude ?? []) {
       const [excludedTableName, excludedColumnName] = _.split(tableAndColumnName, ".");
-      return (
-        (tableName === excludedTableName && _.isNil(excludedColumnName)) ||
-        (tableName === excludedTableName && columnName === excludedColumnName)
-      );
-    });
+
+      hasTableMatch = excludedTableName === tableName;
+      hasColumnMatch = !excludedColumnName || excludedColumnName === columnName;
+    }
+
+    return hasTableMatch && hasColumnMatch;
+  };
 
   const tableNames = _.concat(tableNameOrNames);
   const tablesAndColumns = await getStructure({ pimUrl, headers, timeout });
@@ -103,6 +112,8 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     .compact()
     .thru(aggregateTableIds)
     .value();
+  
+  console.log({ linkIdsByTableId, tableIds });
 
   const tablesPromises = _.map(tableIds, (tableId) => {
     const table = _.find(tablesAndColumns, (table) => table.id === tableId);
