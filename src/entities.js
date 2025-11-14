@@ -12,9 +12,8 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     archived,
     headers = {},
     timeout = 120000, // 2 minutes
-    includeColumns,
-    includeTables,
-    excludeTables
+    include,
+    exclude
   } = options;
 
   if (_.isNil(pimUrl)) {
@@ -41,17 +40,32 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     throw new Error("Expecting timeout to be an integer representing milliseconds");
   }
 
-  if (!_.isNil(includeColumns) && (!_.isArray(includeColumns) || _.some(includeColumns, (value) => !_.isString(value)))) {
-    throw new Error("Expecting includeColumns to be a list of columnNames");
+  if (!_.isNil(include) && (!_.isArray(include) || _.some(include, (value) => !_.isString(value)))) {
+    throw new Error("Expecting include to be a list of table names, or concatenated table and column names");
   }
 
-  if (!_.isNil(includeTables) && (!_.isArray(includeTables) || _.some(includeTables, (value) => !_.isString(value)))) {
-    throw new Error("Expecting includeTables to be a list of tableNames");
+  if (!_.isNil(exclude) && (!_.isArray(exclude) || _.some(exclude, (value) => !_.isString(value)))) {
+    throw new Error("Expecting include to be a list of table names, or concatenated table and column names");
   }
 
-  if (!_.isNil(excludeTables) && (!_.isArray(excludeTables) || _.some(excludeTables, (value) => !_.isString(value)))) {
-    throw new Error("Expecting excludeTables to be a list of tableNames");
-  }
+  const isIncluded = (tableName, columnName) =>
+    _.isEmpty(include) ||
+    _.some(include, (tableAndColumnName) => {
+      const [includedTableName, includedColumnName] = _.split(tableAndColumnName, ".");
+      return (
+        tableName === includedTableName &&
+        (_.isNil(includedColumnName) || _.isNil(columnName) || columnName === includedColumnName)
+      );
+    });
+  const isExcluded = (tableName, columnName) =>
+    !_.isEmpty(exclude) &&
+    _.some(exclude, (tableAndColumnName) => {
+      const [excludedTableName, excludedColumnName] = _.split(tableAndColumnName, ".");
+      return (
+        (tableName === excludedTableName && _.isNil(excludedColumnName)) ||
+        (tableName === excludedTableName && columnName === excludedColumnName)
+      );
+    });
 
   const tableNames = _.concat(tableNameOrNames);
   const tablesAndColumns = await getStructure({ pimUrl, headers, timeout });
@@ -59,16 +73,17 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
 
   for (const table of tablesAndColumns) {
     linkIdsByTableId[table.id] = [];
-    const isTopLevelTable = _.includes(tableNames, table.name);
     
     for (const column of table.columns) {
-      if (column.toTable) {
-        const linkTable = _.find(tablesAndColumns, (table) => table.id === column.toTable);
-        const isColumnIncluded = !isTopLevelTable || _.isNil(includeColumns) || _.includes(includeColumns, column.name);
-        const isTableIncluded = _.isNil(includeTables) || _.includes(includeTables, linkTable.name);
-        const isTableExcluded = _.includes(excludeTables, linkTable.name);
+      const isSourceColumnIncluded = isIncluded(table.name, column.name);
+      const isSourceColumnExcluded = isExcluded(table.name, column.name);
 
-        if (isColumnIncluded && isTableIncluded && !isTableExcluded) {
+      if (column.toTable && isSourceColumnIncluded && !isSourceColumnExcluded) {
+        const linkTable = _.find(tablesAndColumns, (table) => table.id === column.toTable);
+        const isLinkTableIncluded = isIncluded(linkTable.name);
+        const isLinkTableExcluded = isExcluded(linkTable.name);
+
+        if (isLinkTableIncluded && !isLinkTableExcluded) {
           linkIdsByTableId[table.id].push(linkTable.id);
         }
       }
@@ -90,7 +105,13 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     .value();
 
   const tablesPromises = _.map(tableIds, (tableId) => {
-    return getCompleteTable({ pimUrl, headers, timeout }, tableId, maxEntriesPerRequest, archived);
+    const table = _.find(tablesAndColumns, (table) => table.id === tableId);
+    const columnIds = _.chain(table.columns)
+      .filter((column) => isIncluded(table.name, column.name) && !isExcluded(table.name, column.name))
+      .filter((column) => column.id > 0) // maybe remove error in backend so we dont have to filter ID column
+      .map((column) => column.id)
+      .value();
+    return getCompleteTable({ pimUrl, headers, timeout }, tableId, maxEntriesPerRequest, archived, columnIds);
   });
 
   const tables = await Promise.all(tablesPromises);

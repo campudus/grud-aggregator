@@ -17,7 +17,7 @@ export function getTablesByNames(options, ...names) {
     .then(tables => _.filter(tables, t => _.some(names, name => t.name === name)));
 }
 
-export function getCompleteTable(options, tableId, maxEntries, archived) {
+export function getCompleteTable(options, tableId, maxEntries, archived, columnIds) {
   const {pimUrl, headers, timeout} = getOptionsFromParam(options, "getAllTables");
 
   if (!_.isInteger(tableId) || tableId < 0) {
@@ -32,23 +32,28 @@ export function getCompleteTable(options, tableId, maxEntries, archived) {
     throw new Error("Expecting archived to be a boolean");
   }
 
+  if (!_.isNil(columnIds) && (!_.isArray(columnIds) || _.some(columnIds, (value) => !_.isInteger(value) || value < 0))) {
+    throw new Error("Expecting columnIds to be an array of positive integers greater than or equal 0");
+  }
+
   return request(`${pimUrl}/tables/${tableId}`, {headers, timeout})
     .then(table => {
       const tableWithoutMeta = _.omit(table, ["status"]);
+      const queryString = generateQueryString({ columnIds });
 
-      return request(`${pimUrl}/tables/${tableId}/columns`, {headers, timeout}).then(result => ({
+      return request(`${pimUrl}/tables/${tableId}/columns?${queryString}`, {headers, timeout}).then(result => ({
         ...tableWithoutMeta,
         columns: result.columns
       }));
     })
     .then(tableAndColumns => {
-      const queryString = generateQueryString({ limit: maxEntries, archived });
+      const queryString = generateQueryString({ limit: maxEntries, archived, columnIds });
       const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
       return request(url, {headers, timeout}).then(result => {
         const totalSize = result.page.totalSize;
         const elements = Math.ceil(totalSize / maxEntries);
-        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived);
+        const requests = createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived, columnIds);
 
         return requests.reduce((promise, requestUrl) => {
           return promise
@@ -84,10 +89,10 @@ function getOptionsFromParam(options, fnName) {
   }
 }
 
-function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived) {
+function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived, columnIds) {
   const arr = [];
   for (let i = 0; i < elements - 1; i++) {
-    const queryString = generateQueryString({ offset: (i + 1) * maxEntries, limit: maxEntries, archived });
+    const queryString = generateQueryString({ offset: (i + 1) * maxEntries, limit: maxEntries, archived, columnIds });
     const url = `${pimUrl}/tables/${tableId}/rows?${queryString}`;
 
     arr.push(url);
@@ -95,13 +100,14 @@ function createArrayOfRequests(pimUrl, tableId, maxEntries, elements, archived) 
   return arr;
 }
 
-function generateQueryString({ offset = 0, limit, archived }) {
+function generateQueryString({ offset = 0, limit, archived, columnIds }) {
   return _.toPairs(
     _.omitBy(
       {
         offset: offset,
         limit: limit,
-        archived: archived
+        archived: archived,
+        columnIds: !_.isEmpty(columnIds) ? columnIds.join(",") : null
       },
       _.isNil
     )
