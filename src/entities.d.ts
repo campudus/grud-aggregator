@@ -33,13 +33,13 @@ export type TableEntities<
 export function getEntitiesOfTable<
   S extends Structure,
   TNameOrNames extends TableName<S> | TableName<S>[],
-  Include extends TableFilterName<S, TableName<S>>[],
-  Exclude extends (TableName<S> | TableFilterName<S, TableName<S>>)[],
+  Inc extends TableFilterName<S, TableName<S>>[],
+  Exc extends (TableName<S> | TableFilterName<S, TableName<S>>)[],
   LTName extends TableName<S> = LinkedTableName<
     S, //
     Flat<TNameOrNames>,
-    Flat<Include>,
-    Flat<Exclude>
+    Flat<Inc>,
+    Flat<Exc>
   >
 >(
   tableNameOrNames: TNameOrNames,
@@ -50,7 +50,7 @@ export function getEntitiesOfTable<
     archived?: boolean;
     headers?: Record<string, string>;
     timeout?: number;
-    include?: Include;
-    exclude?: Exclude;
+    include?: Inc;
+    exclude?: Exc;
   }
 ): Promise<TableEntities<S, Table<S, Flat<TNameOrNames> | LTName>>>;

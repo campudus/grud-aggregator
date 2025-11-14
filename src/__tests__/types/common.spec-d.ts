@@ -143,29 +143,40 @@ describe("LinkedTableName", () => {
     >();
   });
 
-  // it("should handle exclude", () => {
-  //   expectTypeOf<
-  //     LinkedTableName<S, "frame", undefined, undefined, "frameShape" | "wheelSize">
-  //   >().toEqualTypeOf<
-  //     | "material"
-  //     | "manufacturer"
-  //     | "axleStandard"
-  //     | "frameSize"
-  //     | "bearingSet"
-  //     | "suspensionSystem"
-  //     | "brakeStandard"
-  //   >();
+  it("should handle exclude", () => {
+    expectTypeOf<
+      LinkedTableName<S, "frame", undefined, "frameShape" | "wheelSize">
+    >().toEqualTypeOf<
+      | "material"
+      | "manufacturer"
+      | "axleStandard"
+      | "frameSize"
+      | "bearingSet"
+      | "suspensionSystem"
+      | "brakeStandard"
+    >();
 
-  //   expectTypeOf<
-  //     LinkedTableName<S, "bikeModel", undefined, undefined, "material" | "manufacturer">
-  //   >()
-  //     .extract<"material" | "manufacturer">()
-  //     .toEqualTypeOf<never>();
+    expectTypeOf<
+      LinkedTableName<S, "frame", undefined, "frame.bearingSet" | "wheelSize">
+    >().toEqualTypeOf<
+      | "material"
+      | "manufacturer"
+      | "axleStandard"
+      | "frameShape"
+      | "baseFrameShape"
+      | "frameSize"
+      | "suspensionSystem"
+      | "brakeStandard"
+    >();
 
-  //   expectTypeOf<LinkedTableName<S, "bikeModel", undefined, undefined, "variant">>()
-  //     .extract<"frame" | "frameShape">()
-  //     .toEqualTypeOf<never>();
-  // });
+    expectTypeOf<LinkedTableName<S, "bikeModel", undefined, "material" | "manufacturer">>()
+      .extract<"material" | "manufacturer">()
+      .toEqualTypeOf<never>();
+
+    expectTypeOf<LinkedTableName<S, "bikeModel", undefined, "variant">>()
+      .extract<"frame" | "frameShape">()
+      .toEqualTypeOf<never>();
+  });
 });
 
 describe("RowValue", () => {

@@ -203,8 +203,8 @@ export type Row<
 export type LinkedTableName<
   S extends Structure,
   TName extends TableName<S>,
-  Include extends TableFilterName<S, TableName<S>> | undefined = undefined,
-  Exclude extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined,
+  Inc extends TableFilterName<S, TableName<S>> | undefined = undefined,
+  Exc extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined,
   Visited extends TableName<S> = never
 > =
   TableName<S> extends TName
@@ -212,15 +212,15 @@ export type LinkedTableName<
     : TName extends Visited
       ? never
       : TableFilterName<S, TName> extends infer TFName
-        ? Extract<TFName, Include extends TFName ? Include : TFName> extends infer TF
-          ? TF extends `${string}.${infer CName}`
+        ? Exclude<Extract<TFName, Inc extends TFName ? Inc : TFName>, Exc> extends infer ITF
+          ? ITF extends `${string}.${infer CName}`
             ? Extract<Column<S, TName, CName>, { kind: "link" }> extends infer Cols
               ? PropValue<Cols, "toTable"> extends infer LinkId
                 ? Extract<Tables<S>, { id: LinkId }>["name"] extends infer LinkName
                   ? LinkName extends TableName<S>
-                    ? LinkName extends Visited
+                    ? LinkName extends Exc | Visited
                       ? never
-                      : LinkName | LinkedTableName<S, LinkName, Include, Exclude, TName | Visited>
+                      : LinkName | LinkedTableName<S, LinkName, Inc, Exc, TName | Visited>
                     : never
                   : never
                 : never
