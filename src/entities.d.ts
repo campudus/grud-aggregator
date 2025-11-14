@@ -3,11 +3,11 @@ import type {
   Prettify,
   Table,
   TableName,
-  ColumnName,
   Row,
   Tables,
   LinkedTableName,
-  Flat
+  Flat,
+  TableFilterName
 } from "./common.d.ts";
 
 export type TableEntity<
@@ -32,36 +32,25 @@ export type TableEntities<
 
 export function getEntitiesOfTable<
   S extends Structure,
-  TNameOrNames extends TableName<S> | TableName<S>[] = TableName<S> | TableName<S>[],
-  IncludeColumns extends ColumnName<S, Flat<TNameOrNames>>[] | undefined = undefined,
-  IncludeTables extends LinkedTableName<S, Flat<TNameOrNames>>[] | undefined = undefined,
-  ExcludeTables extends LinkedTableName<S, Flat<TNameOrNames>>[] | undefined = undefined
+  TNameOrNames extends TableName<S> | TableName<S>[],
+  Include extends TableFilterName<S, TableName<S>>[],
+  Exclude extends (TableName<S> | TableFilterName<S, TableName<S>>)[],
+  LTName extends TableName<S> = LinkedTableName<
+    S, //
+    Flat<TNameOrNames>,
+    Flat<Include>,
+    Flat<Exclude>
+  >
 >(
   tableNameOrNames: TNameOrNames,
   options?: {
-    structure?: S,
+    structure?: S;
     pimUrl?: string;
     maxEntriesPerRequest?: number;
     archived?: boolean;
     headers?: Record<string, string>;
     timeout?: number;
-    includeColumns?: IncludeColumns;
-    includeTables?: IncludeTables;
-    excludeTables?: ExcludeTables;
+    include?: Include;
+    exclude?: Exclude;
   }
-): Promise<
-  TableEntities<
-    S,
-    Table<
-      S,
-      | Flat<TNameOrNames>
-      | LinkedTableName<
-          S,
-          Flat<TNameOrNames>,
-          Flat<IncludeColumns>,
-          Flat<IncludeTables>,
-          Flat<ExcludeTables>
-        >
-    >
-  >
->;
+): Promise<TableEntities<S, Table<S, Flat<TNameOrNames> | LTName>>>;

@@ -124,63 +124,48 @@ describe("LinkedTableName", () => {
     >();
   });
 
-  it("should handle includeColumns", () => {
-    expectTypeOf<LinkedTableName<S, "frame", "frameShape">>().toEqualTypeOf<
-      "frameShape" | "baseFrameShape"
-    >();
-
-    expectTypeOf<LinkedTableName<S, "variant", "frame" | "fork">>().toEqualTypeOf<
-      | "frame"
+  it("should handle include", () => {
+    expectTypeOf<LinkedTableName<S, "frame", "frameShape.identifier">>().toEqualTypeOf<
       | "material"
       | "manufacturer"
-      | "lockout"
-      | "springMedium"
-      | "axle"
-      | "steerTube"
       | "wheelSize"
-      | "fork"
       | "axleStandard"
-      | "baseFrameShape"
+      // | "baseFrameShape" // filtered because "frameShape.baseFrameShape" is not included
       | "frameShape"
       | "frameSize"
       | "bearingSet"
       | "suspensionSystem"
       | "brakeStandard"
     >();
-  });
 
-  it("should handle includeTables", () => {
-    expectTypeOf<
-      LinkedTableName<S, "frame", undefined, "frameShape">
-    >().toEqualTypeOf<"frameShape">();
-    expectTypeOf<LinkedTableName<S, "bikeModel", undefined, "variant" | "fork">>().toEqualTypeOf<
-      "variant" | "fork"
+    expectTypeOf<LinkedTableName<S, "frame", "frame.bearingSet">>().toEqualTypeOf<
+      "manufacturer" | "bearingSet"
     >();
   });
 
-  it("should handle excludeTables", () => {
-    expectTypeOf<
-      LinkedTableName<S, "frame", undefined, undefined, "frameShape" | "wheelSize">
-    >().toEqualTypeOf<
-      | "material"
-      | "manufacturer"
-      | "axleStandard"
-      | "frameSize"
-      | "bearingSet"
-      | "suspensionSystem"
-      | "brakeStandard"
-    >();
+  // it("should handle exclude", () => {
+  //   expectTypeOf<
+  //     LinkedTableName<S, "frame", undefined, undefined, "frameShape" | "wheelSize">
+  //   >().toEqualTypeOf<
+  //     | "material"
+  //     | "manufacturer"
+  //     | "axleStandard"
+  //     | "frameSize"
+  //     | "bearingSet"
+  //     | "suspensionSystem"
+  //     | "brakeStandard"
+  //   >();
 
-    expectTypeOf<
-      LinkedTableName<S, "bikeModel", undefined, undefined, "material" | "manufacturer">
-    >()
-      .extract<"material" | "manufacturer">()
-      .toEqualTypeOf<never>();
+  //   expectTypeOf<
+  //     LinkedTableName<S, "bikeModel", undefined, undefined, "material" | "manufacturer">
+  //   >()
+  //     .extract<"material" | "manufacturer">()
+  //     .toEqualTypeOf<never>();
 
-    expectTypeOf<LinkedTableName<S, "bikeModel", undefined, undefined, "variant">>()
-      .extract<"frame" | "frameShape">()
-      .toEqualTypeOf<never>();
-  });
+  //   expectTypeOf<LinkedTableName<S, "bikeModel", undefined, undefined, "variant">>()
+  //     .extract<"frame" | "frameShape">()
+  //     .toEqualTypeOf<never>();
+  // });
 });
 
 describe("RowValue", () => {

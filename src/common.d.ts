@@ -89,6 +89,13 @@ export type Column<
   C extends ColumnName<S, T> | (string & {})
 > = Extract<Columns<S, T>, { name: C }>;
 
+export type TableFilterName<
+  S extends Structure, //
+  T extends TableName<S> | (string & {})
+> = {
+  [TName in T]: `${TName}.${ColumnName<S, TName>}`;
+}[T];
+
 export type Langtag<
   S extends Structure //
 > = Tables<S>["langtags"][number];
@@ -196,35 +203,25 @@ export type Row<
 export type LinkedTableName<
   S extends Structure,
   TName extends TableName<S>,
-  IncludeColumns extends ColumnName<S, TName> | undefined = undefined,
-  IncludeTables extends LinkedTableName<S, TName> | undefined = undefined,
-  ExcludeTables extends LinkedTableName<S, TName> | undefined = undefined,
+  Include extends TableFilterName<S, TableName<S>> | undefined = undefined,
+  Exclude extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined,
   Visited extends TableName<S> = never
 > =
   TableName<S> extends TName
     ? never
     : TName extends Visited
       ? never
-      : Extract<Table<S, TName>["columns"][number], { kind: "link" }> extends infer Cols
-        ? (IncludeColumns extends string ? IncludeColumns : string) extends infer ColName
-          ? Extract<Cols, { name: ColName }> extends infer Col
-            ? PropValue<Col, "toTable"> extends infer LinkId
-              ? Extract<Tables<S>, { id: LinkId }>["name"] extends infer LinkName
-                ? LinkName extends TableName<S>
-                  ? LinkName extends ExcludeTables | Visited
-                    ? never
-                    : LinkName extends (IncludeTables extends string ? IncludeTables : string)
-                      ?
-                          | LinkName
-                          | LinkedTableName<
-                              S,
-                              LinkName,
-                              undefined,
-                              IncludeTables,
-                              ExcludeTables,
-                              TName | Visited
-                            >
-                      : never
+      : TableFilterName<S, TName> extends infer TFName
+        ? Extract<TFName, Include extends TFName ? Include : TFName> extends infer TF
+          ? TF extends `${string}.${infer CName}`
+            ? Extract<Column<S, TName, CName>, { kind: "link" }> extends infer Cols
+              ? PropValue<Cols, "toTable"> extends infer LinkId
+                ? Extract<Tables<S>, { id: LinkId }>["name"] extends infer LinkName
+                  ? LinkName extends TableName<S>
+                    ? LinkName extends Visited
+                      ? never
+                      : LinkName | LinkedTableName<S, LinkName, Include, Exclude, TName | Visited>
+                    : never
                   : never
                 : never
               : never
