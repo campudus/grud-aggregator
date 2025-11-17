@@ -33,8 +33,8 @@ export type TableEntities<
 export function getEntitiesOfTable<
   S extends Structure,
   TNameOrNames extends TableName<S> | TableName<S>[],
-  Inc extends TableFilterName<S, TableName<S>>[],
-  Exc extends (TableName<S> | TableFilterName<S, TableName<S>>)[],
+  Inc extends TableFilterName<S, TableName<S>>[] | undefined = undefined,
+  Exc extends (TableName<S> | TableFilterName<S, TableName<S>>)[] | undefined = undefined,
   LTName extends TableName<S> = LinkedTableName<
     S, //
     Flat<TNameOrNames>,
