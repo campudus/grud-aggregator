@@ -17,7 +17,8 @@ import type {
   LinkedTableName,
   Localize,
   Attachment,
-  TableFilterName
+  TableFilterName,
+  TableColumns
 } from "../../common.d.ts";
 
 describe("TableName", () => {
@@ -86,6 +87,54 @@ describe("TableFilterName", () => {
   });
 });
 
+describe("TableColumns", () => {
+  it("should contain all Columns of Table if no columns are specified", () => {
+    expectTypeOf<TableColumns<S, "baseFrameShape">>().toEqualTypeOf<
+      [
+        {
+          id: 1;
+          name: "identifier";
+          kind: "shorttext";
+          multilanguage: true;
+          languageType: "language";
+        },
+        {
+          id: 2;
+          name: "bidexCode";
+          kind: "shorttext";
+          multilanguage: false;
+        },
+        {
+          id: 3;
+          name: "image";
+          kind: "attachment";
+          multilanguage: false;
+        }
+      ]
+    >();
+  });
+
+  it("should contain specified Columns of Table", () => {
+    expectTypeOf<TableColumns<S, "baseFrameShape", "identifier" | "image">>().toEqualTypeOf<
+      [
+        {
+          id: 1;
+          name: "identifier";
+          kind: "shorttext";
+          multilanguage: true;
+          languageType: "language";
+        },
+        {
+          id: 3;
+          name: "image";
+          kind: "attachment";
+          multilanguage: false;
+        }
+      ]
+    >();
+  });
+});
+
 describe("Columns", () => {
   it("should contain all Columns of Table", () => {
     expectTypeOf<Columns<S, "color">>().toEqualTypeOf<
@@ -95,14 +144,12 @@ describe("Columns", () => {
           kind: "shorttext";
           multilanguage: true;
           languageType: "language";
-          index: 0;
         }
       | {
           id: 2;
           name: "hexcode";
           kind: "shorttext";
           multilanguage: false;
-          index: 1;
         }
     >();
   });
@@ -116,7 +163,6 @@ describe("Column", () => {
       kind: "shorttext";
       multilanguage: true;
       languageType: "language";
-      index: 2;
     }>();
   });
 });

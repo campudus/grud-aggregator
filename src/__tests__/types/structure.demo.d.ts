@@ -10,7 +10,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -25,14 +24,12 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       },
       {
         id: 2;
         name: "hexcode";
         kind: "shorttext";
         multilanguage: false;
-        index: 1;
       }
     ];
   },
@@ -47,7 +44,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -69,7 +65,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 0;
           },
           {
             id: 5;
@@ -94,10 +89,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -105,7 +98,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 1;
       },
       {
         id: 2;
@@ -130,7 +122,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 2;
       },
       {
         id: 3;
@@ -155,7 +146,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
@@ -180,7 +170,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
@@ -205,7 +194,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       }
     ];
   },
@@ -219,7 +207,6 @@ export type Structure = [
         name: "identifier";
         kind: "shorttext";
         multilanguage: false;
-        index: 0;
       }
     ];
   },
@@ -256,7 +243,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -264,17 +250,14 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
             name: "power";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -297,7 +280,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -305,35 +287,30 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "power";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
         name: "torque";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
         name: "speedLimit";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
         name: "levelsOfAssistance";
         kind: "numeric";
         multilanguage: false;
-        index: 6;
       }
     ];
   },
@@ -370,7 +347,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -378,10 +354,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -404,7 +378,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -412,7 +385,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -437,7 +409,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       }
     ];
   },
@@ -452,7 +423,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -467,7 +437,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -504,7 +473,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -512,7 +480,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
@@ -537,10 +504,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -563,7 +528,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -571,7 +535,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -596,14 +559,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "isDetachable";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
@@ -628,14 +589,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
         name: "hasNavigation";
         kind: "boolean";
         multilanguage: false;
-        index: 6;
       }
     ];
   },
@@ -649,7 +608,6 @@ export type Structure = [
         name: "identifier";
         kind: "shorttext";
         multilanguage: false;
-        index: 0;
       }
     ];
   },
@@ -664,7 +622,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -679,7 +636,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -694,7 +650,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       },
       {
         id: 2;
@@ -719,7 +674,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       }
     ];
   },
@@ -739,31 +693,26 @@ export type Structure = [
             name: "wheelSize";
             kind: "numeric";
             multilanguage: false;
-            index: 0;
           },
           {
             id: 2;
             name: "hasPlusTire";
             kind: "boolean";
             multilanguage: false;
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
         name: "wheelSize";
         kind: "numeric";
         multilanguage: false;
-        index: 1;
       },
       {
         id: 2;
         name: "hasPlusTire";
         kind: "boolean";
         multilanguage: false;
-        index: 2;
       }
     ];
   },
@@ -800,7 +749,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -808,7 +756,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
@@ -833,17 +780,14 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           },
           {
             id: 4;
             name: "forkLength";
             kind: "numeric";
             multilanguage: false;
-            index: 3;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -866,7 +810,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -874,7 +817,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -899,14 +841,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "forkLength";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
@@ -931,7 +871,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
@@ -956,7 +895,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       },
       {
         id: 7;
@@ -979,7 +917,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 7;
       }
     ];
   },
@@ -1016,7 +953,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -1024,7 +960,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
@@ -1049,10 +984,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -1075,7 +1008,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -1083,7 +1015,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -1108,7 +1039,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
@@ -1131,7 +1061,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       }
     ];
   },
@@ -1168,7 +1097,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -1176,10 +1104,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -1202,7 +1128,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -1210,7 +1135,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       }
     ];
   },
@@ -1247,7 +1171,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -1255,10 +1178,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -1281,7 +1202,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -1289,7 +1209,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -1297,7 +1216,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       }
     ];
   },
@@ -1334,7 +1252,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -1342,10 +1259,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -1368,7 +1283,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -1376,7 +1290,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       }
     ];
   },
@@ -1391,7 +1304,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -1406,7 +1318,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -1443,7 +1354,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -1451,7 +1361,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
@@ -1476,14 +1385,12 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           },
           {
             id: 4;
             name: "gripWidthAdjustable";
             kind: "boolean";
             multilanguage: false;
-            index: 3;
           },
           {
             id: 7;
@@ -1508,10 +1415,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 4;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -1534,7 +1439,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -1542,7 +1446,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -1567,14 +1470,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "gripWidthAdjustable";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
@@ -1599,7 +1500,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
@@ -1621,7 +1521,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -1646,7 +1545,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -1659,7 +1557,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       },
       {
         id: 7;
@@ -1684,7 +1581,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 7;
       }
     ];
   },
@@ -1699,7 +1595,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -1736,7 +1631,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -1744,10 +1638,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -1770,7 +1662,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -1778,7 +1669,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -1803,7 +1693,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       }
     ];
   },
@@ -1818,7 +1707,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -1833,7 +1721,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -1870,7 +1757,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -1878,10 +1764,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -1904,7 +1788,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -1912,7 +1795,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -1937,14 +1819,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "size";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
@@ -1969,7 +1849,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
@@ -1994,7 +1873,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -2009,7 +1887,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -2046,7 +1923,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -2054,10 +1930,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -2080,7 +1954,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -2088,7 +1961,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -2113,14 +1985,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "isElectronic";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       }
     ];
   },
@@ -2135,7 +2005,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -2172,7 +2041,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -2180,7 +2048,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
@@ -2205,10 +2072,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -2231,7 +2096,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -2239,7 +2103,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -2264,14 +2127,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "isElectronic";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       }
     ];
   },
@@ -2308,7 +2169,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -2316,10 +2176,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -2342,7 +2200,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -2350,14 +2207,12 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "isElectronic";
         kind: "boolean";
         multilanguage: false;
-        index: 3;
       }
     ];
   },
@@ -2394,7 +2249,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -2402,10 +2256,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -2428,7 +2280,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -2436,14 +2287,12 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "isElectronic";
         kind: "boolean";
         multilanguage: false;
-        index: 3;
       }
     ];
   },
@@ -2480,7 +2329,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -2488,17 +2336,14 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
             name: "numberOfGears";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -2521,7 +2366,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -2529,28 +2373,24 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "numberOfGears";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
         name: "numberOfTeethMin";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
         name: "numberOfTeethMax";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -2572,7 +2412,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -2597,7 +2436,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -2610,7 +2448,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -2647,7 +2484,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -2655,17 +2491,14 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
             name: "numberOfTeeth";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -2688,7 +2521,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -2696,14 +2528,12 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "numberOfTeeth";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
@@ -2725,7 +2555,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -2750,7 +2579,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -2763,7 +2591,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       }
     ];
   },
@@ -2800,7 +2627,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -2808,31 +2634,26 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 4;
             name: "numberOfTeethLarge";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           },
           {
             id: 5;
             name: "numberOfTeethMedium";
             kind: "numeric";
             multilanguage: false;
-            index: 3;
           },
           {
             id: 6;
             name: "numberOfTeethSmall";
             kind: "numeric";
             multilanguage: false;
-            index: 4;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -2855,7 +2676,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -2863,7 +2683,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -2871,28 +2690,24 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
         name: "numberOfTeethLarge";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
         name: "numberOfTeethMedium";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
         name: "numberOfTeethSmall";
         kind: "numeric";
         multilanguage: false;
-        index: 6;
       },
       {
         id: 7;
@@ -2917,7 +2732,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 7;
       },
       {
         id: 8;
@@ -2939,7 +2753,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -2964,7 +2777,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -2977,7 +2789,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 8;
       }
     ];
   },
@@ -3014,7 +2825,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -3022,14 +2832,12 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
             name: "offset";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           },
           {
             id: 4;
@@ -3051,7 +2859,6 @@ export type Structure = [
                   kind: "shorttext";
                   multilanguage: true;
                   languageType: "language";
-                  index: 0;
                 },
                 {
                   id: 5;
@@ -3076,7 +2883,6 @@ export type Structure = [
                     archiveCascade: false;
                     finalCascade: false;
                   };
-                  index: 1;
                 }
               ];
             };
@@ -3089,10 +2895,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 3;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -3115,7 +2919,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -3123,14 +2926,12 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "offset";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
@@ -3152,7 +2953,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -3177,7 +2977,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -3190,7 +2989,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       }
     ];
   },
@@ -3227,7 +3025,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -3235,10 +3032,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -3261,7 +3056,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -3269,21 +3063,18 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "numberOfTeethMin";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
         name: "numberOfTeethMax";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
@@ -3320,7 +3111,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -3328,14 +3118,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "offset";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             },
             {
               id: 4;
@@ -3357,7 +3145,6 @@ export type Structure = [
                     kind: "shorttext";
                     multilanguage: true;
                     languageType: "language";
-                    index: 0;
                   },
                   {
                     id: 5;
@@ -3382,7 +3169,6 @@ export type Structure = [
                       archiveCascade: false;
                       finalCascade: false;
                     };
-                    index: 1;
                   }
                 ];
               };
@@ -3395,7 +3181,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 3;
             }
           ];
         };
@@ -3408,7 +3193,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
@@ -3430,7 +3214,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -3455,7 +3238,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -3468,7 +3250,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -3483,7 +3264,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -3520,7 +3300,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -3528,10 +3307,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -3554,7 +3331,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -3562,7 +3338,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -3570,7 +3345,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -3595,7 +3369,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
@@ -3620,7 +3393,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
@@ -3642,7 +3414,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -3667,7 +3438,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -3680,7 +3450,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -3694,7 +3463,6 @@ export type Structure = [
         name: "identifier";
         kind: "shorttext";
         multilanguage: false;
-        index: 0;
       }
     ];
   },
@@ -3731,7 +3499,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -3739,7 +3506,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
@@ -3762,17 +3528,14 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           },
           {
             id: 4;
             name: "axleLength";
             kind: "numeric";
             multilanguage: false;
-            index: 3;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -3795,7 +3558,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -3803,7 +3565,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -3826,14 +3587,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "axleLength";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
@@ -3858,7 +3617,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       }
     ];
   },
@@ -3895,7 +3653,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -3903,10 +3660,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -3929,7 +3684,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -3937,28 +3691,24 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "isTubeless";
         kind: "boolean";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
         name: "isTubelessReady";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
         name: "isBoost";
         kind: "boolean";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -3980,7 +3730,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -4005,7 +3754,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -4018,7 +3766,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -4055,7 +3802,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -4063,10 +3809,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -4089,7 +3833,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -4097,7 +3840,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -4122,14 +3864,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "isBoost";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
@@ -4151,7 +3891,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -4176,7 +3915,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -4189,7 +3927,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       }
     ];
   },
@@ -4226,7 +3963,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -4234,10 +3970,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -4260,7 +3994,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -4268,7 +4001,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       }
     ];
   },
@@ -4283,7 +4015,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -4320,7 +4051,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -4328,10 +4058,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -4354,7 +4082,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -4362,7 +4089,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -4387,7 +4113,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
@@ -4412,7 +4137,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
@@ -4449,7 +4173,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -4457,7 +4180,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -4470,14 +4192,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
         name: "isBoost";
         kind: "boolean";
         multilanguage: false;
-        index: 6;
       },
       {
         id: 7;
@@ -4499,7 +4219,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -4524,7 +4243,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -4537,7 +4255,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 7;
       }
     ];
   },
@@ -4574,7 +4291,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -4582,10 +4298,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -4608,7 +4322,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -4616,28 +4329,24 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "hasEyelets";
         kind: "boolean";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
         name: "hasDoubleWall";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
         name: "isTubelessReady";
         kind: "boolean";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -4662,7 +4371,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -4699,7 +4407,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -4707,10 +4414,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -4733,7 +4438,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -4741,7 +4445,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -4763,7 +4466,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -4788,7 +4490,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -4801,7 +4502,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       }
     ];
   },
@@ -4815,7 +4515,6 @@ export type Structure = [
         name: "internalName";
         kind: "shorttext";
         multilanguage: false;
-        index: 0;
       },
       {
         id: 2;
@@ -4852,7 +4551,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -4860,7 +4558,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -4873,7 +4570,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 3;
@@ -4910,7 +4606,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -4918,7 +4613,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -4931,7 +4625,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 2;
       },
       {
         id: 4;
@@ -4968,7 +4661,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -4976,7 +4668,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -4989,7 +4680,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 5;
@@ -5026,7 +4716,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -5034,7 +4723,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -5047,7 +4735,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 6;
@@ -5084,7 +4771,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -5092,7 +4778,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -5105,35 +4790,30 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 7;
         name: "numberOfSpokes";
         kind: "numeric";
         multilanguage: false;
-        index: 6;
       },
       {
         id: 8;
         name: "spokesLengthFrontLeft";
         kind: "numeric";
         multilanguage: false;
-        index: 7;
       },
       {
         id: 9;
         name: "spokesLengthFrontRight";
         kind: "numeric";
         multilanguage: false;
-        index: 8;
       },
       {
         id: 10;
         name: "spokesLengthRearLeft";
         kind: "numeric";
         multilanguage: false;
-        index: 9;
       },
       {
         id: 11;
@@ -5177,7 +4857,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -5185,17 +4864,14 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
             name: "sizeEtrto";
             kind: "shorttext";
             multilanguage: false;
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -5218,7 +4894,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -5226,14 +4901,12 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "sizeEtrto";
         kind: "shorttext";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
@@ -5252,14 +4925,12 @@ export type Structure = [
               name: "wheelSize";
               kind: "numeric";
               multilanguage: false;
-              index: 0;
             },
             {
               id: 2;
               name: "hasPlusTire";
               kind: "boolean";
               multilanguage: false;
-              index: 1;
             }
           ];
         };
@@ -5272,35 +4943,30 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
         name: "sizeWidthInch";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
         name: "punctureProtection";
         kind: "boolean";
         multilanguage: false;
-        index: 6;
       },
       {
         id: 7;
         name: "hasReflectiveStrips";
         kind: "boolean";
         multilanguage: false;
-        index: 7;
       },
       {
         id: 8;
         name: "isCollapsible";
         kind: "boolean";
         multilanguage: false;
-        index: 8;
       }
     ];
   },
@@ -5315,7 +4981,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -5352,7 +5017,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -5360,10 +5024,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -5386,7 +5048,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -5394,7 +5055,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -5419,7 +5079,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       }
     ];
   },
@@ -5456,7 +5115,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -5464,10 +5122,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -5490,7 +5146,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -5498,7 +5153,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -5506,21 +5160,18 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
         name: "lengthLeft";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
         name: "lengthRight";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -5542,7 +5193,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -5567,7 +5217,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -5580,7 +5229,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -5617,7 +5265,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -5625,10 +5272,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -5651,7 +5296,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -5659,7 +5303,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -5667,7 +5310,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -5692,35 +5334,30 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
         name: "rise";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
         name: "backSweep";
         kind: "numeric";
         multilanguage: false;
-        index: 6;
       },
       {
         id: 7;
         name: "upSweep";
         kind: "numeric";
         multilanguage: false;
-        index: 7;
       },
       {
         id: 8;
         name: "clampingDiameter";
         kind: "numeric";
         multilanguage: false;
-        index: 8;
       },
       {
         id: 9;
@@ -5742,7 +5379,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -5767,7 +5403,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -5780,7 +5415,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 9;
       }
     ];
   },
@@ -5817,7 +5451,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -5825,10 +5458,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -5851,7 +5482,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -5859,7 +5489,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -5867,7 +5496,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -5889,7 +5517,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -5914,7 +5541,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -5927,7 +5553,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       }
     ];
   },
@@ -5941,7 +5566,6 @@ export type Structure = [
         name: "identifier";
         kind: "shorttext";
         multilanguage: false;
-        index: 0;
       }
     ];
   },
@@ -5978,7 +5602,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -5986,7 +5609,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 4;
@@ -6009,10 +5631,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -6035,7 +5655,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -6043,7 +5662,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -6051,7 +5669,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -6074,35 +5691,30 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
         name: "adjustmentMin";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
         name: "adjustmentMax";
         kind: "numeric";
         multilanguage: false;
-        index: 6;
       },
       {
         id: 7;
         name: "handlebarWidth";
         kind: "numeric";
         multilanguage: false;
-        index: 7;
       },
       {
         id: 8;
         name: "angle";
         kind: "numeric";
         multilanguage: false;
-        index: 8;
       },
       {
         id: 9;
@@ -6124,7 +5736,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -6149,7 +5760,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -6162,7 +5772,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 9;
       }
     ];
   },
@@ -6199,7 +5808,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -6207,10 +5815,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -6233,7 +5839,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -6241,7 +5846,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -6266,21 +5870,18 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "height";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
         name: "innerDiameter";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -6302,7 +5903,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -6327,7 +5927,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -6340,7 +5939,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -6355,7 +5953,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -6392,7 +5989,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -6400,10 +5996,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -6426,7 +6020,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -6434,7 +6027,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -6442,7 +6034,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -6467,14 +6058,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
         name: "innerDiameter";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -6496,7 +6085,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -6521,7 +6109,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -6534,7 +6121,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -6556,31 +6142,26 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 0;
           },
           {
             id: 2;
             name: "springDeflection";
             kind: "numeric";
             multilanguage: false;
-            index: 1;
           },
           {
             id: 3;
             name: "permittedTotalWeight";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           },
           {
             id: 4;
             name: "adjustmentRange";
             kind: "numeric";
             multilanguage: false;
-            index: 3;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -6588,28 +6169,24 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 1;
       },
       {
         id: 2;
         name: "springDeflection";
         kind: "numeric";
         multilanguage: false;
-        index: 2;
       },
       {
         id: 3;
         name: "permittedTotalWeight";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
         name: "adjustmentRange";
         kind: "numeric";
         multilanguage: false;
-        index: 4;
       }
     ];
   },
@@ -6646,7 +6223,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -6654,10 +6230,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -6680,7 +6254,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -6688,7 +6261,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -6696,7 +6268,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -6721,7 +6292,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
@@ -6743,28 +6313,24 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 2;
               name: "springDeflection";
               kind: "numeric";
               multilanguage: false;
-              index: 1;
             },
             {
               id: 3;
               name: "permittedTotalWeight";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             },
             {
               id: 4;
               name: "adjustmentRange";
               kind: "numeric";
               multilanguage: false;
-              index: 3;
             }
           ];
         };
@@ -6777,14 +6343,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
         name: "diameter";
         kind: "numeric";
         multilanguage: false;
-        index: 6;
       }
     ];
   },
@@ -6821,7 +6385,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -6829,17 +6392,14 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
             name: "power";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -6862,7 +6422,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -6870,14 +6429,12 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "power";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       }
     ];
   },
@@ -6914,7 +6471,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -6922,10 +6478,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -6948,7 +6502,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -6956,21 +6509,18 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "hasParkingLight";
         kind: "boolean";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
         name: "hasBrakeLightFunction";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       }
     ];
   },
@@ -7007,7 +6557,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -7015,10 +6564,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -7041,7 +6588,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -7049,35 +6595,30 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "lumenOutput";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
         name: "hasParkingLight";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
         name: "hasFloodLightFunction";
         kind: "boolean";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
         name: "hasAutomaticSensor";
         kind: "boolean";
         multilanguage: false;
-        index: 6;
       },
       {
         id: 7;
@@ -7099,7 +6640,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -7124,7 +6664,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -7137,7 +6676,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 7;
       }
     ];
   },
@@ -7152,7 +6690,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -7189,7 +6726,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -7197,10 +6733,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -7223,7 +6757,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -7231,7 +6764,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -7256,14 +6788,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "isElectronic";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       }
     ];
   },
@@ -7300,7 +6830,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -7308,10 +6837,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -7334,7 +6861,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -7342,7 +6868,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       }
     ];
   },
@@ -7357,7 +6882,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -7394,7 +6918,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -7402,10 +6925,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -7428,7 +6949,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -7436,7 +6956,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -7444,7 +6963,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -7469,7 +6987,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
@@ -7491,7 +7008,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -7516,7 +7032,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -7529,7 +7044,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       }
     ];
   },
@@ -7544,7 +7058,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -7581,7 +7094,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -7589,7 +7101,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
@@ -7614,10 +7125,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -7640,7 +7149,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -7648,7 +7156,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -7673,14 +7180,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
         name: "isAdjustable";
         kind: "boolean";
         multilanguage: false;
-        index: 4;
       },
       {
         id: 5;
@@ -7702,7 +7207,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -7727,7 +7231,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -7740,7 +7243,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       }
     ];
   },
@@ -7777,7 +7279,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -7785,10 +7286,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -7811,7 +7310,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -7819,7 +7317,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -7827,7 +7324,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -7852,14 +7348,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
         name: "width";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -7881,7 +7375,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -7906,7 +7399,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -7919,7 +7411,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -7933,7 +7424,6 @@ export type Structure = [
         name: "identifier";
         kind: "shorttext";
         multilanguage: false;
-        index: 0;
       }
     ];
   },
@@ -7970,7 +7460,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -7978,7 +7467,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 4;
@@ -8001,10 +7489,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -8027,7 +7513,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -8035,7 +7520,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -8060,7 +7544,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
@@ -8083,14 +7566,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
         name: "maxPayload";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -8112,7 +7593,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -8137,7 +7617,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -8150,7 +7629,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       }
     ];
   },
@@ -8187,7 +7665,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -8195,17 +7672,14 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 6;
             name: "sorting";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -8228,7 +7702,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -8236,7 +7709,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -8244,7 +7716,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -8252,21 +7723,18 @@ export type Structure = [
         kind: "text";
         multilanguage: true;
         languageType: "language";
-        index: 4;
       },
       {
         id: 5;
         name: "image";
         kind: "attachment";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
         name: "sorting";
         kind: "numeric";
         multilanguage: false;
-        index: 6;
       }
     ];
   },
@@ -8281,7 +7749,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -8296,7 +7763,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -8311,7 +7777,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -8325,7 +7790,6 @@ export type Structure = [
         name: "identifier";
         kind: "shorttext";
         multilanguage: false;
-        index: 0;
       }
     ];
   },
@@ -8362,7 +7826,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -8370,14 +7833,12 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
             name: "capacity";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           },
           {
             id: 4;
@@ -8402,10 +7863,8 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 3;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -8428,7 +7887,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -8436,14 +7894,12 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
         name: "capacity";
         kind: "numeric";
         multilanguage: false;
-        index: 3;
       },
       {
         id: 4;
@@ -8468,7 +7924,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
@@ -8491,7 +7946,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       }
     ];
   },
@@ -8505,7 +7959,6 @@ export type Structure = [
         name: "identifier";
         kind: "numeric";
         multilanguage: false;
-        index: 0;
       }
     ];
   },
@@ -8520,21 +7973,18 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       },
       {
         id: 2;
         name: "image";
         kind: "attachment";
         multilanguage: false;
-        index: 1;
       },
       {
         id: 3;
         name: "url";
         kind: "shorttext";
         multilanguage: false;
-        index: 2;
       }
     ];
   },
@@ -8549,21 +7999,18 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       },
       {
         id: 2;
         name: "bidexCode";
         kind: "shorttext";
         multilanguage: false;
-        index: 1;
       },
       {
         id: 3;
         name: "image";
         kind: "attachment";
         multilanguage: false;
-        index: 2;
       }
     ];
   },
@@ -8578,7 +8025,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       },
       {
         id: 2;
@@ -8603,7 +8049,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       }
     ];
   },
@@ -8617,7 +8062,6 @@ export type Structure = [
         name: "identifier";
         kind: "shorttext";
         multilanguage: false;
-        index: 0;
       }
     ];
   },
@@ -8654,7 +8098,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -8662,10 +8105,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -8688,7 +8129,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -8696,7 +8136,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       }
     ];
   },
@@ -8711,7 +8150,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -8726,7 +8164,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 0;
       }
     ];
   },
@@ -8763,7 +8200,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -8771,10 +8207,8 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -8797,7 +8231,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -8805,7 +8238,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       }
     ];
   },
@@ -8842,7 +8274,6 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
@@ -8850,7 +8281,6 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           },
           {
             id: 3;
@@ -8875,17 +8305,14 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 2;
           },
           {
             id: 10;
             name: "frameHeight";
             kind: "numeric";
             multilanguage: false;
-            index: 3;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -8908,7 +8335,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
@@ -8916,7 +8342,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 2;
       },
       {
         id: 3;
@@ -8941,7 +8366,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 3;
       },
       {
         id: 4;
@@ -8966,14 +8390,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
         name: "travel";
         kind: "numeric";
         multilanguage: false;
-        index: 5;
       },
       {
         id: 6;
@@ -8998,7 +8420,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       },
       {
         id: 7;
@@ -9023,7 +8444,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 7;
       },
       {
         id: 8;
@@ -9048,7 +8468,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 8;
       },
       {
         id: 9;
@@ -9071,7 +8490,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 9;
       },
       {
         id: 10;
@@ -9181,14 +8599,12 @@ export type Structure = [
               name: "wheelSize";
               kind: "numeric";
               multilanguage: false;
-              index: 0;
             },
             {
               id: 2;
               name: "hasPlusTire";
               kind: "boolean";
               multilanguage: false;
-              index: 1;
             }
           ];
         };
@@ -9301,7 +8717,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -9309,7 +8724,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -9335,21 +8749,18 @@ export type Structure = [
             name: "length";
             kind: "numeric";
             multilanguage: false;
-            index: 0;
           },
           {
             id: 35;
             name: "width";
             kind: "numeric";
             multilanguage: false;
-            index: 1;
           },
           {
             id: 36;
             name: "height";
             kind: "numeric";
             multilanguage: false;
-            index: 2;
           }
         ];
         formatPattern: "{{34}} mm × {{35}} mm × {{36}} mm";
@@ -9395,7 +8806,6 @@ export type Structure = [
             name: "articleNumber";
             kind: "shorttext";
             multilanguage: false;
-            index: 0;
           },
           {
             id: 3;
@@ -9403,24 +8813,20 @@ export type Structure = [
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
         name: "articleNumber";
         kind: "shorttext";
         multilanguage: false;
-        index: 1;
       },
       {
         id: 2;
         name: "ean";
         kind: "shorttext";
         multilanguage: false;
-        index: 2;
       },
       {
         id: 3;
@@ -9428,7 +8834,6 @@ export type Structure = [
         kind: "shorttext";
         multilanguage: true;
         languageType: "language";
-        index: 3;
       },
       {
         id: 4;
@@ -9437,7 +8842,6 @@ export type Structure = [
         multilanguage: true;
         languageType: "country";
         countryCodes: ["DE", "US", "GB", "FR", "ES", "AT", "CH"];
-        index: 4;
       },
       {
         id: 5;
@@ -9459,7 +8863,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 0;
             },
             {
               id: 5;
@@ -9484,7 +8887,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 1;
             }
           ];
         };
@@ -9497,7 +8899,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 5;
       },
       {
         id: 6;
@@ -9534,7 +8935,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -9542,7 +8942,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -9567,14 +8966,12 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             },
             {
               id: 10;
               name: "frameHeight";
               kind: "numeric";
               multilanguage: false;
-              index: 3;
             }
           ];
         };
@@ -9587,28 +8984,24 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       },
       {
         id: 7;
         name: "stemLength";
         kind: "numeric";
         multilanguage: false;
-        index: 7;
       },
       {
         id: 8;
         name: "handlebarWidth";
         kind: "numeric";
         multilanguage: false;
-        index: 8;
       },
       {
         id: 9;
         name: "seatPostLength";
         kind: "numeric";
         multilanguage: false;
-        index: 9;
       },
       {
         id: 10;
@@ -9666,7 +9059,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -9674,14 +9066,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "capacity";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             },
             {
               id: 4;
@@ -9706,7 +9096,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 3;
             }
           ];
         };
@@ -9756,7 +9145,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -9764,7 +9152,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -9789,14 +9176,12 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             },
             {
               id: 4;
               name: "forkLength";
               kind: "numeric";
               multilanguage: false;
-              index: 3;
             }
           ];
         };
@@ -9846,7 +9231,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -9854,14 +9238,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "sizeEtrto";
               kind: "shorttext";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -9911,7 +9293,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -9919,14 +9300,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "sizeEtrto";
               kind: "shorttext";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -10009,14 +9388,12 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
               name: "modelName";
               kind: "shorttext";
               multilanguage: false;
-              index: 1;
             }
           ];
         };
@@ -10065,17 +9442,14 @@ export type Structure = [
               archiveCascade: false;
               finalCascade: false;
             };
-            index: 0;
           },
           {
             id: 2;
             name: "modelName";
             kind: "shorttext";
             multilanguage: false;
-            index: 1;
           }
         ];
-        index: 0;
       },
       {
         id: 1;
@@ -10098,14 +9472,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 1;
       },
       {
         id: 2;
         name: "modelName";
         kind: "shorttext";
         multilanguage: false;
-        index: 2;
       },
       {
         id: 3;
@@ -10119,7 +9491,6 @@ export type Structure = [
           kind: "numeric";
           multilanguage: false;
         };
-        index: 3;
       },
       {
         id: 4;
@@ -10140,7 +9511,6 @@ export type Structure = [
               name: "articleNumber";
               kind: "shorttext";
               multilanguage: false;
-              index: 0;
             },
             {
               id: 3;
@@ -10148,7 +9518,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -10161,7 +9530,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 4;
       },
       {
         id: 5;
@@ -10170,7 +9538,6 @@ export type Structure = [
         multilanguage: true;
         languageType: "country";
         countryCodes: ["DE", "US", "GB", "FR", "ES", "AT", "CH"];
-        index: 5;
       },
       {
         id: 6;
@@ -10207,7 +9574,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10215,14 +9581,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 6;
               name: "sorting";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -10235,7 +9599,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 6;
       },
       {
         id: 7;
@@ -10260,7 +9623,6 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 7;
       },
       {
         id: 8;
@@ -10285,14 +9647,12 @@ export type Structure = [
           archiveCascade: false;
           finalCascade: false;
         };
-        index: 8;
       },
       {
         id: 9;
         name: "bidexProductCode";
         kind: "shorttext";
         multilanguage: false;
-        index: 9;
       },
       {
         id: 10;
@@ -10358,7 +9718,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10366,7 +9725,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -10391,14 +9749,12 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             },
             {
               id: 4;
               name: "gripWidthAdjustable";
               kind: "boolean";
               multilanguage: false;
-              index: 3;
             },
             {
               id: 7;
@@ -10423,7 +9779,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 4;
             }
           ];
         };
@@ -10473,7 +9828,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10481,7 +9835,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -10531,7 +9884,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10539,7 +9891,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -10596,7 +9947,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10604,7 +9954,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -10654,7 +10003,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10662,7 +10010,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -10712,7 +10059,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10720,7 +10066,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -10745,7 +10090,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             }
           ];
         };
@@ -10795,7 +10139,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10803,7 +10146,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -10853,7 +10195,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10861,7 +10202,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -10911,7 +10251,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10919,14 +10258,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "numberOfTeeth";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -10976,7 +10313,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -10984,14 +10320,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "numberOfGears";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -11041,7 +10375,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11049,7 +10382,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -11099,7 +10431,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11107,28 +10438,24 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 4;
               name: "numberOfTeethLarge";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             },
             {
               id: 5;
               name: "numberOfTeethMedium";
               kind: "numeric";
               multilanguage: false;
-              index: 3;
             },
             {
               id: 6;
               name: "numberOfTeethSmall";
               kind: "numeric";
               multilanguage: false;
-              index: 4;
             }
           ];
         };
@@ -11178,7 +10505,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11186,7 +10512,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -11236,7 +10561,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11244,7 +10568,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -11294,7 +10617,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11302,7 +10624,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -11352,7 +10673,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11360,7 +10680,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -11383,14 +10702,12 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             },
             {
               id: 4;
               name: "axleLength";
               kind: "numeric";
               multilanguage: false;
-              index: 3;
             }
           ];
         };
@@ -11440,7 +10757,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11448,7 +10764,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -11498,7 +10813,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11506,14 +10820,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "power";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -11563,7 +10875,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11571,7 +10882,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -11596,7 +10906,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             }
           ];
         };
@@ -11646,7 +10955,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11654,7 +10962,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -11704,7 +11011,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11712,7 +11018,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -11762,7 +11067,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11770,7 +11074,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -11795,14 +11098,12 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             },
             {
               id: 4;
               name: "forkLength";
               kind: "numeric";
               multilanguage: false;
-              index: 3;
             }
           ];
         };
@@ -11852,7 +11153,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11860,7 +11160,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -11885,7 +11184,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             }
           ];
         };
@@ -11935,7 +11233,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -11943,7 +11240,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -11993,7 +11289,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12001,7 +11296,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12051,7 +11345,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12059,7 +11352,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12109,7 +11401,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12117,7 +11408,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12190,7 +11480,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12198,14 +11487,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "sizeEtrto";
               kind: "shorttext";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -12255,7 +11542,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12263,14 +11549,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "sizeEtrto";
               kind: "shorttext";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -12320,7 +11604,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12328,7 +11611,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12378,7 +11660,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12386,7 +11667,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12436,7 +11716,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12444,7 +11723,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12494,7 +11772,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12502,7 +11779,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 4;
@@ -12525,7 +11801,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             }
           ];
         };
@@ -12575,7 +11850,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12583,7 +11857,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12633,7 +11906,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12641,7 +11913,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12691,7 +11962,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12699,7 +11969,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12749,7 +12018,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12757,7 +12025,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12807,7 +12074,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12815,7 +12081,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12865,7 +12130,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12873,7 +12137,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -12923,7 +12186,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12931,14 +12193,12 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
               name: "power";
               kind: "numeric";
               multilanguage: false;
-              index: 2;
             }
           ];
         };
@@ -12988,7 +12248,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -12996,7 +12255,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 4;
@@ -13019,7 +12277,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             }
           ];
         };
@@ -13069,7 +12326,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -13077,7 +12333,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -13127,7 +12382,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -13135,7 +12389,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             },
             {
               id: 3;
@@ -13160,7 +12413,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 2;
             }
           ];
         };
@@ -13210,7 +12462,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -13218,7 +12469,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };
@@ -13268,7 +12518,6 @@ export type Structure = [
                 archiveCascade: false;
                 finalCascade: false;
               };
-              index: 0;
             },
             {
               id: 2;
@@ -13276,7 +12525,6 @@ export type Structure = [
               kind: "shorttext";
               multilanguage: true;
               languageType: "language";
-              index: 1;
             }
           ];
         };

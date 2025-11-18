@@ -22,11 +22,7 @@ const structureResponse = await fetch(`${url}/structure`);
 const { tables } = await structureResponse.json();
 
 // cleanup structure
-const cleanColumn = (col, columnIndex) => {
-  if (_.isNumber(columnIndex)) {
-    col.index = columnIndex;
-  }
-
+const cleanColumn = (col) => {
   delete col.displayName;
   delete col.ordering;
   delete col.identifier;

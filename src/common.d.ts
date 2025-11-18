@@ -7,6 +7,17 @@ export type Prettify<T> = T extends object ? { [K in keyof T]: Prettify<T[K]> } 
 
 export type Values<T> = T[keyof T];
 
+export type FilterByName<
+  T extends readonly { name?: string }[],
+  Names extends string
+> = T extends readonly [infer First, ...infer Rest]
+  ? Rest extends { name?: string }[]
+    ? First extends { name: Names }
+      ? [First, ...FilterByName<Rest, Names>]
+      : FilterByName<Rest, Names>
+    : []
+  : T;
+
 export type UnionToIntersection<Union> = (
   Union extends unknown ? (x: Union) => void : never
 ) extends (x: infer Intersection) => void
@@ -71,12 +82,18 @@ export type TableName<
 
 export type Table<
   S extends Structure, //
-  T extends TableName<S> | (string & {})
+  T extends TableName<S>
 > = Extract<Tables<S>, { name: T }>;
+
+export type TableColumns<
+  S extends Structure, //
+  T extends TableName<S>,
+  C extends ColumnName<S, T> = ColumnName<S, T>
+> = FilterByName<Extract<Tables<S>, { name: T }>["columns"], C>;
 
 export type Columns<
   S extends Structure, //
-  T extends TableName<S> | (string & {})
+  T extends TableName<S>
 > = Table<S, T>["columns"][number];
 
 export type ColumnName<
@@ -198,9 +215,7 @@ export type Row<
   CName extends ColumnName<S, TName> = ColumnName<S, TName>
 > = {
   id: number;
-  values: ColumnName<S, TName> extends CName
-    ? RowValueTuple<S, Table<S, TName>["columns"]>
-    : [RowValue<S, Column<S, TName, CName>>];
+  values: RowValueTuple<S, TableColumns<S, TName, CName>>;
 };
 
 export type LinkedTableName<
