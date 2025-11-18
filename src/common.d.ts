@@ -92,10 +92,9 @@ export type Column<
 
 export type TableFilterName<
   S extends Structure, //
-  T extends TableName<S> | (string & {})
-> = {
-  [TName in T]: `${TName}.${ColumnName<S, TName>}`;
-}[T];
+  T extends TableName<S> | (string & {}),
+  C extends ColumnName<S, T> | (string & {}) = ColumnName<S, T>
+> = `${T}.${C}`;
 
 export type Langtag<
   S extends Structure //

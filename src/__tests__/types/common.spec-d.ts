@@ -16,7 +16,8 @@ import type {
   RowValue,
   LinkedTableName,
   Localize,
-  Attachment
+  Attachment,
+  TableFilterName
 } from "../../common.d.ts";
 
 describe("TableName", () => {
@@ -34,6 +35,27 @@ describe("ColumnName", () => {
     expectTypeOf<ColumnName<S, "marketingColor">>().toEqualTypeOf<
       "glossGrade" | "identifier" | "ID" | "mainColor" | "partialColor1" | "partialColor2"
     >();
+  });
+});
+
+describe("TableFilterName", () => {
+  it("should build correct filterNames for all columns of table", () => {
+    expectTypeOf<TableFilterName<S, "marketingColor">>().toBeString();
+    expectTypeOf<TableFilterName<S, "marketingColor">>().toEqualTypeOf<
+      | "marketingColor.glossGrade"
+      | "marketingColor.identifier"
+      | "marketingColor.ID"
+      | "marketingColor.mainColor"
+      | "marketingColor.partialColor1"
+      | "marketingColor.partialColor2"
+    >();
+  });
+
+  it("should build correct filterNames for single column of table", () => {
+    expectTypeOf<TableFilterName<S, "marketingColor", "glossGrade">>().toBeString();
+    expectTypeOf<
+      TableFilterName<S, "marketingColor", "glossGrade">
+    >().toEqualTypeOf<"marketingColor.glossGrade">();
   });
 });
 
