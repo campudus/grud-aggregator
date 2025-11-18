@@ -57,6 +57,33 @@ describe("TableFilterName", () => {
       TableFilterName<S, "marketingColor", "glossGrade">
     >().toEqualTypeOf<"marketingColor.glossGrade">();
   });
+
+  it("should not allow wrong columnName for table", () => {
+    expectTypeOf<TableFilterName<S, "marketingColor", "forkLength">>().toBeNever();
+    expectTypeOf<TableFilterName<S, "marketingColor", "forkLength">>().toEqualTypeOf<never>();
+  });
+
+  it("should build correct filterNames for mutliple tables with different columns", () => {
+    expectTypeOf<TableFilterName<S, "brake" | "fork">>().toBeString();
+    expectTypeOf<TableFilterName<S, "brake" | "fork">>().toEqualTypeOf<
+      | "brake.manufacturer"
+      | "brake.brakeKind"
+      | "brake.ID"
+      | "brake.identifier"
+      | "fork.manufacturer"
+      | "fork.lockout"
+      | "fork.springMedium"
+      | "fork.axle"
+      | "fork.steerTube"
+      | "fork.ID"
+      | "fork.identifier"
+      | "fork.forkLength"
+    >();
+
+    expectTypeOf<TableFilterName<S, "brake" | "fork", "brakeKind" | "forkLength">>().toEqualTypeOf<
+      "brake.brakeKind" | "fork.forkLength"
+    >();
+  });
 });
 
 describe("Columns", () => {

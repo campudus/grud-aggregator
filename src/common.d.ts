@@ -94,7 +94,9 @@ export type TableFilterName<
   S extends Structure, //
   T extends TableName<S> | (string & {}),
   C extends ColumnName<S, T> | (string & {}) = ColumnName<S, T>
-> = `${T}.${C}`;
+> = {
+  [TName in T]: `${TName}.${Extract<C, ColumnName<S, TName>>}`;
+}[T];
 
 export type Langtag<
   S extends Structure //
