@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { getCompleteTable, getStructure } from "./pimApi.js";
+import { getCompleteTable } from "./pimApi.js";
 
 export function getEntitiesOfTables(tableNames, options = {}) {
   return getEntitiesOfTable(tableNames, options);
@@ -7,6 +7,7 @@ export function getEntitiesOfTables(tableNames, options = {}) {
 
 export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
   const {
+    structure,
     pimUrl,
     maxEntriesPerRequest = 500,
     archived,
@@ -18,6 +19,10 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
 
   if (_.isNil(pimUrl)) {
     throw new Error("Missing option pimUrl");
+  }
+
+  if (_.isEmpty(structure)) {
+    throw new Error("Missing option structure");
   }
 
   if (!_.isString(pimUrl)) {
@@ -77,10 +82,9 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
   };
 
   const tableNames = _.concat(tableNameOrNames);
-  const tablesAndColumns = await getStructure({ pimUrl, headers, timeout });
   const linkIdsByTableId = {};
 
-  for (const table of tablesAndColumns) {
+  for (const table of structure) {
     linkIdsByTableId[table.id] = [];
     
     for (const column of table.columns) {
@@ -88,7 +92,7 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
       const isSourceColumnExcluded = isExcluded(table.name, column.name);
 
       if (column.toTable && isSourceColumnIncluded && !isSourceColumnExcluded) {
-        const linkTable = _.find(tablesAndColumns, (table) => table.id === column.toTable);
+        const linkTable = _.find(structure, (table) => table.id === column.toTable);
         const isLinkTableIncluded = isIncluded(linkTable.name);
         const isLinkTableExcluded = isExcluded(linkTable.name);
 
@@ -108,15 +112,13 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
   };
 
   const tableIds = _.chain(tableNames)
-    .map((tableName) => _.find(tablesAndColumns, (table) => table.name === tableName)?.id)
+    .map((tableName) => _.find(structure, (table) => table.name === tableName)?.id)
     .compact()
     .thru(aggregateTableIds)
     .value();
-  
-  console.log({ linkIdsByTableId, tableIds });
 
   const tablesPromises = _.map(tableIds, (tableId) => {
-    const table = _.find(tablesAndColumns, (table) => table.id === tableId);
+    const table = _.find(structure, (table) => table.id === tableId);
     const columnIds = _.chain(table.columns)
       .filter((column) => isIncluded(table.name, column.name) && !isExcluded(table.name, column.name))
       .filter((column) => column.id > 0) // maybe remove error in backend so we dont have to filter ID column

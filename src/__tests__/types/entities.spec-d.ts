@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { describe, it, expectTypeOf, vi } from "vitest";
+import { describe, it, expectTypeOf } from "vitest";
 
 import { getEntitiesOfTable } from "../../entities.js";
 import type { Structure as S } from "./structure.demo.d.ts";

@@ -54,7 +54,17 @@ for (const table of tables) {
 }
 
 const structureContent = await formatTS(
-  `export type Structure = ${JSON.stringify(tables, null, 2)};`
+  `export type Structure = ${JSON.stringify(tables, null, 2)};
+
+   type Prettify<T> = T extends object ? { [K in keyof T]: Prettify<T[K]> } : T;
+  
+   declare module "grud-aggregator" {
+     export function getStructure(options?: {
+       pimUrl?: string;
+       headers?: Record<string, string>;
+       timeout?: number;
+     }): Promise<Prettify<Structure>>;
+   }`
 );
 
 const structurePath = path.join(dir, "structure.d.ts");
