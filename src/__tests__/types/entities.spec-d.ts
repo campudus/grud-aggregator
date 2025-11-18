@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { describe, it, expectTypeOf } from "vitest";
+import { describe, it, expectTypeOf, vi } from "vitest";
 
-import { getEntitiesOfTable } from "../../entities.js";
+import type { getEntitiesOfTable as getEntitiesOfTableType } from "../../entities.d.ts";
 import type { Structure as S } from "./structure.demo.d.ts";
+
+// use mocked fn getEntitiesOfTable for type tests
+const getEntitiesOfTable = vi.fn() as typeof getEntitiesOfTableType;
 
 describe("getEntitiesOfTable", () => {
   it("should handle multiple tables", async () => {
