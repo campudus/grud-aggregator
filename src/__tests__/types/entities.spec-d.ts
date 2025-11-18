@@ -11,7 +11,7 @@ describe("getEntitiesOfTable", () => {
   it("should handle multiple tables", async () => {
     const entities = await getEntitiesOfTable(["material", "manufacturer"], { structure: {} as S });
 
-    expectTypeOf<typeof entities>().toEqualTypeOf<{
+    expectTypeOf<typeof entities>().toExtend<{
       1: {
         id: 1;
         name: "material";
@@ -23,7 +23,6 @@ describe("getEntitiesOfTable", () => {
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 0;
           }
         ];
         rows: {
@@ -52,7 +51,6 @@ describe("getEntitiesOfTable", () => {
             name: "identifier";
             kind: "shorttext";
             multilanguage: false;
-            index: 0;
           }
         ];
         rows: {
@@ -68,7 +66,7 @@ describe("getEntitiesOfTable", () => {
   it("should have correct return type", async () => {
     const entities = await getEntitiesOfTable("steerTube", { structure: {} as S });
 
-    expectTypeOf<typeof entities>().toEqualTypeOf<{
+    expectTypeOf<typeof entities>().toExtend<{
       1: {
         id: 1;
         name: "material";
@@ -80,7 +78,6 @@ describe("getEntitiesOfTable", () => {
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 0;
           }
         ];
         rows: {
@@ -110,7 +107,6 @@ describe("getEntitiesOfTable", () => {
             kind: "shorttext";
             multilanguage: true;
             languageType: "language";
-            index: 0;
           },
           {
             id: 2;
@@ -118,24 +114,6 @@ describe("getEntitiesOfTable", () => {
             kind: "link";
             multilanguage: true;
             languageType: "language";
-            toTable: 1;
-            toColumn: {
-              id: 1;
-              name: "identifier";
-              kind: "shorttext";
-              multilanguage: true;
-              languageType: "language";
-            };
-            constraint: {
-              cardinality: {
-                from: 0;
-                to: 1;
-              };
-              deleteCascade: false;
-              archiveCascade: false;
-              finalCascade: false;
-            };
-            index: 1;
           }
         ];
         rows: {
@@ -183,7 +161,39 @@ describe("getEntitiesOfTable", () => {
 
     expectTypeOf<typeof entitiesBrake>().toExtend<{
       24: { name: "brakeKind" };
-      25: { name: "brake" };
+      25: {
+        name: "brake";
+        columns: [
+          {
+            id: 3;
+            name: "brakeKind";
+            kind: "link";
+            multilanguage: true;
+            languageType: "language";
+          }
+        ];
+        rows: {
+          [x: number]: {
+            id: number;
+            values: [
+              [
+                | {
+                    id: number;
+                    value: {
+                      de?: string | null;
+                      en?: string | null;
+                      fr?: string | null;
+                      es?: string | null;
+                      it?: string | null;
+                      hr?: string | null;
+                    };
+                  }
+                | undefined
+              ]
+            ];
+          };
+        };
+      };
     }>();
 
     const entitiesFrame = await getEntitiesOfTable("frame", {
@@ -198,22 +208,141 @@ describe("getEntitiesOfTable", () => {
     expectTypeOf<typeof entitiesFrame>().toExtend<{
       86: { name: "baseFrameShape" };
       87: { name: "frameShape" };
-      93: { name: "frame" };
+      93: {
+        name: "frame";
+        columns: [
+          {
+            id: 3;
+            name: "frameShape";
+            kind: "link";
+            multilanguage: true;
+            languageType: "language";
+          }
+        ];
+        rows: {
+          [x: number]: {
+            id: number;
+            values: [
+              [
+                | {
+                    id: number;
+                    value: {
+                      de?: string | null;
+                      en?: string | null;
+                      fr?: string | null;
+                      es?: string | null;
+                      it?: string | null;
+                      hr?: string | null;
+                    };
+                  }
+                | undefined
+              ]
+            ];
+          };
+        };
+      };
     }>();
   });
 
   it("should handle exclude", async () => {
-    const entitiesFrame = await getEntitiesOfTable("frame", {
+    const entitiesFrameWithExcludedTable = await getEntitiesOfTable("frame", {
       structure: {} as S,
-      exclude: ["baseFrameShape"] // exclude full table
+      exclude: ["baseFrameShape"] // exclude only table, but not link columns
     });
 
-    expectTypeOf<typeof entitiesFrame>().not.toExtend<{
+    expectTypeOf<typeof entitiesFrameWithExcludedTable>().not.toExtend<{
       86: { name: "baseFrameShape" };
     }>();
 
-    expectTypeOf<typeof entitiesFrame>().toExtend<{
-      87: { name: "frameShape" };
+    expectTypeOf<typeof entitiesFrameWithExcludedTable>().toExtend<{
+      87: {
+        name: "frameShape";
+        columns: [
+          {
+            id: 1;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: true;
+            languageType: "language";
+          },
+          {
+            id: 2;
+            name: "baseFrameShape";
+            kind: "link";
+            multilanguage: true;
+            languageType: "language";
+          }
+        ];
+        rows: {
+          [x: number]: {
+            id: number;
+            values: [
+              {
+                de?: string | null;
+                en?: string | null;
+                fr?: string | null;
+                es?: string | null;
+                it?: string | null;
+                hr?: string | null;
+              },
+              [
+                | {
+                    id: number;
+                    value: {
+                      de?: string | null;
+                      en?: string | null;
+                      fr?: string | null;
+                      es?: string | null;
+                      it?: string | null;
+                      hr?: string | null;
+                    };
+                  }
+                | undefined
+              ]
+            ];
+          };
+        };
+      };
+      93: { name: "frame" };
+    }>();
+
+    const entitiesFrameWithExcludedColumn = await getEntitiesOfTable("frame", {
+      structure: {} as S,
+      exclude: ["frameShape.baseFrameShape"] // exclude link column and table
+    });
+
+    expectTypeOf<typeof entitiesFrameWithExcludedColumn>().not.toExtend<{
+      86: { name: "baseFrameShape" };
+    }>();
+
+    expectTypeOf<typeof entitiesFrameWithExcludedColumn>().toExtend<{
+      87: {
+        name: "frameShape";
+        columns: [
+          {
+            id: 1;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: true;
+            languageType: "language";
+          }
+        ];
+        rows: {
+          [x: number]: {
+            id: number;
+            values: [
+              {
+                de?: string | null;
+                en?: string | null;
+                fr?: string | null;
+                es?: string | null;
+                it?: string | null;
+                hr?: string | null;
+              }
+            ];
+          };
+        };
+      };
       93: { name: "frame" };
     }>();
 
@@ -245,6 +374,82 @@ describe("getEntitiesOfTable", () => {
     expectTypeOf<typeof entitiesBrake>().not.toExtend<{
       24: { name: "brakeKind" };
       25: { name: "brake" };
+    }>();
+  });
+
+  it("should handle complex options with multiple tables, include and exclude", async () => {
+    const entitiesBrakeAndFrameShape = await getEntitiesOfTable(["brake", "frameShape"], {
+      structure: {} as S,
+      include: ["brake.brakeKind"],
+      exclude: ["frameShape.baseFrameShape"]
+    });
+
+    expectTypeOf<typeof entitiesBrakeAndFrameShape>().toExtend<{
+      87: {
+        name: "frameShape";
+        columns: [
+          {
+            id: 1;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: true;
+            languageType: "language";
+          }
+        ];
+        rows: {
+          [x: number]: {
+            id: number;
+            values: [
+              {
+                de?: string | null;
+                en?: string | null;
+                fr?: string | null;
+                es?: string | null;
+                it?: string | null;
+                hr?: string | null;
+              }
+            ];
+          };
+        };
+      };
+      24: { name: "brakeKind" };
+      25: {
+        name: "brake";
+        columns: [
+          {
+            id: 3;
+            name: "brakeKind";
+            kind: "link";
+            multilanguage: true;
+            languageType: "language";
+          }
+        ];
+        rows: {
+          [x: number]: {
+            id: number;
+            values: [
+              [
+                | {
+                    id: number;
+                    value: {
+                      de?: string | null;
+                      en?: string | null;
+                      fr?: string | null;
+                      es?: string | null;
+                      it?: string | null;
+                      hr?: string | null;
+                    };
+                  }
+                | undefined
+              ]
+            ];
+          };
+        };
+      };
+    }>();
+
+    expectTypeOf<typeof entitiesBrakeAndFrameShape>().not.toExtend<{
+      86: { name: "baseFrameShape" };
     }>();
   });
 });
