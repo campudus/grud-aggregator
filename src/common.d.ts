@@ -22,6 +22,7 @@ export type ColumnKind =
   | "shorttext"
   | "text"
   | "richtext"
+  | "integer"
   | "numeric"
   | "currency"
   | "date"
@@ -174,6 +175,7 @@ export type RowValue<
   shorttext: MultilangValue<S, string | null, Langtag<S>, IsMultiLang>;
   text: MultilangValue<S, string | null, Langtag<S>, IsMultiLang>;
   richtext: MultilangValue<S, string | null, Langtag<S>, IsMultiLang>;
+  integer: MultilangValue<S, number | null, Langtag<S>, IsMultiLang>;
   numeric: MultilangValue<S, number | null, Langtag<S>, IsMultiLang>;
   currency: MultilangValue<S, number | null, CountryCode<S>, IsMultiLang>;
   date: string | null;

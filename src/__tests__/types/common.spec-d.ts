@@ -258,6 +258,31 @@ describe("RowValue", () => {
     }>();
   });
 
+  it("should match correct value for integer without multilanguage", () => {
+    const integerColumn = {
+      kind: "integer",
+      multilanguage: false
+    } as const satisfies ColumnInfo;
+
+    expectTypeOf<RowValue<S, typeof integerColumn>>().toEqualTypeOf<number | null>();
+  });
+
+  it("should match correct value for integer with multilanguage", () => {
+    const integerColumn = {
+      kind: "integer",
+      multilanguage: true
+    } as const satisfies ColumnInfo;
+
+    expectTypeOf<RowValue<S, typeof integerColumn>>().toEqualTypeOf<{
+      de?: number | null;
+      en?: number | null;
+      fr?: number | null;
+      es?: number | null;
+      it?: number | null;
+      hr?: number | null;
+    }>();
+  });
+
   it("should match correct value for numeric without multilanguage", () => {
     const numericColumn = {
       kind: "numeric",
