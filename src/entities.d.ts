@@ -88,11 +88,11 @@ export type RefEntities<
   T extends Tables<S>,
   Inc extends TableFilterName<S, TableName<S>> | undefined = undefined,
   Exc extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined
-> = {
+> = Prettify<{
   [TName in T["name"]]: {
     [rowId: number]: RefEntity<S, Extract<Tables<S>, { name: TName }>, Inc, Exc>;
   };
-};
+}>;
 
 export function getEntitiesOfTable<
   S extends Structure,
