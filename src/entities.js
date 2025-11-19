@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { getCompleteTable } from "./pimApi.js";
+import { referencer } from "./referencer/referencer.js";
 
 export function getEntitiesOfTables(tableNames, options = {}) {
   return getEntitiesOfTable(tableNames, options);
@@ -14,7 +15,8 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
     headers = {},
     timeout = 120000, // 2 minutes
     include,
-    exclude
+    exclude,
+    referenced = false
   } = options;
 
   if (_.isNil(pimUrl)) {
@@ -128,9 +130,10 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
   });
 
   const tables = await Promise.all(tablesPromises);
-
-  return _.chain(tables)
+  const tableEntities = _.chain(tables)
     .map((table) => ({ ...table, rows: _.keyBy(table.rows, "id") }))
     .keyBy("id")
     .value();
+
+  return referenced ? referencer()(tableEntities) : tableEntities;
 }

@@ -63,7 +63,7 @@ describe("getEntitiesOfTable", () => {
     }>();
   });
 
-  it("should have correct return type", async () => {
+  it("should handle table with links", async () => {
     const entities = await getEntitiesOfTable("steerTube", { structure: {} as S });
 
     expectTypeOf<typeof entities>().toExtend<{
