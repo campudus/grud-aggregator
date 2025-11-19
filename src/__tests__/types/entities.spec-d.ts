@@ -242,6 +242,38 @@ describe("getEntitiesOfTable", () => {
         };
       };
     }>();
+
+    const entitiesBrakeAndFrameShape = await getEntitiesOfTable(["brake", "frameShape"], {
+      structure: {} as S,
+      include: ["brake.identifier", "frameShape.identifier"]
+    });
+
+    expectTypeOf<typeof entitiesBrakeAndFrameShape>().toExtend<{
+      25: {
+        name: "brake";
+        columns: [
+          {
+            id: 2;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: true;
+            languageType: "language";
+          }
+        ];
+      };
+      87: {
+        name: "frameShape";
+        columns: [
+          {
+            id: 1;
+            name: "identifier";
+            kind: "shorttext";
+            multilanguage: true;
+            languageType: "language";
+          }
+        ];
+      };
+    }>();
   });
 
   it("should handle exclude", async () => {

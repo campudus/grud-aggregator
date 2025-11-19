@@ -23,7 +23,10 @@ export type TableEntity<
 > = Prettify<
   {
     [TName in T["name"]]: TableFilterName<S, TName> extends infer TFName
-      ? Exclude<Extract<TFName, Inc extends TFName ? Inc : TFName>, Exc> extends infer ITF
+      ? Exclude<
+          Extract<TFName, Inc> extends never ? TFName : Extract<TFName, Inc>,
+          Exc
+        > extends infer ITF
         ? (ITF extends `${string}.${infer C}` ? C : ColumnName<S, TName>) extends infer CName
           ? Omit<Table<S, TName>, "columns"> & {
               columns: TableColumns<
