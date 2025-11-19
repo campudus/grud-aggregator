@@ -218,34 +218,42 @@ export type Row<
   values: RowValueTuple<S, TableColumns<S, TName, CName>>;
 };
 
+export type LinkedTableNameMap<
+  S extends Structure,
+  Inc extends TableFilterName<S, TableName<S>> | undefined = undefined,
+  Exc extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined
+> = {
+  [TName in TableName<S>]: TableFilterName<S, TName> extends infer TFName
+    ? Exclude<Extract<TFName, Inc extends TFName ? Inc : TFName>, Exc> extends infer ITF
+      ? ITF extends `${string}.${infer CName}`
+        ? Extract<Column<S, TName, CName>, { kind: "link" }> extends infer Cols
+          ? PropValue<Cols, "toTable"> extends infer LinkId
+            ? Extract<Tables<S>, { id: LinkId }>["name"] extends infer LinkName
+              ? LinkName extends TableName<S>
+                ? LinkName extends Exc
+                  ? never
+                  : LinkName
+                : never
+              : never
+            : never
+          : never
+        : never
+      : never
+    : never;
+};
+
 export type LinkedTableName<
   S extends Structure,
   TName extends TableName<S>,
   Inc extends TableFilterName<S, TableName<S>> | undefined = undefined,
   Exc extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined,
-  Visited extends TableName<S> = never
+  Map extends LinkedTableNameMap<S, Inc, Exc> = LinkedTableNameMap<S, Inc, Exc>,
+  Visited extends TableName<S> = never,
+  Unvisited = Map[TName] extends TableName<S> ? Exclude<Map[TName], TName | Visited> : never
 > =
-  TableName<S> extends TName
-    ? never
-    : TName extends Visited
-      ? never
-      : TableFilterName<S, TName> extends infer TFName
-        ? Exclude<Extract<TFName, Inc extends TFName ? Inc : TFName>, Exc> extends infer ITF
-          ? ITF extends `${string}.${infer CName}`
-            ? Extract<Column<S, TName, CName>, { kind: "link" }> extends infer Cols
-              ? PropValue<Cols, "toTable"> extends infer LinkId
-                ? Extract<Tables<S>, { id: LinkId }>["name"] extends infer LinkName
-                  ? LinkName extends TableName<S>
-                    ? LinkName extends Exc | Visited
-                      ? never
-                      : LinkName | LinkedTableName<S, LinkName, Inc, Exc, TName | Visited>
-                    : never
-                  : never
-                : never
-              : never
-            : never
-          : never
-        : never;
+  Unvisited extends TableName<S>
+    ? Unvisited | LinkedTableName<S, Unvisited, Inc, Exc, Map, Unvisited | Visited>
+    : Unvisited | Visited;
 
 export type Localize<
   S extends Structure, //
