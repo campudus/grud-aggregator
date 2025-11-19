@@ -236,6 +236,10 @@ describe("LinkedTableName", () => {
     expectTypeOf<LinkedTableName<S, "frame", "frame.bearingSet">>().toEqualTypeOf<
       "manufacturer" | "bearingSet"
     >();
+
+    expectTypeOf<
+      LinkedTableName<S, "brake" | "frame", "brake.identifier" | "frame.height">
+    >().toEqualTypeOf<never>();
   });
 
   it("should handle exclude", () => {

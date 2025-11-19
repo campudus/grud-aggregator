@@ -224,7 +224,10 @@ export type LinkedTableNameMap<
   Exc extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined
 > = {
   [TName in TableName<S>]: TableFilterName<S, TName> extends infer TFName
-    ? Exclude<Extract<TFName, Inc extends TFName ? Inc : TFName>, Exc> extends infer ITF
+    ? Exclude<
+        Extract<TFName, Inc> extends never ? TFName : Extract<TFName, Inc>,
+        Exc
+      > extends infer ITF
       ? ITF extends `${string}.${infer CName}`
         ? Extract<Column<S, TName, CName>, { kind: "link" }> extends infer Cols
           ? PropValue<Cols, "toTable"> extends infer LinkId
