@@ -452,4 +452,132 @@ describe("getEntitiesOfTable", () => {
       86: { name: "baseFrameShape" };
     }>();
   });
+
+  it("should handle referencing", async () => {
+    const entitiesBrake = await getEntitiesOfTable("brake", {
+      structure: {} as S,
+      referenced: true
+    });
+
+    expectTypeOf<typeof entitiesBrake>().toEqualTypeOf<{
+      manufacturer: {
+        [rowId: number]: {
+          id: number;
+          identifier: string | null;
+        };
+      };
+      brakeKind: {
+        [rowId: number]: {
+          id: number;
+          identifier: {
+            de?: string | null;
+            en?: string | null;
+            fr?: string | null;
+            es?: string | null;
+            it?: string | null;
+            hr?: string | null;
+          };
+        };
+      };
+      brake: {
+        [rowId: number]: {
+          id: number;
+          ID: [
+            [
+              | {
+                  id: number;
+                  value: string | null;
+                }
+              | undefined
+            ],
+            {
+              de?: string | null;
+              en?: string | null;
+              fr?: string | null;
+              es?: string | null;
+              it?: string | null;
+              hr?: string | null;
+            }
+          ];
+          manufacturer: {
+            id: number;
+            identifier: string | null;
+          }[];
+          identifier: {
+            de?: string | null;
+            en?: string | null;
+            fr?: string | null;
+            es?: string | null;
+            it?: string | null;
+            hr?: string | null;
+          };
+          brakeKind: {
+            id: number;
+            identifier: {
+              de?: string | null;
+              en?: string | null;
+              fr?: string | null;
+              es?: string | null;
+              it?: string | null;
+              hr?: string | null;
+            };
+          }[];
+        };
+      };
+    }>();
+  });
+
+  it("should handle referencing with includes and excludes", async () => {
+    const entitiesBrakeAndFrameShape = await getEntitiesOfTable(["brake", "frameShape"], {
+      structure: {} as S,
+      include: ["brake.brakeKind"],
+      exclude: ["frameShape.baseFrameShape"],
+      referenced: true
+    });
+
+    expectTypeOf<typeof entitiesBrakeAndFrameShape>().toEqualTypeOf<{
+      brake: {
+        [rowId: number]: {
+          id: number;
+          brakeKind: {
+            id: number;
+            identifier: {
+              de?: string | null;
+              en?: string | null;
+              fr?: string | null;
+              es?: string | null;
+              it?: string | null;
+              hr?: string | null;
+            };
+          }[];
+        };
+      };
+      frameShape: {
+        [rowId: number]: {
+          id: number;
+          identifier: {
+            de?: string | null;
+            en?: string | null;
+            fr?: string | null;
+            es?: string | null;
+            it?: string | null;
+            hr?: string | null;
+          };
+        };
+      };
+      brakeKind: {
+        [rowId: number]: {
+          id: number;
+          identifier: {
+            de?: string | null;
+            en?: string | null;
+            fr?: string | null;
+            es?: string | null;
+            it?: string | null;
+            hr?: string | null;
+          };
+        };
+      };
+    }>();
+  });
 });
