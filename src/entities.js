@@ -121,11 +121,13 @@ export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
 
   const tablesPromises = _.map(tableIds, (tableId) => {
     const table = _.find(structure, (table) => table.id === tableId);
-    const columnIds = _.chain(table.columns)
+    const allColumnIds = _.map(table.columns, (column) => column.id);
+    const filteredColumnIds = _.chain(table.columns)
       .filter((column) => isIncluded(table.name, column.name) && !isExcluded(table.name, column.name))
-      .filter((column) => column.id > 0) // maybe remove error in backend so we dont have to filter ID column
       .map((column) => column.id)
       .value();
+    const columnIds = filteredColumnIds.length !== allColumnIds.length ? filteredColumnIds : null;
+
     return getCompleteTable({ pimUrl, headers, timeout }, tableId, maxEntriesPerRequest, archived, columnIds);
   });
 
