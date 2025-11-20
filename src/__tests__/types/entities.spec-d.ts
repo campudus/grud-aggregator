@@ -612,4 +612,18 @@ describe("getEntitiesOfTable", () => {
       };
     }>();
   });
+
+  it("should not include backlinks when referencing", async () => {
+    const entitiesVariant = await getEntitiesOfTable("variant", {
+      structure: {} as S,
+      include: ["variant.bikeModel"],
+      referenced: true
+    });
+
+    type Variant = (typeof entitiesVariant.variant)[number];
+    type VariantBacklink = Variant["bikeModel"][number]["variants"];
+
+    expectTypeOf<Variant>().not.toEqualTypeOf<never>();
+    expectTypeOf<VariantBacklink>().toEqualTypeOf<never>();
+  });
 });

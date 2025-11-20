@@ -255,7 +255,7 @@ export type LinkedTableName<
   Unvisited = Map[TName] extends TableName<S> ? Exclude<Map[TName], TName | Visited> : never
 > =
   Unvisited extends TableName<S>
-    ? Unvisited | LinkedTableName<S, Unvisited, Inc, Exc, Map, Unvisited | Visited>
+    ? Unvisited | LinkedTableName<S, Unvisited, Inc, Exc, Map, TName | Unvisited | Visited>
     : Unvisited | Visited;
 
 export type Localize<

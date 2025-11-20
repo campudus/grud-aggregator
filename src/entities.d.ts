@@ -62,6 +62,7 @@ export type RefEntity<
   T extends Tables<S>,
   Inc extends TableFilterName<S, TableName<S>> | undefined = undefined,
   Exc extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined,
+  VisitedIds extends number = never,
   Ent extends TableEntity<S, T, Inc, Exc> = TableEntity<S, T, Inc, Exc>,
   EntCols extends Ent["columns"] = Ent["columns"],
   EntColsIndex extends Exclude<keyof EntCols, keyof unknown[]> = Exclude<
@@ -76,7 +77,15 @@ export type RefEntity<
           ? {
               [CName in EntCols[K]["name"]]: EntCols[K]["kind"] extends "link"
                 ? EntCols[K]["toTable"] extends infer LId
-                  ? RefEntity<S, Extract<Tables<S>, { id: LId }>, Inc, Exc>[]
+                  ? LId extends VisitedIds
+                    ? never
+                    : RefEntity<
+                        S,
+                        Extract<Tables<S>, { id: LId }>,
+                        Inc,
+                        Exc,
+                        VisitedIds | T["id"]
+                      >[]
                   : never
                 : RowValue<S, EntCols[K]>;
             }
