@@ -218,6 +218,18 @@ export type Row<
   values: RowValueTuple<S, TableColumns<S, TName, CName>>;
 };
 
+export type RowValueMap<S extends Structure> = {
+  [TFName in TableFilterName<S, TableName<S>>]: TFName extends `${infer TName}.${infer CName}`
+    ? Column<S, TName, CName> extends infer Col
+      ? Col extends ColumnInfo
+        ? Col["kind"] extends "link"
+          ? never[]
+          : RowValue<S, Col>
+        : never
+      : never
+    : never;
+};
+
 export type LinkedTableNameMap<
   S extends Structure,
   Inc extends TableFilterName<S, TableName<S>> | undefined = undefined,

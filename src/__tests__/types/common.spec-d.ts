@@ -18,7 +18,8 @@ import type {
   Localize,
   Attachment,
   TableFilterName,
-  TableColumns
+  TableColumns,
+  RowValueMap
 } from "../../common.d.ts";
 
 describe("TableName", () => {
@@ -620,6 +621,57 @@ describe("RowValue", () => {
     expectTypeOf<RowValue<S, typeof groupColumn>>().toEqualTypeOf<
       [number | null, string | null, boolean | null]
     >();
+  });
+});
+
+describe("RowValueMap", () => {
+  it("should list correct row values for table filter names", () => {
+    expectTypeOf<RowValueMap<S>>().toExtend<{
+      "accessory.identifier": {
+        de?: string | null;
+        en?: string | null;
+        fr?: string | null;
+        es?: string | null;
+        it?: string | null;
+        hr?: string | null;
+      };
+      "variant.frame": never[]; // does not resolve links!
+      "material.identifier": {
+        de?: string | null;
+        en?: string | null;
+        fr?: string | null;
+        es?: string | null;
+        it?: string | null;
+        hr?: string | null;
+      };
+      "manufacturer.identifier": string | null;
+      "brake.brakeKind": never[]; // does not resolve links!
+      "brakeKind.identifier": {
+        de?: string | null;
+        en?: string | null;
+        fr?: string | null;
+        es?: string | null;
+        it?: string | null;
+        hr?: string | null;
+      };
+      "brake.ID": [
+        [
+          | {
+              id: number;
+              value: string | null;
+            }
+          | undefined
+        ],
+        {
+          de?: string | null;
+          en?: string | null;
+          fr?: string | null;
+          es?: string | null;
+          it?: string | null;
+          hr?: string | null;
+        }
+      ];
+    }>();
   });
 });
 

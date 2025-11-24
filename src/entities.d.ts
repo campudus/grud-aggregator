@@ -10,9 +10,9 @@ import type {
   TableFilterName,
   ColumnName,
   TableColumns,
-  ColumnInfo,
   UnionToIntersection,
-  RowValue
+  RowValueMap,
+  Column
 } from "./common.d.ts";
 
 export type TableEntity<
@@ -63,35 +63,41 @@ export type RefEntity<
   Inc extends TableFilterName<S, TableName<S>> | undefined = undefined,
   Exc extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined,
   VisitedIds extends number = never,
-  Ent extends TableEntity<S, T, Inc, Exc> = TableEntity<S, T, Inc, Exc>,
-  EntCols extends Ent["columns"] = Ent["columns"],
-  EntColsIndex extends Exclude<keyof EntCols, keyof unknown[]> = Exclude<
-    keyof EntCols,
-    keyof unknown[]
-  >
+  Map extends RowValueMap<S> = RowValueMap<S>
 > = Prettify<
   UnionToIntersection<
     { id: number } & {
-      [K in EntColsIndex]: EntCols[K] extends ColumnInfo
-        ? EntCols[K]["name"] extends string
-          ? {
-              [CName in EntCols[K]["name"]]: EntCols[K]["kind"] extends "link"
-                ? EntCols[K]["toTable"] extends infer LId
-                  ? LId extends VisitedIds
-                    ? never
-                    : RefEntity<
-                        S,
-                        Extract<Tables<S>, { id: LId }>,
-                        Inc,
-                        Exc,
-                        VisitedIds | T["id"]
-                      >[]
-                  : never
-                : RowValue<S, EntCols[K]>;
-            }
+      [TName in T["name"]]: Extract<keyof Map, `${TName}.${string}`> extends infer TFName
+        ? Exclude<
+            Extract<TFName, Inc> extends never ? TFName : Extract<TFName, Inc>,
+            Exc
+          > extends infer ITF
+          ? ITF extends `${TName}.${infer CName}`
+            ? {
+                [C in CName]: `${TName}.${C}` extends infer CFName
+                  ? CFName extends keyof Map
+                    ? Map[CFName] extends never[] // link
+                      ? Column<S, TName, C>["toTable"] extends infer LinkId
+                        ? LinkId extends number
+                          ? LinkId extends VisitedIds
+                            ? never
+                            : RefEntity<
+                                S,
+                                Extract<Tables<S>, { id: LinkId }>,
+                                Inc,
+                                Exc,
+                                VisitedIds | LinkId
+                              >[]
+                          : never
+                        : never
+                      : Map[CFName]
+                    : never
+                  : never;
+              }
+            : never
           : never
         : never;
-    }[EntColsIndex]
+    }[T["name"]]
   >
 >;
 
@@ -102,7 +108,11 @@ export type RefEntities<
   Exc extends TableName<S> | TableFilterName<S, TableName<S>> | undefined = undefined
 > = Prettify<{
   [TName in T["name"]]: {
-    [rowId: number]: RefEntity<S, Extract<Tables<S>, { name: TName }>, Inc, Exc>;
+    [rowId: number]: Extract<Tables<S>, { name: TName }> extends infer RefTable
+      ? RefTable extends Tables<S>
+        ? RefEntity<S, RefTable, Inc, Exc, RefTable["id"]>
+        : never
+      : never;
   };
 }>;
 
