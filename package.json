@@ -23,10 +23,6 @@
       "import": "./dist/entities.js",
       "require": "./dist/entities.cjs"
     },
-    "./referencer": {
-      "import": "./dist/referencer/referencer.js",
-      "require": "./dist/referencer/referencer.cjs"
-    },
     "./tablesToLanguages": {
       "types": "./dist/tablesToLanguages.d.ts",
       "import": "./dist/tablesToLanguages.js",

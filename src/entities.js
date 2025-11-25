@@ -2,10 +2,6 @@ import _ from "lodash";
 import { getCompleteTable } from "./pimApi.js";
 import { referencer } from "./referencer/referencer.js";
 
-export function getEntitiesOfTables(tableNames, options = {}) {
-  return getEntitiesOfTable(tableNames, options);
-}
-
 export async function getEntitiesOfTable(tableNameOrNames, options = {}) {
   const {
     structure,

@@ -10,6 +10,11 @@ Use `npm run prepublish` to compile and test the code. This should be done befor
 
 Use `npm run test` to run all tests once. `npm run test:watch` runs the tests while watching for changes.
 
+### Development
+
+Use `npx grud-aggregator --url="<grud-url>" --dir="<target-dir>"` to download the GRUD Structure and provide
+explicit types for the aggregator module.
+
 ### Usage
 
 The aggregator module includes many functions that can be used in a chain of promises. It provides a way to easily fork
@@ -21,19 +26,24 @@ The easiest way to show how this works is by example. Imagine the following code
 const GOOD_RATING_THRESHOLD = 4;
 
 export default function start(step, progress, options) {
-  return getEntitiesOfTable("songs", {pimUrl: "http://localhost:8080"})
-    .then(step("Filter all songs with a good rating"))
-    .then(filter({
-      path: ["songs", "album"],
-      predicate: album => album.rating > GOOD_RATING_THRESHOLD
-    }))
-    .then(step("Printing complete duration of all good songs"))
-    .then(tablesCaintainingSongsWithGoodAlbummRatings => {
-      const tables = referencer()(tablesCaintainingSongsWithGoodAlbummRatings);
-      const songs = tables.songs;
-      const summedDuration = songs.reduce((duration, song) => duration + song.duration);
-      console.log("Duration of all songs with rating >", GOOD_RATING_THRESHOLD, " =", summedDuration);
-    });
+  const pimUrl = "http://localhost:8080";
+  const structure = await getStructure();
+  const entities = await getEntitiesOfTable("songs", { structure, pimUrl });
+
+  await step("Filter all songs with a good rating")();
+
+  const filteredEntities = filter({
+    path: ["songs", "album"],
+    predicate: album => album.rating > GOOD_RATING_THRESHOLD
+  })(entities);
+
+  await step("Printing complete duration of all good songs")();
+
+  const tables = referencer()(filteredEntities);
+  const songs = tables.songs;
+  const summedDuration = songs.reduce((duration, song) => duration + song.duration);
+
+  console.log("Duration of all songs with rating >", GOOD_RATING_THRESHOLD, " =", summedDuration);
 }
 ```
 
@@ -63,30 +73,33 @@ export default function start(step, progress, options) {
 * All other keys in the argument passed to start will be sent to the newly spawned aggregation process. The options will
   be serialized to JSON and back, therefore it is not possible to pass functions.
 
-#### `getEntitiesOfTable(tableName, options): Promise[GrudTables]`
+#### `getStructure(options): Promise[GrudStructure]`
 
-* `tableName: String` is the entry point for downloading all entities that are (recursively) linked.
-* <span id="getentitiesoftable-options"></span>`options: Object` is an object consisting of the following options:
+* `options: Object` is an object consisting of the following options:
   * `pimUrl: String` (required) - The URL pointing to the GRUD instance.
-  * `includeColumns: String[]` (optional) - If specified, defines a list of columns on the top level that will be
-    followed. This option can be combined with `includeTables` or `excludeTables` option.
-  * `includeTables: String[]` (optional) - If specified, defines a list of tables that will be followed.
-  * `excludeTables: String[]` (optional) - If specified, defines a list of tables that will **not** be followed.
+  * `headers: Object` (optional) - Defaults to {}. An object with key values pairs for http headers to set on every request.
+
+#### `getEntitiesOfTable(tableName, options): Promise[GrudEntities]`
+
+* `tableNameOrNames: String | String[]` Table name or names of the entities which should be used as entry point for the 
+  result set. Linked entities will be included automatically.
+* `options: Object` is an object consisting of the following options:
+  * `pimUrl: String` (required) - The URL pointing to the GRUD instance.
+  * `structure: GrudStructure` (required) - The GRUD Structure. 
+  * `include: String[]` (optional) - Defines a list of columns for specific tables.
+    If provided only the specified columns will be included in the result set.
+    Columns should be provided as a concatenated String of tableName and columnName: `tableName.columnName`.
+  * `exclude: String[]` (optional) - Defines a list of tables and/or columns.
+    If provided all of the specified tables and columns will be excluded from the result set.
+    Tables should be provided as: `tableName`
+    Columns should be provided as a concatenated String of tableName and columnName: `tableName.columnName`.
+  * `referenced: Boolean` (optional) - If specified, entities will be referenced.
   * `maxEntriesPerRequest: number` (optional) - Defaults to 500. An integer greater than 0 to limit the amount of 
     work on each request done by the Grud instance. Higher values make less requests but may run into timeouts if the 
     Grud instance is not able to handle as much data.
   * `archived: Boolean` (optional) - If set to false archived GRUD rows will get omitted. If set to true, only archived 
     GRUD rows will be returned.
   * `headers: Object` (optional) - Defaults to {}. An object with key values pairs for http headers to set on every request.
-
-#### `getEntitiesOfTables(tableNames, options): Promise[GrudTables]`
-
-An extended version of [getEntitiesOfTable()](#getentitiesoftabletablename-options-promisegrudtables) for multiple
-tables at once. For a high amount of tables, this may result in a dramatic increase of performance as linked tables
-which are shared among initial tables will only be downloaded once.
-
-* `tableNames: String[]` - Table names for which all entities will be downloaded and recursively linked.
-* `options: Object` - See [options](#getentitiesoftable-options) of `getEntitiesOfTable()`.
 
 #### `filter(options): GrudTables => GrudTables`
 

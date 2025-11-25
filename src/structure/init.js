@@ -3,7 +3,6 @@ import fs from "node:fs/promises";
 import { parseArgs } from "node:util";
 import path from "node:path";
 import prettier from "prettier";
-import _ from "lodash";
 
 const options = {
   url: { type: "string" },

@@ -1,7 +1,7 @@
 export {createSchemaFromLanguageTables} from "./createSchemaFromLanguageTables.js";
 export {Database} from "./attachments/database.js";
 export {downloader} from "./attachments/downloader.js";
-export {getEntitiesOfTable, getEntitiesOfTables} from "./entities.js";
+export {getEntitiesOfTable} from "./entities.js";
 export {filter} from "./filter.js";
 export {findAttachments} from "./attachments/findAttachments.js";
 export {modifyImages} from "./attachments/modifyImage.js";
