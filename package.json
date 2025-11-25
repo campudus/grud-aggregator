@@ -6,7 +6,7 @@
     "dist"
   ],
   "bin": {
-    "grud-aggregator": "./src/structure/init.js"
+    "grud-aggregator": "./scripts/init-structure.js"
   },
   "type": "module",
   "main": "./dist/index.cjs",
