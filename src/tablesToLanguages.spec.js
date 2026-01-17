@@ -112,6 +112,418 @@ describe("tablesToLanguages", () => {
       .eql(JSON.stringify(selfReferencingTableExpected));
   });
 
+  it("handles numeric group columns correctly", () => {
+    const langtagsForGroups = {
+      "de-DE": [],
+      "en-GB": []
+    };
+
+    const tableWithSimpleGroup = {
+      "1": {
+        "id": 1,
+        "name": "material",
+        "displayName": {
+          "de-DE": "Material",
+          "en-GB": "Material"
+        },
+        "description": {
+          "de-DE": "Beschreibung",
+          "en-GB": "Description"
+        },
+        "columns": [
+          {
+            "id": 1,
+            "ordering": 1,
+            "name": "identifier",
+            "kind": "shorttext",
+            "multilanguage": true,
+            "languageType": "language",
+            "displayName": {
+              "de-DE": "Identifikator",
+              "en-GB": "identifier"
+            },
+            "description": {
+              "de-DE": "Beschreibung",
+              "en-GB": "Description"
+            }
+          },
+          {
+            "id": 2,
+            "ordering": 2,
+            "name": "testGroup",
+            "kind": "group",
+            "multilanguage": false,
+            "displayName": {
+              "de-DE": "Testgruppe",
+              "en-GB": "test group"
+            },
+            "description": {
+              "de-DE": "Beschreibung",
+              "en-GB": "Description"
+            },
+            "groups": [
+              {
+                "id": 1,
+                "kind": "numeric",
+                "multilanguage": false,
+                "displayName": {
+                  "de-DE": "Zahl1",
+                  "en-GB": "number1"
+                }, 
+                "description": {
+                  "de-DE": "Beschreibung",
+                  "en-GB": "Description"
+                } 
+              },
+              {
+                "id": 2,
+                "kind": "numeric",
+                "multilanguage": false,
+                "displayName": {
+                  "de-DE": "Zahl2",
+                  "en-GB": "number2"
+                }, 
+                "description": {
+                  "de-DE": "Beschreibung",
+                  "en-GB": "Description"
+                } 
+              }
+            ]
+          }
+        ],
+        "rows": {
+          "1": {
+            "id": 1,
+            "values": [
+              {
+                "de-DE": "Stahl",
+                "en-GB": "steel"
+              },
+              [
+                100,
+                200
+              ]
+            ]
+          }
+        }
+      }
+    };
+
+    const result = tablesToLanguages(langtagsForGroups)(tableWithSimpleGroup);
+
+    expect(result["de-DE"]["1"]["rows"]["1"]["values"][1]).to.eql([100, 200]);
+    expect(result["en-GB"]["1"]["rows"]["1"]["values"][1]).to.eql([100, 200]);
+  });
+
+  it("handles multilanguage group columns correctly", () => {
+    const langtagsForGroups = {
+      "de-DE": [],
+      "en-GB": []
+    };
+
+    const tableWithMultilanguageGroup = {
+      "1": {
+        "id": 1,
+        "name": "material",
+        "displayName": {
+          "de-DE": "Material",
+          "en-GB": "Material"
+        },
+        "description": {
+          "de-DE": "Beschreibung",
+          "en-GB": "Description"
+        },
+        "columns": [
+          {
+            "id": 1,
+            "ordering": 1,
+            "name": "identifier",
+            "kind": "shorttext",
+            "multilanguage": true,
+            "languageType": "language",
+            "displayName": {
+              "de-DE": "Identifikator",
+              "en-GB": "identifier"
+            },
+            "description": {
+              "de-DE": "Beschreibung",
+              "en-GB": "Description"
+            }
+          },
+          {
+            "id": 2,
+            "ordering": 2,
+            "name": "testGroup",
+            "kind": "group",
+            "multilanguage": true,
+            "languageType": "language",
+            "displayName": {
+              "de-DE": "Testgruppe",
+              "en-GB": "test group"
+            },
+            "description": {
+              "de-DE": "Beschreibung",
+              "en-GB": "Description"
+            },
+            "groups": [
+              {
+                "id": 1,
+                "kind": "shorttext",
+                "displayName": {
+                  "de-DE": "Text",
+                  "en-GB": "text"
+                },
+                "description": {
+                  "de-DE": "Beschreibung",
+                  "en-GB": "Description"
+                },
+                "multilanguage": true,
+                "languageType": "language"
+              },
+              {
+                "id": 2,
+                "kind": "numeric",
+                "multilanguage": false,
+                "displayName": {
+                  "de-DE": "Zahl",
+                  "en-GB": "number"
+                }, 
+                "description": {
+                  "de-DE": "Beschreibung",
+                  "en-GB": "Description"
+                } 
+              }
+            ]
+          }
+        ],
+        "rows": {
+          "1": {
+            "id": 1,
+            "values": [
+              {
+                "de-DE": "Stahl",
+                "en-GB": "steel"
+              },
+              [
+                {
+                  "de-DE": "Beschreibung",
+                  "en-GB": "Description"
+                },
+                100
+              ]
+            ]
+          }
+        }
+      }
+    };
+
+    const result = tablesToLanguages(langtagsForGroups)(tableWithMultilanguageGroup);
+
+    expect(result["de-DE"]["1"]["rows"]["1"]["values"][1]).to.eql(["Beschreibung", 100]);
+    expect(result["en-GB"]["1"]["rows"]["1"]["values"][1]).to.eql(["Description", 100]);
+  });
+
+  it("handles link columns inside group columns correctly", () => {
+    const langtagsForGroupLink = {
+      "de-DE": [],
+      "en-GB": []
+    };
+
+    const tableWithMultilanguageGroupAndLink = {
+      "70": {
+        "id": 70,
+        "name": "accessory",
+        "displayName": {
+          "de-DE": "Zubehör",
+          "en-GB": "Accessories"
+        },
+        "description": {
+          "en-GB": "Description",
+          "de-DE": "Beschreibung"
+        },
+        "columns": [
+          {
+            "id": 1,
+            "ordering": 20,
+            "name": "identifier",
+            "kind": "shorttext",
+            "multilanguage": true,
+            "identifier": true,
+            "displayName": {
+              "de-DE": "Bezeichnung",
+              "en-GB": "Identifier"
+            },
+            "description": {
+              "en-GB": "Description",
+              "de-DE": "Beschreibung"
+            },
+            "languageType": "language"
+          },
+          {
+            "id": 2,
+            "ordering": 30,
+            "name": "achievements",
+            "kind": "link",
+            "multilanguage": true,
+            "identifier": false,
+            "displayName": {
+              "en-GB": "Achievements",
+              "de-DE": "Auszeichnungen"
+            },
+            "description": {
+              "en-GB": "Description",
+              "de-DE": "Beschreibung"
+            },
+            "languageType": "language",
+            "toTable": 83,
+            "toColumn": {
+              "id": 1,
+              "ordering": 10,
+              "name": "identifier",
+              "kind": "shorttext",
+              "multilanguage": true,
+              "identifier": true,
+              "displayName": {
+                "de-DE": "Bezeichnung",
+                "en-GB": "Identifier"
+              },
+              "description": {
+                "en-GB": "Description",
+                "de-DE": "Beschreibung"
+              },
+              "languageType": "language"
+            }
+          },
+          {
+            "id": 5,
+            "ordering": 40,
+            "name": "slogan",
+            "kind": "group",
+            "multilanguage": true,
+            "identifier": false,
+            "displayName": {
+              "de-DE": "Werbespruch",
+              "en-GB": "Slogan"
+            },
+            "description": {
+              "en-GB": "Description",
+              "de-DE": "Beschreibung"
+            },
+            "languageType": "language",
+            "groups": [
+              {
+                "id": 1,
+                "ordering": 20,
+                "name": "identifier",
+                "kind": "shorttext",
+                "multilanguage": true,
+                "identifier": true,
+                "displayName": {
+                  "de-DE": "Bezeichnung",
+                  "en-GB": "Identifier"
+                },
+                "description": {
+                  "en-GB": "Description",
+                  "de-DE": "Beschreibung"
+                },
+                "languageType": "language"
+              },
+              {
+                "id": 2,
+                "ordering": 30,
+                "name": "achievements",
+                "kind": "link",
+                "multilanguage": true,
+                "identifier": false,
+                "displayName": {
+                  "en-GB": "Achievements",
+                  "de-DE": "Auszeichnungen"
+                },
+                "description": {
+                  "en-GB": "Description",
+                  "de-DE": "Beschreibung"
+                },
+                "languageType": "language",
+                "toTable": 83,
+                "toColumn": {
+                  "id": 1,
+                  "ordering": 10,
+                  "name": "identifier",
+                  "kind": "shorttext",
+                  "multilanguage": true,
+                  "identifier": true,
+                  "displayName": {
+                    "de-DE": "Bezeichnung",
+                    "en-GB": "Identifier"
+                  },
+                  "description": {
+                    "en-GB": "Description",
+                    "de-DE": "Beschreibung"
+                  },
+                  "languageType": "language"
+                }
+              }
+            ]
+          }
+        ],
+        "rows": {
+          "1": {
+            "id": 1,
+            "values": [
+              {
+                "de-DE": "Vorderlicht",
+                "en-GB": "Front Light"
+              },
+              [
+                {
+                  "id": 1,
+                  "value": {
+                    "de-DE": "Bestes Rad in Oberfranken",
+                    "en-GB": "Best Bike in Upper Franconia"
+                  }
+                },
+                {
+                  "id": 2,
+                  "value": {
+                    "de-DE": "Top Bike Sowieso",
+                    "en-GB": "Top Bike Anyway"
+                  }
+                }
+              ],
+              [
+                {
+                  "de-DE": "Vorderlicht",
+                  "en-GB": "Front Light"
+                },
+                [
+                  {
+                    "id": 1,
+                    "value": {
+                      "de-DE": "Bestes Rad in Oberfranken",
+                      "en-GB": "Best Bike in Upper Franconia"
+                    }
+                  },
+                  {
+                    "id": 2,
+                    "value": {
+                      "de-DE": "Top Bike Sowieso",
+                      "en-GB": "Top Bike Anyway"
+                    }
+                  }
+                ]
+              ]
+            ]
+          }
+        }
+      }
+    };
+
+    const result = tablesToLanguages(langtagsForGroupLink)(tableWithMultilanguageGroupAndLink);
+
+    expect(result["de-DE"]["70"]["rows"]["1"]["values"][2]).to.eql(["Vorderlicht", [1, 2]]);
+    expect(result["en-GB"]["70"]["rows"]["1"]["values"][2]).to.eql(["Front Light", [1, 2]]);
+  });
+
   describe("fallback only option", () => {
 
     it("should throw if a fallback array is empty and the option turned on", () => {
