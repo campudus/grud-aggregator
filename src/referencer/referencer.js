@@ -24,6 +24,7 @@ export function referencer(options = {
 
           return _.transform(table.columns, (cells, column, index) => {
             const cellValue = row.values[index];
+            
             if (column.kind === "link") {
               denormalized[table.id][rowId][column.name] = _.map(cellValue, idInOtherTableValue => {
                 const idInOtherTable = idInOtherTableValue.id || idInOtherTableValue;
@@ -31,6 +32,8 @@ export function referencer(options = {
                 res.linkRowId = idInOtherTable;
                 return res;
               });
+            } else if (column.kind === "group") {
+              denormalized[table.id][rowId][column.name] = processGroupColumn(column, cellValue, denormalized);
             } else {
               denormalized[table.id][rowId][column.name] = cellValue;
             }
@@ -38,6 +41,27 @@ export function referencer(options = {
           }, {id: rowId});
         });
       }, {});
+    }
+
+    function processGroupColumn(groupColumn, groupValue, denormalized) {
+      // groupValue is an array like ["Vorderlicht", [1, 2]]
+      // Keep the array structure, but resolve links
+      return _.map(groupValue, (subValue, subIndex) => {
+        const subColumn = groupColumn.groups[subIndex];
+    
+        if (subColumn && subColumn.kind === "link") {
+          // Link column within the group: resolve references
+          return _.map(subValue, idInOtherTableValue => {
+            const idInOtherTable = idInOtherTableValue.id || idInOtherTableValue;
+            const res = orEmpty(denormalized, subColumn.toTable, idInOtherTable);
+            res.linkRowId = idInOtherTable;
+            return res;
+          });
+        } else {
+          // Other columns: return value unchanged
+          return subValue;
+        }
+      });
     }
 
     function orEmpty(denormalized, tableId, rowId) {
