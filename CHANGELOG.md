@@ -2,8 +2,8 @@
 
 ## 8.9.0 - Fixed group column handling of multilanguage and link columns for 'tablesToLanguages' and 'referencer'
 
-* Fixed an issue where multilanguage and link columns inside a group columns were not handled correctly in the `tablesToLanguages` function.
-* Fixed an issue where link columns inside a group columns were not handled correctly in the `referencer` function
+* Fixed an issue where multilanguage and link columns inside group columns were not handled correctly in the `tablesToLanguages` function.
+* Fixed an issue where link columns inside group columns were not handled correctly in the `referencer` function
 
 ## 8.8.0 - Replaced axios with node-fetch
 
