@@ -91,14 +91,13 @@ export function tablesToLanguages(langtags, {fallbackOnly = false, fallbackOnEmp
                 return [_.map(rowValue, (subValue, subIndex) => {
                   const subColumn = column.groups[subIndex];
 
-                  if (subColumn.kind === "link") {
+                  if (subColumn && subColumn.kind === "link") {
                     return _.map(subValue, cell => cell.id);
-                  } else if (subColumn.multilanguage && subColumn.languageType === "language") {
+                  } else if (subColumn && subColumn.multilanguage && subColumn.languageType === "language") {
                     const value = subValue[defaultLanguage];
 
                     if (needsFallback(subColumn.kind, value)) {
-                      const fallbackLangTag = _.find(fallbackLangTags, langTag => 
-                      !needsFallback(subColumn.kind, subValue[langTag])); 
+                      const fallbackLangTag = _.find(fallbackLangTags, langTag => !needsFallback(subColumn.kind, subValue[langTag])); 
                       return fallbackLangTag ? subValue[fallbackLangTag] : value;
                     }
                     
