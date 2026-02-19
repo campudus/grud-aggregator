@@ -86,13 +86,13 @@ export function tablesToLanguages(langtags, {fallbackOnly = false, fallbackOnEmp
                   })
                 ];
               } else if (kind === "link") {
-                return [_.map(rowValue, cell => cell.id)];
+                return [_.map(rowValue, "id")];
               } else if (kind === "group") {
                 return [_.map(rowValue, (subValue, subIndex) => {
                   const subColumn = column.groups[subIndex];
 
                   if (subColumn && subColumn.kind === "link") {
-                    return _.map(subValue, cell => cell.id);
+                    return _.map(subValue, "id");
                   } else if (subColumn && subColumn.multilanguage && subColumn.languageType === "language") {
                     const value = subValue[defaultLanguage];
 
