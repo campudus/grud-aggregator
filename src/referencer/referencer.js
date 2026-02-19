@@ -17,9 +17,9 @@ export function referencer(options = {
     function transformTables(tables) {
       const denormalized = {};
       return _.transform(tables, (result, table) => {
-        orEmpty(denormalized, table.id);
+        getOrInit(denormalized, table.id);
         result[table.name] = _.mapValues(table.rows, (row, rowId) => {
-          denormalized[table.id][rowId] = orEmpty(denormalized, table.id, rowId);
+          denormalized[table.id][rowId] = getOrInit(denormalized, table.id, rowId);
           denormalized[table.id][rowId]["id"] = rowId;
 
           return _.transform(table.columns, (cells, column, index) => {
@@ -28,7 +28,7 @@ export function referencer(options = {
             if (column.kind === "link") {
               denormalized[table.id][rowId][column.name] = resolveLinkValues(cellValue, column.toTable, denormalized);
             } else if (column.kind === "group") {
-              denormalized[table.id][rowId][column.name] = processGroupColumn(column, cellValue, denormalized);
+              denormalized[table.id][rowId][column.name] = resolveGroupValues(column, cellValue, denormalized);
             } else {
               denormalized[table.id][rowId][column.name] = cellValue;
             }
@@ -38,7 +38,7 @@ export function referencer(options = {
       }, {});
     }
 
-    function processGroupColumn(groupColumn, groupValue, denormalized) {
+    function resolveGroupValues(groupColumn, groupValue, denormalized) {
       // groupValue is an array like ["Vorderlicht", [1, 2]]
       // Keep the array structure, but resolve links
       return _.map(groupValue, (subValue, subIndex) => {
@@ -57,13 +57,13 @@ export function referencer(options = {
     function resolveLinkValues(values, toTable, denormalized) {
       return _.map(values, idInOtherTableValue => {
         const idInOtherTable = idInOtherTableValue.id || idInOtherTableValue;
-        const res = orEmpty(denormalized, toTable, idInOtherTable);
+        const res = getOrInit(denormalized, toTable, idInOtherTable);
         res.linkRowId = idInOtherTable;
         return res;
       });
     }
 
-    function orEmpty(denormalized, tableId, rowId) {
+    function getOrInit(denormalized, tableId, rowId) {
       denormalized[tableId] = denormalized[tableId] || {};
       if (typeof rowId !== "undefined") {
         denormalized[tableId][rowId] = denormalized[tableId][rowId] || {};
