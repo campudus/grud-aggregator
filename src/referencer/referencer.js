@@ -26,12 +26,7 @@ export function referencer(options = {
             const cellValue = row.values[index];
             
             if (column.kind === "link") {
-              denormalized[table.id][rowId][column.name] = _.map(cellValue, idInOtherTableValue => {
-                const idInOtherTable = idInOtherTableValue.id || idInOtherTableValue;
-                const res = orEmpty(denormalized, column.toTable, idInOtherTable);
-                res.linkRowId = idInOtherTable;
-                return res;
-              });
+              denormalized[table.id][rowId][column.name] = resolveLinkValues(cellValue, column.toTable, denormalized);
             } else if (column.kind === "group") {
               denormalized[table.id][rowId][column.name] = processGroupColumn(column, cellValue, denormalized);
             } else {
@@ -51,16 +46,20 @@ export function referencer(options = {
     
         if (subColumn && subColumn.kind === "link") {
           // Link column within the group: resolve references
-          return _.map(subValue, idInOtherTableValue => {
-            const idInOtherTable = idInOtherTableValue.id || idInOtherTableValue;
-            const res = orEmpty(denormalized, subColumn.toTable, idInOtherTable);
-            res.linkRowId = idInOtherTable;
-            return res;
-          });
+          return resolveLinkValues(subValue, subColumn.toTable, denormalized);
         } else {
           // Other columns: return value unchanged
           return subValue;
         }
+      });
+    }
+
+    function resolveLinkValues(values, toTable, denormalized) {
+      return _.map(values, idInOtherTableValue => {
+        const idInOtherTable = idInOtherTableValue.id || idInOtherTableValue;
+        const res = orEmpty(denormalized, toTable, idInOtherTable);
+        res.linkRowId = idInOtherTable;
+        return res;
       });
     }
 
