@@ -102,7 +102,6 @@ describe("referencer", () => {
           "columns": [
             {
               "id": 1,
-              "ordering": 10,
               "name": "identifier",
               "kind": "shorttext",
               "identifier": true,
@@ -111,7 +110,14 @@ describe("referencer", () => {
             },
             {
               "id": 2,
-              "ordering": 20,
+              "name": "detailNumber",
+              "kind": "numeric",
+              "identifier": false,
+              "displayName": "Detail Number",
+              "description": "Description"
+            },
+            {
+              "id": 3,
               "name": "details",
               "kind": "group",
               "identifier": false,
@@ -120,18 +126,16 @@ describe("referencer", () => {
               "groups": [
                 {
                   "id": 1,
-                  "ordering": 10,
-                  "name": "detailText",
+                  "name": "identifier",
                   "kind": "shorttext",
-                  "identifier": false,
-                  "displayName": "Detail Text",
+                  "identifier": true,
+                  "displayName": "Identifier",
                   "description": "Description"
                 },
                 {
                   "id": 2,
-                  "ordering": 20,
                   "name": "detailNumber",
-                  "kind": "number",
+                  "kind": "numeric",
                   "identifier": false,
                   "displayName": "Detail Number",
                   "description": "Description"
@@ -144,6 +148,7 @@ describe("referencer", () => {
               "final": false,
               "values": [
                 "item one",
+                42,
                 [
                   "This is detail text for item one",
                   42
@@ -160,6 +165,7 @@ describe("referencer", () => {
     .then(referencer({withLanguages: true}))
     .then(referenced => {
       expect(referenced["en"].simpleGroupTable["1"].identifier).to.be("item one");
+      expect(referenced["en"].simpleGroupTable["1"].detailNumber).to.be(42);
       expect(referenced["en"].simpleGroupTable["1"].details[0]).to.be("This is detail text for item one");
       expect(referenced["en"].simpleGroupTable["1"].details[1]).to.be(42);
     });
@@ -176,7 +182,6 @@ describe("referencer", () => {
           "columns": [
             {
               "id": 1,
-              "ordering": 20,
               "name": "identifier",
               "kind": "shorttext",
               "identifier": true,
@@ -184,8 +189,16 @@ describe("referencer", () => {
               "description": "Beschreibung"
             },
             {
-              "id": 5,
-              "ordering": 40,
+              "id": 2,
+              "name": "achievements",
+              "kind": "link",
+              "identifier": false,
+              "displayName": "Auszeichnungen",
+              "description": "Beschreibung",
+              "toTable": 83
+            },
+            {
+              "id": 3,
               "name": "slogan",
               "kind": "group",
               "identifier": false,
@@ -194,7 +207,6 @@ describe("referencer", () => {
               "groups": [
                 {
                   "id": 1,
-                  "ordering": 20,
                   "name": "identifier",
                   "kind": "shorttext",
                   "identifier": true,
@@ -203,7 +215,6 @@ describe("referencer", () => {
                 },
                 {
                   "id": 2,
-                  "ordering": 30,
                   "name": "achievements",
                   "kind": "link",
                   "identifier": false,
@@ -219,9 +230,10 @@ describe("referencer", () => {
               "final": false,
               "values": [
                 "Vorderlicht",
+                [1, 2],
                 [
                   "Vorderlicht",
-                [1, 2]
+                  [1, 2]
                 ]
               ]
             },
@@ -229,9 +241,10 @@ describe("referencer", () => {
               "final": false,
               "values": [
                 "Rücklicht",
+                [2],
                 [
                   "Rücklicht",
-                [2]
+                  [2]
                 ]
               ]
             }
@@ -245,7 +258,6 @@ describe("referencer", () => {
           "columns": [
             {
               "id": 1,
-              "ordering": 10,
               "name": "identifier",
               "kind": "shorttext",
               "identifier": true,
@@ -254,7 +266,6 @@ describe("referencer", () => {
             },
             {
               "id": 3,
-              "ordering": 30,
               "name": "url",
               "kind": "shorttext",
               "identifier": false,

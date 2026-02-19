@@ -133,14 +133,11 @@ describe("tablesToLanguages", () => {
         "columns": [
           {
             "id": 1,
-            "ordering": 1,
-            "name": "identifier",
-            "kind": "shorttext",
-            "multilanguage": true,
-            "languageType": "language",
+            "kind": "numeric",
+            "multilanguage": false,
             "displayName": {
-              "de-DE": "Identifikator",
-              "en-GB": "identifier"
+              "de-DE": "Zahl1",
+              "en-GB": "number1"
             },
             "description": {
               "de-DE": "Beschreibung",
@@ -149,7 +146,19 @@ describe("tablesToLanguages", () => {
           },
           {
             "id": 2,
-            "ordering": 2,
+            "kind": "numeric",
+            "multilanguage": false,
+            "displayName": {
+              "de-DE": "Zahl2",
+              "en-GB": "number2"
+            },
+            "description": {
+              "de-DE": "Beschreibung",
+              "en-GB": "Description"
+            }
+          },
+          {
+            "id": 3,
             "name": "testGroup",
             "kind": "group",
             "multilanguage": false,
@@ -169,11 +178,11 @@ describe("tablesToLanguages", () => {
                 "displayName": {
                   "de-DE": "Zahl1",
                   "en-GB": "number1"
-                }, 
+                },
                 "description": {
                   "de-DE": "Beschreibung",
                   "en-GB": "Description"
-                } 
+                }
               },
               {
                 "id": 2,
@@ -182,11 +191,11 @@ describe("tablesToLanguages", () => {
                 "displayName": {
                   "de-DE": "Zahl2",
                   "en-GB": "number2"
-                }, 
+                },
                 "description": {
                   "de-DE": "Beschreibung",
                   "en-GB": "Description"
-                } 
+                }
               }
             ]
           }
@@ -195,10 +204,8 @@ describe("tablesToLanguages", () => {
           "1": {
             "id": 1,
             "values": [
-              {
-                "de-DE": "Stahl",
-                "en-GB": "steel"
-              },
+              100,
+              200,
               [
                 100,
                 200
@@ -211,8 +218,8 @@ describe("tablesToLanguages", () => {
 
     const result = tablesToLanguages(langtagsForGroups)(tableWithSimpleGroup);
 
-    expect(result["de-DE"]["1"]["rows"]["1"]["values"][1]).to.eql([100, 200]);
-    expect(result["en-GB"]["1"]["rows"]["1"]["values"][1]).to.eql([100, 200]);
+    expect(result["de-DE"]["1"]["rows"]["1"]["values"][2]).to.eql([100, 200]);
+    expect(result["en-GB"]["1"]["rows"]["1"]["values"][2]).to.eql([100, 200]);
   });
 
   it("handles multilanguage group columns correctly", () => {
@@ -236,14 +243,12 @@ describe("tablesToLanguages", () => {
         "columns": [
           {
             "id": 1,
-            "ordering": 1,
-            "name": "identifier",
             "kind": "shorttext",
             "multilanguage": true,
             "languageType": "language",
             "displayName": {
-              "de-DE": "Identifikator",
-              "en-GB": "identifier"
+              "de-DE": "Text",
+              "en-GB": "text"
             },
             "description": {
               "de-DE": "Beschreibung",
@@ -252,7 +257,19 @@ describe("tablesToLanguages", () => {
           },
           {
             "id": 2,
-            "ordering": 2,
+            "kind": "numeric",
+            "multilanguage": false,
+            "displayName": {
+              "de-DE": "Zahl",
+              "en-GB": "number"
+            },
+            "description": {
+              "de-DE": "Beschreibung",
+              "en-GB": "Description"
+            }
+          },
+          {
+            "id": 3,
             "name": "testGroup",
             "kind": "group",
             "multilanguage": true,
@@ -269,6 +286,8 @@ describe("tablesToLanguages", () => {
               {
                 "id": 1,
                 "kind": "shorttext",
+                "multilanguage": true,
+                "languageType": "language",
                 "displayName": {
                   "de-DE": "Text",
                   "en-GB": "text"
@@ -276,9 +295,7 @@ describe("tablesToLanguages", () => {
                 "description": {
                   "de-DE": "Beschreibung",
                   "en-GB": "Description"
-                },
-                "multilanguage": true,
-                "languageType": "language"
+                }
               },
               {
                 "id": 2,
@@ -287,11 +304,11 @@ describe("tablesToLanguages", () => {
                 "displayName": {
                   "de-DE": "Zahl",
                   "en-GB": "number"
-                }, 
+                },
                 "description": {
                   "de-DE": "Beschreibung",
                   "en-GB": "Description"
-                } 
+                }
               }
             ]
           }
@@ -301,9 +318,10 @@ describe("tablesToLanguages", () => {
             "id": 1,
             "values": [
               {
-                "de-DE": "Stahl",
-                "en-GB": "steel"
+                "de-DE": "Beschreibung",
+                "en-GB": "Description"
               },
+              100,
               [
                 {
                   "de-DE": "Beschreibung",
@@ -319,8 +337,8 @@ describe("tablesToLanguages", () => {
 
     const result = tablesToLanguages(langtagsForGroups)(tableWithMultilanguageGroup);
 
-    expect(result["de-DE"]["1"]["rows"]["1"]["values"][1]).to.eql(["Beschreibung", 100]);
-    expect(result["en-GB"]["1"]["rows"]["1"]["values"][1]).to.eql(["Description", 100]);
+    expect(result["de-DE"]["1"]["rows"]["1"]["values"][2]).to.eql(["Beschreibung", 100]);
+    expect(result["en-GB"]["1"]["rows"]["1"]["values"][2]).to.eql(["Description", 100]);
   });
 
   it("handles link columns inside group columns correctly", () => {
