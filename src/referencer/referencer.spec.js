@@ -91,4 +91,229 @@ describe("referencer", () => {
       });
   });
 
+  it("can reference simple (non-link) group columns ", () => {
+    const tableWithSimpleGroup = {
+      "en": {
+        "1": {
+          "id": 1,
+          "name": "simpleGroupTable",
+          "displayName": "Simple Group Table",
+          "description": "Description",
+          "columns": [
+            {
+              "id": 1,
+              "name": "identifier",
+              "kind": "shorttext",
+              "identifier": true,
+              "displayName": "Identifier",
+              "description": "Description"
+            },
+            {
+              "id": 2,
+              "name": "detailNumber",
+              "kind": "numeric",
+              "identifier": false,
+              "displayName": "Detail Number",
+              "description": "Description"
+            },
+            {
+              "id": 3,
+              "name": "details",
+              "kind": "group",
+              "identifier": false,
+              "displayName": "Details",
+              "description": "Description",
+              "groups": [
+                {
+                  "id": 1,
+                  "name": "identifier",
+                  "kind": "shorttext",
+                  "identifier": true,
+                  "displayName": "Identifier",
+                  "description": "Description"
+                },
+                {
+                  "id": 2,
+                  "name": "detailNumber",
+                  "kind": "numeric",
+                  "identifier": false,
+                  "displayName": "Detail Number",
+                  "description": "Description"
+                }
+              ]
+            }
+          ],
+          "rows": {
+            "1": {
+              "final": false,
+              "values": [
+                "item one",
+                42,
+                [
+                  "This is detail text for item one",
+                  42
+                ]
+              ]
+            }
+          }
+        }
+      }
+    };
+
+    return Promise
+    .resolve(tableWithSimpleGroup)
+    .then(referencer({withLanguages: true}))
+    .then(referenced => {
+      expect(referenced["en"].simpleGroupTable["1"].identifier).to.be("item one");
+      expect(referenced["en"].simpleGroupTable["1"].detailNumber).to.be(42);
+      expect(referenced["en"].simpleGroupTable["1"].details[0]).to.be("This is detail text for item one");
+      expect(referenced["en"].simpleGroupTable["1"].details[1]).to.be(42);
+    });
+  });
+
+  it("can reference link columns inside group columns", () => {
+    const tableWithGroupLink = {
+      "de-DE": {
+        "70": {
+          "id": 70,
+          "name": "accessory",
+          "displayName": "Zubehör",
+          "description": "Beschreibung",
+          "columns": [
+            {
+              "id": 1,
+              "name": "identifier",
+              "kind": "shorttext",
+              "identifier": true,
+              "displayName": "Bezeichnung",
+              "description": "Beschreibung"
+            },
+            {
+              "id": 2,
+              "name": "achievements",
+              "kind": "link",
+              "identifier": false,
+              "displayName": "Auszeichnungen",
+              "description": "Beschreibung",
+              "toTable": 83
+            },
+            {
+              "id": 3,
+              "name": "slogan",
+              "kind": "group",
+              "identifier": false,
+              "displayName": "Werbespruch",
+              "description": "Beschreibung",
+              "groups": [
+                {
+                  "id": 1,
+                  "name": "identifier",
+                  "kind": "shorttext",
+                  "identifier": true,
+                  "displayName": "Bezeichnung",
+                  "description": "Beschreibung"
+                },
+                {
+                  "id": 2,
+                  "name": "achievements",
+                  "kind": "link",
+                  "identifier": false,
+                  "displayName": "Auszeichnungen",
+                  "description": "Beschreibung",
+                  "toTable": 83
+                }
+              ]
+            }
+          ],
+          "rows": {
+            "1": {
+              "final": false,
+              "values": [
+                "Vorderlicht",
+                [1, 2],
+                [
+                  "Vorderlicht",
+                  [1, 2]
+                ]
+              ]
+            },
+            "2": {
+              "final": false,
+              "values": [
+                "Rücklicht",
+                [2],
+                [
+                  "Rücklicht",
+                  [2]
+                ]
+              ]
+            }
+          }
+        },
+        "83": {
+          "id": 83,
+          "name": "award",
+          "displayName": "Auszeichnungen",
+          "description": "Beschreibung",
+          "columns": [
+            {
+              "id": 1,
+              "name": "identifier",
+              "kind": "shorttext",
+              "identifier": true,
+              "displayName": "Bezeichnung",
+              "description": "Beschreibung"
+            },
+            {
+              "id": 3,
+              "name": "url",
+              "kind": "shorttext",
+              "identifier": false,
+              "displayName": "URL",
+              "description": "Beschreibung"
+            }
+          ],
+          "rows": {
+            "1": {
+              "final": false,
+              "values": [
+                "Bestes Rad in Oberfranken",
+                "http://heise.de"
+              ]
+            },
+            "2": {
+              "final": false,
+              "values": [
+                "Top Bike Sowieso",
+                "http://golem.de"
+              ]
+            }
+          }
+        }
+      }
+    };
+
+    return Promise
+    .resolve(tableWithGroupLink)
+    .then(referencer({withLanguages: true}))
+    .then(referenced => {
+      // Check first row's group column with link references
+      expect(referenced["de-DE"].accessory["1"].slogan[0]).to.be("Vorderlicht");
+      expect(referenced["de-DE"].accessory["1"].slogan[1].length).to.be(2);
+      expect(referenced["de-DE"].accessory["1"].slogan[1][0].linkRowId).to.be(1);
+      expect(referenced["de-DE"].accessory["1"].slogan[1][0].identifier).to.be("Bestes Rad in Oberfranken");
+      expect(referenced["de-DE"].accessory["1"].slogan[1][0].url).to.be("http://heise.de");
+      expect(referenced["de-DE"].accessory["1"].slogan[1][1].linkRowId).to.be(2);
+      expect(referenced["de-DE"].accessory["1"].slogan[1][1].identifier).to.be("Top Bike Sowieso");
+      expect(referenced["de-DE"].accessory["1"].slogan[1][1].url).to.be("http://golem.de");
+
+      // Check second row's group column with link reference
+      expect(referenced["de-DE"].accessory["2"].slogan[0]).to.be("Rücklicht");
+      expect(referenced["de-DE"].accessory["2"].slogan[1].length).to.be(1);
+      expect(referenced["de-DE"].accessory["2"].slogan[1][0].linkRowId).to.be(2);
+      expect(referenced["de-DE"].accessory["2"].slogan[1][0].identifier).to.be("Top Bike Sowieso");
+      expect(referenced["de-DE"].accessory["2"].slogan[1][0].url).to.be("http://golem.de");
+    });
+  });
+
 });

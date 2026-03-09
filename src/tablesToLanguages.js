@@ -86,7 +86,25 @@ export function tablesToLanguages(langtags, {fallbackOnly = false, fallbackOnEmp
                   })
                 ];
               } else if (kind === "link") {
-                return [_.map(rowValue, cell => cell.id)];
+                return [_.map(rowValue, "id")];
+              } else if (kind === "group") {
+                return [_.map(rowValue, (subValue, subIndex) => {
+                  const subColumn = column.groups[subIndex];
+
+                  if (subColumn && subColumn.kind === "link") {
+                    return _.map(subValue, "id");
+                  } else if (subColumn && subColumn.multilanguage && subColumn.languageType === "language") {
+                    const value = subValue[defaultLanguage];
+
+                    if (needsFallback(subColumn.kind, value)) {
+                      const fallbackLangTag = _.find(fallbackLangTags, langTag => !needsFallback(subColumn.kind, subValue[langTag])); 
+                      return fallbackLangTag ? subValue[fallbackLangTag] : value;
+                    }
+                    
+                    return value;
+                  }
+                  return subValue;
+                })];
               } else if (multilanguage && languageType === "language") {
                 const value = rowValue[defaultLanguage];
                 if (needsFallback(kind, value)) {
