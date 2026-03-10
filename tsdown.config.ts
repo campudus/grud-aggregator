@@ -11,6 +11,8 @@ export default defineConfig([
     ],
     format: "esm",
     outDir: "dist",
+    // update package.json fields "main", "module", "types" and "exports" if fixedExtension is set to true
+    fixedExtension: false,
     // we dont want bundling, because forked processes rely on folder structure
     unbundle: true,
     // https://tsdown.dev/options/dts#enabling-dts-generation
