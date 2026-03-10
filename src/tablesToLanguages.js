@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import _ from "lodash";
 
 function getDisplayName(tableOrColumn, langTag, fallbackLangTags) {
   const displayNames = tableOrColumn.displayName;

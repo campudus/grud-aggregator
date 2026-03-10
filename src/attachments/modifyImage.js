@@ -198,8 +198,12 @@ export function modifyImages(
 }
 
 function startImageModificationProcess(args) {
+  // prevent esm/cjs mismatch
+  // esm has to fork esm and cjs has to fork cjs
+  const extension = import.meta.filename.endsWith(".cjs") ? ".cjs" : ".js";
+  
   return new Promise((resolve, reject) => {
-    const cp = fork(`${__dirname}/modifyImageProcess.js`, args);
+    const cp = fork(`${import.meta.dirname}/modifyImageProcess${extension}`, args);
 
     cp.on("close", code => {
       if (code === 0) {

@@ -1,4 +1,6 @@
-import {filter, flatten, flatMap, includes, map, mapValues, transform} from "lodash";
+import _ from "lodash";
+
+const {filter, flatten, flatMap, includes, map, mapValues, transform} = _;
 
 export function exclude(options = {}) {
   const {paths = [], predicate = () => false, preserveConcats = true} = options;

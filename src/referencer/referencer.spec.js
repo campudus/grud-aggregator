@@ -1,10 +1,10 @@
 import expect from "must";
-import {referencer} from "./referencer";
-import allTables from "./__tests__/allTables.json";
-import singleTable from "./__tests__/singleTable.json";
-import allTablesWithLanguages from "./__tests__/allTablesWithLanguages.json";
-import singleTableWithLanguages from "./__tests__/singleTableWithLanguages.json";
-import selfReferencingTable from "./__tests__/selfReferencingTable.json";
+import {referencer} from "./referencer.js";
+import allTables from "./__tests__/allTables.json" with { type: "json" };
+import singleTable from "./__tests__/singleTable.json" with { type: "json" };
+import allTablesWithLanguages from "./__tests__/allTablesWithLanguages.json" with { type: "json" };
+import singleTableWithLanguages from "./__tests__/singleTableWithLanguages.json" with { type: "json" };
+import selfReferencingTable from "./__tests__/selfReferencingTable.json" with { type: "json" };
 
 describe("referencer", () => {
 
@@ -161,14 +161,14 @@ describe("referencer", () => {
     };
 
     return Promise
-    .resolve(tableWithSimpleGroup)
-    .then(referencer({withLanguages: true}))
-    .then(referenced => {
-      expect(referenced["en"].simpleGroupTable["1"].identifier).to.be("item one");
-      expect(referenced["en"].simpleGroupTable["1"].detailNumber).to.be(42);
-      expect(referenced["en"].simpleGroupTable["1"].details[0]).to.be("This is detail text for item one");
-      expect(referenced["en"].simpleGroupTable["1"].details[1]).to.be(42);
-    });
+      .resolve(tableWithSimpleGroup)
+      .then(referencer({withLanguages: true}))
+      .then(referenced => {
+        expect(referenced["en"].simpleGroupTable["1"].identifier).to.be("item one");
+        expect(referenced["en"].simpleGroupTable["1"].detailNumber).to.be(42);
+        expect(referenced["en"].simpleGroupTable["1"].details[0]).to.be("This is detail text for item one");
+        expect(referenced["en"].simpleGroupTable["1"].details[1]).to.be(42);
+      });
   });
 
   it("can reference link columns inside group columns", () => {
@@ -294,26 +294,26 @@ describe("referencer", () => {
     };
 
     return Promise
-    .resolve(tableWithGroupLink)
-    .then(referencer({withLanguages: true}))
-    .then(referenced => {
+      .resolve(tableWithGroupLink)
+      .then(referencer({withLanguages: true}))
+      .then(referenced => {
       // Check first row's group column with link references
-      expect(referenced["de-DE"].accessory["1"].slogan[0]).to.be("Vorderlicht");
-      expect(referenced["de-DE"].accessory["1"].slogan[1].length).to.be(2);
-      expect(referenced["de-DE"].accessory["1"].slogan[1][0].linkRowId).to.be(1);
-      expect(referenced["de-DE"].accessory["1"].slogan[1][0].identifier).to.be("Bestes Rad in Oberfranken");
-      expect(referenced["de-DE"].accessory["1"].slogan[1][0].url).to.be("http://heise.de");
-      expect(referenced["de-DE"].accessory["1"].slogan[1][1].linkRowId).to.be(2);
-      expect(referenced["de-DE"].accessory["1"].slogan[1][1].identifier).to.be("Top Bike Sowieso");
-      expect(referenced["de-DE"].accessory["1"].slogan[1][1].url).to.be("http://golem.de");
+        expect(referenced["de-DE"].accessory["1"].slogan[0]).to.be("Vorderlicht");
+        expect(referenced["de-DE"].accessory["1"].slogan[1].length).to.be(2);
+        expect(referenced["de-DE"].accessory["1"].slogan[1][0].linkRowId).to.be(1);
+        expect(referenced["de-DE"].accessory["1"].slogan[1][0].identifier).to.be("Bestes Rad in Oberfranken");
+        expect(referenced["de-DE"].accessory["1"].slogan[1][0].url).to.be("http://heise.de");
+        expect(referenced["de-DE"].accessory["1"].slogan[1][1].linkRowId).to.be(2);
+        expect(referenced["de-DE"].accessory["1"].slogan[1][1].identifier).to.be("Top Bike Sowieso");
+        expect(referenced["de-DE"].accessory["1"].slogan[1][1].url).to.be("http://golem.de");
 
-      // Check second row's group column with link reference
-      expect(referenced["de-DE"].accessory["2"].slogan[0]).to.be("Rücklicht");
-      expect(referenced["de-DE"].accessory["2"].slogan[1].length).to.be(1);
-      expect(referenced["de-DE"].accessory["2"].slogan[1][0].linkRowId).to.be(2);
-      expect(referenced["de-DE"].accessory["2"].slogan[1][0].identifier).to.be("Top Bike Sowieso");
-      expect(referenced["de-DE"].accessory["2"].slogan[1][0].url).to.be("http://golem.de");
-    });
+        // Check second row's group column with link reference
+        expect(referenced["de-DE"].accessory["2"].slogan[0]).to.be("Rücklicht");
+        expect(referenced["de-DE"].accessory["2"].slogan[1].length).to.be(1);
+        expect(referenced["de-DE"].accessory["2"].slogan[1][0].linkRowId).to.be(2);
+        expect(referenced["de-DE"].accessory["2"].slogan[1][0].identifier).to.be("Top Bike Sowieso");
+        expect(referenced["de-DE"].accessory["2"].slogan[1][0].url).to.be("http://golem.de");
+      });
   });
 
 });

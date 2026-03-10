@@ -1,6 +1,4 @@
-import AbortController from "abort-controller";
 import _ from "lodash";
-import fetch from "node-fetch";
 
 export function getAllTables(options) {
   const {pimUrl, headers, timeout} = getOptionsFromParam(options, "getAllTables");
@@ -102,13 +100,13 @@ function generateQueryString({ offset = 0, limit, archived }) {
       _.isNil
     )
   )
-  .map(([key, value]) => `${key}=${value}`)
-  .join("&");
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
 }
 
 async function fetchWithTimeout(url, options = {}, timeoutMs) {
   const controller = new AbortController();
-  const timeout = timeoutMs ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  const timeout = timeoutMs ? setTimeout(() => controller.abort(`Request timed out after ${timeoutMs}ms.`), timeoutMs) : null;
 
   try {
     const response = await fetch(url, { ...options, signal: controller.signal });
@@ -127,8 +125,8 @@ async function fetchWithTimeout(url, options = {}, timeoutMs) {
   } catch (error) {
     clearTimeout(timeout);
 
-    if (error.type === "aborted") {
-      throw new Error(`Request timed out after ${timeoutMs}ms.`);
+    if (typeof error === "string") {
+      throw new Error(error);
     }
 
     throw error;

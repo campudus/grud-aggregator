@@ -1,5 +1,12 @@
 # Release Notes
 
+## 9.0.0 - Convert to ES-Module
+
+* Replaced `@babel/core` with `tsdown`
+* Add builds/exports for esm and cjs
+* Replaced `node-fetch` with `fetch`
+* Updated `prettier`, `eslint` and `nyc`
+
 ## 8.9.0 - Fixed group column handling of multilanguage and link columns for 'tablesToLanguages' and 'referencer'
 
 * Fixed an issue where multilanguage and link columns inside group columns were not handled correctly in the `tablesToLanguages` function.

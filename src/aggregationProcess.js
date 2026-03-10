@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import _ from "lodash";
 import cp from "child_process";
 
 export function start(
@@ -17,10 +17,14 @@ export function start(
     throw new Error("Expects function for optional `progress` parameter");
   }
 
+  // prevent esm/cjs mismatch
+  // esm has to fork esm and cjs has to fork cjs
+  const extension = import.meta.filename.endsWith(".cjs") ? ".cjs" : ".js";
+
   return Promise
     .resolve()
     .then(() => new Promise((resolve, reject) => {
-      const child = cp.fork(`${__dirname}/forker.js`, {silent: false});
+      const child = cp.fork(`${import.meta.dirname}/forker${extension}`, {silent: false});
       let initialized = false;
       let fulfilled = false;
       let allDone = false;

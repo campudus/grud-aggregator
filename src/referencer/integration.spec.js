@@ -1,11 +1,11 @@
 import expect from "must";
-import {referencer} from "./referencer";
-import {tablesToLanguages} from "../tablesToLanguages";
-import {exclude} from "../exclude";
-import {filter} from "../filter";
-import allTables from "./__tests__/allTables.json";
-import selfReferencingTable from "./../__tests__/selfReferencingTable.json";
-import selfReferencingTableExpected from "./../__tests__/selfReferencingTableTTLExpected.json";
+import {referencer} from "./referencer.js";
+import {tablesToLanguages} from "../tablesToLanguages.js";
+import {exclude} from "../exclude.js";
+import {filter} from "../filter.js";
+import allTables from "./__tests__/allTables.json" with { type: "json" };
+import selfReferencingTable from "./../__tests__/selfReferencingTable.json" with { type: "json" };
+import selfReferencingTableExpected from "./../__tests__/selfReferencingTableTTLExpected.json" with { type: "json" };
 
 describe("referencer and tablesToLanguages", () => {
 
