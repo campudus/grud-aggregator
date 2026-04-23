@@ -20,9 +20,9 @@ export function start(
   }
 
   if (!_.isNil(signal) && (
-    typeof signal.addEventListener !== "function" ||
-    typeof signal.removeEventListener !== "function" ||
-    typeof signal.aborted !== "boolean"
+    typeof signal.addEventListener !== "function"
+    || typeof signal.removeEventListener !== "function"
+    || typeof signal.aborted !== "boolean"
   )) {
     throw new Error("Expects AbortSignal for optional `signal` parameter");
   }
