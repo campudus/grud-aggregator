@@ -1,5 +1,13 @@
 # Release Notes
 
+## 9.1.0 - Added cancellation support for `start() function`
+
+* Added `signal` option to `start()` accepting an `AbortSignal`. Aborting the signal terminates the forked aggregator
+  process (`SIGTERM`) and rejects the returned promise with the signal's `reason`. If the signal is already aborted when
+  `start` is called, the promise rejects immediately and no child process is spawned.
+* Added `abortGracePeriod` option (defaults to `1000` ms). After `SIGTERM`, the parent waits this long before escalating
+  to `SIGKILL`, giving the aggregator time to clean up (e.g. flushing database transactions or in-flight uploads).
+
 ## 9.0.0 - Convert to ES-Module
 
 * Replaced `@babel/core` with `tsdown`
