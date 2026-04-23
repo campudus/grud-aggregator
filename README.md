@@ -66,7 +66,7 @@ export default function start(step, progress, options) {
   the aggregator script.
 * `abortGracePeriod` (number, defaults to `1000`) - Milliseconds to wait after `SIGTERM` before escalating to `SIGKILL`
   when an abort is requested. Increase this if your aggregator needs more time to clean up (e.g. flushing open database
-  transactions or finishing in-flight uploads). Set to `0` to kill immediately. Ignored when no `signal` is provided.
+  transactions or finishing in-flight uploads). Ignored when no `signal` is provided.
 * All other keys in the argument passed to start will be sent to the newly spawned aggregation process. The options will
   be serialized to JSON and back, therefore it is not possible to pass functions.
 
