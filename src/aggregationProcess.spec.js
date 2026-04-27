@@ -11,6 +11,7 @@ describe("aggregation-process", function () {
   const aggregatorDummyWithReplacedAndHiddenMessages = `${import.meta.dirname}/__tests__/aggregatorDummyWithReplacedAndHiddenMessages.js`;
   const aggregatorDoneThenWait = `${import.meta.dirname}/__tests__/aggregatorDoneThenWait.js`;
   const aggregatorIgnoreSigterm = `${import.meta.dirname}/__tests__/aggregatorIgnoreSigterm.js`;
+  const aggregatorEchoOptions = `${import.meta.dirname}/__tests__/aggregatorEchoOptions.js`;
   const aggregatorFile = `${import.meta.dirname}/__tests__/aggregatorWorking.js`;
   const aggregatorFileSubsteps = `${import.meta.dirname}/__tests__/aggregatorSubsteps.js`;
   const aggregatorFileSubsteps2 = `${import.meta.dirname}/__tests__/aggregatorSubsteps2.js`;
@@ -339,6 +340,15 @@ describe("aggregation-process", function () {
         aggregatorFile: aggregatorDummy
       }).then(({result}) => {
         expect(result).to.be.undefined();
+      });
+    });
+
+    it("works with custom aggregator options (backwards compatible)", function () {
+      return start({
+        aggregatorFile: aggregatorEchoOptions,
+        foo: "bar"
+      }).then(({result}) => {
+        expect(result).to.eql({ foo: "bar" });
       });
     });
 
