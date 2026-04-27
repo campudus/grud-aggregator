@@ -6,8 +6,7 @@ export function start(
     aggregatorFile,
     progress,
     timeoutToResendStatus = 2000,
-    signal,
-    abortGracePeriod = 1000,
+    abort: { signal, abortGracePeriod = 1000 } = {},
     ...rest
   } = {}) {
 
@@ -24,11 +23,11 @@ export function start(
     || typeof signal.removeEventListener !== "function"
     || typeof signal.aborted !== "boolean"
   )) {
-    throw new Error("Expects AbortSignal for optional `signal` parameter");
+    throw new Error("Expects AbortSignal for optional `abort.signal` parameter");
   }
 
   if (!_.isFinite(abortGracePeriod) || abortGracePeriod < 0) {
-    throw new Error("Expects non-negative number for optional `abortGracePeriod` parameter");
+    throw new Error("Expects non-negative number for optional `abort.abortGracePeriod` parameter");
   }
 
   // prevent esm/cjs mismatch

@@ -37,7 +37,7 @@ export default function start(step, progress, options) {
 }
 ```
 
-#### `start({ aggregatorFile, progress, timeoutToResendStatus, signal, abortGracePeriod[, ...other options] })`
+#### `start({ aggregatorFile, progress, timeoutToResendStatus, abort[, ...other options] })`
 
 * `aggregatorFile` (`string`, required) is the file that should be spawn into a process. It consists of an exported
   default function `start(step, progress[, options])`, which will be called with these parameters:
@@ -60,13 +60,15 @@ export default function start(step, progress, options) {
 * `timeoutToResendStatus` (number, defaults to `2000`) is a number in milliseconds when the aggregator should resend the
   latest status to the `progress` function. This helps to prevent the closing of a channel if an aggregator takes too 
   long to respond with a new progress.
-* `signal` (`AbortSignal`, optional) - If provided, aborting the signal will terminate the forked aggregator process
-  (`SIGTERM`) and reject the returned promise with the signal's `reason`. If the signal is already aborted when `start`
-  is called, the promise rejects immediately and no child process is spawned. The `signal` itself is not forwarded to
-  the aggregator script.
-* `abortGracePeriod` (number, defaults to `1000`) - Milliseconds to wait after `SIGTERM` before escalating to `SIGKILL`
-  when an abort is requested. Increase this if your aggregator needs more time to clean up (e.g. flushing open database
-  transactions or finishing in-flight uploads). Ignored when no `signal` is provided.
+* `abort` (object, optional) - Groups the cancellation-related options. Kept as a separate object so that its keys never
+  collide with arbitrary aggregator options passed via `...other options`.
+  * `abort.signal` (`AbortSignal`, optional) - If provided, aborting the signal will terminate the forked aggregator
+    process (`SIGTERM`) and reject the returned promise with the signal's `reason`. If the signal is already aborted
+    when `start` is called, the promise rejects immediately and no child process is spawned. The `signal` itself is not
+    forwarded to the aggregator script.
+  * `abort.abortGracePeriod` (number, defaults to `1000`) - Milliseconds to wait after `SIGTERM` before escalating to
+    `SIGKILL` when an abort is requested. Increase this if your aggregator needs more time to clean up (e.g. flushing
+    open database transactions or finishing in-flight uploads). Ignored when no `abort.signal` is provided.
 * All other keys in the argument passed to start will be sent to the newly spawned aggregation process. The options will
   be serialized to JSON and back, therefore it is not possible to pass functions.
 
@@ -74,7 +76,7 @@ Example:
 
 ```javascript
 const controller = new AbortController();
-const promise = start({aggregatorFile: "./myAggregator.js", signal: controller.signal});
+const promise = start({aggregatorFile: "./myAggregator.js", abort: {signal: controller.signal}});
 // later, e.g. on user request:
 controller.abort(new Error("cancelled by user"));
 ```

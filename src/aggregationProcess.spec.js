@@ -269,9 +269,11 @@ describe("aggregation-process", function () {
       try {
         expect(() => start({
           aggregatorFile: aggregatorDummy,
-          signal: {
-            aborted: false,
-            addEventListener() {}
+          abort: {
+            signal: {
+              aborted: false,
+              addEventListener() {}
+            }
           }
         })).to.throw(/AbortSignal/);
         expect(forkCalled).to.be.false();
@@ -286,7 +288,7 @@ describe("aggregation-process", function () {
 
       return start({
         aggregatorFile: aggregatorLongRunning,
-        signal: controller.signal,
+        abort: { signal: controller.signal },
         howLong: 1000
       }).then(() => {
         throw new Error("should not resolve");
@@ -301,7 +303,7 @@ describe("aggregation-process", function () {
 
       const promise = start({
         aggregatorFile: aggregatorLongRunning,
-        signal: controller.signal,
+        abort: { signal: controller.signal },
         howLong: 3000
       }).then(() => {
         throw new Error("should not resolve");
@@ -321,7 +323,7 @@ describe("aggregation-process", function () {
 
       return start({
         aggregatorFile: aggregatorDoneThenWait,
-        signal: controller.signal,
+        abort: { signal: controller.signal },
         progress: ({message}) => {
           if (message === "Done.") {
             controller.abort(new Error("too late"));
@@ -347,7 +349,7 @@ describe("aggregation-process", function () {
 
       return start({
         aggregatorFile: aggregatorIgnoreSigterm,
-        signal: controller.signal,
+        abort: { signal: controller.signal },
         progress: ({message, currentStep}) => {
           if (currentStep === 1 && /^\d+$/.test(message)) {
             controller.abort(new Error("cancelled forcefully"));
@@ -368,8 +370,7 @@ describe("aggregation-process", function () {
 
       return start({
         aggregatorFile: aggregatorIgnoreSigterm,
-        signal: controller.signal,
-        abortGracePeriod: 100,
+        abort: { signal: controller.signal, abortGracePeriod: 100 },
         progress: ({message, currentStep}) => {
           if (currentStep === 1 && /^\d+$/.test(message)) {
             abortedAt = Date.now();
@@ -387,7 +388,7 @@ describe("aggregation-process", function () {
     it("throws synchronously on invalid abortGracePeriod", function () {
       expect(() => start({
         aggregatorFile: aggregatorDummy,
-        abortGracePeriod: -1
+        abort: { abortGracePeriod: -1 }
       })).to.throw(/abortGracePeriod/);
     });
 
