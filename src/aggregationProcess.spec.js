@@ -402,6 +402,34 @@ describe("aggregation-process", function () {
       })).to.throw(/abortGracePeriod/);
     });
 
+    it("does not call progress again after abort, even with a long grace period", function () {
+      this.timeout(5000);
+      const controller = new AbortController();
+      let progressCallsAfterAbort = 0;
+      let abortFired = false;
+
+      return start({
+        aggregatorFile: aggregatorIgnoreSigterm,
+        timeoutToResendStatus: 50,
+        abort: { signal: controller.signal, abortGracePeriod: 500 },
+        progress: ({message, currentStep}) => {
+          if (abortFired) {
+            progressCallsAfterAbort += 1;
+            return;
+          }
+          if (currentStep === 1 && /^\d+$/.test(message)) {
+            abortFired = true;
+            controller.abort(new Error("cancelled"));
+          }
+        }
+      }).then(() => {
+        throw new Error("should not resolve");
+      }, err => {
+        expect(err).to.be.an.error(/cancelled/);
+        expect(progressCallsAfterAbort).to.equal(0);
+      });
+    });
+
   });
 
   // TODO maybe extend and overwrite function prototype for this...? :)

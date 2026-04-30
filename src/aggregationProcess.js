@@ -147,6 +147,9 @@ export function start(
         if (progress) {
           progress(payload);
         }
+        if (aborted || fulfilled) {
+          return;
+        }
         resendProgressTimerId = setTimeout(() => {
           sendProgress(payload);
         }, timeoutToResendStatus);
