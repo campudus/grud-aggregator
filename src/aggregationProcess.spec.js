@@ -9,6 +9,9 @@ describe("aggregation-process", function () {
   const aggregatorBreaking = `${import.meta.dirname}/__tests__/aggregatorBreaking.js`;
   const aggregatorDummy = `${import.meta.dirname}/__tests__/aggregatorDummy.js`;
   const aggregatorDummyWithReplacedAndHiddenMessages = `${import.meta.dirname}/__tests__/aggregatorDummyWithReplacedAndHiddenMessages.js`;
+  const aggregatorDoneThenWait = `${import.meta.dirname}/__tests__/aggregatorDoneThenWait.js`;
+  const aggregatorIgnoreSigterm = `${import.meta.dirname}/__tests__/aggregatorIgnoreSigterm.js`;
+  const aggregatorEchoOptions = `${import.meta.dirname}/__tests__/aggregatorEchoOptions.js`;
   const aggregatorFile = `${import.meta.dirname}/__tests__/aggregatorWorking.js`;
   const aggregatorFileSubsteps = `${import.meta.dirname}/__tests__/aggregatorSubsteps.js`;
   const aggregatorFileSubsteps2 = `${import.meta.dirname}/__tests__/aggregatorSubsteps2.js`;
@@ -251,6 +254,182 @@ describe("aggregation-process", function () {
         })
         .then(() => setTimeout(resolve, 500));
     });
+  });
+
+  describe("AbortSignal support", function () {
+
+    it("throws synchronously on invalid signal without forking", function () {
+      const originalFork = cp.fork;
+      let forkCalled = false;
+
+      cp.fork = (...args) => {
+        forkCalled = true;
+        return originalFork(...args);
+      };
+
+      try {
+        expect(() => start({
+          aggregatorFile: aggregatorDummy,
+          abort: {
+            signal: {
+              aborted: false,
+              addEventListener() {}
+            }
+          }
+        })).to.throw(/AbortSignal/);
+        expect(forkCalled).to.be.false();
+      } finally {
+        cp.fork = originalFork;
+      }
+    });
+
+    it("rejects immediately if signal is already aborted", function () {
+      const controller = new AbortController();
+      controller.abort(new Error("nope"));
+
+      return start({
+        aggregatorFile: aggregatorLongRunning,
+        abort: { signal: controller.signal },
+        howLong: 1000
+      }).then(() => {
+        throw new Error("should not resolve");
+      }, err => {
+        expect(err).to.be.an.error(/nope/);
+      });
+    });
+
+    it("aborts a running aggregator and rejects with the abort reason", function () {
+      this.timeout(5000);
+      const controller = new AbortController();
+
+      const promise = start({
+        aggregatorFile: aggregatorLongRunning,
+        abort: { signal: controller.signal },
+        howLong: 3000
+      }).then(() => {
+        throw new Error("should not resolve");
+      }, err => {
+        expect(err).to.be.an.error(/cancelled/);
+      });
+
+      setTimeout(() => controller.abort(new Error("cancelled by user")), 200);
+
+      return promise;
+    });
+
+    it("ignores abort after DONE and still resolves with the result", function () {
+      this.timeout(5000);
+      const controller = new AbortController();
+      const expected = "finished";
+
+      return start({
+        aggregatorFile: aggregatorDoneThenWait,
+        abort: { signal: controller.signal },
+        progress: ({message}) => {
+          if (message === "Done.") {
+            controller.abort(new Error("too late"));
+          }
+        }
+      }).then(({result}) => {
+        expect(result).to.eql(expected);
+      });
+    });
+
+    it("works without a signal (backwards compatible)", function () {
+      return start({
+        aggregatorFile: aggregatorDummy
+      }).then(({result}) => {
+        expect(result).to.be.undefined();
+      });
+    });
+
+    it("works with custom aggregator options (backwards compatible)", function () {
+      return start({
+        aggregatorFile: aggregatorEchoOptions,
+        foo: "bar"
+      }).then(({result}) => {
+        expect(result).to.eql({ foo: "bar" });
+      });
+    });
+
+    it("escalates to SIGKILL if the aggregator ignores SIGTERM", function () {
+      this.timeout(5000);
+      const controller = new AbortController();
+      const startedAt = Date.now();
+
+      return start({
+        aggregatorFile: aggregatorIgnoreSigterm,
+        abort: { signal: controller.signal },
+        progress: ({message, currentStep}) => {
+          if (currentStep === 1 && /^\d+$/.test(message)) {
+            controller.abort(new Error("cancelled forcefully"));
+          }
+        }
+      }).then(() => {
+        throw new Error("should not resolve");
+      }, err => {
+        expect(err).to.be.an.error(/cancelled forcefully/);
+        expect(Date.now() - startedAt).to.be.gte(900);
+      });
+    });
+
+    it("respects a custom abortGracePeriod before escalating to SIGKILL", function () {
+      this.timeout(5000);
+      const controller = new AbortController();
+      let abortedAt = 0;
+
+      return start({
+        aggregatorFile: aggregatorIgnoreSigterm,
+        abort: { signal: controller.signal, abortGracePeriod: 100 },
+        progress: ({message, currentStep}) => {
+          if (currentStep === 1 && /^\d+$/.test(message)) {
+            abortedAt = Date.now();
+            controller.abort(new Error("cancelled forcefully"));
+          }
+        }
+      }).then(() => {
+        throw new Error("should not resolve");
+      }, err => {
+        expect(err).to.be.an.error(/cancelled forcefully/);
+        expect(Date.now() - abortedAt).to.be.lt(900);
+      });
+    });
+
+    it("throws synchronously on invalid abortGracePeriod", function () {
+      expect(() => start({
+        aggregatorFile: aggregatorDummy,
+        abort: { abortGracePeriod: -1 }
+      })).to.throw(/abortGracePeriod/);
+    });
+
+    it("does not call progress again after abort, even with a long grace period", function () {
+      this.timeout(5000);
+      const controller = new AbortController();
+      let progressCallsAfterAbort = 0;
+      let abortFired = false;
+
+      return start({
+        aggregatorFile: aggregatorIgnoreSigterm,
+        timeoutToResendStatus: 50,
+        abort: { signal: controller.signal, abortGracePeriod: 500 },
+        progress: ({message, currentStep}) => {
+          if (abortFired) {
+            progressCallsAfterAbort += 1;
+            return;
+          }
+          if (currentStep === 1 && /^\d+$/.test(message)) {
+            abortFired = true;
+            controller.abort(new Error("cancelled"));
+          }
+        }
+      }).then(() => {
+        throw new Error("should not resolve");
+      }, err => {
+        expect(err).to.be.an.error(/cancelled/);
+        expect(progressCallsAfterAbort).to.equal(0);
+      });
+    });
+
   });
 
   // TODO maybe extend and overwrite function prototype for this...? :)
