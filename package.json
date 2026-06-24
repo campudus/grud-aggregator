@@ -44,7 +44,7 @@
     "@typescript-eslint/eslint-plugin": "8.46.1",
     "@types/node": "24.7.2",
     "eslint": "8.57.1",
-    "express": "4.14.0",
+    "express": "4.22.1",
     "mocha": "11.7.4",
     "must": "0.13.1",
     "nyc": "17.1.0",
