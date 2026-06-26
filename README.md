@@ -15,21 +15,21 @@ Use `npm run test` to run all tests once. `npm run test:watch` runs the tests wh
 The aggregator module includes many functions that can be used in a chain of promises. It provides a way to easily fork
 an aggregation process and use this to pull data from GRUD (tableaux) and reference it.
 
-The easiest way to show how this works is by example. Imagine the following code 
+The easiest way to show how this works is by example. Imagine the following code
 
 ```javascript
 const GOOD_RATING_THRESHOLD = 4;
 
 export default function start(step, progress, options) {
-  return getEntitiesOfTable("songs", {pimUrl: "http://localhost:8080"})
+  return getEntitiesOfTable("songs", { pimUrl: "http://localhost:8080" })
     .then(step("Filter all songs with a good rating"))
     .then(filter({
-      path: ["songs", "album"],
+      path: [ "songs", "album" ],
       predicate: album => album.rating > GOOD_RATING_THRESHOLD
     }))
     .then(step("Printing complete duration of all good songs"))
-    .then(tablesCaintainingSongsWithGoodAlbummRatings => {
-      const tables = referencer()(tablesCaintainingSongsWithGoodAlbummRatings);
+    .then(tablesContainingSongsWithGoodAlbumRatings => {
+      const tables = referencer()(tablesContainingSongsWithGoodAlbumRatings);
       const songs = tables.songs;
       const summedDuration = songs.reduce((duration, song) => duration + song.duration);
       console.log("Duration of all songs with rating >", GOOD_RATING_THRESHOLD, " =", summedDuration);
@@ -53,12 +53,12 @@ export default function start(step, progress, options) {
   * `options` - a JSON object that was passed to the `start` function. This can be used to provide variables from the
     outer process to the forked one.
 * `progress` is a function that will be called with an object three properties:
-  * `steps` - the number of all counted steps. 
+  * `steps` - the number of all counted steps.
   * `currentStep` - the current step. Use `steps` and `currentStep` to calculate the percentage of your progress.
   * `message` - An optional message of the current step.
   * `error` - Usually `false`, but if there was an error during aggregation, you can make the outer process aware of it.
 * `timeoutToResendStatus` (number, defaults to `2000`) is a number in milliseconds when the aggregator should resend the
-  latest status to the `progress` function. This helps to prevent the closing of a channel if an aggregator takes too 
+  latest status to the `progress` function. This helps to prevent the closing of a channel if an aggregator takes too
   long to respond with a new progress.
 * `abort` (object, optional) - Groups the cancellation-related options. Kept as a separate object so that its keys never
   collide with arbitrary aggregator options passed via `...other options`.
@@ -76,7 +76,7 @@ Example:
 
 ```javascript
 const controller = new AbortController();
-const promise = start({aggregatorFile: "./myAggregator.js", abort: {signal: controller.signal}});
+const promise = start({ aggregatorFile: "./myAggregator.js", abort: { signal: controller.signal } });
 // later, e.g. on user request:
 controller.abort(new Error("cancelled by user"));
 ```
@@ -86,7 +86,7 @@ controller.abort(new Error("cancelled by user"));
 * `tableName: String` is the entry point for downloading all entities that are (recursively) linked.
 * <span id="getentitiesoftable-options"></span>`options: Object` is an object consisting of the following options:
   * `pimUrl: String` (required) - The URL pointing to the GRUD instance.
-  * `disableFollow: String[][]` (optional) - Defaults to empty array. An array of nested column lists that will not be 
+  * `disableFollow: String[][]` (optional) - Defaults to empty array. An array of nested column lists that will not be
     followed, i.e. `[["topLevelLinkColumn", "secondLevelLinkColumn"], ["anotherTopLevelLinkColumn]]`.
 
     It is possible to use a placeholder `*` to match all columns on this level, e.g. `[["topLevelLinkColumn", "*"]]`
@@ -106,10 +106,10 @@ controller.abort(new Error("cancelled by user"));
     followed. This option can be combined with `disableFollow` option which may override the former. For example, if
     there is a column `"foo"` within the `includeColumns` array, and there is an entry `["foo"]`
     within `disableFollow`, then the column `"foo"` will not be followed.
-  * `maxEntriesPerRequest: number` (optional) - Defaults to 500. An integer greater than 0 to limit the amount of 
-    work on each request done by the Grud instance. Higher values make less requests but may run into timeouts if the 
+  * `maxEntriesPerRequest: number` (optional) - Defaults to 500. An integer greater than 0 to limit the amount of
+    work on each request done by the Grud instance. Higher values make less requests but may run into timeouts if the
     Grud instance is not able to handle as much data.
-  * `archived: Boolean` (optional) - If set to false archived GRUD rows will get omitted. If set to true, only archived 
+  * `archived: Boolean` (optional) - If set to false archived GRUD rows will get omitted. If set to true, only archived
     GRUD rows will be returned.
   * `headers: Object` (optional) - Defaults to {}. An object with key values pairs for http headers to set on every request.
 
@@ -127,15 +127,15 @@ which are shared among initial tables will only be downloaded once.
 This function filters all entities in the promise chain matching a specific condition.
 
 * `options` is an object containing:
-  * `excludeBacklinks` (`Boolean`, optional) - Defaults to false. This option will exclude all backlinks from another 
+  * `excludeBacklinks` (`Boolean`, optional) - Defaults to false. This option will exclude all backlinks from another
     table, meaning if a cyclic link occurs, this link will not add new entities to the filtered table. Most of the time
     you will want to use `filterBacklinks` instead of removing all columns containing a link to the first table.
-  * `filterBacklinks` (`Boolean`, optional) - Defaults to false. This option will exclude all backlinks from another 
-    table if the entity is not already in the first table. You want to use this option when you want to keep links to 
+  * `filterBacklinks` (`Boolean`, optional) - Defaults to false. This option will exclude all backlinks from another
+    table if the entity is not already in the first table. You want to use this option when you want to keep links to
     the first table but remove all links to entities that do not match your initial `predicate`.
-  * `ignoreMissing` (`Boolean`, optional) - Defaults to false. If a table is missing, the `filter` method usually emits 
+  * `ignoreMissing` (`Boolean`, optional) - Defaults to false. If a table is missing, the `filter` method usually emits
     a `console.warn` warning. This warning can be disabled by setting `ignoreMissing` to `true`.
-  * `path` (`Array[String]`, reguired) - The path to follow for the `predicate`.
+  * `path` (`Array[String]`, required) - The path to follow for the `predicate`.
   * `predicate` (`(object) => Boolean`, required) - This function checks `object` for a specified condition.
 
 #### `exclude(options): GrudTables => GrudTables`
@@ -143,17 +143,19 @@ This function filters all entities in the promise chain matching a specific cond
 To remove columns from the resulting GrudTables.
 
 * `options` is an object containing:
-  * `paths` (`Array[Array[String]]`, optional) - The paths contain the names of the table and column to kick. For 
+  * `paths` (`Array[Array[String]]`, optional) - The paths contain the names of the table and column to kick. For
     example:
-```
+
+```javascript
 [
   ['tableA', 'columnInTableA'],
   ['tableB', 'columnInTableB']
 ]
 ```
-  * `predicate` (`(GrudColumn, GrudTable) => Boolean`, optional) - A function to check if this column should be excluded
+
+* `predicate` (`(GrudColumn, GrudTable) => Boolean`, optional) - A function to check if this column should be excluded
     in the result.
-  * `preserveConcats` (`Boolean`, optional, defaults to `true`) - To remove all concat columns, set the flag to `false`. 
+* `preserveConcats` (`Boolean`, optional, defaults to `true`) - To remove all concat columns, set the flag to `false`.
 
 #### `referencer([options]): (MultilanguageGrudTables|GrudTables) => GrudEntities`
 
@@ -161,23 +163,82 @@ This function can be called in the promise chain or used in client code to denor
 following links.
 
 * `options` may contain
-  * `withLanguages` (`Boolean`, optional, defaults to `false`), this assumes that the first level are languages and not 
-    tables. When using `tablesToLanguages`, this needs to be set, otherwise it can not correctly denormalize the 
+  * `withLanguages` (`Boolean`, optional, defaults to `false`), this assumes that the first level are languages and not
+    tables. When using `tablesToLanguages`, this needs to be set, otherwise it can not correctly denormalize the
     entities. If set to `false`, all multi-language columns will still contain objects with te values for all languages.
 
 #### `tablesToLanguages(fallbacks, [options]): GrudTables => MultilanguageGrudTables`
 
-This function separates the tables into languages set in the `fallbacks` object. 
+This function separates the tables into languages set in the `fallbacks` object.
 
-* `fallbacks` is an object containing language keys as keys and an `Array[LanguageKey]` to define fallback languages to 
+* `fallbacks` is an object containing language keys as keys and an `Array[LanguageKey]` to define fallback languages to
   use if the selected language is not set.
 * `options` may contain
-  * `fallbackOnly` (`Boolean`, optional, defaults to `false`), this assumes the fallback array as the single source of 
-    truth, meaning the key in the `fallbacks` options are not used as default language, but the first element in the 
+  * `fallbackOnly` (`Boolean`, optional, defaults to `false`), this assumes the fallback array as the single source of
+    truth, meaning the key in the `fallbacks` options are not used as default language, but the first element in the
     provided array for each key. If you turn this option on, you need to have at least one language set in each array or
     the call to `tablesToLanguages` will result in an error.
-  * `fallbackOnEmptyString` (`Boolean`, optional, defaults to `true`), will trim texts (based on the column kind) and 
+  * `fallbackOnEmptyString` (`Boolean`, optional, defaults to `true`), will trim texts (based on the column kind) and
     use the fallback languages if the trimmed text is empty.
+
+## Release Process
+
+This project uses automated releases via [release-please](https://github.com/googleapis/release-please). Releases are triggered when commits are merged into the `master` branch.
+
+### Conventional Commits (Required & Enforced)
+
+Developers **must** use [Conventional Commits](https://www.conventionalcommits.org/) format. This determines version bumps automatically:
+
+* **`feat:`** → Minor version bump (e.g., 1.0.0 → 1.1.0)
+* **`fix:`** → Patch version bump (e.g., 1.0.0 → 1.0.1)
+* **`feat!:` or `fix!:`** → Major version bump (e.g., 1.0.0 → 2.0.0)
+* **`chore:`, `docs:`, `test:`, `ci:`, `refactor:`, `perf:`** → No version bump (included in next minor/major)
+
+**Examples:**
+
+```txt
+feat: add new API endpoint
+fix(GRUD_DEV-1215): resolve memory leak in data handler
+feat!: remove deprecated authentication flow
+docs: update installation guide
+```
+
+**INFO:** Include the YouTrack ticket number in the commit scope (e.g., `fix(GRUD_DEV-1215):` or `feat(GRUD_DEV-1234):`). This automatically links commits to tickets in YouTrack for better traceability.
+
+**Template (recommended for multiline commits):**
+
+```txt
+<type>(<scope>): <subject>
+
+<optional body explaining context and why>
+<optional body line 2>
+
+BREAKING CHANGE: <what changed and migration hint>
+Release-As: <version>
+```
+
+**Release-Please note:** The changelog entry is generated from the commit header (first line). The commit body is usually not copied as free text into `CHANGELOG.md`. Use a clear subject line, and use `BREAKING CHANGE:` footer when relevant.
+
+#### Local Enforcement
+
+Commit messages are validated locally via [commitlint](https://commitlint.js.org/) and [husky](https://typicode.github.io/husky/). After running `npm install`, husky automatically sets up a `commit-msg` Git hook that checks every commit message against the Conventional Commits rules. Non-conforming commits will be rejected:
+
+```txt
+⧗   input: bad commit message
+✖   subject may not be empty [subject-empty]
+✖   type may not be empty [type-empty]
+```
+
+The configuration lives in `commitlint.config.js` and extends `@commitlint/config-conventional`.
+
+### Workflow
+
+1. Merge a PR to `master` with conventional commit messages
+2. Release-please creates a release PR with:
+   * Version bump in `package.json`
+   * Updated `CHANGELOG.md`
+   * Release notes
+3. Merge the release PR → automatically publishes to **GitHub Packages** and creates a GitHub Release
 
 ## Changelog
 

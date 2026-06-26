@@ -1,5 +1,5 @@
 {
-  "name": "grud-aggregator",
+  "name": "@campudus/grud-aggregator",
   "version": "9.1.0",
   "description": "Core aggregator functions",
   "files": [
@@ -16,9 +16,13 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsdown",
-    "prepublish": "npm run build && npm run lint && npm run test",
+    "prepublishOnly": "npm run build && npm run lint && npm run test",
+    "prepare": "husky",
     "coverage": "nyc npm run test",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
@@ -40,11 +44,14 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/campudus/grud-aggregator#readme",
   "devDependencies": {
-    "@typescript-eslint/parser": "8.46.1",
-    "@typescript-eslint/eslint-plugin": "8.46.1",
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^21.1.0",
     "@types/node": "24.7.2",
+    "@typescript-eslint/eslint-plugin": "8.46.1",
+    "@typescript-eslint/parser": "8.46.1",
     "eslint": "8.57.1",
     "express": "4.14.0",
+    "husky": "^9.1.7",
     "mocha": "11.7.4",
     "must": "0.13.1",
     "nyc": "17.1.0",
