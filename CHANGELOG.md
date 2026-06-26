@@ -1,5 +1,12 @@
 # Release Notes
 
+## [9.1.1](https://github.com/campudus/grud-aggregator/compare/grud-aggregator-v9.1.0...grud-aggregator-v9.1.1) (2026-06-26)
+
+
+### Bug Fixes
+
+* remove byte size asserts ([9869195](https://github.com/campudus/grud-aggregator/commit/9869195917fd8660c08c343b652aa651ff326de5))
+
 ## 9.1.0 - Added cancellation support for `start() function`
 
 * Added `abort` option to `start()` that groups the new cancellation-related settings in a dedicated object. This keeps
