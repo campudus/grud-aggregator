@@ -1,5 +1,53 @@
 # Release Notes
 
+## [9.2.0](https://github.com/campudus/grud-aggregator/compare/grud-aggregator-v9.1.0...grud-aggregator-v9.2.0) (2026-06-26)
+
+
+### Features
+
+* add archived option to getEntitiesOfTable ([29965a2](https://github.com/campudus/grud-aggregator/commit/29965a24b0856b9d6f1759771f846b5b6ad53b36))
+* add includeArchived option to getEntitiesOfTable ([16f223a](https://github.com/campudus/grud-aggregator/commit/16f223aaca8bb7558a4fa64c2cb60a98fef72e66))
+* add support for aborting running exports with AbortSignal ([d0b2907](https://github.com/campudus/grud-aggregator/commit/d0b2907517312d5321e8efb410024f646e6a8009))
+* add trim option to modifyImages ([0e778e4](https://github.com/campudus/grud-aggregator/commit/0e778e4b5841a8f105136b4d6502ea2b132ae1da))
+* add trim option to modifyImages ([6b36333](https://github.com/campudus/grud-aggregator/commit/6b363339482c857919c0d9f12a7f14ef9b91a858))
+* added 'timeout' option for API requests ([a223ad5](https://github.com/campudus/grud-aggregator/commit/a223ad5cc6a102fd36317bf169e044a473dffbd0))
+* added 'timeout' option to 'getEntitiesOfTable()' ([3f539da](https://github.com/campudus/grud-aggregator/commit/3f539da15b709735cf08f424afc96f4cb85caf80))
+* added timeout option for requests ([885c1e5](https://github.com/campudus/grud-aggregator/commit/885c1e5a167854ef9d236c45511b216d6860e17e))
+* enhanced 'disableFollow' option with support for '*' and '**' placeholders ([9a44a68](https://github.com/campudus/grud-aggregator/commit/9a44a68976a41a049412caa2e2e90b93a52b510c))
+* enhanced 'disableFollow' option with support for '*' and '**placeholders ([9f2b352](https://github.com/campudus/grud-aggregator/commit/9f2b35213a47bef175351e043c55c9b10cd2186f))
+* integrate typescript with cjs and esm output ([8f2a751](https://github.com/campudus/grud-aggregator/commit/8f2a751227c016e25f5c0d472119faaaedbed3ca))
+* replaced axios with node-fetch and added timeout handling ([581e063](https://github.com/campudus/grud-aggregator/commit/581e06357cab9caa1a08f5f33268380446371740))
+* replaced axios with node-fetch and added timeout handling ([599f0d1](https://github.com/campudus/grud-aggregator/commit/599f0d147ff01a930e1cd8f8e9822dc58a39f38f))
+* replaced jimp with sharp ([8b49f27](https://github.com/campudus/grud-aggregator/commit/8b49f275071506549e90308c9c747efbc690444b))
+* replaced jimp with sharp ([ebe858f](https://github.com/campudus/grud-aggregator/commit/ebe858f51140fc10afcd3c099014829d9b9bfd04))
+* some more fixes to ts build and output ([97b44e2](https://github.com/campudus/grud-aggregator/commit/97b44e26b78baa356deb43b50a8c8d78dc132c30))
+
+
+### Bug Fixes
+
+* add group sub columns to columns root array ([d0b1c43](https://github.com/campudus/grud-aggregator/commit/d0b1c431b6d955f79aeb05ccbb15b623299b6d5e))
+* change grud-aggregator to esmodule in package.json ([18c9160](https://github.com/campudus/grud-aggregator/commit/18c9160c256ba52bdc7368bebfb50aaed2dcffb3))
+* changelog typo ([f932f80](https://github.com/campudus/grud-aggregator/commit/f932f800169fa89431bc7f6be4c3d5b603b0d77d))
+* clean way for creating log message ([e8213e2](https://github.com/campudus/grud-aggregator/commit/e8213e2192357252cad587ce3d2d30b10b6740b2))
+* configure @babel/eslint-parser to handle import attributes syntax ([7416461](https://github.com/campudus/grud-aggregator/commit/74164619ab2a2710d9f039e717d645d12c5f4f7d))
+* default timeout is now set for 'getEntitiesOfTable()' instead of 'request()' api helper' ([3516696](https://github.com/campudus/grud-aggregator/commit/35166965038c451065787c9e3fc3fcaeecd12809))
+* enforce single occurrence of '*' and '**' in disableFollow column lists ([324ff39](https://github.com/campudus/grud-aggregator/commit/324ff3976bd7a0969cae0bd4cbb98b577d1fb822))
+* esm/cjs mismatch during process fork ([32cd415](https://github.com/campudus/grud-aggregator/commit/32cd415398fd679ba5a7edc6604b43cdeeabd38a))
+* expose getEntitiesOfTables ([3dee032](https://github.com/campudus/grud-aggregator/commit/3dee03290daff0dfb1f82836420face070dd2c9c))
+* fix nyc coverage ([670931e](https://github.com/campudus/grud-aggregator/commit/670931e6bef75901c6150a5daade1e04004d8715))
+* fixed typo ([13c631f](https://github.com/campudus/grud-aggregator/commit/13c631f7d11651781dfb4f786dae9de1ea187ef0))
+* handle null checks for group columns with links and multilanguage support ([5aa6dae](https://github.com/campudus/grud-aggregator/commit/5aa6daecba15531ddbece68769bc984dcbe53939))
+* image tests ([97571b4](https://github.com/campudus/grud-aggregator/commit/97571b4b6634eaa6f4d2c7c459569b266cc91f2c))
+* install prettier version which is compatible with import attributes ([6284a4d](https://github.com/campudus/grud-aggregator/commit/6284a4d98e8eb5661596e2bee5dcebc51dbc5d2f))
+* name shadowing ([f5b31c8](https://github.com/campudus/grud-aggregator/commit/f5b31c8cb2e70893201101b39ff7781fc47fd2a2))
+* refernecer can reference group columns with links correctly ([1e1b2c1](https://github.com/campudus/grud-aggregator/commit/1e1b2c157364d8405e50c19028bc7fdcb37c944c))
+* stop resending progress after abort ([2f46a77](https://github.com/campudus/grud-aggregator/commit/2f46a77e5219e83bb255787395b170a5e3df6517))
+* tablesToLanguages handles group columns with multilang and links correctly ([4ad11a3](https://github.com/campudus/grud-aggregator/commit/4ad11a397fc50c14735aa78f9bdf96de9a1f0177))
+* typo ([4384184](https://github.com/campudus/grud-aggregator/commit/4384184e47775492490db1cb76295994a59995b8))
+* updated lib with missing compiled stuff ([4fc93f2](https://github.com/campudus/grud-aggregator/commit/4fc93f2224d22d31187c092d6aa6bfcc33ae6085))
+* updated package-lock.json ([fb57c9e](https://github.com/campudus/grud-aggregator/commit/fb57c9e87940a77da3e5dabf418584f0cc829249))
+* use native fetch instead of node-fetch ([b1c2d28](https://github.com/campudus/grud-aggregator/commit/b1c2d28871b4e0b24b6d56f1684e7ba80f361068))
+
 ## 9.1.0 - Added cancellation support for `start() function`
 
 * Added `abort` option to `start()` that groups the new cancellation-related settings in a dedicated object. This keeps
