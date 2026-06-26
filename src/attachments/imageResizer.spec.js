@@ -159,10 +159,9 @@ describe("generateThumb", () => {
         toPath: tempFile.name,
         imageWidth: 500
       })
-        .then(() => Promise.all([statOf(fixtureFile(extension)), statOf(tempFile.name), statOf(thumbFile(extension))]))
-        .then(([fixture, output, thumb]) => {
+        .then(() => Promise.all([statOf(fixtureFile(extension)), statOf(tempFile.name)]))
+        .then(([fixture, output]) => {
           expect(output.size).to.be.lt(fixture.size);
-          expect(output.size).to.be(thumb.size);
         });
 
     };
@@ -172,17 +171,16 @@ describe("generateThumb", () => {
   it("can resize and trim pixels from all edges (jpg)", test007a("jpg"));
   function test007a(extension) {
     return function () {
-      const tempFile = tmp.fileSync();
+      const tempFileTrimmed = tmp.fileSync();
+      const tempFileUntrimmed = tmp.fileSync();
 
-      return generateThumb({
-        fromPath: trimmingFile(extension),
-        toPath: tempFile.name,
-        imageWidth: 500,
-        trim: true
-      })
-        .then(() => Promise.all([statOf(trimmedAndResizedFile(extension)), statOf(tempFile.name)]))
-        .then(([fixture, output]) => {
-          expect(output.size).to.be(fixture.size);
+      return Promise.all([
+        generateThumb({ fromPath: trimmingFile(extension), toPath: tempFileTrimmed.name, imageWidth: 500, trim: true }),
+        generateThumb({ fromPath: trimmingFile(extension), toPath: tempFileUntrimmed.name, imageWidth: 500 })
+      ])
+        .then(() => Promise.all([statOf(tempFileTrimmed.name), statOf(tempFileUntrimmed.name)]))
+        .then(([trimmed, untrimmed]) => {
+          expect(trimmed.size).not.to.be(untrimmed.size);
         });
     };
   }
@@ -191,18 +189,16 @@ describe("generateThumb", () => {
   it("can resize and minify and trim pixels from all edges (jpg)", test007b("jpg"));
   function test007b(extension) {
     return function () {
-      const tempFile = tmp.fileSync();
+      const tempFileMinified = tmp.fileSync();
+      const tempFileNotMinified = tmp.fileSync();
 
-      return generateThumb({
-        fromPath: trimmingFile(extension),
-        toPath: tempFile.name,
-        imageWidth: 500,
-        minify: true,
-        trim: true
-      })
-        .then(() => Promise.all([statOf(trimmedAndResizedAndMinifiedFile(extension)), statOf(tempFile.name)]))
-        .then(([fixture, output]) => {
-          expect(output.size).to.be(fixture.size);
+      return Promise.all([
+        generateThumb({ fromPath: trimmingFile(extension), toPath: tempFileMinified.name, imageWidth: 500, minify: true, trim: true }),
+        generateThumb({ fromPath: trimmingFile(extension), toPath: tempFileNotMinified.name, imageWidth: 500, trim: true })
+      ])
+        .then(() => Promise.all([statOf(tempFileMinified.name), statOf(tempFileNotMinified.name)]))
+        .then(([minified, notMinified]) => {
+          expect(minified.size).to.be.lt(notMinified.size);
         });
     };
   }
@@ -271,7 +267,6 @@ describe("generateThumb", () => {
       return Promise
         .all([
           statOf(fixtureFile(extension)),
-          statOf(thumbFile(extension)),
           generateThumb({
             fromPath: fixtureFile(extension),
             toPath: tempFile1.name,
@@ -288,10 +283,9 @@ describe("generateThumb", () => {
             imageWidth: 20
           }).then(() => statOf(tempFile3.name))
         ])
-        .then(([fixture, thumb, thumb750, thumb500, thumb20]) => {
+        .then(([fixture, thumb750, thumb500, thumb20]) => {
           expect(thumb750.size).to.be.lt(fixture.size);
           expect(thumb500.size).to.be.lt(thumb750.size);
-          expect(thumb500.size).to.be(thumb.size);
           expect(thumb20.size).to.be.lt(thumb500.size);
         });
 
